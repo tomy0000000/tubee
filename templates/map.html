@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% set page_title = "Site Map" %}
+{% block body %}
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle">Func</th>
+            <th scope="col" class="align-middle">Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for url, endpoint in links %}
+        <tr>
+            <th scope="row" class="align-middle">
+                <a href="{{ url }}">{{ endpoint }}</a>
+            </th>
+            <td class="align-middle">
+                {{ url }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{# <ul>
+    {% for url, endpoint in links %}
+        <li><a href="{{ url }}">{{ endpoint }}</a></li>
+    {% endfor %}
+</ul> #}
+
+{# <ul>
+    {% for route in map %}
+    <li>{{ route }}</li>
+    <ul>
+        <li>{{ route.defaults }}</li>
+        <li>{{ route.arguments }}</li>
+        <li>{{ route.endpoint }}</li>
+    </ul>
+    {% endfor %}
+</ul> #}
+
+{% endblock %}

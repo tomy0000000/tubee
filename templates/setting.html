@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% set page_title = "Setting" %}
+{% block body %}
+<div class="jumbotron">
+    {% if notes %}
+    <div class="alert alert-success" role="alert">{{ notes }}</div>
+    {% endif %}
+    <h1 id="headline" class="display-4">Welcome!</h1>
+    <label for="username" class="col-form-label">Username</label>
+    <input type="text" class="form-control" id="username" value="{{ user.username }}" readonly>
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" aria-describedby="passwordHelp" value="........" readonly>
+    <small id="passwordHelp" class="form-text text-muted">
+        To Change Password, Click
+        <a href="">
+            Here
+        </a>
+    </small>
+    <label for="pushover_key" class="col-form-label">Pushover User Key</label>
+    <div class="input-group">
+        {% if user.pushover_key %}
+        <input type="text" class="form-control" id="pushover_key" value="{{ user.pushover_key }}" aria-describedby="pushover_change" readonly>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="pushover_change">Change</button>
+        </div>
+        {% else %}
+        <input type="text" class="form-control" id="pushover_key" value="{{ user.pushover_key }}" aria-describedby="pushover_validate">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="pushover_validate">Validate</button>
+        </div>
+        {% endif %}
+    </div>
+    <small id="pushover_keyHelp" class="form-text text-muted">
+        Get your user key by login in
+        <a href="https://pushover.net/" target="_blank">Pushover</a>
+    </small>
+    <label for="youtube_credentials" class="col-form-label">YouTube Account</label>
+    <div class="input-group">
+        {% if user.youtube_credentials %}
+        <input type="text" class="form-control" id="youtube_credentials" value="{{ user.youtube_credentials }}" aria-describedby="youtube_revoke" readonly>
+        <div class="input-group-append">
+            <a class="btn btn-outline-secondary" href="/Tubee/login/youtube/revoke" role="button" id="youtube_revoke">Revoke</a>
+        </div>
+        {% else %}
+        <input type="text" class="form-control" id="youtube_credentials" value="{{ user.youtube_credentials }}" aria-describedby="youtube_authorize" readonly>
+        <div class="input-group-append">
+            <a class="btn btn-outline-secondary" href="/Tubee/login/youtube/authorize" role="button" id="youtube_authorize">Authorize</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

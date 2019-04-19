@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% set page_title = "Status Board" %}
+{% block scripts %}
+<script type="text/javascript" src="/Tubee/static/js/status.js"></script>
+{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/Tubee/static/css/status.css">
+{% endblock %}
+{% block body %}
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle">Channel Name</th>
+            <th scope="col" class="align-middle">State</th>
+            <th scope="col" class="align-middle">Expiration</th>
+            <th scope="col" class="align-middle">Last Notification</th>
+            <th scope="col" class="align-middle">Last Notification Error</th>
+            <th scope="col" class="align-middle">Last Challenge</th>
+            <th scope="col" class="align-middle">Last Challenge Error</th>
+            <th scope="col" class="align-middle">Last Request</th>
+            <th scope="col" class="align-middle">Stat</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for channel in channels %}
+        <tr class="channel" data-channel-id="{{ channel.channel_id }}">
+            <th scope="row" class="align-middle">
+                {{ channel.channel_name }}
+                <br>
+                ({{ channel.channel_id }})
+            </th>
+            <td class="align-middle state">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle expire">
+                <div class="spinner-border text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle last_notification">
+                <div class="spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle last_notification_error">
+                <div class="spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle last_challenge">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle last_challenge_error">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle last_request">
+                <div class="spinner-border text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+            <td class="align-middle stat">
+                <div class="spinner-border text-dark" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,11 @@
+body {
+  padding-top: 5rem;
+}
+
+#hero {
+    height: 2rem;
+}
+
+span.line {
+    display: inline-block;
+}

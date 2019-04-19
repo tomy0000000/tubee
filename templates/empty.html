@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% set page_title = "Test Page" %}
+{% block body %}
+{% if content %}
+    {% if pprint %}
+        <pre>{{ content }}</pre>
+    {% else %}
+        <p>{{ content }}</p>
+    {% endif %}
+{% else %}
+<p>Hello world!</p>
+{% endif %}
+{% endblock %}

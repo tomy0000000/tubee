@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% set title = "Dashboard" %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+{% block script %}{% endblock %}
+
+{% block content %}
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle"></th>
+            <th scope="col" class="align-middle">Channel Name</th>
+            <th scope="col" class="align-middle">Last Active</th>
+            <th scope="col" class="align-middle">Active</th>
+            <th scope="col" class="align-middle">Renew Datetime</th>
+            <th scope="col" class="align-middle">Unsubscribe Datetime</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subscription in subscriptions %}
+        <tr>
+            <th scope="row">
+                <img src="{{ subscription.thumbnails_url }}" class="rounded-circle">
+            </th>
+            <td class="channel-name align-middle">
+                {% if subscription.custom_url %}
+                <a href="https://www.youtube.com/{{ subscription.custom_url }}">
+                    <p>{{ subscription.channel_name }}</p>
+                </a>
+                <p class="text-muted">{{ subscription.channel_id }}</p>
+                <p class="text-muted">#{{ subscription.custom_url }}</p>
+                {% else %}
+                <a href="https://www.youtube.com/channel/{{ subscription.channel_id }}">
+                    <p>{{ subscription.channel_name }}</p>
+                </a>
+                <p class="text-muted">{{ subscription.channel_id }}</p>
+                {% endif %}
+            </td>
+            <td class="align-middle">
+                <a href="{{ url_for('hub_history_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
+                    <span class="badge badge-warning">callbacks</span>
+                </a><br>
+                <a href="{{ url_for('summary_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
+                    <span class="badge badge-primary">videos+callbacks</span>
+                </a><br>
+                <a href="{{ url_for('hub_status_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
+                    <span class="badge badge-info">status</span>
+                </a>
+            </td>
+            <td class="align-middle">{{ subscription.active }}</td>
+            <td class="align-middle">{{ subscription.renew_datetime }}</td>
+            {% if subscription.unsubscribe_datetime %}
+            <td class="align-middle">{{ subscription.unsubscribe_datetime }}</td>
+            {% else %}
+            <td class="align-middle">
+                <a href="{{ url_for('unsubscribe_channel', channel_id=subscription.channel_id) }}">Unsubscribe</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% set page_title = "Notification History" %}
+
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/Tubee/static/css/pushover_history.css">
+{% endblock %}
+
+{% block body %}
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Sent Datetime</th>
+            <th scope="col">Title</th>
+            <th scope="col">Message</th>
+            <th scope="col">URL</th>
+            <th scope="col">Response</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for notification in notifications %}
+        <tr>
+            <th scope="row" class="align-middle" rowspan="2">
+                {% if notification.kwargs.image %}
+                <img src="{{ notification.kwargs.image }}" class="rounded" width="200">
+                {% endif %}
+            </th>
+            <td class="align-middle">{{ notification.sent_datetime }}</td>
+            <td class="align-middle">{{ notification.kwargs.title }}</td>
+            <td class="align-middle">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#message_body{{ notification.id }}" aria-expanded="false" aria-controls="message_body{{ notification.id }}">
+                    Show Message
+                </button>
+                
+            </td>
+            <td class="align-middle">
+                <a href="{{ notification.kwargs.url }}">{{ notification.kwargs.url_title }}</a>
+            </td>
+            <td class="align-middle">
+                {{ notification.response }}
+                {% if notification.response.status == 1 %}
+                    <button type="button" class="btn btn-success" data-container="body" data-toggle="popover" data-placement="right" data-content="{{ notification.response.request }}">
+                        OK
+                        <span class="badge badge-light">1</span>
+                    </button>
+                {% else %}
+                    <button type="button" class="btn btn-danger" data-container="body" data-toggle="popover" data-placement="right" data-content="{{ notification.response.request }}">
+                        Error
+                        <span class="badge badge-light">{{ notification.response.status }}</span>
+                    </button>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <div class="collapse message_bodies" id="message_body{{ notification.id }}">
+                    <!-- <div class="card card-body"> -->
+                        <pre>{{ notification.message }}</pre>
+                    <!-- </div> -->
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+    {% block meta %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+    {% endblock %}
+    <title>Tubee - {{ title }}</title>
+    <!-- Bootstrap CSS 4.3.1 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Normalize CSS 8.0.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Font Awesome CSS 5.6.3 -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block style %}{% endblock %}
+
+<body>
+    {% block nav %}
+    <!-- Sticky NavBar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-left" href="/Tubee">
+            <img id="hero" src="/Tubee/static/img/tubee_text.png">
+            <!-- Tubee -->
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                {% if title == "Login" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
+                    {% endif %}
+                    <a class="nav-link" href="{{ url_for('login') }}">
+                        Login
+                        {% if title == "Login" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% if title == "Dashboard" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
+                    {% endif %}
+                    <a class="nav-link" href="{{ url_for('dashboard') }}">
+                        Dashboard
+                        {% if title == "Dashboard" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% if title == "Subscribe" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
+                    {% endif %}
+                    <a class="nav-link" href="{{ url_for('channel_subscribe') }}">
+                        Subscribe
+                        {% if title == "Subscribe" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% if title == "History" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
+                    {% endif %}
+                    <a class="nav-link disabled" href="{{ url_for('hub_history') }}">
+                        History
+                        {% if title == "History" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_tmp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_tmp">
+                        <a class="dropdown-item" href="{{ url_for('hub_status') }}">Hub Status</a>
+                        <a class="dropdown-item" href="{{ url_for('youtube_subscription') }}">List YouTube Subscription</a>
+                        <a class="dropdown-item" href="{{ url_for('pushover_push') }}">Send Test Notification</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_dev">
+                        <a class="dropdown-item" href="{{ url_for('dev_map') }}">Sitemap</a>
+                        <a class="dropdown-item" href="{{ url_for('dev_os_dict') }}">Dict: OS</a>
+                        <a class="dropdown-item" href="{{ url_for('dev_sys_dict') }}">Dict: System</a>
+                        <a class="dropdown-item" href="{{ url_for('dev_flask_dict') }}">Dict: Flask</a>
+                        <a class="dropdown-item" href="{{ url_for('dev_scheduler_dict') }}">Dict: Scheduler</a>
+                        <a class="dropdown-item" href="{{ url_for('dev_user_dict') }}">Dict: User</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <!-- End Sticky NavBar -->
+    {% endblock %}
+    <!-- Container -->
+    <main role="main" class="container">
+        {% block content %}{% endblock %}
+    </main>
+    <!-- End Container -->
+    <footer class="mt-5 mb-3 text-muted text-center">
+        <span class="line">Copyright © 2019 Tomy Hsieh.</span>
+        <span class="line">All rights reserved.</span>
+    </footer>
+    <!-- jQuery 3.3.1 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- Popper.js 1.14.7 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha256-ZvOgfh+ptkpoa2Y4HkRY28ir89u/+VRyDE7sB7hEEcI=" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS 4.3.1 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Page JS -->
+    {% block script %}{% endblock %}
+</body>
+
+</html>

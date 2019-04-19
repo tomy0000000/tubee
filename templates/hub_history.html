@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% if channel_name %}
+{% set page_title = "History of "+channel_name %}
+{% else %}
+{% set page_title = "History" %}
+{% endif %}
+
+{% block body %}
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Received Datetime</th>
+            {% if not channel_name %}
+            <th scope="col">Channel ID</th>
+            {% endif %}
+            <th scope="col">Action Type</th>
+            <th scope="col">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for callback in callbacks %}
+        <tr>
+            <th scope="row">{{ callback.received_datetime }}</th>
+            {% if not channel_name %}
+            <td>{{ callback.channel_id }}</td>
+            {% endif %}
+            <td>
+                {% if callback.action_type == "Hub Challenge" %}
+                <span class="badge badge-warning">Hub Challenge</span>
+                {% elif callback.action_type == "Hub Notification" %}
+                <span class="badge badge-success">Hub Notification</span>
+                {% else %}
+                <span class="badge dadge-danger">{{ callback.action_type }}</span>
+                {% endif %}
+            </td>
+            <td>{{ callback.details }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
