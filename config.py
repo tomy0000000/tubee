@@ -10,6 +10,13 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
 
+    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD") or None
+    REDIS_HOST = os.environ.get("REDIS_HOST") or None
+    REDIS_PORT = os.environ.get("REDIS_PORT") or None
+    REDIS_DB = os.environ.get("REDIS_DB") or None
+    YOUTUBE_API_DEVELOPER_KEY = os.environ.get("YOUTUBE_API_DEVELOPER_KEY")
+    PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
+
     # YouTube Data API
     YOUTUBE_READ_WRITE_SSL_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
     YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -28,6 +35,12 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get("DEV_DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
+    # SCHEDULER_JOBSTORES = {
+    #     "default": {
+    #         "type": "sqlalchemy",
+    #         "url": SQLALCHEMY_DATABASE_URI
+    #     }
+    # }
 
 class TestingConfig(Config):
     """Config for Testing, Travis CI"""
@@ -35,22 +48,22 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL") or \
         "sqlite://"
     WTF_CSRF_ENABLED = False
-
-class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
-        "sqlite:///" + os.path.join(basedir, "data.sqlite")
-    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD") or None
-    REDIS_HOST = os.environ.get("REDIS_HOST") or None
-    REDIS_PORT = os.environ.get("REDIS_PORT") or None
-    REDIS_DB = os.environ.get("REDIS_DB") or None
     SCHEDULER_JOBSTORES = {
         "default": {
             "type": "sqlalchemy",
             "url": SQLALCHEMY_DATABASE_URI
         }
     }
-    YOUTUBE_API_DEVELOPER_KEY = os.environ.get("YOUTUBE_API_DEVELOPER_KEY")
-    PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
+        "sqlite:///" + os.path.join(basedir, "data.sqlite")
+    SCHEDULER_JOBSTORES = {
+        "default": {
+            "type": "sqlalchemy",
+            "url": SQLALCHEMY_DATABASE_URI
+        }
+    }
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = bool(os.environ.get("DYNO"))

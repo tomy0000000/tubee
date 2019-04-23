@@ -31,7 +31,8 @@ def build_internal_scheduler():
 app = flask.Flask(__name__, instance_relative_config=True)
 app.config.from_object(config["default"])
 # app.config.from_envvar("TUBEE_CONFIG_FILE")
-logging.config.dictConfig(app.config["LOGGING_CONFIG"])
+if "LOGGING_CONFIG" in app.config:
+    logging.config.dictConfig(app.config["LOGGING_CONFIG"])
 
 # Plugins
 db = flask_sqlalchemy.SQLAlchemy(app)                                       # flask_sqlalchemy
@@ -39,7 +40,8 @@ scheduler = flask_apscheduler.APScheduler(build_internal_scheduler(), app)  # fl
 bcrypt = flask_bcrypt.Bcrypt(app)                                           # flask_bcrypt
 login_manager = flask_login.LoginManager(app)                               # flask_login
 migrate = flask_migrate.Migrate(app, db)                                    # flask_migrate
-redis_store = flask_redis.Redis(app)                                        # flask_redis
+if app.config["REDIS_PASSWORD"]:
+    redis_store = flask_redis.Redis(app)  # flask_redis
 pusher = pushover_complete.PushoverAPI(app.config["PUSHOVER_TOKEN"])        # Pushover
 
 app.db = db
@@ -75,6 +77,8 @@ app.logger.info("Scheduler Started")
 #     app.logger.info(app.config["INSTANCE_ID"]+": Instance shutdown")
 
 from app import views, handler
-
+# @app.route("/dev_empty")
+# def dev_empty():
+#     return render_template("empty.html")
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

@@ -6,8 +6,7 @@ import requests
 import google.oauth2.credentials
 import googleapiclient.discovery
 from flask import current_app
-from Tubee import app, db, pusher
-from ..models import User, Notification
+from Tubee import db, pusher
 
 def generate_random_id():
     """Generate a 16-chars long id"""
@@ -31,6 +30,7 @@ def send_notification(initiator, user, *args, **kwargs):
     int:expire      Seconds before retries stop
                     Range       30 ~ 10800
     """
+    from ..models import Notification
     backup_kwargs = kwargs.copy()
     if "image" in kwargs and kwargs["image"]:
         img_url = kwargs["image"]

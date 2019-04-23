@@ -59,6 +59,7 @@ db.sqlite3
 # Flask stuff:
 instance/
 .webassets-cache
+*.sqlite
 
 # Scrapy stuff:
 .scrapy
@@ -102,3 +103,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# PyCharm
+.idea/

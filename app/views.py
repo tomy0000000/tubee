@@ -15,7 +15,7 @@ from apiclient.errors import HttpError
 from dateutil import parser
 from flask import redirect, request, render_template, url_for, session
 from flask_login import current_user, login_user, logout_user, login_required
-from Tubee import app, login_manager, db, bcrypt, redis_store, YouTube_Service_Public, scheduler
+from Tubee import app, login_manager, db, bcrypt, YouTube_Service_Public, scheduler
 from .form import LoginForm
 from .helper import send_notification, build_youtube_service
 from .models import User, Callback, Request, Subscription, Notification
@@ -427,15 +427,15 @@ def scheduler_pause_job():
 #     #    #  #      #    # # #    #
 #     #     # ###### #####  #  ####
 
-@app.route("/redis/set/<key>/<value>")
-def redis_write(key, value):
-    response = redis_store.set(key, value)
-    return render_template("empty.html", content=response)
-
-@app.route("/redis/get/<key>")
-def redis_read(key):
-    response = redis_store.get(key)
-    return render_template("empty.html", content=response)
+# @app.route("/redis/set/<key>/<value>")
+# def redis_write(key, value):
+#     response = redis_store.set(key, value)
+#     return render_template("empty.html", content=response)
+#
+# @app.route("/redis/get/<key>")
+# def redis_read(key):
+#     response = redis_store.get(key)
+#     return render_template("empty.html", content=response)
 
 #     ######
 #     #     #  ####  #    # ##### ######  ####
