@@ -1,0 +1,1 @@
+web: uwsgi --ini deploy/uwsgi.ini --enable-threads
