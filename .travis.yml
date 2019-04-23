@@ -1,17 +1,18 @@
 language: python
 python:
+#   - 3.7
 matrix:
-    include:
-        - python: 3.7
-            dist: xenial
-            sudo: true
-
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
+# command to install dependencies
 install:
-    - pip install -r requirements.txt
+  - pip install -r requirements.txt
 
 # command to run tests
 script:
-    - python -c "print('Hello Travis')"
+  - python -c "print('Hello Travis')"
 
 after_script:
-    - codecov
+  - codecov
