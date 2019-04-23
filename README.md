@@ -5,7 +5,7 @@
 
 ## Config
 
-* Environmental Variable
+* Environment Variables
   * `SECRET_KEY`
   * `DATABASE_URL`
   * `REDIS_PASSWORD`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`
