@@ -15,7 +15,10 @@
 * Files
   * `instance/client_secret`
 
-## Deployment
+## Testing/Deployment
+
+* Travis CI
+  * `.travis.yml`
 
 * Heroku
   * `runtime.txt`
