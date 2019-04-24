@@ -1,0 +1,14 @@
+; Originally Named uwsgi.ini, place at instance/
+[uwsgi]
+module = wsgi:app
+route-run = fixpathinfo:
+logto = [YOUR_LOG_PATH]
+
+master = true
+processes = 5
+
+socket = Tubee.sock
+chmod-socket = 660
+vacuum = true
+
+die-on-term = true

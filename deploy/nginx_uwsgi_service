@@ -1,0 +1,14 @@
+; PATHS are provided relatively, change to absolute path before deploy
+[Unit]
+Description=uWSGI instance to serve Tubee
+After=network.target
+
+[Service]
+User=[USER_NAME]
+Group=www-data
+WorkingDirectory=Tubee ; TODO
+Environment="PATH=Tubee/env/bin" ; TODO
+ExecStart=Tubee/env/bin/uwsgi --ini instance/uwsgi.ini --touch-reload instance/uwsgi.ini --enable-threads ; TODO
+
+[Install]
+WantedBy=multi-user.target
