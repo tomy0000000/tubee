@@ -30,6 +30,7 @@ def build_internal_scheduler():
 # Main Application
 app = flask.Flask(__name__, instance_relative_config=True)
 app.config.from_object(config["default"])
+app.config.from_pyfile("tmpconfig.py")
 # app.config.from_envvar("TUBEE_CONFIG_FILE")
 if "LOGGING_CONFIG" in app.config:
     logging.config.dictConfig(app.config["LOGGING_CONFIG"])
