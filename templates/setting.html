@@ -39,12 +39,12 @@
         {% if user.youtube_credentials %}
         <input type="text" class="form-control" id="youtube_credentials" value="{{ user.youtube_credentials }}" aria-describedby="youtube_revoke" readonly>
         <div class="input-group-append">
-            <a class="btn btn-outline-secondary" href="/Tubee/login/youtube/revoke" role="button" id="youtube_revoke">Revoke</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('login_youtube_revoke') }}" role="button" id="youtube_revoke">Revoke</a>
         </div>
         {% else %}
         <input type="text" class="form-control" id="youtube_credentials" value="{{ user.youtube_credentials }}" aria-describedby="youtube_authorize" readonly>
         <div class="input-group-append">
-            <a class="btn btn-outline-secondary" href="/Tubee/login/youtube/authorize" role="button" id="youtube_authorize">Authorize</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('login_youtube_authorize') }}" role="button" id="youtube_authorize">Authorize</a>
         </div>
         {% endif %}
     </div>

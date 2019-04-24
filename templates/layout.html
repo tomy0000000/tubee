@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
-    <link rel="icon" href="/Tubee/static/favicon.png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
     <title>Tubee - {{ page_title }}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -13,7 +13,7 @@
     <!-- Font Awesome icons CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <!-- Page CSS -->
-    <link rel="stylesheet" type="text/css" href="/Tubee/static/css/layout.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/layout.css') }}">
     {% block stylesheet %}
     {% endblock %}
 
@@ -21,7 +21,7 @@
     <!-- Sticky NavBar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-left" href="/Tubee">
-            <img id="hero" src="/Tubee/static/img/tubee_text.png">
+            <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}">
             <!-- Tubee -->
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">

@@ -2,12 +2,12 @@
 {% set page_title = "It's an Error!" %}
 {% block stylesheet %}
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Baloo+Bhaijaan">
-<link rel="stylesheet" type="text/css" href="/Tubee/static/css/error.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/error.css') }}">
 {% endblock %}
 {% block body %}
 <div class="row h-100">
     <div class="col-sm-6 my-auto">
-        <img class="img-fluid" src="/static/img/ripped.jpg">
+        <img class="img-fluid" src="{{ url_for('static', filename='img/ripped.jpg') }}">
     </div>
     <div class="col-sm-6 my-auto">
         <h1 class="display-1 m-0">Oops !</h1>
