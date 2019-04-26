@@ -1,6 +1,6 @@
 ; Originally Named uwsgi.ini, place at instance/
 [uwsgi]
-module = wsgi:app
+module = Tubee:app
 route-run = fixpathinfo:
 logto = [YOUR_LOG_PATH]
 
