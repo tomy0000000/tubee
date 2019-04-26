@@ -8,6 +8,7 @@ import flask_login
 import flask_migrate
 import flask_redis
 import flask_sqlalchemy
+import time
 import httplib2
 import json
 import logging.config
@@ -21,11 +22,15 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # from app.helper import build_internal_scheduler
 from config import config
 
-def build_internal_scheduler():
-    jobstores_meta = {
-        "default": SQLAlchemyJobStore(engine=db.engine)
-    }
-    return BackgroundScheduler(jobstores=jobstores_meta)
+# def build_internal_scheduler():
+#     jobstores_meta = {
+#         "default": SQLAlchemyJobStore(engine=db.engine)
+#     }
+#     return BackgroundScheduler(jobstores=jobstores_meta)
+
+db = flask_sqlalchemy.SQLAlchemy()              # flask_sqlalchemy
+scheduler = flask_apscheduler.APScheduler()     # flask_apscheduler
+login_manager = flask_login.LoginManager()      # flask_login
 
 # Main Application
 app = flask.Flask(__name__, instance_relative_config=True)
@@ -37,17 +42,18 @@ if "LOGGING_CONFIG" in app.config:
     logging.config.dictConfig(app.config["LOGGING_CONFIG"])
 
 # Plugins
-db = flask_sqlalchemy.SQLAlchemy(app)                                       # flask_sqlalchemy
-scheduler = flask_apscheduler.APScheduler(build_internal_scheduler(), app)  # flask_apscheduler
+with app.app_context():
+    db.init_app(app)
+    scheduler.scheduler.add_jobstore(SQLAlchemyJobStore(engine=db.engine))
+    scheduler.init_app(app)
+
+
 bcrypt = flask_bcrypt.Bcrypt(app)                                           # flask_bcrypt
-login_manager = flask_login.LoginManager(app)                               # flask_login
+login_manager.init_app(app)
 migrate = flask_migrate.Migrate(app, db)                                    # flask_migrate
 if app.config["REDIS_PASSWORD"]:
     redis_store = flask_redis.Redis(app)  # flask_redis
 pusher = pushover_complete.PushoverAPI(app.config["PUSHOVER_TOKEN"])        # Pushover
-
-app.db = db
-app.pusher = pusher
 
 # YouTube DATA API Configurations
 YouTube_Service_Public = discovery.build(
@@ -79,8 +85,11 @@ app.logger.info("Scheduler Started")
 #     app.logger.info(app.config["INSTANCE_ID"]+": Instance shutdown")
 
 from . import views, handler
-# @app.route("/dev_empty")
-# def dev_empty():
-#     return render_template("empty.html")
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+
+def create_app(config_name):
+    if config_name == "default":
+        return app
+    non_default_app = flask.Flask(__name__, instance_relative_config=True)
+    non_default_app.config.from_object(config[config_name])
+    config[config_name].init_app(non_default_app)
+    return non_default_app

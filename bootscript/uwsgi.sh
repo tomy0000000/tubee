@@ -10,4 +10,4 @@ source env/bin/activate
 #     sleep 5
 # done
 
-exec uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app --enable-threads
+exec uwsgi --socket 0.0.0.0:5000 --protocol=http -w Tubee:app --enable-threads

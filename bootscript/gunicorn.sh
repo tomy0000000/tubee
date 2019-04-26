@@ -10,4 +10,4 @@ source env/bin/activate
 #     sleep 5
 # done
 
-exec gunicorn -b 0.0.0.0:5000 wsgi:app
+exec gunicorn -b 0.0.0.0:5000 Tubee:app
