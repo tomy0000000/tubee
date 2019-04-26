@@ -1,86 +1,78 @@
-"""Initialization of FlaskApp"""
-import atexit
-import codecs
-import flask
-import flask_apscheduler
-import flask_bcrypt
-import flask_login
-import flask_migrate
-import flask_redis
-import flask_sqlalchemy
-import httplib2
-import json
-import logging.config
-# import mod_wsgi
 import os
-import pushover_complete
+# from dotenv import load_dotenv
+
+# dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+# if os.path.exists(dotenv_path):
+#     load_dotenv(dotenv_path)
+
+COV = None
+if os.environ.get('FLASK_COVERAGE'):
+    import coverage
+    COV = coverage.coverage(branch=True, include='app/*')
+    COV.start()
+
 import sys
-from apiclient import discovery
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.schedulers.background import BackgroundScheduler
-# from app.helper import build_internal_scheduler
-from config import config
+import click
+from flask_migrate import Migrate, upgrade
+from app import app, db
+# from app.models import User, Follow, Role, Permission, Post, Comment
 
-def build_internal_scheduler():
-    jobstores_meta = {
-        "default": SQLAlchemyJobStore(engine=db.engine)
-    }
-    return BackgroundScheduler(jobstores=jobstores_meta)
+# app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+migrate = Migrate(app, db)
 
-# Main Application
-app = flask.Flask(__name__, instance_relative_config=True)
-app.config.from_object(config["default"])
-if os.path.isfile(os.path.join(app.instance_path, "tmpconfig.py")):
-    app.config.from_pyfile("tmpconfig.py")
-# app.config.from_envvar("TUBEE_CONFIG_FILE")
-if "LOGGING_CONFIG" in app.config:
-    logging.config.dictConfig(app.config["LOGGING_CONFIG"])
 
-# Plugins
-db = flask_sqlalchemy.SQLAlchemy(app)                                       # flask_sqlalchemy
-scheduler = flask_apscheduler.APScheduler(build_internal_scheduler(), app)  # flask_apscheduler
-bcrypt = flask_bcrypt.Bcrypt(app)                                           # flask_bcrypt
-login_manager = flask_login.LoginManager(app)                               # flask_login
-migrate = flask_migrate.Migrate(app, db)                                    # flask_migrate
-if app.config["REDIS_PASSWORD"]:
-    redis_store = flask_redis.Redis(app)  # flask_redis
-pusher = pushover_complete.PushoverAPI(app.config["PUSHOVER_TOKEN"])        # Pushover
+# @app.shell_context_processor
+# def make_shell_context():
+#     return dict(db=db, User=User, Follow=Follow, Role=Role,
+#                 Permission=Permission, Post=Post, Comment=Comment)
 
-app.db = db
-app.pusher = pusher
 
-# YouTube DATA API Configurations
-YouTube_Service_Public = discovery.build(
-    app.config["YOUTUBE_API_SERVICE_NAME"],
-    app.config["YOUTUBE_API_VERSION"],
-    cache_discovery=False,
-    developerKey=app.config["YOUTUBE_API_DEVELOPER_KEY"])
+@app.cli.command()
+@click.option('--coverage/--no-coverage', default=False,
+              help='Run tests under code coverage.')
+def test(coverage):
+    """Run the unit tests."""
+    if coverage and not os.environ.get('FLASK_COVERAGE'):
+        import subprocess
+        os.environ['FLASK_COVERAGE'] = '1'
+        sys.exit(subprocess.call(sys.argv))
 
-# System Global Registration
-scheduler.start()
-app.logger.info("Scheduler Started")
-# app.config["INSTANCE_ID"] = generate_random_id()
-# app.config["INSTANCE_ID"] = codecs.encode(os.urandom(16), "hex").decode()
-# previous_session_id = redis_store.get("SESSION_ID")
-# previous_session_id = previous_session_id.decode("utf-8") if previous_session_id else ""
-# if previous_session_id == os.environ.get("INVOCATION_ID"):
-#     app.logger.info(app.config["INSTANCE_ID"]+": Instance built WITHOUT scheduler start")
-# else:
-#     redis_store.set("SESSION_ID", os.environ.get("INVOCATION_ID"))
-#     redis_store.delete("INSTANCE_SET")
-#     scheduler.start()
-#     app.logger.info(os.environ.get("INVOCATION_ID")+": Session Registed")
-#     app.logger.info(app.config["INSTANCE_ID"]+": Instance built WITH scheduler start")
-# redis_store.sadd("INSTANCE_SET", app.config["INSTANCE_ID"])
+    import unittest
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity=2).run(tests)
+    if COV:
+        COV.stop()
+        COV.save()
+        print('Coverage Summary:')
+        COV.report()
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        covdir = os.path.join(basedir, 'tmp/coverage')
+        COV.html_report(directory=covdir)
+        print('HTML version: file://%s/index.html' % covdir)
+        COV.erase()
 
-# @atexit.register
-# def unregister():
-#     redis_store.srem("INSTANCE_SET", app.config["INSTANCE_ID"])
-#     app.logger.info(app.config["INSTANCE_ID"]+": Instance shutdown")
 
-from app import views, handler
-# @app.route("/dev_empty")
-# def dev_empty():
-#     return render_template("empty.html")
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+# @app.cli.command()
+# @click.option('--length', default=25,
+#               help='Number of functions to include in the profiler report.')
+# @click.option('--profile-dir', default=None,
+#               help='Directory where profiler data files are saved.')
+# def profile(length, profile_dir):
+#     """Start the application under the code profiler."""
+#     from werkzeug.contrib.profiler import ProfilerMiddleware
+#     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[length],
+#                                       profile_dir=profile_dir)
+#     app.run()
+
+
+@app.cli.command()
+def deploy():
+    """Run deployment tasks."""
+    # migrate database to latest revision
+    upgrade()
+
+    # create or update user roles
+    # Role.insert_roles()
+
+    # ensure all users are following themselves
+    # User.add_self_follows()

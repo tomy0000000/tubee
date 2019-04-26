@@ -12,8 +12,7 @@ install:
 
 # command to run tests
 script:
-  - uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app --enable-threads
-  - gunicorn -b 0.0.0.0:5000 wsgi:app
+  - python -c "print('Hello Travis')"
 
 after_script:
   - codecov

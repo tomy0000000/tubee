@@ -15,7 +15,7 @@ from apiclient.errors import HttpError
 from dateutil import parser
 from flask import redirect, request, render_template, url_for, session
 from flask_login import current_user, login_user, logout_user, login_required
-from Tubee import app, login_manager, db, bcrypt, YouTube_Service_Public, scheduler
+from . import app, login_manager, db, bcrypt, YouTube_Service_Public, scheduler
 from .form import LoginForm
 from .helper import send_notification, build_youtube_service
 from .models import User, Callback, Request, Subscription, Notification

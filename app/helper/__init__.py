@@ -6,7 +6,7 @@ import requests
 import google.oauth2.credentials
 import googleapiclient.discovery
 from flask import current_app
-from Tubee import db, pusher
+from .. import db, pusher
 
 def generate_random_id():
     """Generate a 16-chars long id"""

@@ -2,7 +2,7 @@
 from datetime import datetime
 import sqlalchemy.exc
 from flask import request, render_template
-from Tubee import app, db
+from . import app, db
 # from Tubee.helper import send_notification
 from .models import Request
 

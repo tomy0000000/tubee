@@ -4,7 +4,7 @@ import enum
 import urllib
 import flask_login
 from flask import url_for, current_app
-from Tubee import db, bcrypt, YouTube_Service_Public
+from . import db, bcrypt, YouTube_Service_Public
 from . import helper
 from .helper import hub
 
