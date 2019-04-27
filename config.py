@@ -1,4 +1,5 @@
 import os
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -25,6 +26,10 @@ class Config:
     # PubSubHubBub
     HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
     HUB_YOUTUBE_TOPIC = "https://www.youtube.com/xml/feeds/videos.xml?"
+    
+    # SCHEDULER_JOBSTORES = {
+    #     'default': SQLAlchemyJobStore(url='sqlite:///flask_context.db')
+    # }
 
     @staticmethod
     def init_app(app):
@@ -35,12 +40,12 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get("DEV_DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
-    # SCHEDULER_JOBSTORES = {
-    #     "default": {
-    #         "type": "sqlalchemy",
-    #         "url": SQLALCHEMY_DATABASE_URI
-    #     }
-    # }
+    SCHEDULER_JOBSTORES = {
+        "default": {
+            "type": "sqlalchemy",
+            "url": SQLALCHEMY_DATABASE_URI
+        }
+    }
 
 class TestingConfig(Config):
     """Config for Testing, Travis CI"""
@@ -48,10 +53,22 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL") or \
         "sqlite://"
     WTF_CSRF_ENABLED = False
+    SCHEDULER_JOBSTORES = {
+        "default": {
+            "type": "sqlalchemy",
+            "url": SQLALCHEMY_DATABASE_URI
+        }
+    }
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data.sqlite")
+    SCHEDULER_JOBSTORES = {
+        "default": {
+            "type": "sqlalchemy",
+            "url": SQLALCHEMY_DATABASE_URI
+        }
+    }
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = bool(os.environ.get("DYNO"))

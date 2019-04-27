@@ -13,12 +13,13 @@ import google_auth_oauthlib.flow
 import google.oauth2.credentials
 from apiclient.errors import HttpError
 from dateutil import parser
-from flask import redirect, request, render_template, url_for, session
+from flask import redirect, request, render_template, url_for, session, Blueprint, current_app
 from flask_login import current_user, login_user, logout_user, login_required
-from . import app, login_manager, db, bcrypt, YouTube_Service_Public, scheduler
+from . import login_manager, db, bcrypt, YouTube_Service_Public, scheduler
 from .form import LoginForm
 from .helper import send_notification, build_youtube_service
 from .models import User, Callback, Request, Subscription, Notification
+route_blueprint = Blueprint("main", __name__)
 
 #     #######
 #     #       #    # #    #  ####   ####
@@ -93,35 +94,35 @@ def load_user(user_id):
 def unauthorized():
     return render_template("empty.html", content="You Must Login First!")
 
-@app.route("/", methods=["GET", "POST"])
-@app.route("/login", methods=["GET", "POST"])
+@route_blueprint.route("/", methods=["GET", "POST"])
+@route_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("main.dashboard"))
     form = LoginForm()
     error = None
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             login_user(user)
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("main.dashboard"))
         error = "Invalid username or password."
     return render_template("login.html", form=form, error=error)
 
-@app.route("/renew-password")
+@route_blueprint.route("/renew-password")
 @login_required
 def login_renew_password():
     current_user.password = bcrypt.generate_password_hash(current_user.password)
     db.session.commit()
     return render_template("empty.html", content="Done")
 
-@app.route("/logout", methods=["GET"])
+@route_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("login"))
+    return redirect(url_for("main.login"))
 
-@app.route("/login/setting", methods=["GET", "POST"])
+@route_blueprint.route("/login/setting", methods=["GET", "POST"])
 @login_required
 def login_setting():
     notes = ""
@@ -130,14 +131,14 @@ def login_setting():
     if request.method == "POST":
         return render_template("setting.html", user=current_user, notes=notes)
 
-@app.route('/login/youtube/authorize')
+@route_blueprint.route('/login/youtube/authorize')
 @login_required
 def login_youtube_authorize():
     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        app.instance_path + "beta_client_secret.json",
+        current_app.instance_path + "beta_client_secret.json",
         scopes="https://www.googleapis.com/auth/youtube.force-ssl")
-    flow.redirect_uri = url_for("login_youtube_oauth_callback", _external=True)
+    flow.redirect_uri = url_for("main.login_youtube_oauth_callback", _external=True)
 
     authorization_url, state = flow.authorization_url(
         # Enable offline access so that you can refresh an access token without
@@ -150,7 +151,7 @@ def login_youtube_authorize():
     session["state"] = state
     return redirect(authorization_url)
 
-@app.route("/login/youtube/oauth_callback")
+@route_blueprint.route("/login/youtube/oauth_callback")
 @login_required
 def login_youtube_oauth_callback():
     # Specify the state when creating the flow in the callback so that it can
@@ -158,10 +159,10 @@ def login_youtube_oauth_callback():
     state = session["state"]
 
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        app.instance_path + "beta_client_secret.json",
+        current_app.instance_path + "beta_client_secret.json",
         scopes="https://www.googleapis.com/auth/youtube.force-ssl",
         state=state)
-    flow.redirect_uri = url_for("login_youtube_oauth_callback", _external=True)
+    flow.redirect_uri = url_for("main.login_youtube_oauth_callback", _external=True)
     flow.fetch_token(authorization_response=request.url)
     credentials_dict = {
         "token": flow.credentials.token,
@@ -174,10 +175,10 @@ def login_youtube_oauth_callback():
     current_user.youtube_credentials = credentials_dict
     session["credentials"] = credentials_dict
 
-    # return redirect(url_for("login_setting"))
+    # return redirect(url_for("main.login_setting"))
     return render_template("setting.html", user=current_user, notes=credentials_dict)
 
-@app.route("/login/youtube/revoke")
+@route_blueprint.route("/login/youtube/revoke")
 @login_required
 def login_youtube_revoke():
     if not current_user.youtube_credentials:
@@ -188,7 +189,7 @@ def login_youtube_revoke():
                              headers={"content-type": "application/x-www-form-urlencoded"})
     if response.status_code == 200:
         current_user.youtube_credentials = {}
-    # return redirect(url_for("login_setting"))
+    # return redirect(url_for("main.login_setting"))
     return render_template("setting.html", user=current_user, notes=[response.status_code, response.text])
 
 #     #     #
@@ -199,13 +200,13 @@ def login_youtube_revoke():
 #     #     # #    # #    #
 #     #     #  ####  #####
 
-@app.route("/hub/history")
+@route_blueprint.route("/hub/history")
 def hub_history():
     """List all callback history of all channel"""
     callbacks = Callback.query.order_by(Callback.received_datetime.desc()).all()
     return render_template("hub_history.html", callbacks=callbacks)
 
-@app.route("/hub/history/<channel_id>")
+@route_blueprint.route("/hub/history/<channel_id>")
 def hub_history_channel(channel_id):
     """List all callback history of a specific channel"""
     callbacks = Callback.query.filter_by(
@@ -215,22 +216,22 @@ def hub_history_channel(channel_id):
                            callbacks=callbacks,
                            channel_name=subscription.channel_name)
 
-@app.route("/hub/status")
+@route_blueprint.route("/hub/status")
 def hub_status():
     channels = Subscription.query.order_by(Subscription.channel_name).all()
     return render_template("status.html", channels=channels)
 
-@app.route("/hub/status_api/<channel_id>/")
+@route_blueprint.route("/hub/status_api/<channel_id>/")
 def hub_status_api_channel(channel_id):
     data = request_hub_status(channel_id, request.url_root + channel_id + "/callback")
     return data.text
 
-@app.route("/hub/status_api_tmp/<channel_id>/")
+@route_blueprint.route("/hub/status_api_tmp/<channel_id>/")
 def hub_status_api_tmp_channel(channel_id):
     data = request_hub_status(channel_id, request.url_root + channel_id + "/callback")
     return render_template("empty.html", content=data.__dict__)
 
-@app.route("/hub/status/<channel_id>")
+@route_blueprint.route("/hub/status/<channel_id>")
 def hub_status_channel(channel_id):
     """
     Fetch Subscription info from hub
@@ -252,26 +253,26 @@ def hub_status_channel(channel_id):
             status["details"][each.string] = val
     return render_template("status_detail.html", status=status)
 
-@app.route("/hub/renew-info/<channel_id>")
+@route_blueprint.route("/hub/renew-info/<channel_id>")
 def hub_renew_info_channel(channel_id):
     subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
     subscription.renew_info()
     return render_template("empty.html", content="Done")
 
-@app.route("/hub/renew-info")
+@route_blueprint.route("/hub/renew-info")
 def hub_renew_info():
     for subscription in Subscription.query.filter(Subscription.active):
         subscription.renew_info()
     return render_template("empty.html", content="Done")
 
-@app.route("/hub/renew/<channel_id>")
+@route_blueprint.route("/hub/renew/<channel_id>")
 def hub_renew_channel(channel_id):
     subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
     code = subscription.renew_hub().status_code
     return render_template("empty.html", content="Response HTTP Status Code: {status_code}".format(
         status_code=code))
 
-@app.route("/hub/renew")
+@route_blueprint.route("/hub/renew")
 def hub_renew():
     response = {}
     for subscription in Subscription.query.filter(Subscription.active):
@@ -286,7 +287,7 @@ def hub_renew():
 #     #       #    # #    # #    # #    #  #  #  #      #   #
 #     #        ####   ####  #    #  ####    ##   ###### #    #
 
-@app.route("/pushover/push", methods=["GET", "POST"])
+@route_blueprint.route("/pushover/push", methods=["GET", "POST"])
 @login_required
 def pushover_push():
     if request.method == "GET":
@@ -298,7 +299,7 @@ def pushover_push():
     response = "Something Went Wrong!!!!"
     return render_template("empty.html", content=response)
 
-@app.route("/pushover/history")
+@route_blueprint.route("/pushover/history")
 def pushover_history():
     notifications = Notification.query.order_by(Notification.sent_datetime.desc()).all()
     # for notification in notifications:
@@ -314,7 +315,7 @@ def pushover_history():
 #        #    #    # #    #    #    #    # #    # #
 #        #     ####   ####     #     ####  #####  ######
 
-@app.route("/youtube/video")
+@route_blueprint.route("/youtube/video")
 def youtube_video():
     videos = []
     for channel in Subscription.query.filter(Subscription.active == True):
@@ -332,7 +333,7 @@ def youtube_video():
         }
     return render_template("youtube_video.html", videos=videos)
 
-@app.route("/youtube/subscription")
+@route_blueprint.route("/youtube/subscription")
 @login_required
 def youtube_subscription():
     get_params = request.args.to_dict()
@@ -371,7 +372,7 @@ def youtube_subscription():
             channel_id=channel["snippet"]["resourceId"]["channelId"]).count())
     return render_template("youtube_subscription_page.html", **datas)
 
-@app.route("/youtube/playlist_insert/<video_id>")
+@route_blueprint.route("/youtube/playlist_insert/<video_id>")
 @login_required
 def youtube_playlist_insert(video_id):
     return render_template("empty.html", content=current_user.insert_video_to_playlist(video_id))
@@ -384,7 +385,7 @@ def youtube_playlist_insert(video_id):
 #     #     # #    # #    # #      #    # #    # #      #      #   #
 #      #####   ####  #    # ###### #####   ####  ###### ###### #    #
 
-@app.route("/scheduler/jobs")
+@route_blueprint.route("/scheduler/jobs")
 def scheduler_jobs():
     jobs = scheduler.get_jobs().copy()
     for ind, val in enumerate(jobs):
@@ -399,7 +400,7 @@ def middle():
     with open("/var/www/Tubee/scheduler_test", "a") as f:
         f.write(str(datetime.now())+"\n")
 
-@app.route("/scheduler/add_job")
+@route_blueprint.route("/scheduler/add_job")
 def scheduler_add_job():
     job_response = scheduler.add_job(
         id="test",
@@ -414,7 +415,7 @@ def scheduler_add_job():
         seconds=10)
     return render_template("empty.html", content=job_response)
 
-@app.route("/scheduler/pause_job")
+@route_blueprint.route("/scheduler/pause_job")
 def scheduler_pause_job():
     response = scheduler.get_job("test").pause()
     return render_template("empty.html", content=response)
@@ -427,12 +428,12 @@ def scheduler_pause_job():
 #     #    #  #      #    # # #    #
 #     #     # ###### #####  #  ####
 
-# @app.route("/redis/set/<key>/<value>")
+# @route_blueprint.route("/redis/set/<key>/<value>")
 # def redis_write(key, value):
 #     response = redis_store.set(key, value)
 #     return render_template("empty.html", content=response)
 #
-# @app.route("/redis/get/<key>")
+# @route_blueprint.route("/redis/get/<key>")
 # def redis_read(key):
 #     response = redis_store.get(key)
 #     return render_template("empty.html", content=response)
@@ -445,12 +446,12 @@ def scheduler_pause_job():
 #     #    #  #    # #    #   #   #      #    #
 #     #     #  ####   ####    #   ######  ####
 
-@app.route("/dashboard")
+@route_blueprint.route("/dashboard")
 def dashboard():
     subscriptions = Subscription.query.order_by(Subscription.channel_name).all()
     return render_template("dashboard.html", subscriptions=subscriptions)
 
-@app.route("/channel/<channel_id>")
+@route_blueprint.route("/channel/<channel_id>")
 def channel():
     #
     # Avatar                    Channel Name
@@ -470,7 +471,7 @@ def channel():
     # (dynamic loading)
     return render_template("empty.html")
 
-@app.route("/subscribe", methods=["GET", "POST"])
+@route_blueprint.route("/subscribe", methods=["GET", "POST"])
 @login_required
 def channel_subscribe():
     """
@@ -510,7 +511,7 @@ def channel_subscribe():
         }
         return render_template("empty.html", content=response)
 
-@app.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])
+@route_blueprint.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])
 def unsubscribe_channel(channel_id):
     """
     Page To Ubsubscribe
@@ -522,10 +523,10 @@ def unsubscribe_channel(channel_id):
         return render_template("unsubscribe.html", channel_name=subscription.channel_name)
     if request.method == "POST":
         response = subscription.deactivate()
-        app.logger.info(response)
+        current_app.logger.info(response)
         return render_template("empty.html", content=response)
 
-@app.route("/summary/<channel_id>")
+@route_blueprint.route("/summary/<channel_id>")
 def summary_channel(channel_id):
     subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
     videos = list_channel_videos(channel_id)
@@ -545,7 +546,7 @@ def summary_channel(channel_id):
         # video["callback"]["count"] = len(video_search)
     return render_template("summary.html", videos=videos, channel_name=subscription.channel_name)
 
-@app.route("/<channel_id>/callback", methods=["GET", "POST"])
+@route_blueprint.route("/<channel_id>/callback", methods=["GET", "POST"])
 def channel_callback_entry(channel_id):
     """
     GET: Receive Hub Challenges to maintain subscription
@@ -596,10 +597,10 @@ def channel_callback_entry(channel_id):
         if test_mode:
             pass
         elif already_pushed:
-            app.logger.info("Already Pushed")
+            current_app.logger.info("Already Pushed")
             return str("pass")
         elif old_update:
-            app.logger.info("Old Video Update")
+            current_app.logger.info("Old Video Update")
             return str("pass")
         
         # Append to WL
@@ -630,19 +631,19 @@ def channel_callback_entry(channel_id):
 #     #     # #         # #
 #     ######  #######    #
 
-@app.route("/dev_map")
+@route_blueprint.route("/dev_map")
 @login_required
 def dev_map():
     links = []
-    for rule in app.url_map.iter_rules():
+    for rule in current_app.url_map.iter_rules():
         query = {arg: "[{0}]".format(arg) for arg in rule.arguments}
         url = url_for(rule.endpoint, **query)
         links.append((url, rule.endpoint))
     links.sort(key=lambda x: x[0])
     return render_template("map.html", links=links)
-    # return render_template("map.html", map=app.url_map.iter_rules())
+    # return render_template("map.html", map=current_app.url_map.iter_rules())
 
-@app.route("/dev_os")
+@route_blueprint.route("/dev_os")
 @login_required
 def dev_os_dict():
     target_dict = os.__dict__
@@ -651,7 +652,7 @@ def dev_os_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
-@app.route("/dev_sys")
+@route_blueprint.route("/dev_sys")
 @login_required
 def dev_sys_dict():
     target_dict = sys.__dict__
@@ -660,10 +661,10 @@ def dev_sys_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
-@app.route("/dev_flask")
+@route_blueprint.route("/dev_flask")
 @login_required
 def dev_flask_dict():
-    target_dict = app.__dict__
+    target_dict = current_app.__dict__
     target_dict["apscheduler"] = target_dict["apscheduler"].__dict__
     target_dict["apscheduler"]["_scheduler"] = target_dict["apscheduler"]["_scheduler"].__dict__
     pprint_en = isinstance(target_dict, dict)
@@ -671,7 +672,7 @@ def dev_flask_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
-@app.route("/dev_login-manager")
+@route_blueprint.route("/dev_login-manager")
 @login_required
 def dev_login_manager_dict():
     target_dict = login_manager.__dict__
@@ -680,7 +681,7 @@ def dev_login_manager_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
-@app.route("/dev_scheduler")
+@route_blueprint.route("/dev_scheduler")
 @login_required
 def dev_scheduler_dict():
     target_dict = scheduler.__dict__
@@ -690,7 +691,7 @@ def dev_scheduler_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
-@app.route("/dev_user")
+@route_blueprint.route("/dev_user")
 @login_required
 def dev_user_dict():
     target_dict = current_user.__dict__
@@ -699,21 +700,21 @@ def dev_user_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
-@app.route("/instance")
+@route_blueprint.route("/instance")
 @login_required
 def dev_instance():
     instances_set = redis_store.smembers("INSTANCE_SET")
     instances_list = [instance.decode("utf-8") for instance in instances_set]
-    response = "Instance ID: " + app.config["INSTANCE_ID"] + "\n" + \
+    response = "Instance ID: " + current_app.config["INSTANCE_ID"] + "\n" + \
                 "Session ID: " + redis_store.get("SESSION_ID").decode("utf-8") + "\n" + \
                 "Active Instances: " + "\n" + \
                 pprint.pformat(instances_list)
     return render_template("empty.html", content=response, pprint=True)
 
-@app.route("/dev_empty")
+@route_blueprint.route("/dev_empty")
 def dev_empty():
     return render_template("empty.html")
 
-@app.route("/dev_broken")
+@route_blueprint.route("/dev_broken")
 def dev_broken():
     return something

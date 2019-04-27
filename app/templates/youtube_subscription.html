@@ -24,7 +24,7 @@
                 <td>{{ channel.status }}</td>
             {% else %}
                 <td>
-                    <a href="{{ url_for('channel_subscribe', channelid=channel.snippet.resourceId.channelId) }}">
+                    <a href="{{ url_for('main.channel_subscribe', channelid=channel.snippet.resourceId.channelId) }}">
                         {{ channel.status }}
                     </a>
                 </td>

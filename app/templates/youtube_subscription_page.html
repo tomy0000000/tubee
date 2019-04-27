@@ -6,7 +6,7 @@
     <ul class="pagination justify-content-center">
         {% if prev_page %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('youtube_subscription', page_token=prev_page) }}" tabindex="-1">Previous</a>
+            <a class="page-link" href="{{ url_for('main.youtube_subscription', page_token=prev_page) }}" tabindex="-1">Previous</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -14,11 +14,11 @@
         </li>
         {% endif %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('youtube_subscription', list_all=True) }}">List All</a>
+            <a class="page-link" href="{{ url_for('main.youtube_subscription', list_all=True) }}">List All</a>
         </li>
         {% if next_page %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('youtube_subscription', page_token=next_page) }}">Next</a>
+            <a class="page-link" href="{{ url_for('main.youtube_subscription', page_token=next_page) }}">Next</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -49,7 +49,7 @@
             <td>{{ channel.status }}</td>
             {% else %}
             <td>
-                <a href="{{ url_for('channel_subscribe', channelid=channel.snippet.resourceId.channelId) }}">
+                <a href="{{ url_for('main.channel_subscribe', channelid=channel.snippet.resourceId.channelId) }}">
                     {{ channel.status }}
                 </a>
             </td>
@@ -63,7 +63,7 @@
     <ul class="pagination justify-content-center">
         {% if prev_page %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('youtube_subscription', page_token=prev_page) }}" tabindex="-1">Previous</a>
+            <a class="page-link" href="{{ url_for('main.youtube_subscription', page_token=prev_page) }}" tabindex="-1">Previous</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -71,11 +71,11 @@
         </li>
         {% endif %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('youtube_subscription', list_all=True) }}">List All</a>
+            <a class="page-link" href="{{ url_for('main.youtube_subscription', list_all=True) }}">List All</a>
         </li>
         {% if next_page %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('youtube_subscription', page_token=next_page) }}">Next</a>
+            <a class="page-link" href="{{ url_for('main.youtube_subscription', page_token=next_page) }}">Next</a>
         </li>
         {% else %}
         <li class="page-item disabled">

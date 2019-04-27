@@ -39,13 +39,13 @@
                 {% endif %}
             </td>
             <td class="align-middle">
-                <a href="{{ url_for('hub_history_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
+                <a href="{{ url_for('main.hub_history_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
                     <span class="badge badge-warning">callbacks</span>
                 </a><br>
-                <a href="{{ url_for('summary_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
+                <a href="{{ url_for('main.summary_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
                     <span class="badge badge-primary">videos+callbacks</span>
                 </a><br>
-                <a href="{{ url_for('hub_status_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
+                <a href="{{ url_for('main.hub_status_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
                     <span class="badge badge-info">status</span>
                 </a>
             </td>
@@ -55,7 +55,7 @@
             <td class="align-middle">{{ subscription.unsubscribe_datetime }}</td>
             {% else %}
             <td class="align-middle">
-                <a href="{{ url_for('unsubscribe_channel', channel_id=subscription.channel_id) }}">Unsubscribe</a>
+                <a href="{{ url_for('main.unsubscribe_channel', channel_id=subscription.channel_id) }}">Unsubscribe</a>
             </td>
             {% endif %}
         </tr>

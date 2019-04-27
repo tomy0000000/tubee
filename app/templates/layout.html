@@ -34,7 +34,7 @@
                     {% else %}
                 <li class="nav-item">
                     {% endif %}
-                    <a class="nav-link" href="{{ url_for('login') }}">
+                    <a class="nav-link" href="{{ url_for('main.login') }}">
                         Login
                         {% if page_title == "Login" %}
                         <span class="sr-only">(current)</span>
@@ -46,7 +46,7 @@
                     {% else %}
                 <li class="nav-item">
                     {% endif %}
-                    <a class="nav-link" href="{{ url_for('dashboard') }}">
+                    <a class="nav-link" href="{{ url_for('main.dashboard') }}">
                         Dashboard
                         {% if page_title == "Dashboard" %}
                         <span class="sr-only">(current)</span>
@@ -58,7 +58,7 @@
                     {% else %}
                 <li class="nav-item">
                     {% endif %}
-                    <a class="nav-link" href="{{ url_for('channel_subscribe') }}">
+                    <a class="nav-link" href="{{ url_for('main.channel_subscribe') }}">
                         Subscribe
                         {% if page_title == "Subscribe" %}
                         <span class="sr-only">(current)</span>
@@ -70,7 +70,7 @@
                     {% else %}
                 <li class="nav-item">
                     {% endif %}
-                    <a class="nav-link disabled" href="{{ url_for('hub_history') }}">
+                    <a class="nav-link disabled" href="{{ url_for('main.hub_history') }}">
                         History
                         {% if page_title == "History" %}
                         <span class="sr-only">(current)</span>
@@ -80,20 +80,20 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_tmp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_tmp">
-                        <a class="dropdown-item" href="{{ url_for('hub_status') }}">Hub Status</a>
-                        <a class="dropdown-item" href="{{ url_for('youtube_subscription') }}">List YouTube Subscription</a>
-                        <a class="dropdown-item" href="{{ url_for('pushover_push') }}">Send Test Notification</a>
+                        <a class="dropdown-item" href="{{ url_for('main.hub_status') }}">Hub Status</a>
+                        <a class="dropdown-item" href="{{ url_for('main.youtube_subscription') }}">List YouTube Subscription</a>
+                        <a class="dropdown-item" href="{{ url_for('main.pushover_push') }}">Send Test Notification</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_dev">
-                        <a class="dropdown-item" href="{{ url_for('dev_map') }}">Sitemap</a>
-                        <a class="dropdown-item" href="{{ url_for('dev_os_dict') }}">Dict: OS</a>
-                        <a class="dropdown-item" href="{{ url_for('dev_sys_dict') }}">Dict: System</a>
-                        <a class="dropdown-item" href="{{ url_for('dev_flask_dict') }}">Dict: Flask</a>
-                        <a class="dropdown-item" href="{{ url_for('dev_scheduler_dict') }}">Dict: Scheduler</a>
-                        <a class="dropdown-item" href="{{ url_for('dev_user_dict') }}">Dict: User</a>
+                        <a class="dropdown-item" href="{{ url_for('main.dev_map') }}">Sitemap</a>
+                        <a class="dropdown-item" href="{{ url_for('main.dev_os_dict') }}">Dict: OS</a>
+                        <a class="dropdown-item" href="{{ url_for('main.dev_sys_dict') }}">Dict: System</a>
+                        <a class="dropdown-item" href="{{ url_for('main.dev_flask_dict') }}">Dict: Flask</a>
+                        <a class="dropdown-item" href="{{ url_for('main.dev_scheduler_dict') }}">Dict: Scheduler</a>
+                        <a class="dropdown-item" href="{{ url_for('main.dev_user_dict') }}">Dict: User</a>
                     </div>
                 </li>
             </ul>

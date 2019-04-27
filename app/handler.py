@@ -1,19 +1,20 @@
 """Error Handler for Tubee"""
 from datetime import datetime
 import sqlalchemy.exc
-from flask import request, render_template
-from . import app, db
+from flask import request, render_template, Blueprint
+from . import db
 # from Tubee.helper import send_notification
 from .models import Request
+handler_blueprint = Blueprint("handler", __name__)
 
-@app.errorhandler(404)
+@handler_blueprint.errorhandler(404)
 def page_not_found(error):
     """Raised when Page Not Found"""
     # send_notification("404 Alert", str(datetime.now()),
     #                   title="Tubee received an 404 Error!!")
     return render_template("error.html", error=error), 404
 
-@app.errorhandler(sqlalchemy.exc.OperationalError)
+@handler_blueprint.errorhandler(sqlalchemy.exc.OperationalError)
 def sql_error(error):
     """Raised when SQL Access Failed"""
     return render_template("empty.html", content=error), 500
