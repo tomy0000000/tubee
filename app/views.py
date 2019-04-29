@@ -11,11 +11,12 @@ import rfc3339
 import requests
 import google_auth_oauthlib.flow
 import google.oauth2.credentials
+from apiclient import discovery
 from apiclient.errors import HttpError
 from dateutil import parser
 from flask import redirect, request, render_template, url_for, session, Blueprint, current_app
 from flask_login import current_user, login_user, logout_user, login_required
-from . import login_manager, db, bcrypt, YouTube_Service_Public, scheduler
+from . import login_manager, db, bcrypt, scheduler
 from .form import LoginForm
 from .helper import send_notification, build_youtube_service
 from .models import User, Callback, Request, Subscription, Notification
@@ -47,6 +48,11 @@ def list_channel_videos(channel_id, recent=True):
     results = []
     response = {"nextPageToken": ""}
     while "nextPageToken" in response:
+        YouTube_Service_Public = discovery.build(
+            current_app.config["YOUTUBE_API_SERVICE_NAME"],
+            current_app.config["YOUTUBE_API_VERSION"],
+            cache_discovery=False,
+            developerKey=current_app.config["YOUTUBE_API_DEVELOPER_KEY"])
         response = YouTube_Service_Public.search().list(
             part="snippet",
             channelId=channel_id,
@@ -66,6 +72,11 @@ def list_channel_newest_videos(channel_id):
     results = []
     response = {"nextPageToken": ""}
     while "nextPageToken" in response:
+        YouTube_Service_Public = discovery.build(
+            current_app.config["YOUTUBE_API_SERVICE_NAME"],
+            current_app.config["YOUTUBE_API_VERSION"],
+            cache_discovery=False,
+            developerKey=current_app.config["YOUTUBE_API_DEVELOPER_KEY"])
         response = YouTube_Service_Public.search().list(
             part="snippet",
             channelId=channel_id,

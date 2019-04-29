@@ -3,10 +3,11 @@
 import codecs
 import os
 import requests
+import pushover_complete
 import google.oauth2.credentials
 import googleapiclient.discovery
 from flask import current_app
-from .. import db, pusher
+from .. import db
 
 def generate_random_id():
     """Generate a 16-chars long id"""
@@ -35,6 +36,7 @@ def send_notification(initiator, user, *args, **kwargs):
     if "image" in kwargs and kwargs["image"]:
         img_url = kwargs["image"]
         kwargs["image"] = requests.get(img_url, stream=True).content
+    pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
     response = pusher.send_message(user.pushover_key, *args, **kwargs)
     backup_kwargs["message"] = args[0]
     new = Notification(initiator, args[0][:2000], backup_kwargs, response)

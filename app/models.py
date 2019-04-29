@@ -3,8 +3,9 @@ from datetime import datetime
 import enum
 import urllib
 import flask_login
+from apiclient import discovery
 from flask import url_for, current_app
-from . import db, bcrypt, YouTube_Service_Public
+from . import db, bcrypt
 from . import helper
 from .helper import hub
 
@@ -108,6 +109,11 @@ class Subscription(db.Model):
                                   lazy="dynamic",
                                   cascade="all, delete-orphan")
     def __init__(self, channel_id):
+        YouTube_Service_Public = discovery.build(
+            current_app.config["YOUTUBE_API_SERVICE_NAME"],
+            current_app.config["YOUTUBE_API_VERSION"],
+            cache_discovery=False,
+            developerKey=current_app.config["YOUTUBE_API_DEVELOPER_KEY"])
         self.channel_id = channel_id
         self.channel_name = YouTube_Service_Public.channels().list(
             part="snippet",
@@ -143,6 +149,11 @@ class Subscription(db.Model):
 
     def renew_info(self):
         """Update Database Info from YouTube"""
+        YouTube_Service_Public = discovery.build(
+            current_app.config["YOUTUBE_API_SERVICE_NAME"],
+            current_app.config["YOUTUBE_API_VERSION"],
+            cache_discovery=False,
+            developerKey=current_app.config["YOUTUBE_API_DEVELOPER_KEY"])
         retrieved_infos = YouTube_Service_Public.channels().list(
             part="snippet",
             id=self.channel_id
