@@ -13,7 +13,7 @@ install:
 # command to run tests
 script:
   - python -c "print('Hello Travis')"
-  - flask test
+  - flask test --coverage
 
 after_script:
   - codecov
