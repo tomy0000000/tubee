@@ -1,13 +1,22 @@
 # Tubee
 
+![Python Version](https://img.shields.io/badge/python-3.7-blue.svg)
 [![Build Status](https://travis-ci.com/tomy0000000/Tubee.svg?token=pcX4zcaLzopbPNP4Hs2J&branch=master)](https://travis-ci.com/tomy0000000/Tubee)
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
+![GitHub](https://img.shields.io/github/license/tomy0000000/Tubee.svg)
+
+
+
+
+
+
 
 <p align="center">
     <img src="app/static/favicon.png">
     <br>
     <img width="150" src="app/static/img/tubee_text.png">
 </p>
+
 # Overview
 
 Tubee is a web application, provides dozens of handful features related to YouTube.
