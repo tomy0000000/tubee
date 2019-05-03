@@ -1,1 +1,1 @@
-web: uwsgi --ini deploy/uwsgi.ini --enable-threads
+web: uwsgi -w Tubee:app --enable-threads
