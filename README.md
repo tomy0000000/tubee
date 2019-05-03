@@ -5,16 +5,10 @@
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
 ![GitHub](https://img.shields.io/github/license/tomy0000000/Tubee.svg)
 
-
-
-
-
-
-
 <p align="center">
-    <img src="app/static/favicon.png">
+    <img src="app/static/favicon.png" align="center">
     <br>
-    <img width="150" src="app/static/img/tubee_text.png">
+    <img width="150" src="app/static/img/tubee_text.png" align="center">
 </p>
 
 # Overview
