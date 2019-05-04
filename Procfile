@@ -1,1 +1,1 @@
-web: uwsgi -w Tubee:app --enable-threads
+web: gunicorn Tubee:app --log-file -
