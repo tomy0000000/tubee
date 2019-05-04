@@ -1,0 +1,5 @@
+# uwsgi
+web: uwsgi deploy/heroku-uwsgi.ini
+
+# gunicorn
+web: gunicorn Tubee:app --log-file -
