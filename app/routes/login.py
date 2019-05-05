@@ -1,5 +1,5 @@
 """Routes involves user credentials"""
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, g, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from ..forms import LoginForm
 from ..models import User

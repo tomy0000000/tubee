@@ -43,6 +43,15 @@ redis_store = flask_redis.Redis()               # flask_redis
 def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
+
+    if issubclass(config[config_name], config["production"]):
+        app.logger.info(config_name+" build log production")
+        print(config_name+" build log production")
+        app.config["LOADED_CONFIG"] = "production"
+    else:
+        app.logger.info(config_name+" build log "+config_name)
+        print(config_name+" build log "+config_name)
+        app.config["LOADED_CONFIG"] = config_name
     if "LOGGING_CONFIG" in app.config:
         logging.config.dictConfig(app.config["LOGGING_CONFIG"])
 
@@ -60,6 +69,9 @@ def create_app(config_name):
 
     from .routes.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .routes.dev import dev as dev_blueprint
+    app.register_blueprint(dev_blueprint, url_prefix="/dev")
 
     from .routes.login import login as login_blueprint
     app.register_blueprint(login_blueprint, url_prefix="/login")

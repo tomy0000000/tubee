@@ -1,6 +1,6 @@
 """The Main Routes"""
 from flask import Blueprint, render_template
-from flask_login import login_required
+from flask_login import current_user, login_required
 from ..models import Subscription
 main = Blueprint("main", __name__)
 
@@ -10,3 +10,7 @@ def dashboard():
     """Showing All Subscribed Channels"""
     subscriptions = Subscription.query.order_by(Subscription.channel_name).all()
     return render_template("dashboard.html", subscriptions=subscriptions)
+
+@main.context_processor
+def inject_username():
+    return dict(username=current_user.username)

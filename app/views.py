@@ -103,7 +103,12 @@ def load_user(user_id):
 def unauthorized():
     return render_template("empty.html", content="You Must Login First!")
 
-
+@route_blueprint.route("/renew-password")
+@login_required
+def login_renew_password():
+    current_user.password = bcrypt.generate_password_hash(current_user.password)
+    db.session.commit()
+    return render_template("empty.html", content="Done")
 
 @route_blueprint.route('/login/youtube/authorize')
 @login_required
@@ -591,99 +596,3 @@ def channel_callback_entry(channel_id):
                                      image=image_url)
 
     return str(response)
-
-#     ######  ####### #     #
-#     #     # #       #     #
-#     #     # #       #     #
-#     #     # #####   #     #
-#     #     # #        #   #
-#     #     # #         # #
-#     ######  #######    #
-
-@route_blueprint.route("/dev_map")
-@login_required
-def dev_map():
-    links = []
-    for rule in current_app.url_map.iter_rules():
-        query = {arg: "[{0}]".format(arg) for arg in rule.arguments}
-        url = url_for(rule.endpoint, **query)
-        links.append((url, rule.endpoint))
-    links.sort(key=lambda x: x[0])
-    return render_template("map.html", links=links)
-    # return render_template("map.html", map=current_app.url_map.iter_rules())
-
-@route_blueprint.route("/dev_os")
-@login_required
-def dev_os_dict():
-    target_dict = os.__dict__
-    pprint_en = isinstance(target_dict, dict)
-    if pprint_en:
-        target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
-
-@route_blueprint.route("/dev_sys")
-@login_required
-def dev_sys_dict():
-    target_dict = sys.__dict__
-    pprint_en = isinstance(target_dict, dict)
-    if pprint_en:
-        target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
-
-@route_blueprint.route("/dev_flask")
-@login_required
-def dev_flask_dict():
-    target_dict = current_app.__dict__
-    target_dict["apscheduler"] = target_dict["apscheduler"].__dict__
-    target_dict["apscheduler"]["_scheduler"] = target_dict["apscheduler"]["_scheduler"].__dict__
-    pprint_en = isinstance(target_dict, dict)
-    if pprint_en:
-        target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
-
-@route_blueprint.route("/dev_login-manager")
-@login_required
-def dev_login_manager_dict():
-    target_dict = login_manager.__dict__
-    pprint_en = isinstance(target_dict, dict)
-    if pprint_en:
-        target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
-
-@route_blueprint.route("/dev_scheduler")
-@login_required
-def dev_scheduler_dict():
-    target_dict = scheduler.__dict__
-    target_dict["_scheduler"] = scheduler.scheduler.__dict__
-    pprint_en = isinstance(target_dict, dict)
-    if pprint_en:
-        target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
-
-@route_blueprint.route("/dev_user")
-@login_required
-def dev_user_dict():
-    target_dict = current_user.__dict__
-    pprint_en = isinstance(target_dict, dict)
-    if pprint_en:
-        target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
-
-@route_blueprint.route("/instance")
-@login_required
-def dev_instance():
-    instances_set = redis_store.smembers("INSTANCE_SET")
-    instances_list = [instance.decode("utf-8") for instance in instances_set]
-    response = "Instance ID: " + current_app.config["INSTANCE_ID"] + "\n" + \
-                "Session ID: " + redis_store.get("SESSION_ID").decode("utf-8") + "\n" + \
-                "Active Instances: " + "\n" + \
-                pprint.pformat(instances_list)
-    return render_template("empty.html", content=response, pprint=True)
-
-@route_blueprint.route("/dev_empty")
-def dev_empty():
-    return render_template("empty.html")
-
-@route_blueprint.route("/dev_broken")
-def dev_broken():
-    return something

@@ -11,6 +11,8 @@ class RoutesTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client(use_cookies=True)
+        self.client_user = User("test_user", "HelloTubee")
+        db.session.add(self.client_user)
 
     def tearDown(self):
         db.session.remove()
@@ -20,14 +22,12 @@ class RoutesTestCase(unittest.TestCase):
     def test_root_login(self):
         """
         Test if Root Page works Properly
-        
         Routes
             login
             |________root_login
             |________logout
             main
             |________dashboard
-        
         Forms
             LoginForm
         """
@@ -36,13 +36,10 @@ class RoutesTestCase(unittest.TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertIn("You Must Login First!", response.get_data(as_text=True))
-        # Build User
-        test_user = User("test_user", "HelloTubee")
-        db.session.add(test_user)
         # Login and redirect to Dashboard
         response = self.client.post("/login", data={
-            "username": "test_user",
-            "password": "HelloTubee"
+            "username": self.client_user.username,
+            "password": self.client_user.password
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("You Must Login First!", response.get_data(as_text=True))
