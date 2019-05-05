@@ -3,7 +3,8 @@
 ![Python Version](https://img.shields.io/badge/python-3.7-blue.svg)
 [![Build Status](https://travis-ci.com/tomy0000000/Tubee.svg?token=pcX4zcaLzopbPNP4Hs2J&branch=master)](https://travis-ci.com/tomy0000000/Tubee)
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
-![GitHub](https://img.shields.io/github/license/tomy0000000/Tubee.svg)
+![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)
+![heroku](http://img.shields.io/badge/%E2%86%91%20Deploy%20to-Heroku-7056bf.svg)
 
 <p align="center">
     <img src="app/static/favicon.png" align="center">
@@ -20,9 +21,7 @@ The core functions is completly working, yet development stage is still beta rig
 # Features
 
 * Channel Subscribing
-
   * New Video Push Notification (via [Pushover](https://pushover.net/))
-
   * New Video to Playlist
 
 ## More on the Way
@@ -54,6 +53,5 @@ The core functions is completly working, yet development stage is still beta rig
   * `.travis.yml`
 
 * Heroku
-  * `runtime.txt`
   * `Procfile`
 

@@ -1,22 +1,15 @@
-"""Initialization of Tubee"""
+"""Main Application of Tubee"""
 import atexit
 import codecs
 import flask
 import flask_apscheduler
 import flask_bcrypt
 import flask_login
-import flask_migrate
 import flask_redis
 import flask_sqlalchemy
-import time
-import httplib2
-import json
 import logging.config
-# import mod_wsgi
 import os
 import sys
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.schedulers.background import BackgroundScheduler
 from config import config
 
 db = flask_sqlalchemy.SQLAlchemy()              # flask_sqlalchemy
@@ -50,8 +43,6 @@ redis_store = flask_redis.Redis()               # flask_redis
 def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
-    if os.path.isfile(os.path.join(app.instance_path, "tmpconfig.py")):
-        app.config.from_pyfile("tmpconfig.py")
     if "LOGGING_CONFIG" in app.config:
         logging.config.dictConfig(app.config["LOGGING_CONFIG"])
 
@@ -63,12 +54,19 @@ def create_app(config_name):
     login_manager.init_app(app)
     if app.config["REDIS_PASSWORD"]:
         redis_store.init_app(app)
-    if config_name == "default":
+    if config_name != "testing":
         scheduler.start()
         app.logger.info("Scheduler Started")
 
+    from .routes.main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    from .routes.login import login as login_blueprint
+    app.register_blueprint(login_blueprint, url_prefix="/login")
+
     from .views import route_blueprint
     app.register_blueprint(route_blueprint)
+
     from .handler import handler_blueprint
     app.register_blueprint(handler_blueprint)
 

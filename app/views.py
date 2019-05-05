@@ -1,6 +1,4 @@
 """Views for Tubee"""
-
-# import mod_wsgi
 import json
 import os
 import pprint
@@ -14,13 +12,13 @@ import google.oauth2.credentials
 from apiclient import discovery
 from apiclient.errors import HttpError
 from dateutil import parser
-from flask import redirect, request, render_template, url_for, session, Blueprint, current_app
-from flask_login import current_user, login_user, logout_user, login_required
+from flask import redirect, request, render_template, url_for, session, current_app
+from flask_login import current_user, login_required
 from . import login_manager, db, bcrypt, scheduler
-from .form import LoginForm
+from .routes.main import main as route_blueprint
+
 from .helper import send_notification, build_youtube_service
 from .models import User, Callback, Request, Subscription, Notification
-route_blueprint = Blueprint("main", __name__)
 
 #     #######
 #     #       #    # #    #  ####   ####
@@ -105,42 +103,7 @@ def load_user(user_id):
 def unauthorized():
     return render_template("empty.html", content="You Must Login First!")
 
-@route_blueprint.route("/", methods=["GET", "POST"])
-@route_blueprint.route("/login", methods=["GET", "POST"])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for("main.dashboard"))
-    form = LoginForm()
-    error = None
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            login_user(user)
-            return redirect(url_for("main.dashboard"))
-        error = "Invalid username or password."
-    return render_template("login.html", form=form, error=error)
 
-@route_blueprint.route("/renew-password")
-@login_required
-def login_renew_password():
-    current_user.password = bcrypt.generate_password_hash(current_user.password)
-    db.session.commit()
-    return render_template("empty.html", content="Done")
-
-@route_blueprint.route("/logout", methods=["GET"])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for("main.login"))
-
-@route_blueprint.route("/login/setting", methods=["GET", "POST"])
-@login_required
-def login_setting():
-    notes = ""
-    if request.method == "GET":
-        return render_template("setting.html", user=current_user, notes=notes)
-    if request.method == "POST":
-        return render_template("setting.html", user=current_user, notes=notes)
 
 @route_blueprint.route('/login/youtube/authorize')
 @login_required
@@ -456,11 +419,6 @@ def scheduler_pause_job():
 #     #   #   #    # #    #   #   #           #
 #     #    #  #    # #    #   #   #      #    #
 #     #     #  ####   ####    #   ######  ####
-
-@route_blueprint.route("/dashboard")
-def dashboard():
-    subscriptions = Subscription.query.order_by(Subscription.channel_name).all()
-    return render_template("dashboard.html", subscriptions=subscriptions)
 
 @route_blueprint.route("/channel/<channel_id>")
 def channel():

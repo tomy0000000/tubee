@@ -31,18 +31,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                {% if title == "Login" %}
-                <li class="nav-item active">
-                    {% else %}
-                <li class="nav-item">
-                    {% endif %}
-                    <a class="nav-link" href="{{ url_for('main.login') }}">
-                        Login
-                        {% if title == "Login" %}
-                        <span class="sr-only">(current)</span>
-                        {% endif %}
-                    </a>
-                </li>
                 {% if title == "Dashboard" %}
                 <li class="nav-item active">
                     {% else %}
