@@ -1,13 +1,19 @@
-{% extends "layout.html" %}
-{% set page_title = "Test Page" %}
-{% block body %}
-{% if content %}
-    {% if pprint %}
-        <pre>{{ content }}</pre>
-    {% else %}
-        <p>{{ content }}</p>
-    {% endif %}
-{% else %}
-<p>Hello world!</p>
+{% extends "base.html" %}
+
+{% if not title %}
+{% set title = "Test Page" %}
 {% endif %}
+
+{% if not info %}
+{% set info = "Hello World!" %}
+{% endif %}
+
+{% block content %}
+
+{% if pprint %}
+<pre>{{ info }}</pre>
+{% else %}
+<p>{{ info }}</p>
+{% endif %}
+
 {% endblock %}

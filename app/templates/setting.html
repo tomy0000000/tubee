@@ -2,9 +2,6 @@
 {% set page_title = "Setting" %}
 {% block body %}
 <div class="jumbotron">
-    {% if notes %}
-    <div class="alert alert-success" role="alert">{{ notes }}</div>
-    {% endif %}
     <h1 id="headline" class="display-4">Welcome!</h1>
     <label for="username" class="col-form-label">Username</label>
     <input type="text" class="form-control" id="username" value="{{ user.username }}" readonly>

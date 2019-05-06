@@ -1,5 +1,5 @@
 {% macro navbar(username="Guest") %}
-<!-- Sticky NavBar -->
+<!-- STICKY NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-left" href="{{ url_for('main.dashboard') }}">
         <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}">
@@ -26,7 +26,7 @@
                 {% else %}
             <li class="nav-item">
                 {% endif %}
-                <a class="nav-link" href="{{ url_for('main.channel_subscribe') }}">
+                <a class="nav-link" href="{{ url_for('main.subscribe') }}">
                     Subscribe
                     {% if title == "Subscribe" %}
                     <span class="sr-only">(current)</span>
@@ -74,5 +74,5 @@
         </form>
     </div>
 </nav>
-<!-- End Sticky NavBar -->
+<!-- END STICKY NAVBAR -->
 {% endmacro %}

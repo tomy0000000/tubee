@@ -1,4 +1,5 @@
 """Routes involves user credentials"""
+from datetime import datetime
 from flask import Blueprint, g, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from ..forms import LoginForm
@@ -30,6 +31,5 @@ def logout():
 @login.route("/login/setting", methods=["GET", "POST"])
 @login_required
 def login_setting():
-    """"""
-    notes = ""
-    return render_template("setting.html", user=current_user, notes=notes)
+    """Setting Page"""
+    return render_template("setting.html", user=current_user)

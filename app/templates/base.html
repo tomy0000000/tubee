@@ -1,47 +1,48 @@
 {% import 'widgets/alert.html' as alert_widget %}
+{% import 'widgets/dev_test_ribbon.html' as ribbon %}
 {% import 'widgets/navbar.html' as navbar %}
+{% import 'widgets/stylesheets.html' as stylesheets %}
 {% import 'widgets/scripts.html' as scripts %}
 <!DOCTYPE html>
 <html class="h-100">
 
 <head>
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
-    {% block meta %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
-    {% endblock %}
     <title>Tubee - {{ title }}</title>
-    <!-- Bootstrap CSS 4.3.1 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- Normalize CSS 8.0.1 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <!-- Font Awesome CSS 5.6.3 -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <!-- Page CSS -->
+    {{ stylesheets.stylesheets() }}
+    {{ ribbon.ribbon_css() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <!-- PAGE CSS -->
     {% block style %}{% endblock %}
+    <!-- END PAGE CSS -->
 
 <body class="d-flex flex-column h-100">
     <header>
         {{ navbar.navbar(username) }}
     </header>
-    <!-- Container -->
+    <!-- CONTAINER -->
     <main role="main" class="flex-shrink-0">
         <div class="container">
             {{ alert_widget.alert(alert, alert_type) }}
             {% block content %}{% endblock %}
         </div>
     </main>
-    <!-- End Container -->
+    <!-- END CONTAINER -->
+    <!-- FOOTER -->
     <footer class="footer mt-auto py-3">
         <div class="container text-muted text-center">
             <span class="line">Copyright © 2019 Tomy Hsieh.</span>
             <span class="line">All rights reserved.</span>
         </div>
     </footer>
+    <!-- END FOOTER -->
+    {{ ribbon.ribbon_tag() }}
     {{ scripts.scripts() }}
-    <!-- Page JS -->
+    <!-- PAGE JS -->
     {% block script %}{% endblock %}
+    <!-- END PAGE JS -->
 </body>
 
 </html>

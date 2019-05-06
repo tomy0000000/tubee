@@ -1,6 +1,6 @@
 {% macro alert(alert, alert_type) %}
 {% if alert %}
-<!-- Alert -->
+<!-- ALERT -->
 {% if alert_type == "secondary" %}
 <div id="main-alert" class="alert alert-secondary alert-dismissible fade show" role="alert">
 {% elif alert_type == "success" %}
@@ -23,6 +23,6 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<!-- End Alert -->
+<!-- END ALERT -->
 {% endif %}
 {% endmacro %}

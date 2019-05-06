@@ -66,8 +66,14 @@ def create_app(config_name):
     from .routes.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .routes.api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix="/api")
+
     from .routes.dev import dev as dev_blueprint
     app.register_blueprint(dev_blueprint, url_prefix="/dev")
+
+    from .routes.admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix="/admin")
 
     from .routes.login import login as login_blueprint
     app.register_blueprint(login_blueprint, url_prefix="/login")

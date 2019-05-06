@@ -28,7 +28,7 @@ class NonSecureHubSecretError(Exception):
     def __init__(self):
         super().__init__("Hub Secret is not allowed when using http")
 
-def formal_post_request(endpoint, **data):
+def _formal_post_request(endpoint, **data):
     """
     Required Parameters:
     hub.callback            Subscribers Endpoint
@@ -62,7 +62,7 @@ def formal_post_request(endpoint, **data):
     except requests.exceptions.RequestException:
         return -1
 
-def formal_get_request(endpoint, **params):
+def _formal_get_request(endpoint, **params):
     """
     Required Parameters:
     hub.callback            Subscribers Endpoint
@@ -94,7 +94,7 @@ def subscribe(callback_url, topic_url, **kwargs):
         "hub.lease_seconds": kwargs.pop("lease_seconds", None),
         "hub.secret": kwargs.pop("secret", None)
     }
-    response = formal_post_request("subscribe", **data)
+    response = _formal_post_request("subscribe", **data)
     if response.status_code == 202:
         response.success = True
     return response
@@ -112,7 +112,7 @@ def unsubscribe(callback_url, topic_url, **kwargs):
         "hub.lease_seconds": kwargs.pop("lease_seconds", None),
         "hub.secret": kwargs.pop("secret", None)
     }
-    response = formal_post_request("subscribe", **data)
+    response = _formal_post_request("subscribe", **data)
     if response.status_code == 202:
         response.success = True
     return response
@@ -127,4 +127,4 @@ def details(callback_url, topic_url, **kwargs):
         "hub.topic": topic_url,
         "hub.secret": kwargs.pop("secret", None)
     }
-    return formal_get_request("subscription-details", **params)
+    return _formal_get_request("subscription-details", **params)

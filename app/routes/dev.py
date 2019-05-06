@@ -7,7 +7,6 @@ from flask_login import current_user, login_required
 from .. import login_manager, scheduler
 dev = Blueprint("dev", __name__)
 
-
 @dev.route("/sitemap")
 @login_required
 def sitemap():
@@ -16,7 +15,7 @@ def sitemap():
         query = {arg: "[{0}]".format(arg) for arg in rule.arguments}
         url = url_for(rule.endpoint, **query)
         links.append((url, rule.endpoint))
-    links.sort(key=lambda x: x[0])
+    links.sort(key=lambda x: x[1])
     return render_template("map.html", links=links)
 
 @dev.route("/os")
@@ -26,7 +25,7 @@ def os_dict():
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 @dev.route("/sys")
 @login_required
@@ -35,7 +34,7 @@ def sys_dict():
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 @dev.route("/flask")
 @login_required
@@ -46,7 +45,7 @@ def flask_dict():
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 @dev.route("/login-manager")
 @login_required
@@ -55,7 +54,7 @@ def login_manager_dict():
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 @dev.route("/scheduler")
 @login_required
@@ -65,16 +64,16 @@ def scheduler_dict():
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 @dev.route("/user")
-# @login_required
+@login_required
 def user_dict():
     target_dict = current_user.__dict__
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
-    return render_template("empty.html", content=target_dict, pprint=pprint_en)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 # @dev.route("/instance")
 # @login_required

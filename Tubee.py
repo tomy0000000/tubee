@@ -1,3 +1,4 @@
+"""Boot Script of Tubee"""
 import os
 from dotenv import load_dotenv
 
@@ -39,7 +40,6 @@ def test(coverage):
     import unittest
     tests = unittest.TestLoader().discover("tests")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
-    sys.exit(not results.wasSuccessful())
     if COV:
         COV.stop()
         COV.save()
@@ -49,6 +49,7 @@ def test(coverage):
         covdir = os.path.join(basedir, "htmlcov")
         COV.html_report(directory=covdir)
         print("HTML version: file://%s/index.html" % covdir)
+    sys.exit(not results.wasSuccessful())
 
 # @app.cli.command()
 # @click.option("--length", default=25,
