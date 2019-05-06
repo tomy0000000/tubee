@@ -13,4 +13,8 @@ def dashboard():
 
 @main.context_processor
 def inject_username():
-    return dict(username=current_user.username)
+    if current_user.is_anonymous:
+        username = "Guest"
+    else:
+        username = current_user.username
+    return dict(username=username)
