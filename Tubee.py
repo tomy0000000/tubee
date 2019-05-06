@@ -38,7 +38,8 @@ def test(coverage):
 
     import unittest
     tests = unittest.TestLoader().discover("tests")
-    unittest.TextTestRunner(verbosity=2).run(tests)
+    results = unittest.TextTestRunner(verbosity=2).run(tests)
+    sys.exit(not results.wasSuccessful())
     if COV:
         COV.stop()
         COV.save()

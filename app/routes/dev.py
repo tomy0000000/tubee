@@ -68,7 +68,7 @@ def scheduler_dict():
     return render_template("empty.html", content=target_dict, pprint=pprint_en)
 
 @dev.route("/user")
-@login_required
+# @login_required
 def user_dict():
     target_dict = current_user.__dict__
     pprint_en = isinstance(target_dict, dict)

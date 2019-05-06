@@ -45,12 +45,8 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
 
     if issubclass(config[config_name], config["production"]):
-        app.logger.info(config_name+" build log production")
-        print(config_name+" build log production")
         app.config["LOADED_CONFIG"] = "production"
     else:
-        app.logger.info(config_name+" build log "+config_name)
-        print(config_name+" build log "+config_name)
         app.config["LOADED_CONFIG"] = config_name
     if "LOGGING_CONFIG" in app.config:
         logging.config.dictConfig(app.config["LOGGING_CONFIG"])
