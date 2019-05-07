@@ -1,6 +1,6 @@
 {% macro ribbon_css() %}
 
-{% if config.LOADED_CONFIG != "production" %}
+{% if config.DEBUG or config.TESTING %}
 <!-- RIBBON -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.min.css" />
 <!-- END RIBBON -->
@@ -8,11 +8,11 @@
 {% endmacro %}
 
 {% macro ribbon_tag() %}
-{% if config.LOADED_CONFIG == "development" %}
+{% if config.DEBUG %}
 <!-- RIBBON -->
 <a class="github-fork-ribbon right-bottom fixed" href="#" data-ribbon="Development Build"></a>
 <!-- END RIBBON -->
-{% elif config.LOADED_CONFIG == "testing" %}
+{% elif config.TESTING %}
 <!-- RIBBON -->
 <a class="github-fork-ribbon right-bottom fixed" href="#" data-ribbon="Testing Build"></a>
 <!-- END RIBBON -->

@@ -5,6 +5,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     """Universal Config"""
+    DEBUG = False
+    TESTING = False
     SECRET_KEY = os.environ.get("SECRET_KEY") or "aef142c0-b8d5-4ad2-bbbc-d4b101adcd05"
     PREFERRED_URL_SCHEME = "https"
     SQLALCHEMY_POOL_RECYCLE = 480

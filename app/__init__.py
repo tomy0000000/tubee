@@ -44,13 +44,6 @@ def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
 
-    if issubclass(config[config_name], config["production"]):
-        app.config["LOADED_CONFIG"] = "production"
-    else:
-        app.config["LOADED_CONFIG"] = config_name
-    if "LOGGING_CONFIG" in app.config:
-        logging.config.dictConfig(app.config["LOGGING_CONFIG"])
-
     db.init_app(app)
     app.db = db
     config[config_name].init_app(app)
