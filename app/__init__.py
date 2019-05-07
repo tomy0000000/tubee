@@ -11,13 +11,23 @@ import json
 import logging.config
 import os
 import sys
+from sqlalchemy import MetaData
 from config import config
 
-db = flask_sqlalchemy.SQLAlchemy()              # flask_sqlalchemy
-scheduler = flask_apscheduler.APScheduler()     # flask_apscheduler
-login_manager = flask_login.LoginManager()      # flask_login
-bcrypt = flask_bcrypt.Bcrypt()                  # flask_bcrypt
-redis_store = flask_redis.Redis()               # flask_redis
+# TODO: TRY IMPLEMENT IN ANOTHER WAY
+naming_convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(column_0_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+metadata=MetaData(naming_convention=naming_convention)
+db = flask_sqlalchemy.SQLAlchemy(metadata=metadata)     # flask_sqlalchemy
+scheduler = flask_apscheduler.APScheduler()             # flask_apscheduler
+login_manager = flask_login.LoginManager()              # flask_login
+bcrypt = flask_bcrypt.Bcrypt()                          # flask_bcrypt
+redis_store = flask_redis.Redis()                       # flask_redis
 
 # System Global Registration
 # scheduler.start()
@@ -62,14 +72,17 @@ def create_app(config_name):
     from .routes.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .routes.admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix="/admin")
+
     from .routes.api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix="/api")
 
+    from .routes.channel import channel as channel_blueprint
+    app.register_blueprint(channel_blueprint, url_prefix="/channel")
+
     from .routes.dev import dev as dev_blueprint
     app.register_blueprint(dev_blueprint, url_prefix="/dev")
-
-    from .routes.admin import admin as admin_blueprint
-    app.register_blueprint(admin_blueprint, url_prefix="/admin")
 
     from .routes.login import login as login_blueprint
     app.register_blueprint(login_blueprint, url_prefix="/login")

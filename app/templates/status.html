@@ -23,7 +23,7 @@
     </thead>
     <tbody>
         {% for channel in channels %}
-        <tr class="channel" data-channel-id="{{ channel.channel_id }}">
+        <tr class="channel" data-channel-id="{{ channel.channel_id }}" data-api-endpoint="{{ url_for('api.channel_status', channel_id=channel.channel_id, _external=True) }}" data-callback-endpoint="{{ url_for('channel.callback', channel_id=channel.channel_id, _external=True) }}">
             <th scope="row" class="align-middle">
                 {{ channel.channel_name }}
                 <br>

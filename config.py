@@ -9,9 +9,16 @@ class Config:
     TESTING = False
     SECRET_KEY = os.environ.get("SECRET_KEY") or "aef142c0-b8d5-4ad2-bbbc-d4b101adcd05"
     PREFERRED_URL_SCHEME = "https"
-    SQLALCHEMY_POOL_RECYCLE = 480
+    # SQLALCHEMY_POOL_RECYCLE = 480
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
+    CUSTOM_SQLALCHEMY_NAMEING_CONVENTIONS = {
+        "ix": "ix_%(column_0_label)s",
+        "uq": "uq_%(table_name)s_%(column_0_name)s",
+        "ck": "ck_%(table_name)s_%(constraint_name)s",
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+        "pk": "pk_%(table_name)s"
+    }
 
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD") or None
     REDIS_HOST = os.environ.get("REDIS_HOST") or None

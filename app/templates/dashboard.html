@@ -36,24 +36,14 @@
                 <p class="text-muted">{{ subscription.channel_id }}</p>
                 {% endif %}
             </td>
-            <td class="align-middle">
-                <a href="{{ url_for('main.hub_history_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
-                    <span class="badge badge-warning">callbacks</span>
-                </a><br>
-                <a href="{{ url_for('main.summary_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
-                    <span class="badge badge-primary">videos+callbacks</span>
-                </a><br>
-                <a href="{{ url_for('main.hub_status_channel', channel_id=subscription.channel_id) }}" class="badge-anchor text-decoration-none">
-                    <span class="badge badge-info">status</span>
-                </a>
-            </td>
+            <td class="align-middle"></td>
             <td class="align-middle">{{ subscription.active }}</td>
             <td class="align-middle">{{ subscription.renew_datetime }}</td>
             {% if subscription.unsubscribe_datetime %}
             <td class="align-middle">{{ subscription.unsubscribe_datetime }}</td>
             {% else %}
             <td class="align-middle">
-                <a href="{{ url_for('main.unsubscribe_channel', channel_id=subscription.channel_id) }}">Unsubscribe</a>
+                <a href="{{ url_for('channel.unsubscribe', channel_id=subscription.channel_id) }}">Unsubscribe</a>
             </td>
             {% endif %}
         </tr>

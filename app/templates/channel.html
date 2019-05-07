@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% set title = subscription.channel_name %}
+{#
+{% set alert = "Hello World" %}
+{% set alert_type = "Primary" %}
+#}
+{% block style %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/<filename>') }}"> -->
+{% endblock %}
+{% block script %}
+<!-- <script src="{{ url_for('static', filename='js/<filename>') }}"></script> -->
+{% endblock %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container row">
+        <div class="col-6 col-md-4">
+            <div class="bd-example">
+                <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://i.ytimg.com/vi/Ulqwd_y3ri4/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLD7KlHTeN0rexYZM1YuWscsHk_caQ" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>First slide label</h5>
+                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.ytimg.com/vi/1Q_BD15fJU0/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCwSfSyrjcOsGDItvZGO_JBkR54sg" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Second slide label</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.ytimg.com/vi/xuBsfSPHSDo/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCHQkLkHgK8GO7M27D__tUJphRFmg" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Third slide label</h5>
+                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8">
+            <img src="{{ subscription.thumbnails_url }}" class="rounded-circle">
+            <h1 class="display-4">{{ subscription.channel_name }}</h1>
+            <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        </div>
+    </div>
+</div>
+<!-- TODO: Admin Only -->
+<div class="container mb-5" style="height: 150px">
+    <div class="row">
+        <div class="col-6 col-lg-3 table-dark">State</div>
+        <div class="col-6 col-lg-3">1</div>
+        <div class="col-6 col-lg-3 table-dark">Expiration</div>
+        <div class="col-6 col-lg-3">2</div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-lg-3 table-dark">Last Notification</div>
+        <div class="col-6 col-lg-3">3</div>
+        <div class="col-6 col-lg-3 table-dark">Last Notification Error</div>
+        <div class="col-6 col-lg-3">4</div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-lg-3 table-dark">Last Challenge</div>
+        <div class="col-6 col-lg-3">5</div>
+        <div class="col-6 col-lg-3 table-dark">Last Challenge Error</div>
+        <div class="col-6 col-lg-3">6</div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-lg-3 table-dark">Last Subscribe / Last Unsubscribe</div>
+        <div class="col-6 col-lg-3">7</div>
+        <div class="col-6 col-lg-3 table-dark">Stat</div>
+        <div class="col-6 col-lg-3">8</div>
+    </div>
+</div>
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle"></th>
+            <th scope="col" class="align-middle">Channel Name</th>
+            <th scope="col" class="align-middle">Last Active</th>
+            <th scope="col" class="align-middle">Active</th>
+            <th scope="col" class="align-middle">Renew Datetime</th>
+            <th scope="col" class="align-middle">Unsubscribe Datetime</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <img src="{{ subscription.thumbnails_url }}" class="rounded-circle">
+            </th>
+            <td class="channel-name align-middle"></td>
+            <td class="align-middle"></td>
+            <td class="align-middle">{{ subscription.active }}</td>
+            <td class="align-middle">{{ subscription.renew_datetime }}</td>
+            <td class="align-middle">{{ subscription.unsubscribe_datetime }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

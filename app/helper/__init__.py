@@ -44,6 +44,30 @@ def send_notification(initiator, user, *args, **kwargs):
     db.session.commit()
     return response
 
+def new_send_notification(user, *args, **kwargs):
+    """
+    str:initiator   Function or Part which fired the notification
+    str:message     Main Body of Message
+
+    str:title       Title of Message
+    str:image       URL of Image
+    str:url         URL contained with Message
+    str:url_title   Title for the URL contained
+    int:priority    Priority of Message
+                    retry & expire is required with priority 2
+                    Range       -2 ~ 2
+                    Default     0
+    int:retry       Seconds between retries
+                    Range       30 ~ 10800
+    int:expire      Seconds before retries stop
+                    Range       30 ~ 10800
+    """
+    if "image" in kwargs and kwargs["image"]:
+        img_url = kwargs["image"]
+        kwargs["image"] = requests.get(img_url, stream=True).content
+    pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
+    return pusher.send_message(user.pushover_key, *args, **kwargs)
+
 def build_youtube_service(credentials):
     """Build Corresponding YouTube Service from User's Credentials"""
     credentials = google.oauth2.credentials.Credentials(**credentials)

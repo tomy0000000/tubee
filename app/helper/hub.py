@@ -48,7 +48,7 @@ def _formal_post_request(endpoint, **data):
 
     # Check hub.secret Validity
     callback_scheme = urllib.parse.urlparse(data["hub.callback"]).scheme
-    if callback_scheme == "http" and "hub.secret" in data:
+    if callback_scheme == "http" and data["hub.secret"]:
         raise NonSecureHubSecretError()
 
     # Sending Requests

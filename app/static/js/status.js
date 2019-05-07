@@ -63,9 +63,12 @@ $(document).ready(function() {
     var responseHTML;
     $(".channel").each(function() {
         channel_id = $(this).attr("data-channel-id")
+        callback_endpoint = $(this).attr("data-callback-endpoint")
+        api_endpoint = $(this).attr("data-api-endpoint")
         // console.log(channel_id)
         data = {
-            "hub.callback": window.location.protocol + "//" + window.location.host + "/Tubee/" + channel_id + "/callback",
+            // "hub.callback": window.location.protocol + "//" + window.location.host + "/Tubee/" + channel_id + "/callback",
+            "hub.callback": callback_endpoint,
             "hub.topic": "https://www.youtube.com/xml/feeds/videos.xml?channel_id=" + channel_id,
             "hub.secret": ""
         }
@@ -74,7 +77,7 @@ $(document).ready(function() {
             type: "get",
             // data: data,
             // url: "/Tubee/static/php/status.php",
-            url: "/Tubee/hub/status_api/" + channel_id,
+            url: api_endpoint,
         }).done(function(responseData) {
             onSuccess(responseData, row_tag);
         }).fail(function(responseData) {

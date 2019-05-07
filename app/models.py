@@ -1,15 +1,15 @@
-"""Database for SQLAlchemy"""
+"""Database Models of Tubee"""
 from datetime import datetime
-import enum
 import urllib
 import flask_login
 from apiclient import discovery
 from flask import url_for, current_app
 from . import db, bcrypt
 from . import helper
-from .helper import hub
+from .helper import new_send_notification, hub
 
 class UserSubscription(db.Model):
+    """Relationship of User and Subscription"""
     __tablename__ = "user-subscription"
     subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True)
     subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), primary_key=True)
@@ -35,6 +35,8 @@ class User(flask_login.UserMixin, db.Model):
                                     backref=db.backref("subscribers", lazy="joined"),
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
+    notifications = db.relationship("Notification",
+                                    back_populates="user")
     def __init__(self, username, password):
         self.username = username
         if len(password) < 6:
@@ -65,8 +67,7 @@ class User(flask_login.UserMixin, db.Model):
     def check_password(self, password):
         """Return True if provided password is valid to login"""
         return bcrypt.check_password_hash(self.password, password)
-
-    """Channel Relation Method"""
+    # Channel Relation Method
     def is_subscribing(self, channel):
         return self.subscriptions.filter_by(subscribing_channel_id=channel.channel_id).first() is not None
     def subscribe_to(self, channel):
@@ -74,7 +75,7 @@ class User(flask_login.UserMixin, db.Model):
             new_subscribing = UserSubscription(subscribers=self, subscribing=channel)
             db.session.add(new_subscribing)
             db.session.commit()
-    """YouTube Service Methods"""
+    # YouTube Service Methods
     def get_youtube_service(self):
         return helper.build_youtube_service(self.youtube_credentials)
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
@@ -90,6 +91,9 @@ class User(flask_login.UserMixin, db.Model):
         }
         youtube_service = helper.build_youtube_service(self.youtube_credentials)
         return youtube_service.playlistItems().insert(body=resource, part="snippet").execute()
+    # Notification
+    def send_notification(self, initiator, *args, **kwargs):
+        Notification(initiator, self, *args, kwargs)
 
 class Subscription(db.Model):
     __tablename__ = "subscription"
@@ -126,7 +130,7 @@ class Subscription(db.Model):
 
     def activate(self):
         """Activate the Subscription by submitting Hub Subscription"""
-        callback_url = url_for("channel_callback_entry", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.channel_callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.subscribe(callback_url, topic_url)
@@ -138,13 +142,20 @@ class Subscription(db.Model):
 
     def deactivate(self):
         """Deactivate the Subscription by canceling Hub Subscription"""
-        callback_url = url_for("channel_callback_entry", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.channel_callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.unsubscribe(callback_url, topic_url)
         if response.success:
             self.active = False
             self.unsubscribe_datetime = datetime.now()
+        return response
+
+    def get_hub_details(self):
+        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
+        param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
+        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
+        response = hub.details(callback_url, topic_url)
         return response
 
     def renew_info(self):
@@ -181,7 +192,7 @@ class Subscription(db.Model):
 
     def renew_hub(self):
         """Renew Subscription by submitting new Hub Subscription"""
-        callback_url = url_for("channel_callback_entry", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.channel_callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.subscribe(callback_url, topic_url)
@@ -263,19 +274,32 @@ class Notification(db.Model):
     __tablename__ = "notification"
     id = db.Column(db.String(32), nullable=False, primary_key=True)
     initiator = db.Column(db.String(15), nullable=False, server_default=None, unique=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.username"))
+    user = db.relationship("User",
+                           back_populates="notifications")
     sent_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
     message = db.Column(db.String(2000), nullable=False, server_default=None, unique=False)
     kwargs = db.Column(db.JSON, nullable=False, server_default=None, unique=False)
-    response = db.Column(db.JSON, nullable=False, server_default=None, unique=False)
-    def __init__(self, initiator, message, kwargs, response, sent_datetime=datetime.now()):
+    response = db.Column(db.JSON, nullable=True, server_default=None, unique=False)
+    def __init__(self, initiator, user, *args, **kwargs):
         self.id = helper.generate_random_id()
         self.initiator = initiator
-        self.sent_datetime = sent_datetime
-        self.message = message
+        self.user = user
+        self.sent_datetime = datetime.now()
+        self.message = args[0]
         self.kwargs = kwargs
-        self.response = response
+        if not kwargs.pop("raw_init", False):
+            self.response = new_send_notification(user, *args, **kwargs)
+        db.session.add(self)
+        db.session.commit()
     def __repr__(self):
         return "<notification %r>" %self.id
+    def send(self):
+        """Aftermath sending"""
+        if self.resopnse:
+            raise RuntimeError("Notification has already sent")
+        self.response = new_send_notification(self.user, self.message, self.kwargs)
+        db.session.commit()
 
 class APShedulerJobs(db.Model):
     """A Dummy Model for Flask Migrate"""

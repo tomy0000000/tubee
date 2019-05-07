@@ -19,8 +19,12 @@ from app import create_app, db
 from app.models import User
 
 app = create_app(os.getenv("FLASK_CONFIG") or "default")
-migrate = Migrate(app, db)
-
+migrate = Migrate()
+with app.app_context():
+    if db.engine.url.drivername == "sqlite":
+        migrate.init_app(app, db, render_as_batch=True)
+    else:
+        migrate.init_app(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
