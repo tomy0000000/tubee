@@ -7,6 +7,7 @@ import flask_bcrypt
 import flask_login
 import flask_redis
 import flask_sqlalchemy
+import json
 import logging.config
 import os
 import sys
@@ -48,8 +49,8 @@ def create_app(config_name):
         app.config["LOADED_CONFIG"] = "production"
     else:
         app.config["LOADED_CONFIG"] = config_name
-    if "LOGGING_CONFIG" in app.config:
-        logging.config.dictConfig(app.config["LOGGING_CONFIG"])
+    if "LOGGING_CONFIG" in os.environ:
+        logging.config.dictConfig(json.loads(os.environ["LOGGING_CONFIG"]))
 
     db.init_app(app)
     app.db = db
