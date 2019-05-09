@@ -93,7 +93,9 @@ class User(flask_login.UserMixin, db.Model):
         return youtube_service.playlistItems().insert(body=resource, part="snippet").execute()
     # Notification
     def send_notification(self, initiator, *args, **kwargs):
-        Notification(initiator, self, *args, kwargs)
+        new_notification = Notification(initiator, self, *args, kwargs)
+        db.session.add(new_notification)
+        db.session.commit()
 
 class Subscription(db.Model):
     __tablename__ = "subscription"
