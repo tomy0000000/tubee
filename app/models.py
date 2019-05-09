@@ -130,7 +130,7 @@ class Subscription(db.Model):
 
     def activate(self):
         """Activate the Subscription by submitting Hub Subscription"""
-        callback_url = url_for("channel.channel_callback", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.subscribe(callback_url, topic_url)
@@ -142,7 +142,7 @@ class Subscription(db.Model):
 
     def deactivate(self):
         """Deactivate the Subscription by canceling Hub Subscription"""
-        callback_url = url_for("channel.channel_callback", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.unsubscribe(callback_url, topic_url)
@@ -192,7 +192,7 @@ class Subscription(db.Model):
 
     def renew_hub(self):
         """Renew Subscription by submitting new Hub Subscription"""
-        callback_url = url_for("channel.channel_callback", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.subscribe(callback_url, topic_url)
