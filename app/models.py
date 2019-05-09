@@ -93,7 +93,7 @@ class User(flask_login.UserMixin, db.Model):
         return youtube_service.playlistItems().insert(body=resource, part="snippet").execute()
     # Notification
     def send_notification(self, initiator, *args, **kwargs):
-        new_notification = Notification(initiator, self, *args, kwargs)
+        new_notification = Notification(initiator, self, *args, **kwargs)
         db.session.add(new_notification)
         db.session.commit()
 
@@ -291,6 +291,8 @@ class Notification(db.Model):
         self.message = args[0]
         self.kwargs = kwargs
         if not kwargs.pop("raw_init", False):
+            current_app.logger.info(args)
+            current_app.logger.info(kwargs)
             self.response = new_send_notification(user, *args, **kwargs)
         db.session.add(self)
         db.session.commit()

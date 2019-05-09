@@ -66,6 +66,8 @@ def new_send_notification(user, *args, **kwargs):
         img_url = kwargs["image"]
         kwargs["image"] = requests.get(img_url, stream=True).content
     pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
+    current_app.logger.info(args)
+    current_app.logger.info(kwargs)
     return pusher.send_message(user.pushover_key, *args, **kwargs)
 
 def build_youtube_service(credentials):
