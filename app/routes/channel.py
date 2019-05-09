@@ -128,7 +128,6 @@ def callback(channel_id):
             send_notification("SQL Error", Tomy, str(datetime.now())+"\n"+str(e),
                               title="Tubee encontered a SQL Error!!")
 
-
         """
         1. List Users who subscribe to this channel
         (for each user)
@@ -164,10 +163,10 @@ def callback(channel_id):
         # Push Notification
         title = "New from " + subscription.channel_name
         message = soup.entry.find("title").string + "\n" + response
-        response = send_notification("Callback", Tomy, message,
-                                     title=title,
-                                     url="https://www.youtube.com/watch?v="+video_id,
-                                     url_title=soup.entry.find("title").string,
-                                     image=image_url)
+        response = Tomy.send_notification("Callback", message,
+                                          title=title,
+                                          url="https://www.youtube.com/watch?v="+video_id,
+                                          url_title=soup.entry.find("title").string,
+                                          image=image_url)
 
     return str(response)
