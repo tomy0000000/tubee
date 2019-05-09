@@ -274,7 +274,7 @@ class Notification(db.Model):
     __tablename__ = "notification"
     id = db.Column(db.String(32), nullable=False, primary_key=True)
     initiator = db.Column(db.String(15), nullable=False, server_default=None, unique=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.username"))
+    user_id = db.Column(db.String(30), db.ForeignKey("user.username"))
     user = db.relationship("User",
                            back_populates="notifications")
     sent_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
