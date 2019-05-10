@@ -54,7 +54,8 @@ redis_store = flask_redis.Redis()                       # flask_redis
 def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
-    app.config.from_pyfile("logging.cfg")
+    if os.path.isfile(os.path.join(app.instance_path, "logging.cfg")):
+        app.config.from_pyfile("logging.cfg")
     # if "LOGGING_CONFIG" in os.environ:
     #     logging.config.dictConfig(json.loads(os.environ["LOGGING_CONFIG"]))
 
