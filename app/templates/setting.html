@@ -1,10 +1,11 @@
-{% extends "layout.html" %}
-{% set page_title = "Setting" %}
-{% block body %}
+{% extends "base.html" %}
+{% set title = "Setting" %}
+
+{% block content %}
 <div class="jumbotron">
     <h1 id="headline" class="display-4">Welcome!</h1>
     <label for="username" class="col-form-label">Username</label>
-    <input type="text" class="form-control" id="username" value="{{ user.username }}" readonly>
+    <input type="text" class="form-control" id="username" value="{{ current_user.username }}" readonly>
     <label for="password">Password</label>
     <input type="password" class="form-control" id="password" aria-describedby="passwordHelp" value="........" readonly>
     <small id="passwordHelp" class="form-text text-muted">
@@ -15,13 +16,13 @@
     </small>
     <label for="pushover_key" class="col-form-label">Pushover User Key</label>
     <div class="input-group">
-        {% if user.pushover_key %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ user.pushover_key }}" aria-describedby="pushover_change" readonly>
+        {% if current_user.pushover_key %}
+        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_change" readonly>
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="pushover_change">Change</button>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ user.pushover_key }}" aria-describedby="pushover_validate">
+        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_validate">
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="pushover_validate">Validate</button>
         </div>
@@ -33,15 +34,15 @@
     </small>
     <label for="youtube_credentials" class="col-form-label">YouTube Account</label>
     <div class="input-group">
-        {% if user.youtube_credentials %}
-        <input type="text" class="form-control" id="youtube_credentials" value="{{ user.youtube_credentials }}" aria-describedby="youtube_revoke" readonly>
+        {% if current_user.youtube_credentials %}
+        <input type="text" class="form-control" id="youtube_credentials" value="{{ current_user.youtube_credentials }}" aria-describedby="youtube_revoke" readonly>
         <div class="input-group-append">
-            <a class="btn btn-outline-secondary" href="{{ url_for('main.login_youtube_revoke') }}" role="button" id="youtube_revoke">Revoke</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_youtube_revoke') }}" role="button" id="youtube_revoke">Revoke</a>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="youtube_credentials" value="{{ user.youtube_credentials }}" aria-describedby="youtube_authorize" readonly>
+        <input type="text" class="form-control" id="youtube_credentials" value="{{ current_user.youtube_credentials }}" aria-describedby="youtube_authorize" readonly>
         <div class="input-group-append">
-            <a class="btn btn-outline-secondary" href="{{ url_for('main.login_youtube_authorize') }}" role="button" id="youtube_authorize">Authorize</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_youtube_authorize') }}" role="button" id="youtube_authorize">Authorize</a>
         </div>
         {% endif %}
     </div>

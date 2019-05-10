@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set title = "Login" %}
+{% set title = "Register" %}
 
 {% block script %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/login.js') }}"></script>
@@ -36,6 +36,20 @@
             </div>
             {% else %}
             {{ form.password(class="form-control") }}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password_confirm.label }}
+            {% if form.password_confirm.errors|length > 0 %}
+            {{ form.password_confirm(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.password_confirm.errors %}
+                {{ error }}
+                {% if not loop.last %}<br>{% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.password_confirm(class="form-control") }}
             {% endif %}
         </div>
         {{ form.submit(class="btn btn-primary btn-lg m-2") }}

@@ -11,15 +11,15 @@ class RoutesTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client(use_cookies=True)
-        self.client_user = User("test_user", "HelloTubee")
-        db.session.add(self.client_user)
+        self.client_username = "test_user"
+        self.client_user_password = "test_password"
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
 
-    def test_root_login(self):
+    def test_register_login_logout(self):
         """
         Test if Root Page works Properly
         Routes
@@ -33,21 +33,37 @@ class RoutesTestCase(unittest.TestCase):
         """
 
         # Dashboard Attempt
-        response = self.client.get("/")
+        response = self.client.get("/", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("You Must Login First!", response.get_data(as_text=True))
-        # Login and redirect to Dashboard
-        response = self.client.post("/login", data={
-            "username": self.client_user.username,
-            "password": self.client_user.password
+        self.assertIn("You Must Login First", response.get_data(as_text=True))
+        # Register
+        response = self.client.get("/user/register")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Password Confirm", response.get_data(as_text=True))
+        response = self.client.post("/user/register", data={
+            "username": self.client_username,
+            "password": self.client_user_password,
+            "password_confirm": self.client_user_password
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertNotIn("You Must Login First!", response.get_data(as_text=True))
-        self.assertIn("Channel Name", response.get_data(as_text=True))
-        # Logout and Back to Login
-        response = self.client.get("/login/logout", follow_redirects=True)
+        self.assertIn("Hello! "+self.client_username, response.get_data(as_text=True))
+        # Logout
+        response = self.client.get("/user/logout", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Welcome!", response.get_data(as_text=True))
+        self.assertIn("ALERT", response.get_data(as_text=True))
+        self.assertIn("Logged Out", response.get_data(as_text=True))
+        # Login and redirect to Dashboard
+        response = self.client.post("/user/login", data={
+            "username": self.client_username,
+            "password": self.client_user_password
+        }, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Hello! "+self.client_username, response.get_data(as_text=True))
+        # Logout again
+        response = self.client.get("/user/logout", follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("ALERT", response.get_data(as_text=True))
+        self.assertIn("Logged Out", response.get_data(as_text=True))
 
     def test_hub_callback(self):
         pass

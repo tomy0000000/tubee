@@ -5,10 +5,12 @@ import pprint
 from flask import Blueprint, current_app, render_template, url_for
 from flask_login import current_user, login_required
 from .. import login_manager, scheduler
+from ..helper import admin_required
 dev = Blueprint("dev", __name__)
 
 @dev.route("/sitemap")
 @login_required
+@admin_required
 def sitemap():
     links = []
     for rule in current_app.url_map.iter_rules():
@@ -20,6 +22,7 @@ def sitemap():
 
 @dev.route("/os")
 @login_required
+@admin_required
 def os_dict():
     target_dict = os.__dict__
     pprint_en = isinstance(target_dict, dict)
@@ -29,6 +32,7 @@ def os_dict():
 
 @dev.route("/sys")
 @login_required
+@admin_required
 def sys_dict():
     target_dict = sys.__dict__
     pprint_en = isinstance(target_dict, dict)
@@ -38,6 +42,7 @@ def sys_dict():
 
 @dev.route("/flask")
 @login_required
+@admin_required
 def flask_dict():
     target_dict = current_app.__dict__
     # target_dict["apscheduler"] = target_dict["apscheduler"].__dict__
@@ -49,6 +54,7 @@ def flask_dict():
 
 @dev.route("/login-manager")
 @login_required
+@admin_required
 def login_manager_dict():
     target_dict = login_manager.__dict__
     pprint_en = isinstance(target_dict, dict)
@@ -58,6 +64,7 @@ def login_manager_dict():
 
 @dev.route("/scheduler")
 @login_required
+@admin_required
 def scheduler_dict():
     target_dict = scheduler.__dict__
     target_dict["_scheduler"] = scheduler.scheduler.__dict__
@@ -68,6 +75,7 @@ def scheduler_dict():
 
 @dev.route("/user")
 @login_required
+@admin_required
 def user_dict():
     target_dict = current_user.__dict__
     pprint_en = isinstance(target_dict, dict)
@@ -77,6 +85,7 @@ def user_dict():
 
 # @dev.route("/instance")
 # @login_required
+# @admin_required
 # def instance():
 #     instances_set = redis_store.smembers("INSTANCE_SET")
 #     instances_list = [instance.decode("utf-8") for instance in instances_set]
@@ -89,3 +98,7 @@ def user_dict():
 @dev.route("/empty")
 def empty():
     return render_template("empty.html")
+
+@dev.route("/debugger")
+def debugger():
+    pass

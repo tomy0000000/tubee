@@ -1,12 +1,18 @@
 """Database Models of Tubee"""
-from datetime import datetime
+import requests
 import urllib
-import flask_login
+from datetime import datetime
 from apiclient import discovery
 from flask import url_for, current_app
-from . import db, bcrypt
-from . import helper
-from .helper import new_send_notification, hub
+from flask_login import UserMixin
+from . import bcrypt, db, helper, login_manager
+from .helper import hub
+
+login_manager.login_view = "user.login"
+@login_manager.user_loader
+def load_user(user_id):
+    """Internal function for user info accessing"""
+    return User.query.get(user_id)
 
 class UserSubscription(db.Model):
     """Relationship of User and Subscription"""
@@ -15,7 +21,7 @@ class UserSubscription(db.Model):
     subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), primary_key=True)
     tags = db.Column(db.PickleType, nullable=True)
 
-class User(flask_login.UserMixin, db.Model):
+class User(UserMixin, db.Model):
     """
     username                username for identification (Max:30)
     password                user's login password
@@ -43,18 +49,17 @@ class User(flask_login.UserMixin, db.Model):
             raise ValueError("Password must be longer than 6 characters")
         elif len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
-        self.password = password
+        self.password = bcrypt.generate_password_hash(password)
     def __repr__(self):
         return "<users %r>" %self.username
     def promote_to_master(self):
         self.master = True
     def setting_pushover_key(self, key):
         pass
-
     """UserMixin Methods"""
-    def is_authenticated(self):
-        # TODO
-        return None
+    # def is_authenticated(self):
+    #     # TODO
+    #     return None
     def is_active(self):
         # TODO
         return None
@@ -76,6 +81,25 @@ class User(flask_login.UserMixin, db.Model):
             db.session.add(new_subscribing)
             db.session.commit()
     # YouTube Service Methods
+    def youtube_init(self, credentials):
+        self.youtube_credentials = credentials
+        db.session.commit()
+    def youtube_revoke(self):
+        credentials = helper.build_youtube_credentials(self.youtube_credentials)
+        response = requests.post("https://accounts.google.com/o/oauth2/revoke",
+                                 params={"token": credentials.token},
+                                 headers={"content-type": "application/x-www-form-urlencoded"})
+        if response.status_code == 200:
+            self.youtube_credentials = {}
+            db.session.commit()
+            return True
+        current_app.logger.info("YouTube Revoke Failed for "+self.username)
+        current_app.logger.info("Response: "+str(response.status_code))
+        current_app.logger.info("Detail: ")
+        current_app.logger.info(response.text)
+        return response.text
+    def get_youtube_credentials(self):
+        return helper.build_youtube_credentials(self.youtube_credentials)
     def get_youtube_service(self):
         return helper.build_youtube_service(self.youtube_credentials)
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
@@ -293,7 +317,7 @@ class Notification(db.Model):
         if not kwargs.pop("raw_init", False):
             current_app.logger.info(args)
             current_app.logger.info(kwargs)
-            self.response = new_send_notification(user, *args, **kwargs)
+            self.response = helper.new_send_notification(user, *args, **kwargs)
         db.session.add(self)
         db.session.commit()
     def __repr__(self):
@@ -302,7 +326,7 @@ class Notification(db.Model):
         """Aftermath sending"""
         if self.resopnse:
             raise RuntimeError("Notification has already sent")
-        self.response = new_send_notification(self.user, self.message, self.kwargs)
+        self.response = helper.new_send_notification(self.user, self.message, self.kwargs)
         db.session.commit()
 
 class APShedulerJobs(db.Model):

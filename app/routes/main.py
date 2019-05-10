@@ -1,18 +1,8 @@
 """The Main Routes"""
-from datetime import datetime
-from flask import Blueprint, current_app, render_template, request
-from flask_login import current_user, login_required
-from .. import db
+from flask import Blueprint, render_template
+from flask_login import login_required
 from ..models import Subscription
 main = Blueprint("main", __name__)
-
-@main.context_processor
-def inject_username():
-    if current_user.is_anonymous:
-        username = "Guest"
-    else:
-        username = current_user.username
-    return dict(username=username)
 
 @main.route("/")
 @login_required

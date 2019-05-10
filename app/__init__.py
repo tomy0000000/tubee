@@ -54,8 +54,9 @@ redis_store = flask_redis.Redis()                       # flask_redis
 def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
-    if "LOGGING_CONFIG" in os.environ:
-        logging.config.dictConfig(json.loads(os.environ["LOGGING_CONFIG"]))
+    app.config.from_pyfile("logging.cfg")
+    # if "LOGGING_CONFIG" in os.environ:
+    #     logging.config.dictConfig(json.loads(os.environ["LOGGING_CONFIG"]))
 
     db.init_app(app)
     app.db = db
@@ -84,13 +85,13 @@ def create_app(config_name):
     from .routes.dev import dev as dev_blueprint
     app.register_blueprint(dev_blueprint, url_prefix="/dev")
 
-    from .routes.login import login as login_blueprint
-    app.register_blueprint(login_blueprint, url_prefix="/login")
+    from .routes.user import user as user_blueprint
+    app.register_blueprint(user_blueprint, url_prefix="/user")
 
     from .views import route_blueprint
     app.register_blueprint(route_blueprint)
 
-    from .handler import handler_blueprint
-    app.register_blueprint(handler_blueprint)
+    from .handler import handler
+    app.register_blueprint(handler)
 
     return app

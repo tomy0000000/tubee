@@ -1,11 +1,15 @@
-{% extends "layout.html" %}
-{% set page_title = "It's an Error!" %}
-{% block stylesheet %}
+{% extends "base.html" %}
+{% set title = "It's an Error!" %}
+
+{% set alert_type = "danger" %}
+
+{% block style %}
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Baloo+Bhaijaan">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/error.css') }}">
 {% endblock %}
-{% block body %}
-<div class="row h-100">
+
+{% block content %}
+<div id="hero" class="row h-100">
     <div class="col-sm-6 my-auto">
         <img class="img-fluid" src="{{ url_for('static', filename='img/ripped.jpg') }}">
     </div>
@@ -13,7 +17,7 @@
         <h1 class="display-1 m-0">Oops !</h1>
         <h1 class="m-0">You've ripped a hole in the fabric of the internet !!!</h1>
         <small class="text-muted">
-            <a href="/Tubee">Return to the Safe Place</a>
+            <a href="/">Return to the Safe Place</a>
         </small>
     </div>
 </div>

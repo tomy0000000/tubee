@@ -1,78 +1,91 @@
-{% macro navbar(username="Guest") %}
+{% macro navbar(current_user) %}
 <!-- STICKY NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-left" href="{{ url_for('main.dashboard') }}">
-        <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbars">
-        <ul class="navbar-nav mr-auto">
-            {% if title == "Dashboard" %}
-            <li class="nav-item active">
-                {% else %}
-            <li class="nav-item">
-                {% endif %}
-                <a class="nav-link" href="{{ url_for('main.dashboard') }}">
-                    Dashboard
-                    {% if title == "Dashboard" %}
-                    <span class="sr-only">(current)</span>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-left" href="{{ url_for('main.dashboard') }}">
+            <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbars">
+            <ul class="navbar-nav mr-auto">
+                {% if title == "Dashboard" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
                     {% endif %}
-                </a>
-            </li>
-            {% if title == "Subscribe" %}
-            <li class="nav-item active">
-                {% else %}
-            <li class="nav-item">
-                {% endif %}
-                <a class="nav-link" href="{{ url_for('channel.subscribe') }}">
-                    Subscribe
-                    {% if title == "Subscribe" %}
-                    <span class="sr-only">(current)</span>
+                    <a class="nav-link" href="{{ url_for('main.dashboard') }}">
+                        Dashboard
+                        {% if title == "Dashboard" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% if title == "Subscribe" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
                     {% endif %}
-                </a>
-            </li>
-            {% if title == "History" %}
-            <li class="nav-item active">
-                {% else %}
-            <li class="nav-item">
-                {% endif %}
-                <a class="nav-link disabled" href="{{ url_for('main.hub_history') }}">
-                    History
-                    {% if title == "History" %}
-                    <span class="sr-only">(current)</span>
+                    <a class="nav-link" href="{{ url_for('channel.subscribe') }}">
+                        Subscribe
+                        {% if title == "Subscribe" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% if title == "History" %}
+                <li class="nav-item active">
+                    {% else %}
+                <li class="nav-item">
                     {% endif %}
-                </a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown_tmp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown_tmp">
-                    <a class="dropdown-item" href="{{ url_for('main.hub_status') }}">Hub Status</a>
-                    <a class="dropdown-item" href="{{ url_for('main.youtube_subscription') }}">List YouTube Subscription</a>
-                    <a class="dropdown-item" href="{{ url_for('main.pushover_push') }}">Send Test Notification</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown_dev">
-                    <a class="dropdown-item" href="{{ url_for('dev.sitemap') }}">Sitemap</a>
-                    <a class="dropdown-item" href="{{ url_for('dev.os_dict') }}">Dict: OS</a>
-                    <a class="dropdown-item" href="{{ url_for('dev.sys_dict') }}">Dict: System</a>
-                    <a class="dropdown-item" href="{{ url_for('dev.flask_dict') }}">Dict: Flask</a>
-                    <a class="dropdown-item" href="{{ url_for('dev.scheduler_dict') }}">Dict: Scheduler</a>
-                    <a class="dropdown-item" href="{{ url_for('dev.user_dict') }}">Dict: User</a>
-                </div>
-            </li>
-        </ul>
-        <span class="navbar-text mx-3">
-            Hello! {{ username }}
-        </span>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+                    <a class="nav-link disabled" href="{{ url_for('main.hub_history') }}">
+                        History
+                        {% if title == "History" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_tmp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_tmp">
+                        <a class="dropdown-item" href="{{ url_for('main.hub_status') }}">Hub Status</a>
+                        <a class="dropdown-item" href="{{ url_for('main.youtube_subscription') }}">List YouTube Subscription</a>
+                        <a class="dropdown-item" href="{{ url_for('main.pushover_push') }}">Send Test Notification</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_dev">
+                        <a class="dropdown-item" href="{{ url_for('dev.sitemap') }}">Sitemap</a>
+                        <a class="dropdown-item" href="{{ url_for('dev.os_dict') }}">Dict: OS</a>
+                        <a class="dropdown-item" href="{{ url_for('dev.sys_dict') }}">Dict: System</a>
+                        <a class="dropdown-item" href="{{ url_for('dev.flask_dict') }}">Dict: Flask</a>
+                        <a class="dropdown-item" href="{{ url_for('dev.scheduler_dict') }}">Dict: Scheduler</a>
+                        <a class="dropdown-item" href="{{ url_for('dev.user_dict') }}">Dict: User</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_user">
+                        <a class="dropdown-item" href="{{ url_for('user.login') }}">Login</a>
+                        <a class="dropdown-item" href="{{ url_for('user.register') }}">Register</a>
+                        <a class="dropdown-item" href="{{ url_for('user.setting') }}">Setting</a>
+                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            <span class="navbar-text mx-3">
+                {% if current_user.is_authenticated %}
+                Hello! {{ current_user.username }}
+                {% endif %}
+            </span>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</header>
 <!-- END STICKY NAVBAR -->
 {% endmacro %}

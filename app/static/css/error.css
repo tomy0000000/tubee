@@ -1,8 +1,4 @@
-.container {
-    height: 100vh;
-}
-
-.container * {
+#hero * {
     font-family: 'Baloo Bhaijaan', cursive;
 }
 

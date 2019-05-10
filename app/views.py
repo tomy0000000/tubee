@@ -1,18 +1,14 @@
 """Views for Tubee"""
 from datetime import datetime, timedelta
 import rfc3339
-import requests
-import google_auth_oauthlib.flow
-import google.oauth2.credentials
 from apiclient import discovery
 from dateutil import parser
-from flask import redirect, request, render_template, url_for, session, current_app
+from flask import request, render_template, current_app
 from flask_login import current_user, login_required
 
-from . import login_manager, db, bcrypt
 from .routes.main import main as route_blueprint
 from .helper import build_youtube_service
-from .models import User, Callback, Subscription
+from .models import Callback, Subscription
 
 #     #######
 #     #       #    # #    #  ####   ####
@@ -45,90 +41,6 @@ def list_channel_videos(channel_id, recent=True):
             video["snippet"]["channelId"] = channel_id
         results += response["items"]
     return results
-
-#     #       #######  #####  ### #     #
-#     #       #     # #     #  #  ##    #
-#     #       #     # #        #  # #   #
-#     #       #     # #  ####  #  #  #  #
-#     #       #     # #     #  #  #   # #
-#     #       #     # #     #  #  #    ##
-#     ####### #######  #####  ### #     #
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    return render_template("empty.html", info="You Must Login First!")
-
-@route_blueprint.route("/renew-password")
-@login_required
-def login_renew_password():
-    current_user.password = bcrypt.generate_password_hash(current_user.password)
-    db.session.commit()
-    return render_template("empty.html", info="Done")
-
-@route_blueprint.route('/login/youtube/authorize')
-@login_required
-def login_youtube_authorize():
-    # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        current_app.instance_path + "beta_client_secret.json",
-        scopes="https://www.googleapis.com/auth/youtube.force-ssl")
-    flow.redirect_uri = url_for("main.login_youtube_oauth_callback", _external=True)
-
-    authorization_url, state = flow.authorization_url(
-        # Enable offline access so that you can refresh an access token without
-        # re-prompting the user for permission. Recommended for web server apps.
-        access_type="offline",
-        # Enable incremental authorization. Recommended as a best practice.
-        include_granted_scopes="true")
-
-    # Store the state so the callback can verify the auth server response.
-    session["state"] = state
-    return redirect(authorization_url)
-
-@route_blueprint.route("/login/youtube/oauth_callback")
-@login_required
-def login_youtube_oauth_callback():
-    # Specify the state when creating the flow in the callback so that it can
-    # verified in the authorization server response.
-    state = session["state"]
-
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        current_app.instance_path + "beta_client_secret.json",
-        scopes="https://www.googleapis.com/auth/youtube.force-ssl",
-        state=state)
-    flow.redirect_uri = url_for("main.login_youtube_oauth_callback", _external=True)
-    flow.fetch_token(authorization_response=request.url)
-    credentials_dict = {
-        "token": flow.credentials.token,
-        "refresh_token": flow.credentials.refresh_token,
-        "token_uri": flow.credentials.token_uri,
-        "client_id": flow.credentials.client_id,
-        "client_secret": flow.credentials.client_secret,
-        "scopes": flow.credentials.scopes
-    }
-    current_user.youtube_credentials = credentials_dict
-    session["credentials"] = credentials_dict
-
-    # return redirect(url_for("main.login_setting"))
-    return render_template("setting.html", user=current_user, notes=credentials_dict)
-
-@route_blueprint.route("/login/youtube/revoke")
-@login_required
-def login_youtube_revoke():
-    if not current_user.youtube_credentials:
-        return render_template("empty.html", info="Credentials not set")
-    credentials = google.oauth2.credentials.Credentials(**current_user.youtube_credentials)
-    response = requests.post("https://accounts.google.com/o/oauth2/revoke",
-                             params={"token": credentials.token},
-                             headers={"content-type": "application/x-www-form-urlencoded"})
-    if response.status_code == 200:
-        current_user.youtube_credentials = {}
-    # return redirect(url_for("main.login_setting"))
-    return render_template("setting.html", user=current_user, notes=[response.status_code, response.text])
 
 #     #     #
 #     #     # #    # #####

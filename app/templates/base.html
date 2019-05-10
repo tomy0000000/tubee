@@ -19,17 +19,17 @@
     <!-- END PAGE CSS -->
 
 <body class="d-flex flex-column h-100">
-    <header>
-        {{ navbar.navbar(username) }}
-    </header>
-    <!-- CONTAINER -->
-    <main role="main" class="flex-shrink-0">
-        <div class="container">
+    {{ navbar.navbar(current_user) }}
+    <main role="main" class="flex-grow-1">
+        <!-- CONTAINER -->
+        <div class="container h-100">
             {{ alert_widget.alert(alert, alert_type) }}
+            <!-- CONTENT -->
             {% block content %}{% endblock %}
+            <!-- END CONTENT -->
         </div>
+        <!-- END CONTAINER -->
     </main>
-    <!-- END CONTAINER -->
     <!-- FOOTER -->
     <footer class="footer mt-auto py-3">
         <div class="container text-muted text-center">

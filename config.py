@@ -28,6 +28,7 @@ class Config:
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 
     # YouTube Data API
+    YOUTUBE_API_CLIENT_SECRET_FILE = os.environ.get("YOUTUBE_API_CLIENT_SECRET_FILE")
     YOUTUBE_READ_WRITE_SSL_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
@@ -52,6 +53,7 @@ class DevelopmentConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
+        os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 class TestingConfig(Config):
     """Config for Testing, Travis CI"""
