@@ -51,8 +51,6 @@ function onSuccess(responseData, row_tag) {
                 break;
         }
     });
-    // last_subscribe_request
-    // last_unsubscribe_request
 }
 
 function onFailed(responseData, data) {
