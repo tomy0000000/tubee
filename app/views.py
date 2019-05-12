@@ -50,22 +50,6 @@ def list_channel_videos(channel_id, recent=True):
 #     #     # #    # #    #
 #     #     #  ####  #####
 
-@route_blueprint.route("/hub/history")
-def hub_history():
-    """List all callback history of all channel"""
-    callbacks = Callback.query.order_by(Callback.received_datetime.desc()).all()
-    return render_template("hub_history.html", callbacks=callbacks)
-
-@route_blueprint.route("/hub/history/<channel_id>")
-def hub_history_channel(channel_id):
-    """List all callback history of a specific channel"""
-    callbacks = Callback.query.filter_by(
-        channel_id=channel_id).order_by(Callback.received_datetime.desc()).all()
-    subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
-    return render_template("hub_history.html",
-                           callbacks=callbacks,
-                           channel_name=subscription.channel_name)
-
 @route_blueprint.route("/hub/status")
 def hub_status():
     channels = Subscription.query.order_by(Subscription.channel_name).all()
@@ -73,7 +57,7 @@ def hub_status():
 
 @route_blueprint.route("/hub/renew/<channel_id>")
 def hub_renew_channel(channel_id):
-    subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
+    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
     code = subscription.renew_hub().status_code
     return render_template("empty.html", info="Response HTTP Status Code: {status_code}".format(
         status_code=code))
@@ -83,26 +67,6 @@ def hub_renew():
     response = {}
     for subscription in Subscription.query.filter(Subscription.active):
         response[subscription.channel_id] = subscription.renew_hub().status_code
-    return render_template("empty.html", info=response)
-
-#     ######
-#     #     # #    #  ####  #    #  ####  #    # ###### #####
-#     #     # #    # #      #    # #    # #    # #      #    #
-#     ######  #    #  ####  ###### #    # #    # #####  #    #
-#     #       #    #      # #    # #    # #    # #      #####
-#     #       #    # #    # #    # #    #  #  #  #      #   #
-#     #        ####   ####  #    #  ####    ##   ###### #    #
-
-@route_blueprint.route("/pushover/push", methods=["GET", "POST"])
-@login_required
-def pushover_push():
-    if request.method == "GET":
-        return render_template("pushover_push.html")
-    elif request.method == "POST":
-        form_datas = request.form
-        response = current_user.send_notification("Test", form_datas["message"], title=form_datas["title"])
-        return render_template("empty.html", info=response)
-    response = "Something Went Wrong!!!!"
     return render_template("empty.html", info=response)
 
 #     #     #               #######

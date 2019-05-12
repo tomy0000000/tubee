@@ -1,12 +1,15 @@
-{% extends "layout.html" %}
-{% set page_title = "Status Board" %}
-{% block scripts %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/status.js') }}"></script>
-{% endblock %}
+{% extends "base.html" %}
+{% set title = "Hub Status" %}
+
 {% block stylesheet %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/status.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/status.css') }}">
 {% endblock %}
-{% block body %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+{% endblock %}
+
+{% block content %}
 <table class="table table-striped table-hover">
     <thead class="thead-dark">
         <tr>

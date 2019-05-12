@@ -58,7 +58,7 @@
                     {% else %}
                 <li class="nav-item">
                     {% endif %}
-                    <a class="nav-link disabled" href="{{ url_for('main.hub_history') }}">
+                    <a class="nav-link disabled" href="{{ url_for('admin.hub_dashboard') }}">
                         History
                         {% if page_title == "History" %}
                         <span class="sr-only">(current)</span>
@@ -70,7 +70,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown_tmp">
                         <a class="dropdown-item" href="{{ url_for('main.hub_status') }}">Hub Status</a>
                         <a class="dropdown-item" href="{{ url_for('main.youtube_subscription') }}">List YouTube Subscription</a>
-                        <a class="dropdown-item" href="{{ url_for('main.pushover_push') }}">Send Test Notification</a>
+                        <a class="dropdown-item" href="{{ url_for('admin.notification_push') }}">Send Test Notification</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

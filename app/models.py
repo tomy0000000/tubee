@@ -120,6 +120,7 @@ class User(UserMixin, db.Model):
         new_notification = Notification(initiator, self, *args, **kwargs)
         db.session.add(new_notification)
         db.session.commit()
+        return new_notification.response
 
 class Subscription(db.Model):
     __tablename__ = "subscription"

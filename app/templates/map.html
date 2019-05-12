@@ -1,7 +1,7 @@
-{% extends "layout.html" %}
-{% set page_title = "Site Map" %}
-{% block body %}
+{% extends "base.html" %}
+{% set title = "Sitemap" %}
 
+{% block content %}
 <table class="table table-striped table-hover">
     <thead class="thead-dark">
         <tr>
@@ -22,22 +22,4 @@
         {% endfor %}
     </tbody>
 </table>
-
-{# <ul>
-    {% for url, endpoint in links %}
-        <li><a href="{{ url }}">{{ endpoint }}</a></li>
-    {% endfor %}
-</ul> #}
-
-{# <ul>
-    {% for route in map %}
-    <li>{{ route }}</li>
-    <ul>
-        <li>{{ route.defaults }}</li>
-        <li>{{ route.arguments }}</li>
-        <li>{{ route.endpoint }}</li>
-    </ul>
-    {% endfor %}
-</ul> #}
-
 {% endblock %}
