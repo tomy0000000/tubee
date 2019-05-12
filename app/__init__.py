@@ -55,7 +55,9 @@ def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
     if os.path.isfile(os.path.join(app.instance_path, "logging.cfg")):
-        app.config.from_pyfile("logging.cfg")
+        # app.config.from_pyfile("logging.cfg")
+        with app.open_instance_resource("logging.cfg", "r") as json_file:
+            logging.config.dictConfig(json.load(json_file))
     # if "LOGGING_CONFIG" in os.environ:
     #     logging.config.dictConfig(json.loads(os.environ["LOGGING_CONFIG"]))
 
