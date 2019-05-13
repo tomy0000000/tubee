@@ -3,9 +3,7 @@ python:
   - 3.6
 matrix:
   include:
-  - python: 3.7
-    dist: xenial
-script:
-- flask test --coverage
-after_script:
-- codecov
+    - python: 3.7
+      dist: xenial
+script: flask test --coverage
+after_script: codecov
