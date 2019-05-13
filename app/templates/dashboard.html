@@ -5,7 +5,7 @@
 {% endblock %}
 {% block script %}{% endblock %}
 {% block content %}
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr>
             <th scope="col" class="align-middle"></th>
@@ -20,7 +20,9 @@
         {% for subscription in subscriptions %}
         <tr>
             <th scope="row">
+                {% if subscription.thumbnails_url %}
                 <img src="{{ subscription.thumbnails_url }}" class="rounded-circle">
+                {% endif %}
             </th>
             <td class="channel-name align-middle">
                 {% if subscription.custom_url %}

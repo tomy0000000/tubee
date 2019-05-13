@@ -22,7 +22,7 @@ naming_convention = {
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
     "pk": "pk_%(table_name)s"
 }
-metadata=MetaData(naming_convention=naming_convention)
+metadata = MetaData(naming_convention=naming_convention)
 db = flask_sqlalchemy.SQLAlchemy(metadata=metadata)     # flask_sqlalchemy
 scheduler = flask_apscheduler.APScheduler()             # flask_apscheduler
 login_manager = flask_login.LoginManager()              # flask_login

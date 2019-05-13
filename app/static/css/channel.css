@@ -1,0 +1,8 @@
+#content-container {
+    position: relative;
+    top: -350px;
+}
+
+.hub-table-cell {
+    width: 50%;
+}

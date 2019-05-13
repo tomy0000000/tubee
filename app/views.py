@@ -86,7 +86,7 @@ def youtube_video():
     for video in videos:
         video_search = Callback.query.filter_by(
             channel_id=video["snippet"]["channelId"],
-            action_type="Hub Notification",
+            action="Hub Notification",
             details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
                                                     ).all()
         video["callback"] = {
@@ -172,7 +172,7 @@ def summary_channel(channel_id):
     for video in videos:
         video_search = Callback.query.filter_by(
             channel_id=channel_id,
-            action_type="Hub Notification",
+            action="Hub Notification",
             details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
                                                     ).all()
         video["callback"] = {
