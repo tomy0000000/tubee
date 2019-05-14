@@ -13,7 +13,7 @@ def notification_dashboard():
     """Show Recent Pushed Notification"""
     # TODO
     notifications = Notification.query.order_by(Notification.sent_datetime.desc()).all()
-    return render_template("pushover_history.html", notifications=notifications)
+    return render_template("pushover_dashboard.html", notifications=notifications)
 
 @admin.route("/notification/push", methods=["GET", "POST"])
 @login_required

@@ -1,6 +1,7 @@
 """Channel Related Routes"""
 import bs4
 import json
+import youtube_dl
 from apiclient.errors import HttpError
 from datetime import datetime
 from dateutil import parser
@@ -10,6 +11,11 @@ from .. import db
 from ..helper import send_notification
 from ..models import Callback, Request, Subscription, User
 channel = Blueprint("channel", __name__)
+youtube_dl_service = youtube_dl.YoutubeDL({
+    "ignoreerrors": True,
+    "extract_flat": True,
+    "playlistend": 30
+})
 
 @channel.route("/<channel_id>")
 def channel_page(channel_id):
@@ -32,7 +38,10 @@ def channel_page(channel_id):
 
     # TODO: Support New Un-Subscribed Channel
     subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
-    return render_template("channel.html", subscription=subscription)
+    URL = "https://www.youtube.com/channel/{channel_id}".format(channel_id=channel_id)
+    channel_metadatas = youtube_dl_service.extract_info(URL, download=False)
+    playlist_metadatas = youtube_dl_service.extract_info(channel_metadatas["url"], download=False)
+    return render_template("channel.html", subscription=subscription, video_meta=playlist_metadatas)
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel.route("/subscribe", methods=["GET", "POST"])

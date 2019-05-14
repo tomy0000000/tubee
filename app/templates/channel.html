@@ -47,13 +47,11 @@
         </a>
     </div>
 </div>
-<div class="jumbotron jumbotron-fluid">
-    <div class="media mx-3">
-        <img src="{{ subscription.thumbnails_url }}" class="mr-3 rounded-circle" alt="Thumbnails of {{ subscription.channel_name }}">
-        <div class="media-body">
-            <h5 class="mt-0">{{ subscription.channel_name }}</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-        </div>
+<div class="jumbotron media">
+    <img src="{{ subscription.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ subscription.channel_name }}">
+    <div class="media-body my-auto">
+        <h5 class="mt-0">{{ subscription.channel_name }}</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
     </div>
 </div>
 {% if current_user.master %}

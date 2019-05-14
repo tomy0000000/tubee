@@ -198,7 +198,7 @@ class Subscription(db.Model):
         ).execute()["items"][0]
         self.channel_name = retrieved_infos["snippet"]["title"]
         try:
-            self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["default"]["url"]
+            self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["default"]["high"]
         except KeyError:
             pass
         try:
@@ -230,6 +230,14 @@ class Subscription(db.Model):
     def renew(self):
         self.renew_info()
         self.renew_hub()
+
+# class Video(db.Model):
+#     """Videos of Subscribed Channel"""
+#     __tablename__ = "video"
+#     id = db.Column(db.String(32), nullable=False, primary_key=True)
+#     uploaded_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
+#     def __init__(self, arg):
+#         self.arg = arg
 
 class Callback(db.Model):
     __tablename__ = "callback"
