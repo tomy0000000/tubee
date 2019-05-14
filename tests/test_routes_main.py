@@ -64,6 +64,3 @@ class RoutesTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("ALERT", response.get_data(as_text=True))
         self.assertIn("Logged Out", response.get_data(as_text=True))
-
-    def test_hub_callback(self):
-        pass

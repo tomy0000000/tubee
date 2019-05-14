@@ -1,11 +1,9 @@
 """Views for Tubee"""
-from datetime import datetime, timedelta
 import rfc3339
 from apiclient import discovery
-from dateutil import parser
+from datetime import datetime, timedelta
 from flask import request, render_template, current_app
 from flask_login import current_user, login_required
-
 from .routes.main import main as route_blueprint
 from .helper import build_youtube_service
 from .models import Callback, Subscription
@@ -55,13 +53,6 @@ def hub_status():
     channels = Subscription.query.order_by(Subscription.channel_name).all()
     return render_template("status.html", channels=channels)
 
-@route_blueprint.route("/hub/renew/<channel_id>")
-def hub_renew_channel(channel_id):
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
-    code = subscription.renew_hub().status_code
-    return render_template("empty.html", info="Response HTTP Status Code: {status_code}".format(
-        status_code=code))
-
 @route_blueprint.route("/hub/renew")
 def hub_renew():
     response = {}
@@ -77,12 +68,27 @@ def hub_renew():
 #        #    #    # #    #    #    #    # #    # #
 #        #     ####   ####     #     ####  #####  ######
 
+@route_blueprint.route("/channel/oldsummary/<channel_id>")
+def summary_channel(channel_id):
+    subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
+    videos = list_channel_videos(channel_id)
+    for video in videos:
+        video_search = Callback.query.filter_by(
+            channel_id=channel_id,
+            action="Hub Notification",
+            details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
+                                                    ).all()
+        video["callback"] = {
+            "datetime": video_search[0].received_datetime if len(video_search) > 0 else "",
+            "count": len(video_search)
+        }
+    return render_template("summary.html", videos=videos, channel_name=subscription.channel_name)
+
 @route_blueprint.route("/youtube/video")
 def youtube_video():
     videos = []
     for channel in Subscription.query.filter_by(active=True):
         videos += list_channel_videos(channel.channel_id)
-    videos.sort(key=lambda x: parser.parse(x["snippet"]["publishedAt"]), reverse=True)
     for video in videos:
         video_search = Callback.query.filter_by(
             channel_id=video["snippet"]["channelId"],
@@ -134,11 +140,6 @@ def youtube_subscription():
             channel_id=channel["snippet"]["resourceId"]["channelId"]).count())
     return render_template("youtube_subscription_page.html", **datas)
 
-@route_blueprint.route("/youtube/playlist_insert/<video_id>")
-@login_required
-def youtube_playlist_insert(video_id):
-    return render_template("empty.html", info=current_user.insert_video_to_playlist(video_id))
-
 #     ######
 #     #     # ###### #####  #  ####
 #     #     # #      #    # # #
@@ -156,31 +157,3 @@ def youtube_playlist_insert(video_id):
 # def redis_read(key):
 #     response = redis_store.get(key)
 #     return render_template("empty.html", info=response)
-
-#     ######
-#     #     #  ####  #    # ##### ######  ####
-#     #     # #    # #    #   #   #      #
-#     ######  #    # #    #   #   #####   ####
-#     #   #   #    # #    #   #   #           #
-#     #    #  #    # #    #   #   #      #    #
-#     #     #  ####   ####    #   ######  ####
-
-@route_blueprint.route("/channel/oldsummary/<channel_id>")
-def summary_channel(channel_id):
-    subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
-    videos = list_channel_videos(channel_id)
-    for video in videos:
-        video_search = Callback.query.filter_by(
-            channel_id=channel_id,
-            action="Hub Notification",
-            details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
-                                                    ).all()
-        video["callback"] = {
-            "datetime": video_search[0].received_datetime if len(video_search) > 0 else "",
-            "count": len(video_search)
-        }
-        # video["callback"]["datetime"] = video_search
-        # video["callback"]["count"] = len(video_search)
-        # video["callback"]["datetime"] = video_search[0]["received_datetime"]
-        # video["callback"]["count"] = len(video_search)
-    return render_template("summary.html", videos=videos, channel_name=subscription.channel_name)

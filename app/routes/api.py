@@ -1,5 +1,5 @@
 """API for Frontend Access"""
-from flask import Blueprint
+from flask import Blueprint, render_template, jsonify
 from flask_login import login_required
 from .. import scheduler
 from ..models import Subscription
@@ -20,14 +20,24 @@ def channel_status(channel_id):
 
 @api.route("/<channel_id>/subscribe")
 @login_required
-def api_channel_subscribe():
+def channel_subscribe(channel_id):
     """Subscribe to a Channel"""
     # TODO
+    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
 
 @api.route("/<channel_id>/unsubscribe")
 @login_required
-def api_channel_unsubscribe():
+def channel_unsubscribe(channel_id):
     """Unsubscribe to a Channel"""
     # TODO
+    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
+
+@api.route("/<channel_id>/renew")
+@login_required
+def channel_renew(channel_id):
+    """Renew Subscription Info, Both Hub and Info"""
+    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
+    response = subscription.renew()
+    return jsonify(response)

@@ -19,6 +19,8 @@ class UserSubscription(db.Model):
     __tablename__ = "user-subscription"
     subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True)
     subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), primary_key=True)
+    # subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
+    # unsubscribe_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
     tags = db.Column(db.PickleType, nullable=True)
 
 class User(UserMixin, db.Model):
@@ -131,8 +133,10 @@ class Subscription(db.Model):
     language = db.Column(db.String(5))
     custom_url = db.Column(db.String(100))
     active = db.Column(db.Boolean, nullable=False, server_default=None, unique=False)
-    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
+    # latest_status = db.Column(db.String(20), nullable=True, server_default=None, unique=False)
+    # expire_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
     renew_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
+    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
     unsubscribe_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
     subscribers = db.relationship("UserSubscription",
                                   foreign_keys=[UserSubscription.subscribing_channel_id],
@@ -196,26 +200,27 @@ class Subscription(db.Model):
             part="snippet",
             id=self.channel_id
         ).execute()["items"][0]
+        modification = {
+            "channel_name": True,
+            "thumbnails_url": True,
+            "country": False,
+            "defaultLanguage": False,
+            "customUrl": False
+        }
         self.channel_name = retrieved_infos["snippet"]["title"]
-        try:
-            self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["default"]["high"]
-        except KeyError:
-            pass
-        try:
+        self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["high"]["url"]
+        if "country" in retrieved_infos["snippet"]:
             self.country = retrieved_infos["snippet"]["country"]
-        except KeyError:
-            pass
-        try:
+            modification["country"] = True
+        if "defaultLanguage" in retrieved_infos["snippet"]:
             self.language = retrieved_infos["snippet"]["defaultLanguage"]
-        except KeyError:
-            pass
-        try:
+            modification["defaultLanguage"] = True
+        if "customUrl" in retrieved_infos["snippet"]:
             self.custom_url = retrieved_infos["snippet"]["customUrl"]
-        except KeyError:
-            pass
+            modification["customUrl"] = True
         db.session.commit()
         # Consider adding localized infos(?)
-        return None
+        return modification
 
     def renew_hub(self):
         """Renew Subscription by submitting new Hub Subscription"""
@@ -225,11 +230,14 @@ class Subscription(db.Model):
         response = hub.subscribe(callback_url, topic_url)
         if response.success:
             self.renew_datetime = datetime.now()
-        return response
+            db.session.commit()
+        return response.success
 
     def renew(self):
-        self.renew_info()
-        self.renew_hub()
+        response = self.renew_info()
+        hub = self.renew_hub()
+        response["hub"] = hub
+        return response
 
 # class Video(db.Model):
 #     """Videos of Subscribed Channel"""

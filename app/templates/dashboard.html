@@ -3,7 +3,9 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 {% endblock %}
-{% block script %}{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
 {% block content %}
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
@@ -28,6 +30,9 @@
             <th scope="col" class="align-middle">Active</th>
             <th scope="col" class="align-middle">Renew Datetime</th>
             <th scope="col" class="align-middle">Unsubscribe Datetime</th>
+            {% if current_user.master %}
+            <th scope="col" class="align-middle">Renew</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -60,6 +65,11 @@
             {% else %}
             <td class="align-middle">
                 <a href="{{ url_for('channel.unsubscribe', channel_id=subscription.channel_id) }}">Unsubscribe</a>
+            </td>
+            {% endif %}
+            {% if current_user.master %}
+            <td class="align-middle">
+                    <button class="btn btn-primary renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel_id) }}">Renew</button>
             </td>
             {% endif %}
         </tr>
