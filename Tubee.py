@@ -21,13 +21,16 @@ from app.models import User
 app = create_app(os.getenv("FLASK_CONFIG") or "default")
 migrate = Migrate()
 with app.app_context():
-    if db.engine.url.drivername == "sqlite":
-        migrate.init_app(app, db, render_as_batch=True)
-    else:
-        migrate.init_app(app, db)
+    render_as_batch = bool(db.engine.url.drivername == "sqlite")
+    migrate.init_app(app, db, render_as_batch=render_as_batch)
+    # if db.engine.url.drivername == "sqlite":
+    #     migrate.init_app(app, db, render_as_batch=True)
+    # else:
+    #     migrate.init_app(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
+
     return dict(db=db, User=User)
 
 
@@ -73,12 +76,6 @@ def deploy():
     """Run deployment tasks."""
     # migrate database to latest revision
     upgrade()
-
-    # create or update user roles
-    # Role.insert_roles()
-
-    # ensure all users are following themselves
-    # User.add_self_follows()
 
 if __name__ == "__main__":
     app.run()

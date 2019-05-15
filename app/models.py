@@ -14,6 +14,19 @@ def load_user(user_id):
     """Internal function for user info accessing"""
     return User.query.get(user_id)
 
+import sqlalchemy
+
+"""
+sqlalchemy.Column(
+    name
+    type
+    primary_key         False               bool
+    server_default      None ("NULL")       "NULL", "CURRENT_TIMESTAMP"
+    nullable            not primary_key     bool
+    index               None (False)        bool
+    unique              None (False)        bool
+"""
+
 class UserSubscription(db.Model):
     """Relationship of User and Subscription"""
     __tablename__ = "user-subscription"
@@ -27,7 +40,7 @@ class User(UserMixin, db.Model):
     """
     username                username for identification (Max:30)
     password                user's login password
-    master                  user is Tubee Master
+    admin                   user is Tubee Admin
     pushover_key            access key to Pushover Service
     youtube_credentials     access credentials to YouTube Service
     subscriptions           User's Subscription to YouTube Channels
@@ -35,7 +48,7 @@ class User(UserMixin, db.Model):
     __tablename__ = "user"
     username = db.Column(db.String(30), nullable=False, primary_key=True)
     password = db.Column(db.String(70), nullable=False, server_default=None, unique=False)
-    master = db.Column(db.Boolean, nullable=True, server_default="0", unique=False)
+    admin = db.Column(db.Boolean, nullable=True, server_default="0", unique=False)
     pushover_key = db.Column(db.String(40), nullable=True, server_default="", unique=False)
     youtube_credentials = db.Column(db.JSON, nullable=True, server_default="{}", unique=False)
     subscriptions = db.relationship("UserSubscription",
@@ -54,8 +67,8 @@ class User(UserMixin, db.Model):
         self.password = bcrypt.generate_password_hash(password)
     def __repr__(self):
         return "<users %r>" %self.username
-    def promote_to_master(self):
-        self.master = True
+    def promote_to_admin(self):
+        self.admin = True
     def setting_pushover_key(self, key):
         pass
     """UserMixin Methods"""

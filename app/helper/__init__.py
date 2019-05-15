@@ -16,7 +16,7 @@ def admin_required(func):
     """A decorator making view function for admin only"""
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if not current_user.master:
+        if not current_user.admin:
             abort(403)
         return func(*args, **kwargs)
     return decorated_function
