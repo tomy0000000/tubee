@@ -12,7 +12,7 @@ before_install:
   -in travis_key.enc -out ./travis_key -d
 - eval "$(ssh-agent -s)"
 - chmod 600 ./travis_key
-- echo -e "Host $35.197.22.208\n\StrictHostKeyChecking no\n" >> ~/.ssh/config
+- echo -e "Host $35.197.22.208\n\tStrictHostKeyChecking=no\n" >> ~/.ssh/config
 - ssh-add ./travis_key
 - ssh -i ./travis_key root@35.197.22.208 pwd
 script:
