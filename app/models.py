@@ -37,7 +37,7 @@ class UserSubscription(db.Model):
     id = db.Column(db.Integer, autoincrement=True)
     subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True, nullable=False)
     subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), nullable=False)
-    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default="CURRENT_TIMESTAMP")
+    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
     tags = db.Column(db.PickleType)
 
