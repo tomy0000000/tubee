@@ -1,11 +1,21 @@
 language: python
 python:
-  - 3.4
-  - 3.5
-  - 3.6
+- 3.4
+- 3.5
+- 3.6
 matrix:
   include:
-    - python: 3.7
-      dist: xenial
-script: flask test --coverage
-after_script: codecov
+  - python: 3.7
+    dist: xenial
+before_install:
+- openssl aes-256-cbc -K $encrypted_c32b465e7480_key -iv $encrypted_c32b465e7480_iv
+  -in travis_key.enc -out ./travis_key -d
+- eval "$(ssh-agent -s)"
+- chmod 600 ./travis_key
+- echo -e "Host $35.197.22.208\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- ssh-add ./travis_key
+- ssh -i ./travis_key root@35.197.22.208 pwd
+script:
+- flask test --coverage
+after_script:
+- codecov
