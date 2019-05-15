@@ -14,7 +14,7 @@ before_install:
 - chmod 600 ./travis_key
 - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - ssh-add ./travis_key
-- ssh -i ./travis_key root@$SERVER_IP_ADDRESS pwd
+- ssh -i ./travis_key $SERVER_USERNAME@$SERVER_IP_ADDRESS pwd
 script:
 - flask test --coverage
 after_script:
