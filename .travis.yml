@@ -16,12 +16,8 @@ before_deploy:
 - chmod 600 ./travis_key
 - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - ssh-add ./travis_key
-- ssh -i ./travis_key $SERVER_USERNAME@$SERVER_IP_ADDRESS
 deploy:
   provider: script
-  skip_cleanup: true
-  script: pwd
-# after_success:
-# - bin/deploy.sh
+  script: ssh -i ./travis_key $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
 after_script:
 - codecov
