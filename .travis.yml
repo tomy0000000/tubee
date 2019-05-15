@@ -18,6 +18,6 @@ before_deploy:
 - ssh-add ./travis_key
 deploy:
   provider: script
-  script: ssh -i ./travis_key $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
+  script: ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
 after_script:
 - codecov

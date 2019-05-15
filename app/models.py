@@ -17,24 +17,29 @@ def load_user(user_id):
 import sqlalchemy
 
 """
-sqlalchemy.Column(
+sqlalchemy.schema.Column
     name
     type
-    primary_key         False               bool
-    server_default      None ("NULL")       "NULL", "CURRENT_TIMESTAMP"
-    nullable            not primary_key     bool
-    index               None (False)        bool
-    unique              None (False)        bool
+    primary_key         False                   bool
+    server_default      None ("NULL")           "NULL", "CURRENT_TIMESTAMP"
+    nullable            not primary_key (True)  bool
+    index               None (False)            bool
+    unique              None (False)            bool
+sqlalchemy.schema.ForeignKey
+    column
+    name
+sqlalchemy.orm.relationship
 """
 
 class UserSubscription(db.Model):
     """Relationship of User and Subscription"""
     __tablename__ = "user-subscription"
-    subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True)
-    subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), primary_key=True)
-    # subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
-    # unsubscribe_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
-    tags = db.Column(db.PickleType, nullable=True)
+    id = db.Column(db.Integer, autoincrement=True)
+    subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True, nullable=False)
+    subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), nullable=False)
+    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default="CURRENT_TIMESTAMP")
+    unsubscribe_datetime = db.Column(db.DateTime)
+    tags = db.Column(db.PickleType)
 
 class User(UserMixin, db.Model):
     """
