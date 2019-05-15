@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 61889220ba8f
+Revision ID: dbc65eec0789
 Revises: 
-Create Date: 2019-05-09 12:22:01.178546
+Create Date: 2019-05-15 23:47:42.263264
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '61889220ba8f'
+revision = 'dbc65eec0789'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,15 +47,15 @@ def upgrade():
     sa.Column('language', sa.String(length=5), nullable=True),
     sa.Column('custom_url', sa.String(length=100), nullable=True),
     sa.Column('active', sa.Boolean(), nullable=False),
-    sa.Column('subscribe_datetime', sa.DateTime(), nullable=False),
     sa.Column('renew_datetime', sa.DateTime(), nullable=False),
+    sa.Column('subscribe_datetime', sa.DateTime(), nullable=False),
     sa.Column('unsubscribe_datetime', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('channel_id', name=op.f('pk_subscription'))
     )
     op.create_table('user',
     sa.Column('username', sa.String(length=30), nullable=False),
     sa.Column('password', sa.String(length=70), nullable=False),
-    sa.Column('master', sa.Boolean(), server_default='0', nullable=True),
+    sa.Column('admin', sa.Boolean(), server_default='0', nullable=True),
     sa.Column('pushover_key', sa.String(length=40), server_default='', nullable=True),
     sa.Column('youtube_credentials', sa.JSON(), server_default='{}', nullable=True),
     sa.PrimaryKeyConstraint('username', name=op.f('pk_user'))
@@ -72,12 +72,15 @@ def upgrade():
     sa.PrimaryKeyConstraint('id', name=op.f('pk_notification'))
     )
     op.create_table('user-subscription',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('subscriber_username', sa.String(length=30), nullable=False),
     sa.Column('subscribing_channel_id', sa.String(length=30), nullable=False),
+    sa.Column('subscribe_datetime', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
+    sa.Column('unsubscribe_datetime', sa.DateTime(), nullable=True),
     sa.Column('tags', sa.PickleType(), nullable=True),
     sa.ForeignKeyConstraint(['subscriber_username'], ['user.username'], name=op.f('fk_user-subscription_subscriber_username_user')),
     sa.ForeignKeyConstraint(['subscribing_channel_id'], ['subscription.channel_id'], name=op.f('fk_user-subscription_subscribing_channel_id_subscription')),
-    sa.PrimaryKeyConstraint('subscriber_username', 'subscribing_channel_id', name=op.f('pk_user-subscription'))
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_user-subscription'))
     )
     # ### end Alembic commands ###
 

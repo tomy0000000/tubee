@@ -21,8 +21,8 @@ from app.models import User
 app = create_app(os.getenv("FLASK_CONFIG") or "default")
 migrate = Migrate()
 with app.app_context():
-    render_as_batch = bool(db.engine.url.drivername == "sqlite")
-    migrate.init_app(app, db, render_as_batch=render_as_batch)
+    # render_as_batch = bool(db.engine.url.drivername == "sqlite")
+    migrate.init_app(app, db, render_as_batch=True)
     # if db.engine.url.drivername == "sqlite":
     #     migrate.init_app(app, db, render_as_batch=True)
     # else:
