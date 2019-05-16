@@ -1,7 +1,7 @@
 """Database Models of Tubee"""
-import requests
 import urllib
 from datetime import datetime
+import requests
 from apiclient import discovery
 from flask import url_for, current_app
 from flask_login import UserMixin
@@ -14,30 +14,30 @@ def load_user(user_id):
     """Internal function for user info accessing"""
     return User.query.get(user_id)
 
-import sqlalchemy
-
 """
 sqlalchemy.schema.Column
     name
     type
-    primary_key         False                   bool
-    server_default      None ("NULL")           "NULL", "CURRENT_TIMESTAMP"
-    nullable            not primary_key (True)  bool
-    index               None (False)            bool
-    unique              None (False)            bool
+    primary_key         bool                            False
+    autoincrement       bool                            "Auto" (True For Single-Primary-Key-INTEGER-Column)
+    server_default      "NULL", "CURRENT_TIMESTAMP"     None ("NULL")
+    nullable            bool                            not primary_key (True)
+    index               bool                            None (False)
+    unique              bool                            None (False)
 sqlalchemy.schema.ForeignKey
-    column
+    column              Relationship Column Object or "Column.String"
     name
 sqlalchemy.orm.relationship
+    backref             backref object or related object property name
+    
 """
 
 class UserSubscription(db.Model):
     """Relationship of User and Subscription"""
     __tablename__ = "user-subscription"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), nullable=False)
-    subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), nullable=False)
-    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP"))
+    subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True)
+    subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), primary_key=True)
+    subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
     tags = db.Column(db.PickleType)
 
@@ -51,18 +51,16 @@ class User(UserMixin, db.Model):
     subscriptions           User's Subscription to YouTube Channels
     """
     __tablename__ = "user"
-    username = db.Column(db.String(30), nullable=False, primary_key=True)
-    password = db.Column(db.String(70), nullable=False, server_default=None, unique=False)
-    admin = db.Column(db.Boolean, nullable=True, server_default="0", unique=False)
-    pushover_key = db.Column(db.String(40), nullable=True, server_default="", unique=False)
-    youtube_credentials = db.Column(db.JSON, nullable=True, server_default="{}", unique=False)
+    username = db.Column(db.String(30), primary_key=True)
+    password = db.Column(db.String(70), nullable=False)
+    admin = db.Column(db.Boolean, server_default="0")
+    pushover_key = db.Column(db.String(40))
+    youtube_credentials = db.Column(db.JSON, server_default="{}")
     subscriptions = db.relationship("UserSubscription",
-                                    foreign_keys=[UserSubscription.subscriber_username],
+                                    foreign_keys=db.ForeignKey("UserSubscription.subscriber_username"),
                                     backref=db.backref("subscribers", lazy="joined"),
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
-    notifications = db.relationship("Notification",
-                                    back_populates="user")
     def __init__(self, username, password):
         self.username = username
         if len(password) < 6:
@@ -144,8 +142,8 @@ class User(UserMixin, db.Model):
 
 class Subscription(db.Model):
     __tablename__ = "subscription"
-    channel_id = db.Column(db.String(30), nullable=False, primary_key=True)
-    channel_name = db.Column(db.String(100), nullable=False, server_default=None, unique=False)
+    channel_id = db.Column(db.String(30), primary_key=True)
+    channel_name = db.Column(db.String(100))
     thumbnails_url = db.Column(db.String(200))
     country = db.Column(db.String(5))
     language = db.Column(db.String(5))
@@ -153,11 +151,11 @@ class Subscription(db.Model):
     active = db.Column(db.Boolean, nullable=False, server_default=None, unique=False)
     # latest_status = db.Column(db.String(20), nullable=True, server_default=None, unique=False)
     # expire_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
-    renew_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
-    subscribe_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
-    unsubscribe_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
+    renew_datetime = db.Column(db.DateTime)
+    subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    unsubscribe_datetime = db.Column(db.DateTime)
     subscribers = db.relationship("UserSubscription",
-                                  foreign_keys=[UserSubscription.subscribing_channel_id],
+                                  foreign_keys=db.ForeignKey("UserSubscription.subscribing_channel_id"),
                                   backref=db.backref("subscribing", lazy="joined"),
                                   lazy="dynamic",
                                   cascade="all, delete-orphan")
@@ -267,14 +265,14 @@ class Subscription(db.Model):
 
 class Callback(db.Model):
     __tablename__ = "callback"
-    id = db.Column(db.String(32), nullable=False, primary_key=True)
-    received_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
-    channel_id = db.Column(db.String(30), nullable=False, server_default=None, unique=False)
-    action = db.Column(db.String(30), nullable=False, server_default=None, unique=False)
-    details = db.Column(db.String(20), nullable=False, server_default=None, unique=False)
-    arguments = db.Column(db.JSON, nullable=False, server_default=None, unique=False)
-    data = db.Column(db.Text, nullable=False, server_default=None, unique=False)
-    user_agent = db.Column(db.String(200), nullable=False, server_default=None, unique=False)
+    id = db.Column(db.String(32), primary_key=True)
+    received_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    channel_id = db.Column(db.String(30), nullable=False)
+    action = db.Column(db.String(30))
+    details = db.Column(db.String(20))
+    arguments = db.Column(db.JSON, server_default="{}")
+    data = db.Column(db.Text)
+    user_agent = db.Column(db.String(200))
     def __init__(self, received_datetime, channel_id, action, details, arguments, data, user_agent):
         self.id = helper.generate_random_id()
         self.received_datetime = received_datetime
@@ -298,13 +296,13 @@ class Request(db.Model):
     user_agent           can be used to identify hub challenge
     """
     __tablename__ = "request"
-    id = db.Column(db.String(32), nullable=False, primary_key=True)
-    received_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
-    method = db.Column(db.String(10), nullable=False, server_default=None, unique=False)
-    path = db.Column(db.String(100), nullable=False, server_default=None, unique=False)
-    arguments = db.Column(db.JSON, nullable=False, server_default=None, unique=False)
-    data = db.Column(db.Text, nullable=False, server_default=None, unique=False)
-    user_agent = db.Column(db.String(200), nullable=False, server_default=None, unique=False)
+    id = db.Column(db.String(32), primary_key=True)
+    received_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    method = db.Column(db.String(10))
+    path = db.Column(db.String(100))
+    arguments = db.Column(db.JSON, server_default="{}")
+    data = db.Column(db.Text)
+    user_agent = db.Column(db.String(200))
     def __init__(self, method, path, arguments, data, user_agent, received_datetime=datetime.now()):
         self.id = helper.generate_random_id()
         self.received_datetime = received_datetime
@@ -333,15 +331,14 @@ class Notification(db.Model):
     response        recieved resopnse from Pushover Server
     """
     __tablename__ = "notification"
-    id = db.Column(db.String(32), nullable=False, primary_key=True)
-    initiator = db.Column(db.String(15), nullable=False, server_default=None, unique=False)
+    id = db.Column(db.String(32), primary_key=True)
+    initiator = db.Column(db.String(15), nullable=False)
     user_id = db.Column(db.String(30), db.ForeignKey("user.username"))
-    user = db.relationship("User",
-                           back_populates="notifications")
-    sent_datetime = db.Column(db.DateTime, nullable=False, server_default=None, unique=False)
-    message = db.Column(db.String(2000), nullable=False, server_default=None, unique=False)
-    kwargs = db.Column(db.JSON, nullable=False, server_default=None, unique=False)
-    response = db.Column(db.JSON, nullable=True, server_default=None, unique=False)
+    user = db.relationship("User", backref="notifications")
+    sent_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    message = db.Column(db.String(2000), nullable=False)
+    kwargs = db.Column(db.JSON)
+    response = db.Column(db.JSON, server_default="{}")
     def __init__(self, initiator, user, *args, **kwargs):
         self.id = helper.generate_random_id()
         self.initiator = initiator
@@ -368,5 +365,5 @@ class APShedulerJobs(db.Model):
     """A Dummy Model for Flask Migrate"""
     __tablename__ = "apscheduler_jobs"
     id = db.Column(db.String(32), nullable=False, primary_key=True)
-    next_run_time = db.Column(db.Float(64), nullable=True, index=True)
+    next_run_time = db.Column(db.Float(64), index=True)
     job_state = db.Column(db.LargeBinary, nullable=False)
