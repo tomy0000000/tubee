@@ -137,17 +137,17 @@ def callback(channel_id):
         """
 
         # Decide to Pass or Not
-        # Tomy = User.query.filter_by(username="tomy0000000").first_or_404()
         subscriptions = UserSubscription.query.filter_by(subscribing_channel_id=channel_id)
-        new_video_update = Callback.query.filter_by(channel_id=channel_id).exists()
+        new_video_update = bool(Callback.query.filter_by(channel_id=channel_id).count())
         response = {
             "append_wl_to": {},
             "notification_to": {}
         }
         for subscription in subscriptions:
             old_video_update = bool(published_datetime < subscription.subscribe_datetime)
+            skip_add_playlist = skip_notification = False
             if test_mode and subscription.subscriber.admin:
-                skip_add_playlist = skip_notification = False
+                pass
             elif old_video_update or new_video_update:
                 skip_add_playlist = skip_notification = True
             # Append to WL
