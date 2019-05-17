@@ -55,9 +55,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(70), nullable=False)
     admin = db.Column(db.Boolean, server_default="0")
     pushover_key = db.Column(db.String(40))
-    youtube_credentials = db.Column(db.JSON, server_default="{}")
+    youtube_credentials = db.Column(db.JSON)
     subscriptions = db.relationship("UserSubscription",
-                                    foreign_keys=db.ForeignKey("UserSubscription.subscriber_username"),
+                                    foreign_keys="UserSubscription.subscriber_username",
                                     backref=db.backref("subscribers", lazy="joined"),
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
@@ -155,7 +155,7 @@ class Subscription(db.Model):
     subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
     subscribers = db.relationship("UserSubscription",
-                                  foreign_keys=db.ForeignKey("UserSubscription.subscribing_channel_id"),
+                                  foreign_keys="UserSubscription.subscribing_channel_id",
                                   backref=db.backref("subscribing", lazy="joined"),
                                   lazy="dynamic",
                                   cascade="all, delete-orphan")
@@ -270,7 +270,7 @@ class Callback(db.Model):
     channel_id = db.Column(db.String(30), nullable=False)
     action = db.Column(db.String(30))
     details = db.Column(db.String(20))
-    arguments = db.Column(db.JSON, server_default="{}")
+    arguments = db.Column(db.JSON)
     data = db.Column(db.Text)
     user_agent = db.Column(db.String(200))
     def __init__(self, received_datetime, channel_id, action, details, arguments, data, user_agent):
@@ -300,7 +300,7 @@ class Request(db.Model):
     received_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     method = db.Column(db.String(10))
     path = db.Column(db.String(100))
-    arguments = db.Column(db.JSON, server_default="{}")
+    arguments = db.Column(db.JSON)
     data = db.Column(db.Text)
     user_agent = db.Column(db.String(200))
     def __init__(self, method, path, arguments, data, user_agent, received_datetime=datetime.now()):
@@ -338,7 +338,7 @@ class Notification(db.Model):
     sent_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     message = db.Column(db.String(2000), nullable=False)
     kwargs = db.Column(db.JSON)
-    response = db.Column(db.JSON, server_default="{}")
+    response = db.Column(db.JSON)
     def __init__(self, initiator, user, *args, **kwargs):
         self.id = helper.generate_random_id()
         self.initiator = initiator
