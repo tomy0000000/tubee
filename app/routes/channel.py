@@ -1,23 +1,24 @@
 """Channel Related Routes"""
-import bs4
 import json
+from datetime import datetime
+
+import bs4
 import youtube_dl
 from apiclient.errors import HttpError
-from datetime import datetime
 from dateutil import parser
-from flask import Blueprint, current_app, render_template, request
+from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 from .. import db
 from ..helper import send_notification
-from ..models import Callback, Request, Subscription, User
-channel = Blueprint("channel", __name__)
+from ..models import Callback, Channel, User, UserSubscription
+channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
     "ignoreerrors": True,
     "extract_flat": True,
     "playlistend": 30
 })
 
-@channel.route("/<channel_id>")
+@channel_blueprint.route("/<channel_id>")
 def channel_page(channel_id):
     #
     # Avatar                    Channel Name
@@ -30,21 +31,21 @@ def channel_page(channel_id):
     # 
     # Channel Videos
     # 
-    # video_img     video_title         published_dt    callback_dt
+    # video_img     video_title         published_datetime    callback_dt
     #               (msg_box: video_id)                 (msg_box: callback_cnt)
     #                                                   (float: callback / notification detail)
     # 
     # (dynamic loading)
 
     # TODO: Support New Un-Subscribed Channel
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
-    URL = "https://www.youtube.com/channel/{channel_id}".format(channel_id=channel_id)
-    channel_metadatas = youtube_dl_service.extract_info(URL, download=False)
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    url = "https://www.youtube.com/channel/{channel_id}".format(channel_id=channel_id)
+    channel_metadatas = youtube_dl_service.extract_info(url, download=False)
     playlist_metadatas = youtube_dl_service.extract_info(channel_metadatas["url"], download=False)
-    return render_template("channel.html", subscription=subscription, video_meta=playlist_metadatas)
+    return render_template("channel.html", subscription=channel, video_meta=playlist_metadatas)
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
-@channel.route("/subscribe", methods=["GET", "POST"])
+@channel_blueprint.route("/subscribe", methods=["GET", "POST"])
 @login_required
 def subscribe():
     """
@@ -59,15 +60,14 @@ def subscribe():
 
         # Build Subscription
         channel_id = request.form["channel_id"]
-        subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first()
-        if not subscription:
-            subscription = Subscription(channel_id)
-            db.session.add(subscription)
+        channel = Channel.query.get(channel_id)
+        if not channel:
+            channel = Channel(channel_id)
+            db.session.add(channel)
             try:
                 db.session.commit()
-            except Exception as e:
-                send_notification("SQL Error", current_user, str(datetime.now())+"\n"+str(e),
-                                  title="Tubee encontered a SQL Error!!")
+            except Exception as error:
+                current_app.logger.error("SQL Commit Failed")
         
         # Schedule renew datetime
         # job_response = scheduler.add_job(
@@ -77,15 +77,15 @@ def subscribe():
         #     args=[new_subscription],
         #     days=4)
 
-        current_user.subscribe_to(subscription)
+        current_user.subscribe_to(channel)
         response = {
             # "Renew Jobs": job_response,
-            "HTTP Status Code": subscription.activate_response.status_code
+            "HTTP Status Code": channel.activate_response.status_code
         }
         return render_template("empty.html", info=response)
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
-@channel.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])
+@channel_blueprint.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])
 @login_required
 def unsubscribe(channel_id):
     """
@@ -93,18 +93,18 @@ def unsubscribe(channel_id):
     (1) Request confirmation with GET request
     (2) Submit the form POST request
     """
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     if request.method == "GET":
-        response_page = render_template("unsubscribe.html", channel_name=subscription.channel_name)
+        response_page = render_template("unsubscribe.html", channel_name=channel.channel_name)
     elif request.method == "POST":
-        response = subscription.deactivate()
+        response = channel.deactivate()
         current_app.logger.info(response)
         response_page = render_template("empty.html", info=response)
     return response_page
 
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
-@channel.route("/<channel_id>/callback", methods=["GET", "POST"])
+@channel_blueprint.route("/<channel_id>/callback", methods=["GET", "POST"])
 def callback(channel_id):
     """
     GET: Receive Hub Challenges to maintain subscription
@@ -113,29 +113,21 @@ def callback(channel_id):
     if request.method == "GET":
         get_args = request.args.to_dict()
         response = get_args.pop("hub.challenge", "Error")
-        new_callback = Callback(datetime.now(), channel_id, "Unknown GET Request" \
+        new_callback = Callback(channel_id, "Unknown GET Request" \
                                 if response == "Error" else "Hub Challenge", response,
-                                request.args, request.data, request.user_agent)
-        db.session.add(new_callback)
+                                request.method, request.path, request.args,
+                                request.data, request.user_agent)
     elif request.method == "POST":
         test_mode = bool("testing" in request.args.to_dict())
         post_datas = request.get_data()
         soup = bs4.BeautifulSoup(post_datas, "xml")
         video_id = soup.find("yt:videoId").string
-        Tomy = User.query.filter_by(username="tomy0000000").first_or_404()
+        published_datetime = parser.parse(soup.entry.find("published").string).replace(tzinfo=None)
 
         # Append Callback SQL Record
-        new_callback = Callback(datetime.now(), channel_id, "Hub Notification",
-                                video_id, request.args, request.data, request.user_agent)
-        new_request = Request(request.method, request.path, request.args,
-                              request.data, request.user_agent, datetime.now())
-        db.session.add(new_callback)
-        db.session.add(new_request)
-        try:
-            db.session.commit()
-        except Exception as e:
-            send_notification("SQL Error", Tomy, str(datetime.now())+"\n"+str(e),
-                              title="Tubee encontered a SQL Error!!")
+        new_callback = Callback(channel_id, "Hub Notification", video_id,
+                                request.method, request.path, request.args,
+                                request.data, request.user_agent)
 
         """
         1. List Users who subscribe to this channel
@@ -145,37 +137,45 @@ def callback(channel_id):
         """
 
         # Decide to Pass or Not
-        subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
-        published_dt = parser.parse(soup.entry.find("published").string).replace(tzinfo=None)
-        prev_callback_count = Callback.query.filter(Callback.details.like(video_id)).count()
-        already_pushed = bool(prev_callback_count > 1)
-        old_update = bool(published_dt < subscription.subscribe_datetime)
-        # not_pushing = already_pushed or old_update
-        if test_mode:
-            pass
-        elif already_pushed:
-            current_app.logger.info("Already Pushed")
-            return str("pass")
-        elif old_update:
-            current_app.logger.info("Old Video Update")
-            return str("pass")
-        
-        # Append to WL
-        try:
-            infos = Tomy.insert_video_to_playlist(video_id)
-            response = infos["snippet"]["description"]
-            image_url = infos["snippet"]["thumbnails"]["high"]["url"]
-        except HttpError as error:
-            response = json.loads(error.content)["error"]["message"]
-            image_url = None
-
-        # Push Notification
-        title = "New from " + subscription.channel_name
-        message = soup.entry.find("title").string + "\n" + response
-        response = Tomy.send_notification("Callback", message,
-                                          title=title,
-                                          url="https://www.youtube.com/watch?v="+video_id,
-                                          url_title=soup.entry.find("title").string,
-                                          image=image_url)
-
-    return str(response)
+        # Tomy = User.query.filter_by(username="tomy0000000").first_or_404()
+        subscriptions = UserSubscription.query.filter_by(subscribing_channel_id=channel_id)
+        new_video_update = Callback.query.filter_by(channel_id=channel_id).exists()
+        response = {
+            "append_wl_to": {},
+            "notification_to": {}
+        }
+        for subscription in subscriptions:
+            old_video_update = bool(published_datetime < subscription.subscribe_datetime)
+            if test_mode and subscription.subscriber.admin:
+                skip_add_playlist = skip_notification = False
+            elif old_video_update or new_video_update:
+                skip_add_playlist = skip_notification = True
+            # Append to WL
+            if not skip_add_playlist:
+                # TODO: Make Try/Except a part of user method
+                try:
+                    playlist_insert_response = subscription.subscriber.insert_video_to_playlist(video_id)
+                    video_description = playlist_insert_response["snippet"]["description"]
+                    video_thumbnails = playlist_insert_response["snippet"]["thumbnails"]["high"]["url"]
+                except HttpError as error:
+                    playlist_insert_response = json.loads(error.content)["error"]["message"]
+                    current_app.logger.error("Faield to insert {} to {}'s playlist".format(video_id, subscription.subscriber_username))
+                    skip_notification = True
+                response["append_wl_to"][subscription.subscriber_username] = playlist_insert_response
+            # Push Notification
+            if not skip_notification:
+                title = "New from " + subscription.channel.channel_name
+                message = soup.entry.find("title").string + "\n" + video_description
+                notification_response = subscription.subscriber.send_notification(
+                    "Callback", message,
+                    title=title,
+                    url="https://www.youtube.com/watch?v="+video_id,
+                    url_title=soup.entry.find("title").string,
+                    image=video_thumbnails)
+                response["notification_to"][subscription.subscriber_username] = notification_response
+    db.session.add(new_callback)
+    try:
+        db.session.commit()
+    except Exception as error:
+        current_app.logger.error("SQL Commit Failed")
+    return jsonify(response)

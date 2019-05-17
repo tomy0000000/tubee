@@ -1,6 +1,7 @@
 """Database Models of Tubee"""
 import urllib
 from datetime import datetime
+
 import requests
 from apiclient import discovery
 from flask import url_for, current_app
@@ -36,7 +37,7 @@ class UserSubscription(db.Model):
     """Relationship of User and Subscription"""
     __tablename__ = "user-subscription"
     subscriber_username = db.Column(db.String(30), db.ForeignKey("user.username"), primary_key=True)
-    subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("subscription.channel_id"), primary_key=True)
+    subscribing_channel_id = db.Column(db.String(30), db.ForeignKey("channel.channel_id"), primary_key=True)
     subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
     tags = db.Column(db.PickleType)
@@ -58,7 +59,7 @@ class User(UserMixin, db.Model):
     youtube_credentials = db.Column(db.JSON)
     subscriptions = db.relationship("UserSubscription",
                                     foreign_keys="UserSubscription.subscriber_username",
-                                    backref=db.backref("subscribers", lazy="joined"),
+                                    backref=db.backref("subscriber", lazy="joined"),
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
     def __init__(self, username, password):
@@ -140,8 +141,8 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return new_notification.response
 
-class Subscription(db.Model):
-    __tablename__ = "subscription"
+class Channel(db.Model):
+    __tablename__ = "channel"
     channel_id = db.Column(db.String(30), primary_key=True)
     channel_name = db.Column(db.String(100))
     thumbnails_url = db.Column(db.String(200))
@@ -156,7 +157,7 @@ class Subscription(db.Model):
     unsubscribe_datetime = db.Column(db.DateTime)
     subscribers = db.relationship("UserSubscription",
                                   foreign_keys="UserSubscription.subscribing_channel_id",
-                                  backref=db.backref("subscribing", lazy="joined"),
+                                  backref=db.backref("channel", lazy="joined"),
                                   lazy="dynamic",
                                   cascade="all, delete-orphan")
     def __init__(self, channel_id):
@@ -173,10 +174,10 @@ class Subscription(db.Model):
         self.activate_response = self.activate()
 
     def __repr__(self):
-        return "<subscription %r>" %self.channel_name
+        return "<channel %r>" %self.channel_name
 
     def activate(self):
-        """Activate the Subscription by submitting Hub Subscription"""
+        """Submitting Hub Subscription"""
         callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
@@ -188,7 +189,7 @@ class Subscription(db.Model):
         return response
 
     def deactivate(self):
-        """Deactivate the Subscription by canceling Hub Subscription"""
+        """Submitting Hub Unsubscription"""
         callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
@@ -264,63 +265,39 @@ class Subscription(db.Model):
 #         self.arg = arg
 
 class Callback(db.Model):
+    """
+    id                   a unique id for identification
+    revieved_datetime    datetime when this callback was received
+    method               Type of HTTP request, e.g. "GET", "POST".......etc..
+    path                 Paths which receive this request
+    arguments            a dict of arguments from GET requests
+    data                 POST reqests body
+    user_agent           Sender's Identity
+    """
     __tablename__ = "callback"
     id = db.Column(db.String(32), primary_key=True)
     received_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     channel_id = db.Column(db.String(30), nullable=False)
     action = db.Column(db.String(30))
     details = db.Column(db.String(20))
-    arguments = db.Column(db.JSON)
-    data = db.Column(db.Text)
-    user_agent = db.Column(db.String(200))
-    def __init__(self, received_datetime, channel_id, action, details, arguments, data, user_agent):
-        self.id = helper.generate_random_id()
-        self.received_datetime = received_datetime
-        self.channel_id = channel_id
-        self.action = action
-        self.details = details
-        self.arguments = arguments
-        self.data = data
-        self.user_agent = user_agent
-    def __repr__(self):
-        return "<callback %r>" %self.id
-
-class Request(db.Model):
-    """
-    id                   a unique id for identification
-    revieved_datetime    datetime when this request revieved
-    method               Type of HTTP request, e.g. "GET", "POST".......etc..
-    path                 Paths of Tubee, e.g. "/" for mainpage
-    arguments            arguments from GET requests query string as dict
-    data                 payload from POST reqests body as dict
-    user_agent           can be used to identify hub challenge
-    """
-    __tablename__ = "request"
-    id = db.Column(db.String(32), primary_key=True)
-    received_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     method = db.Column(db.String(10))
     path = db.Column(db.String(100))
     arguments = db.Column(db.JSON)
     data = db.Column(db.Text)
     user_agent = db.Column(db.String(200))
-    def __init__(self, method, path, arguments, data, user_agent, received_datetime=datetime.now()):
+
+    def __init__(self, channel_id, action, details, method, path, arguments, data, user_agent):
         self.id = helper.generate_random_id()
-        self.received_datetime = received_datetime
+        self.channel_id = channel_id
+        self.action = action
+        self.details = details
         self.method = method
         self.path = path
         self.arguments = arguments
         self.data = data
         self.user_agent = user_agent
     def __repr__(self):
-        return "<request %r>" %self.id
-    def __str__(self):
-        return "Request" + "\n" + \
-               str(self.received_datetime) + "\n" + \
-               str(self.method) + "\n" + \
-               str(self.path) + "\n" + \
-               str(self.arguments) + "\n" + \
-               str(self.data) + "\n" + \
-               str(self.user_agent)
+        return "<callback %r>" %self.id
 
 class Notification(db.Model):
     """

@@ -1,12 +1,13 @@
 """Views for Tubee"""
+from datetime import datetime, timedelta
+
 import rfc3339
 from apiclient import discovery
-from datetime import datetime, timedelta
 from flask import request, render_template, current_app
 from flask_login import current_user, login_required
 from .routes.main import main as route_blueprint
 from .helper import build_youtube_service
-from .models import Callback, Subscription
+from .models import Callback, Channel
 
 #     #######
 #     #       #    # #    #  ####   ####
@@ -50,14 +51,14 @@ def list_channel_videos(channel_id, recent=True):
 
 @route_blueprint.route("/hub/status")
 def hub_status():
-    channels = Subscription.query.order_by(Subscription.channel_name).all()
+    channels = Channel.query.order_by(Channel.channel_name).all()
     return render_template("status.html", channels=channels)
 
 @route_blueprint.route("/hub/renew")
 def hub_renew():
     response = {}
-    for subscription in Subscription.query.filter(Subscription.active):
-        response[subscription.channel_id] = subscription.renew_hub().status_code
+    for channel in Channel.query.filter(Channel.active):
+        response[channel.channel_id] = channel.renew_hub().status_code
     return render_template("empty.html", info=response)
 
 #     #     #               #######
@@ -70,7 +71,7 @@ def hub_renew():
 
 @route_blueprint.route("/channel/oldsummary/<channel_id>")
 def summary_channel(channel_id):
-    subscription = Subscription.query.filter(Subscription.channel_id == channel_id).first_or_404()
+    subscription = Channel.query.filter(Channel.channel_id == channel_id).first_or_404()
     videos = list_channel_videos(channel_id)
     for video in videos:
         video_search = Callback.query.filter_by(
@@ -87,7 +88,7 @@ def summary_channel(channel_id):
 @route_blueprint.route("/youtube/video")
 def youtube_video():
     videos = []
-    for channel in Subscription.query.filter_by(active=True):
+    for channel in Channel.query.filter_by(active=True):
         videos += list_channel_videos(channel.channel_id)
     for video in videos:
         video_search = Callback.query.filter_by(
@@ -136,7 +137,7 @@ def youtube_subscription():
         datas["prev_page"] = response.pop("prevPageToken", None)
         datas["next_page"] = response.pop("nextPageToken", None)
     for channel in datas["channels"]:
-        channel["status"] = bool(Subscription.query.filter_by(
+        channel["status"] = bool(Channel.query.filter_by(
             channel_id=channel["snippet"]["resourceId"]["channelId"]).count())
     return render_template("youtube_subscription_page.html", **datas)
 

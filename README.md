@@ -18,6 +18,20 @@ Tubee is a web application, provides dozens of handful features related to YouTu
 
 The core functions is completly working, yet development stage is still beta right now, please pm if you're facing any issues😘
 
+# Installation
+
+*Full guide will be released when stable version published, only important notice provided at the moment*
+
+* Database
+  * `MySQL 5.x`
+    * The only fully-compatible-well-tested option
+    * Please set encoding to `utf8mb4_unicode_ci` as video description can really be anything you couldn't expected.
+  * `SQLite`
+    * Might worked initially
+    * Even though `render_as_batch=True` is set on Flask-Migrate, but upgrade scripts won't always be compatible
+  * `PostgreSQL`  
+    * Doesn't compatible with hashed `user.password` field, might be available in future patched
+
 # Features
 
 * Channel Subscribing

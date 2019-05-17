@@ -79,7 +79,7 @@ def create_app(config_name):
     from .routes.api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix="/api")
 
-    from .routes.channel import channel as channel_blueprint
+    from .routes.channel import channel_blueprint
     app.register_blueprint(channel_blueprint, url_prefix="/channel")
 
     from .routes.dev import dev as dev_blueprint

@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, jsonify
 from flask_login import login_required
 from .. import scheduler
-from ..models import Subscription
+from ..models import Channel
 api = Blueprint("api", __name__)
 
 @api.route("/scheduler/pause_job")
@@ -14,7 +14,7 @@ def scheduler_pause_job():
 @api.route("/<channel_id>/status")
 def channel_status(channel_id):
     """From Hub fetch Status"""
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
+    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     response = subscription.get_hub_details()
     return response.text
 
@@ -23,7 +23,7 @@ def channel_status(channel_id):
 def channel_subscribe(channel_id):
     """Subscribe to a Channel"""
     # TODO
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
+    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
 
 @api.route("/<channel_id>/unsubscribe")
@@ -31,13 +31,13 @@ def channel_subscribe(channel_id):
 def channel_unsubscribe(channel_id):
     """Unsubscribe to a Channel"""
     # TODO
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
+    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
 
 @api.route("/<channel_id>/renew")
 @login_required
 def channel_renew(channel_id):
     """Renew Subscription Info, Both Hub and Info"""
-    subscription = Subscription.query.filter_by(channel_id=channel_id).first_or_404()
+    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     response = subscription.renew()
     return jsonify(response)
