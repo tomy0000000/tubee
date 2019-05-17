@@ -10,7 +10,6 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "aef142c0-b8d5-4ad2-bbbc-d4b101adcd05"
     PREFERRED_URL_SCHEME = "https"
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_timeout": 5,
         "pool_recycle": 300
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
