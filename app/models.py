@@ -30,7 +30,8 @@ sqlalchemy.schema.ForeignKey
     name
 sqlalchemy.orm.relationship
     backref             backref object or related object property name
-    
+sqlalchemy.orm.query.Query
+    https://docs.sqlalchemy.org/en/13/orm/query.html
 """
 
 class UserSubscription(db.Model):
