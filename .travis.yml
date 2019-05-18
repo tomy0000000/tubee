@@ -5,10 +5,9 @@ python:
 - 3.6
 matrix:
   include:
-  - python: 3.7
-    dist: xenial
-script:
-- flask test --coverage
+    - python: 3.7
+      dist: xenial
+script: flask test --coverage
 jobs:
   include:
     - stage: deploy
@@ -31,5 +30,4 @@ jobs:
 # deploy:
 #   provider: script
 #   script: ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
-after_script:
-- codecov
+after_script: codecov

@@ -48,4 +48,4 @@ def hub_dashboard():
     """List All Callbacks"""
     # TODO
     callbacks = Callback.query.order_by(Callback.received_datetime.desc()).all()
-    return render_template("hub_history.html", callbacks=callbacks)
+    return render_template("hub_dashboard.html", callbacks=callbacks)
