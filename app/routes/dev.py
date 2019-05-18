@@ -23,7 +23,7 @@ def sitemap():
 @dev.route("/os")
 @login_required
 @admin_required
-def os_dict():
+def os():
     target_dict = os.__dict__
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
@@ -33,7 +33,7 @@ def os_dict():
 @dev.route("/sys")
 @login_required
 @admin_required
-def sys_dict():
+def sys():
     target_dict = sys.__dict__
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
@@ -43,7 +43,7 @@ def sys_dict():
 @dev.route("/flask")
 @login_required
 @admin_required
-def flask_dict():
+def flask():
     target_dict = current_app.__dict__
     # target_dict["apscheduler"] = target_dict["apscheduler"].__dict__
     # target_dict["apscheduler"]["_scheduler"] = target_dict["apscheduler"]["_scheduler"].__dict__
@@ -55,7 +55,7 @@ def flask_dict():
 @dev.route("/login-manager")
 @login_required
 @admin_required
-def login_manager_dict():
+def login_manager():
     target_dict = login_manager.__dict__
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
@@ -65,7 +65,7 @@ def login_manager_dict():
 @dev.route("/scheduler")
 @login_required
 @admin_required
-def scheduler_dict():
+def scheduler():
     target_dict = scheduler.__dict__
     target_dict["_scheduler"] = scheduler.scheduler.__dict__
     pprint_en = isinstance(target_dict, dict)
@@ -76,7 +76,7 @@ def scheduler_dict():
 @dev.route("/user")
 @login_required
 @admin_required
-def user_dict():
+def user():
     target_dict = current_user.__dict__
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:

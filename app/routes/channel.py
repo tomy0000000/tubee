@@ -165,7 +165,7 @@ def callback(channel_id):
                     playlist_insert_response = json.loads(error.content)["error"]["message"]
                     current_app.logger.error("Faield to insert {} to {}'s playlist".format(video_id, subscription.subscriber_username))
                     current_app.logger.error(playlist_insert_response)
-                    proceed_notification = True
+                    proceed_notification = False
                 response["append_wl_to"][subscription.subscriber_username] = playlist_insert_response
                 current_app.logger.info(playlist_insert_response)
             current_app.logger.info("Playlist Appended: {}".format(proceed_add_playlist))
