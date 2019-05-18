@@ -1,25 +1,27 @@
+dist: xenial
 language: python
 python:
-- 3.4
-- 3.5
-- 3.6
-matrix:
-  include:
-    - python: 3.7
-      dist: xenial
+  - 3.4
+  - 3.5
+  - 3.6
+  - 3.7
+# matrix:
+#   include:
+#     - python: 3.7
+#       dist: xenial
 script: flask test --coverage
 jobs:
   include:
-    - stage: deploy
-      install: skip
-      before_deploy:
-        - openssl aes-256-cbc -K $encrypted_c32b465e7480_key -iv $encrypted_c32b465e7480_iv
-          -in .travis/travis_key.enc -out ./travis_key -d
-        - eval "$(ssh-agent -s)"
-        - chmod 600 ./travis_key
-        - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-        - ssh-add ./travis_key
-      script: ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
+  - stage: deploy
+    install: skip
+    before_deploy:
+      - openssl aes-256-cbc -K $encrypted_c32b465e7480_key -iv $encrypted_c32b465e7480_iv
+        -in .travis/travis_key.enc -out ./travis_key -d
+      - eval "$(ssh-agent -s)"
+      - chmod 600 ./travis_key
+      - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+      - ssh-add ./travis_key
+    script: ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
 # deploy:
 #   provider: script
 #   script: ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
