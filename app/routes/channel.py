@@ -145,13 +145,17 @@ def callback(channel_id):
         }
         for subscription in subscriptions:
             old_video_update = bool(published_datetime < subscription.subscribe_datetime)
-            skip_add_playlist = skip_notification = False
+            current_app.logger.info("New Video Update: {}".format(new_video_update))
+            current_app.logger.info("Old Video Update: {}".format(old_video_update))
+            current_app.logger.info("Action as Test Mode: {}".format(test_mode))
+            current_app.logger.info("Subscriber is Admin: {}".format(subscription.subscriber.admin))
+            proceed_add_playlist = proceed_notification = True
             if test_mode and subscription.subscriber.admin:
                 pass
             elif old_video_update or new_video_update:
-                skip_add_playlist = skip_notification = True
+                proceed_add_playlist = proceed_notification = False
             # Append to WL
-            if not skip_add_playlist:
+            if proceed_add_playlist:
                 # TODO: Make Try/Except a part of user method
                 try:
                     playlist_insert_response = subscription.subscriber.insert_video_to_playlist(video_id)
@@ -160,10 +164,11 @@ def callback(channel_id):
                 except HttpError as error:
                     playlist_insert_response = json.loads(error.content)["error"]["message"]
                     current_app.logger.error("Faield to insert {} to {}'s playlist".format(video_id, subscription.subscriber_username))
-                    skip_notification = True
+                    current_app.logger.error(playlist_insert_response)
+                    proceed_notification = True
                 response["append_wl_to"][subscription.subscriber_username] = playlist_insert_response
             # Push Notification
-            if not skip_notification:
+            if proceed_notification:
                 title = "New from " + subscription.channel.channel_name
                 message = soup.entry.find("title").string + "\n" + video_description
                 notification_response = subscription.subscriber.send_notification(
@@ -173,6 +178,12 @@ def callback(channel_id):
                     url_title=soup.entry.find("title").string,
                     image=video_thumbnails)
                 response["notification_to"][subscription.subscriber_username] = notification_response
+            current_app.logger.info("Action Complete")
+            current_app.logger.info("Playlist Appended: {}".format(proceed_add_playlist))
+            current_app.logger.info(playlist_insert_response)
+            current_app.logger.info("Notification Send: {}".format(proceed_notification))
+            current_app.logger.info(notification_response)
+            current_app.logger.info("------------------------")
     db.session.add(new_callback)
     try:
         db.session.commit()
