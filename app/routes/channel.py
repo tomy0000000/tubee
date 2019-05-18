@@ -167,6 +167,8 @@ def callback(channel_id):
                     current_app.logger.error(playlist_insert_response)
                     proceed_notification = True
                 response["append_wl_to"][subscription.subscriber_username] = playlist_insert_response
+                current_app.logger.info(playlist_insert_response)
+            current_app.logger.info("Playlist Appended: {}".format(proceed_add_playlist))
             # Push Notification
             if proceed_notification:
                 title = "New from " + subscription.channel.channel_name
@@ -178,11 +180,8 @@ def callback(channel_id):
                     url_title=soup.entry.find("title").string,
                     image=video_thumbnails)
                 response["notification_to"][subscription.subscriber_username] = notification_response
-            current_app.logger.info("Action Complete")
-            current_app.logger.info("Playlist Appended: {}".format(proceed_add_playlist))
-            current_app.logger.info(playlist_insert_response)
+                current_app.logger.info(notification_response)
             current_app.logger.info("Notification Send: {}".format(proceed_notification))
-            current_app.logger.info(notification_response)
             current_app.logger.info("------------------------")
     db.session.add(new_callback)
     try:
