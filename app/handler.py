@@ -44,7 +44,7 @@ def session(alert):
 
 @handler.app_errorhandler(Exception)
 def unhandled_exception(error):
-    current_app.logger.error("Unhandled Exception: {}", error)
+    current_app.logger.error("Unhandled Exception: {}".format(error))
     return render_template("error.html", alert=error), 500
 
 @handler.before_app_first_request
