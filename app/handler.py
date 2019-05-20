@@ -26,27 +26,24 @@ def page_not_found(alert):
     """Raised when Page Not Found"""
     return render_template("error.html", alert=alert), 404
 
-@handler.app_errorhandler(MySQLdb.Error)
-@handler.app_errorhandler(MySQLdb._exceptions.OperationalError)
-@handler.app_errorhandler(sqlalchemy.exc.StatementError)
-@handler.app_errorhandler(sqlalchemy.exc.InvalidRequestError)
-def sql_error(alert):
-    """Raised when SQL Access Failed"""
-    return render_template("error.html", alert=alert), 500
+# @handler.app_errorhandler(MySQLdb.Error)
+# @handler.app_errorhandler(MySQLdb._exceptions.OperationalError)
+# @handler.app_errorhandler(sqlalchemy.exc.StatementError)
+# @handler.app_errorhandler(sqlalchemy.exc.InvalidRequestError)
+# def sql_error(alert):
+#     """Raised when SQL Access Failed"""
+#     return render_template("error.html", alert=alert), 500
 
-@handler.app_errorhandler(sqlalchemy.exc.OperationalError)
-def session(alert):
-    """Try rollback session"""
-    try:
-        db.session.rollback()
-    except Exception as e:
-        raise e
+# @handler.before_app_first_request
+# @handler.app_errorhandler(sqlalchemy.exc.OperationalError)
+# def session():
+#     """Try rollback session"""
+#     try:
+#         db.session.rollback()
+#     except Exception as e:
+#         raise e
 
-@handler.app_errorhandler(Exception)
-def unhandled_exception(error):
-    current_app.logger.error("Unhandled Exception: {}".format(error))
-    return render_template("error.html", alert=error), 500
-
-@handler.before_app_first_request
-def rollback_session():
-    db.session.rollback()
+# @handler.app_errorhandler(Exception)
+# def unhandled_exception(error):
+#     current_app.logger.error("Unhandled Exception: {}".format(error))
+#     return render_template("error.html", alert=error), 500

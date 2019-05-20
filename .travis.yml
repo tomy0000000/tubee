@@ -5,10 +5,6 @@ python:
   - 3.5
   - 3.6
   - 3.7
-# matrix:
-#   include:
-#     - python: 3.7
-#       dist: xenial
 script: flask test --coverage
 jobs:
   include:
@@ -22,7 +18,4 @@ jobs:
       - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
       - ssh-add ./travis_key
       - ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
-# deploy:
-#   provider: script
-#   script: ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
 after_script: codecov
