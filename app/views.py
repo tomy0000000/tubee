@@ -58,7 +58,7 @@ def hub_status():
 def hub_renew():
     response = {}
     for channel in Channel.query.filter(Channel.active):
-        response[channel.channel_id] = channel.renew_hub().status_code
+        response[channel.channel_id] = channel.renew_hub()
     return render_template("empty.html", info=response)
 
 #     #     #               #######

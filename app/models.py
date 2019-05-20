@@ -246,6 +246,10 @@ class Channel(db.Model):
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = hub.subscribe(callback_url, topic_url)
+        current_app.logger.info("Callback URL: {}".format(callback_url))
+        current_app.logger.info("Topic URL   : {}".format(topic_url))
+        current_app.logger.info("Channel ID  : {}".format(self.channel_id))
+        current_app.logger.info("Response    : {}".format(response.status_code))
         if response.success:
             self.renew_datetime = datetime.now()
             db.session.commit()

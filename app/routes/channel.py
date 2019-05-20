@@ -138,7 +138,7 @@ def callback(channel_id):
 
         # Decide to Pass or Not
         subscriptions = UserSubscription.query.filter_by(subscribing_channel_id=channel_id)
-        new_video_update = bool(Callback.query.filter_by(channel_id=channel_id).count())
+        new_video_update = bool(Callback.query.filter_by(details=video_id).count())
         response = {
             "append_wl_to": {},
             "notification_to": {}
@@ -183,9 +183,10 @@ def callback(channel_id):
                 current_app.logger.info(notification_response)
             current_app.logger.info("Notification Send: {}".format(proceed_notification))
             current_app.logger.info("------------------------")
+            response = jsonify(response)
     db.session.add(new_callback)
     try:
         db.session.commit()
     except Exception as error:
         current_app.logger.error("SQL Commit Failed")
-    return jsonify(response)
+    return response
