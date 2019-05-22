@@ -13,13 +13,14 @@ from ..helper import send_notification
 from ..models import Callback, Channel, User, UserSubscription
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
+    "skip_download": True,
     "ignoreerrors": True,
-    "extract_flat": True,
+    # "extract_flat": True,
     "playlistend": 30
 })
 
 @channel_blueprint.route("/<channel_id>")
-def channel_page(channel_id):
+def channel(channel_id):
     #
     # Avatar                    Channel Name
     # Avatar                    Channel ID
@@ -38,11 +39,11 @@ def channel_page(channel_id):
     # (dynamic loading)
 
     # TODO: Support New Un-Subscribed Channel
-    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    url = "https://www.youtube.com/channel/{channel_id}".format(channel_id=channel_id)
-    channel_metadatas = youtube_dl_service.extract_info(url, download=False)
-    playlist_metadatas = youtube_dl_service.extract_info(channel_metadatas["url"], download=False)
-    return render_template("channel.html", subscription=channel, video_meta=playlist_metadatas)
+    channel_item = Channel.query.get(channel_id)
+    url = "https://www.youtube.com/channel/{channel_id}/videos".format(channel_id=channel_id)
+    channel_metadatas = youtube_dl_service.extract_info(url)
+    videos = youtube_dl_service.extract_info(channel_metadatas["url"])
+    return render_template("channel.html", channel=channel_item, videos=videos)
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])

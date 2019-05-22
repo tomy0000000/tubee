@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set title = subscription.channel_name %}
+{% set title = channel.channel_name %}
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/channel.css') }}">
 {% endblock %}
@@ -48,9 +48,9 @@
     </div>
 </div>
 <div class="jumbotron media">
-    <img src="{{ subscription.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ subscription.channel_name }}">
+    <img src="{{ channel.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ channel.channel_name }}">
     <div class="media-body my-auto">
-        <h5 class="mt-0">{{ subscription.channel_name }}</h5>
+        <h5 class="mt-0">{{ channel.channel_name }}</h5>
         Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
     </div>
 </div>
@@ -146,6 +146,7 @@
     </div>
 </div>
 {% endif %}
+{{ videos }}
 <table class="table table-striped table-hover">
     <thead class="thead-dark">
         <tr>
@@ -155,20 +156,22 @@
         </tr>
     </thead>
     <tbody>
-        {% for video in videos %}
+        {#
+            {% for video in videos.entries %}
         <tr>
             <th scope="row">
                 <img src="{{ video.snippet.thumbnails.default.url }}" class="rounded">
             </th>
             <td class="align-middle">
-                <a href="https://youtu.be/{{ video.id.videoId }}">
-                    {{ video.snippet.title }}
+                <a href="https://youtu.be/{{ video.id }}">
+                    {{ video.title }}
                 </a>
-                <p class="text-muted">{{ video.id.videoId }}</p>
+                <p class="text-muted">{{ video.id }}</p>
             </td>
             <td class="align-middle">{{ video.snippet.publishedAt }}</td>
         </tr>
         {% endfor %}
+        #}
     </tbody>
 </table>
 {% endblock %}

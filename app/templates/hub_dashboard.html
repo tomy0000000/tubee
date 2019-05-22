@@ -17,12 +17,12 @@
             <th scope="row">{{ callback.received_datetime }}</th>
             <td>{{ callback.channel_id }}</td>
             <td>
-                {% if callback.action_type == "Hub Challenge" %}
+                {% if callback.action == "Hub Challenge" %}
                 <span class="badge badge-warning">Hub Challenge</span>
-                {% elif callback.action_type == "Hub Notification" %}
+                {% elif callback.action == "Hub Notification" %}
                 <span class="badge badge-success">Hub Notification</span>
                 {% else %}
-                <span class="badge dadge-danger">{{ callback.action }}</span>
+                <span class="badge badge-danger">{{ callback.action }}</span>
                 {% endif %}
             </td>
             <td>{{ callback.details }}</td>
