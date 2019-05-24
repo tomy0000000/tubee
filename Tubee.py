@@ -25,9 +25,7 @@ with app.app_context():
 
 @app.shell_context_processor
 def make_shell_context():
-
     return dict(db=db, User=User)
-
 
 @app.cli.command()
 @click.option("--coverage/--no-coverage", default=False,

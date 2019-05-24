@@ -93,6 +93,13 @@ def build_youtube_credentials(credentials):
     """Build Corresponding YouTube Credentials from User's Credentials"""
     return google.oauth2.credentials.Credentials(**credentials)
 
+def build_youtube_public_service():
+    return googleapiclient.discovery.build(
+        current_app.config["YOUTUBE_API_SERVICE_NAME"],
+        current_app.config["YOUTUBE_API_VERSION"],
+        cache_discovery=False,
+        developerKey=current_app.config["YOUTUBE_API_DEVELOPER_KEY"])
+
 def build_youtube_service(credentials):
     """Build Corresponding YouTube Service from User's Credentials"""
     credentials = google.oauth2.credentials.Credentials(**credentials)
@@ -101,3 +108,12 @@ def build_youtube_service(credentials):
         current_app.config["YOUTUBE_API_VERSION"],
         cache_discovery=False,
         credentials=credentials)
+
+def auto_renew(channel):
+    """Trigger channel"""
+    response = channel.renew()
+    current_app.logger.info("----------------Auto Renewed Start----------------")
+    current_app.logger.info("{}<{}>".format(channel.channel_name, channel.channel_id))
+    current_app.logger.info(response)
+    current_app.logger.info("--------------Auto Renewed Complete--------------")
+    return response

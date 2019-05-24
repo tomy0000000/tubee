@@ -59,7 +59,7 @@
             </td>
             <td class="align-middle"></td>
             <td class="align-middle">{{ subscription.active }}</td>
-            <td class="align-middle">{{ subscription.renew_datetime }}</td>
+            <td class="align-middle">{{ moment(subscription.renew_datetime).format('lll') }}</td>
             {% if subscription.unsubscribe_datetime %}
             <td class="align-middle">{{ subscription.unsubscribe_datetime }}</td>
             {% else %}

@@ -5,8 +5,9 @@ import rfc3339
 from apiclient import discovery
 from flask import request, render_template, current_app
 from flask_login import current_user, login_required
+from . import scheduler
 from .routes.main import main as route_blueprint
-from .helper import build_youtube_service
+from .helper import build_youtube_public_service, build_youtube_service
 from .models import Callback, Channel
 
 #     #######
@@ -61,6 +62,14 @@ def hub_renew():
         response[channel.channel_id] = channel.renew_hub()
     return render_template("empty.html", info=response)
 
+def test_func():
+    print("Hello")
+
+@route_blueprint.route("/regist_job")
+def reg_job():
+    response = scheduler.add_job("test", test_func, trigger="interval", seconds=2)
+    return render_template("empty.html", info=response)
+
 #     #     #               #######
 #      #   #   ####  #    #    #    #    # #####  ######
 #       # #   #    # #    #    #    #    # #    # #
@@ -84,6 +93,31 @@ def summary_channel(channel_id):
             "count": len(video_search)
         }
     return render_template("summary.html", videos=videos, channel_name=subscription.channel_name)
+
+@route_blueprint.route("/channel/fixed-oldsummary/<channel_id>")
+def fixed_summary_channel(channel_id):
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    service = build_youtube_public_service()
+    videos = service.search().list(
+        part="snippet",
+        channelId=channel_id,
+        maxResults=50,
+        order="date",
+        type="video",
+        fields="items(etag,id/videoId,snippet(publishedAt,thumbnails/default,title))"
+    ).execute()["items"]
+    for video in videos:
+        video["snippet"]["channelId"] = channel_id
+        video_search = Callback.query.filter_by(
+            channel_id=channel_id,
+            action="Hub Notification",
+            details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
+                                                    ).all()
+        video["callback"] = {
+            "datetime": video_search[0].received_datetime if bool(video_search) else "",
+            "count": len(video_search)
+        }
+    return render_template("summary.html", videos=videos, channel_name=channel.channel_name)
 
 @route_blueprint.route("/youtube/video")
 def youtube_video():
@@ -140,21 +174,3 @@ def youtube_subscription():
         channel["status"] = bool(Channel.query.filter_by(
             channel_id=channel["snippet"]["resourceId"]["channelId"]).count())
     return render_template("youtube_subscription_page.html", **datas)
-
-#     ######
-#     #     # ###### #####  #  ####
-#     #     # #      #    # # #
-#     ######  #####  #    # #  ####
-#     #   #   #      #    # #      #
-#     #    #  #      #    # # #    #
-#     #     # ###### #####  #  ####
-
-# @route_blueprint.route("/redis/set/<key>/<value>")
-# def redis_write(key, value):
-#     response = redis_store.set(key, value)
-#     return render_template("empty.html", info=response)
-#
-# @route_blueprint.route("/redis/get/<key>")
-# def redis_read(key):
-#     response = redis_store.get(key)
-#     return render_template("empty.html", info=response)

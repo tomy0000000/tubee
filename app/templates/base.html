@@ -40,6 +40,7 @@
     <!-- END FOOTER -->
     {{ ribbon.ribbon_tag() }}
     {{ scripts.scripts() }}
+    {{ moment.include_moment(no_js=True) }}
     <!-- PAGE JS -->
     {% block script %}{% endblock %}
     <!-- END PAGE JS -->

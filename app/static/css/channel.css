@@ -11,3 +11,7 @@
 .hub-table-cell {
     width: 50%;
 }
+
+td.video-title p {
+    margin-bottom: 0;
+}

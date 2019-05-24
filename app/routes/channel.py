@@ -3,19 +3,20 @@ import json
 from datetime import datetime
 
 import bs4
+import pyrfc3339
 import youtube_dl
 from apiclient.errors import HttpError
 from dateutil import parser
 from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 from .. import db
-from ..helper import send_notification
+from ..helper import send_notification, build_youtube_public_service
 from ..models import Callback, Channel, User, UserSubscription
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
     "skip_download": True,
     "ignoreerrors": True,
-    # "extract_flat": True,
+    "extract_flat": True,
     "playlistend": 30
 })
 
@@ -39,10 +40,30 @@ def channel(channel_id):
     # (dynamic loading)
 
     # TODO: Support New Un-Subscribed Channel
-    channel_item = Channel.query.get(channel_id)
-    url = "https://www.youtube.com/channel/{channel_id}/videos".format(channel_id=channel_id)
-    channel_metadatas = youtube_dl_service.extract_info(url)
-    videos = youtube_dl_service.extract_info(channel_metadatas["url"])
+    channel_item = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    # url = "https://www.youtube.com/channel/{channel_id}/videos".format(channel_id=channel_id)
+    # channel_metadatas = youtube_dl_service.extract_info(url)
+    # videos = youtube_dl_service.extract_info(channel_metadatas["url"])
+    service = build_youtube_public_service()
+    videos = service.search().list(
+        part="snippet",
+        channelId=channel_id,
+        maxResults=50,
+        order="date",
+        type="video"
+    ).execute()["items"]
+    for video in videos:
+        # video["snippet"]["channelId"] = channel_id
+        video["snippet"]["publishedAt"] = pyrfc3339.parse(video["snippet"]["publishedAt"])
+        video_search = Callback.query.filter_by(
+            channel_id=channel_id,
+            action="Hub Notification",
+            details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
+                                                    ).all()
+        video["callback"] = {
+            "datetime": video_search[0].received_datetime if bool(video_search) else "",
+            "count": len(video_search)
+        }
     return render_template("channel.html", channel=channel_item, videos=videos)
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE

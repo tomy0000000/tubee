@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/channel.css') }}">
 {% endblock %}
 {% block script %}
-<!-- <script src="{{ url_for('static', filename='js/<filename>') }}"></script> -->
+<script src="{{ url_for('static', filename='js/channel.js') }}"></script>
 {% endblock %}
 {% block content %}
 <div class="bd-example">
@@ -16,21 +16,21 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://i.ytimg.com/vi/Ulqwd_y3ri4/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLD7KlHTeN0rexYZM1YuWscsHk_caQ" class="d-block w-100" alt="...">
+                <img src="{{ videos[0] }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>First slide label</h5>
                     <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://i.ytimg.com/vi/1Q_BD15fJU0/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCwSfSyrjcOsGDItvZGO_JBkR54sg" class="d-block w-100" alt="...">
+                <img src="{{ videos[1] }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Second slide label</h5>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://i.ytimg.com/vi/xuBsfSPHSDo/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCHQkLkHgK8GO7M27D__tUJphRFmg" class="d-block w-100" alt="...">
+                <img src="{{ videos[2] }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Third slide label</h5>
                     <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
@@ -153,25 +153,36 @@
             <th scope="col" class="align-middle"></th>
             <th scope="col" class="align-middle">Title</th>
             <th scope="col" class="align-middle">Published Datetime</th>
+            {% if current_user.admin %}
+            <th scope="col" class="align-middle">Callback</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
-        {#
-            {% for video in videos.entries %}
+        {% for video in videos %}
         <tr>
             <th scope="row">
-                <img src="{{ video.snippet.thumbnails.default.url }}" class="rounded">
+                <img src="{{ video.snippet.thumbnails.default.url }}" class="rounded vidoe-thumbnails">
             </th>
-            <td class="align-middle">
-                <a href="https://youtu.be/{{ video.id }}">
-                    {{ video.title }}
+            <td class="align-middle video-title">
+                <a href="https://youtu.be/{{ video.id.videoId }}">
+                    {{ video.snippet.title }}
                 </a>
-                <p class="text-muted">{{ video.id }}</p>
+                <p class="text-muted">#{{ video.id.videoId }}</p>
             </td>
-            <td class="align-middle">{{ video.snippet.publishedAt }}</td>
+            <td class="align-middle">{{ moment(video.snippet.publishedAt).format('lll') }}</td>
+            {% if current_user.admin %}
+            <td class="align-middle">
+                <button type="button" class="btn btn-primary">
+                    {% if video.callback.datetime %}
+                    {{ moment(video.callback.datetime).format('lll') }}
+                    {% else %}{% endif %}
+                    <span class="badge badge-light">{{ video.callback.count }}</span>
+                </button>
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
-        #}
     </tbody>
 </table>
 {% endblock %}

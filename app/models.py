@@ -57,6 +57,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(70), nullable=False)
     admin = db.Column(db.Boolean, server_default="0")
     pushover_key = db.Column(db.String(40))
+    # language = db.Column(db.String(5))
     youtube_credentials = db.Column(db.JSON)
     subscriptions = db.relationship("UserSubscription",
                                     foreign_keys="UserSubscription.subscriber_username",
@@ -265,7 +266,9 @@ class Channel(db.Model):
 #     """Videos of Subscribed Channel"""
 #     __tablename__ = "video"
 #     id = db.Column(db.String(32), nullable=False, primary_key=True)
-#     uploaded_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
+#     channel_id = db.Column(db.String(30), db.ForeignKey("channel.channel_id"))
+#     channel = db.relationship("Channel", backref="videos")
+#     uploaded_datetime = db.Column(db.DateTime)
 #     def __init__(self, arg):
 #         self.arg = arg
 

@@ -11,7 +11,11 @@ class RoutesTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client(use_cookies=True)
-        self.testing_channel = ""
+        self.client_username = "test_user"
+        self.client_user_password = "test_password"
+        self.test_channel_id = ""
+        db.session.add(User(self.client_username, self.client_user_password))
+        db.session.commit()
 
     def tearDown(self):
         db.session.remove()
@@ -25,8 +29,15 @@ class RoutesTestCase(unittest.TestCase):
         # self.assertEqual(response.status_code, 200)
         # self.assertIn("You Must Login First", response.get_data(as_text=True))
     
-    def test_subscribe_channel(self):
+    def test_subscribe(self):
+        pass
+        # response = self.client.get("/", follow_redirects=True)
+        # self.assertEqual(response.status_code, 200)
+        # self.assertIn("You Must Login First", response.get_data(as_text=True))
+
+    def test_unsubscribe(self):
         pass
 
-    def test_unsubscribe_channel(self):
+    def test_callback(self):
         pass
+        # self.client.post("/channel/{channel_id}/callback".format(self.test_channel_id))
