@@ -48,13 +48,19 @@
                 <a href="https://www.youtube.com/{{ subscription.custom_url }}">
                     <p>{{ subscription.channel_name }}</p>
                 </a>
-                <p class="text-muted">{{ subscription.channel_id }}</p>
-                <p class="text-muted">#{{ subscription.custom_url }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
+                    <p>{{ subscription.channel_id }}</p>
+                </a>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.custom_url }}">
+                    <p>#{{ subscription.custom_url }}</p>
+                </a>
                 {% else %}
                 <a href="https://www.youtube.com/channel/{{ subscription.channel_id }}">
                     <p>{{ subscription.channel_name }}</p>
                 </a>
-                <p class="text-muted">{{ subscription.channel_id }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
+                    <p>{{ subscription.channel_id }}</p>
+                </a>
                 {% endif %}
             </td>
             <td class="align-middle"></td>
@@ -69,7 +75,7 @@
             {% endif %}
             {% if current_user.admin %}
             <td class="align-middle">
-                    <button class="btn btn-primary renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel_id) }}">Renew</button>
+                <button class="btn btn-primary renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel_id) }}">Renew</button>
             </td>
             {% endif %}
         </tr>

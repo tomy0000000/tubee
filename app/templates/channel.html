@@ -8,40 +8,40 @@
 {% endblock %}
 {% block content %}
 <div class="bd-example">
-    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <div id="video-carousel" class="carousel slide carousel-fade" data-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+            <li data-target="#video-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#video-carousel" data-slide-to="1"></li>
+            <li data-target="#video-carousel" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ videos[0] }}" class="d-block w-100" alt="...">
+                <img src="{{ videos[0].snippet.thumbnails.medium.url }}" class="d-block w-100" alt="{{ videos[0].snippet.title }}">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                    <h5>{{ videos[0].snippet.title }}</h5>
+                    <p>{{ videos[0].snippet.description }}</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ videos[1] }}" class="d-block w-100" alt="...">
+                <img src="{{ videos[1].snippet.thumbnails.medium.url }}" class="d-block w-100" alt="{{ videos[1].snippet.title }}">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <h5>{{ videos[1].snippet.title }}</h5>
+                    <p>{{ videos[1].snippet.description }}</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ videos[2] }}" class="d-block w-100" alt="...">
+                <img src="{{ videos[2].snippet.thumbnails.medium.url }}" class="d-block w-100" alt="{{ videos[2].snippet.title }}">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                    <h5>{{ videos[2].snippet.title }}</h5>
+                    <p>{{ videos[2].snippet.description }}</p>
                 </div>
             </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#video-carousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#video-carousel" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
@@ -51,94 +51,131 @@
     <img src="{{ channel.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ channel.channel_name }}">
     <div class="media-body my-auto">
         <h5 class="mt-0">{{ channel.channel_name }}</h5>
-        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+        <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+        {% if current_user.is_subscribing(channel) %}
+        <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
+        {% else %}
+        <button type="button" class="btn btn-success btn-lg">Subscribe</button>
+        {% endif %}
     </div>
 </div>
 {% if current_user.admin %}
 <div class="container mb-3">
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">State</th>
-                        <td class="hub-table-cell border-top-0">1</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Expiration</th>
-                        <td class="hub-table-cell border-top-0">2</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-danger" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Notification</th>
-                        <td class="hub-table-cell border-top-0">3</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Notification Error</th>
-                        <td class="hub-table-cell border-top-0">4</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Challenge</th>
-                        <td class="hub-table-cell border-top-0">5</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Challenge Error</th>
-                        <td class="hub-table-cell border-top-0">6</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Subscribe / Unsubscribe</th>
-                        <td class="hub-table-cell border-top-0">7</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 px-0">
             <table class="table mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Stat</th>
-                        <td class="hub-table-cell border-top-0">8</td>
+                        <td class="hub-table-cell border-top-0">
+                            <div class="spinner-border text-dark" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -146,7 +183,6 @@
     </div>
 </div>
 {% endif %}
-{{ videos }}
 <table class="table table-striped table-hover">
     <thead class="thead-dark">
         <tr>
@@ -161,23 +197,25 @@
     <tbody>
         {% for video in videos %}
         <tr>
-            <th scope="row">
-                <img src="{{ video.snippet.thumbnails.default.url }}" class="rounded vidoe-thumbnails">
+            <th scope="row" class="video-thumbnails">
+                <img src="{{ video.snippet.thumbnails.medium.url }}" class="rounded vidoe-thumbnails">
             </th>
             <td class="align-middle video-title">
                 <a href="https://youtu.be/{{ video.id.videoId }}">
                     {{ video.snippet.title }}
                 </a>
-                <p class="text-muted">#{{ video.id.videoId }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ video.id.videoId }}">
+                    <p>#{{ video.id.videoId }}</p>
+                </a>
             </td>
             <td class="align-middle">{{ moment(video.snippet.publishedAt).format('lll') }}</td>
             {% if current_user.admin %}
             <td class="align-middle">
                 <button type="button" class="btn btn-primary">
-                    {% if video.callback.datetime %}
-                    {{ moment(video.callback.datetime).format('lll') }}
+                    {% if video.snippet.callback.datetime %}
+                    {{ moment(video.snippet.callback.datetime).format('lll') }}
                     {% else %}{% endif %}
-                    <span class="badge badge-light">{{ video.callback.count }}</span>
+                    <span class="badge badge-light">{{ video.snippet.callback.count }}</span>
                 </button>
             </td>
             {% endif %}

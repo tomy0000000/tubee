@@ -55,14 +55,14 @@ def channel(channel_id):
     for video in videos:
         # video["snippet"]["channelId"] = channel_id
         video["snippet"]["publishedAt"] = pyrfc3339.parse(video["snippet"]["publishedAt"])
-        video_search = Callback.query.filter_by(
+        callback_search = Callback.query.filter_by(
             channel_id=channel_id,
             action="Hub Notification",
             details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
                                                     ).all()
-        video["callback"] = {
-            "datetime": video_search[0].received_datetime if bool(video_search) else "",
-            "count": len(video_search)
+        video["snippet"]["callback"] = {
+            "datetime": callback_search[0].received_datetime if bool(callback_search) else "",
+            "count": len(callback_search)
         }
     return render_template("channel.html", channel=channel_item, videos=videos)
 
