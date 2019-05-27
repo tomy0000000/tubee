@@ -139,7 +139,7 @@ def details(callback_url, topic_url, **kwargs):
         "hub.secret": kwargs.pop("secret", None)
     }
     response_object = _formal_get_request("subscription-details", **params)
-    response_soup = bs4.BeautifulSoup(response_object.text)
+    response_soup = bs4.BeautifulSoup(response_object.text, "lxml")
     target = response_soup.find_all("dd")
     response_dict = {
         "requests_url": response_object.url,

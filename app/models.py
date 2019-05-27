@@ -82,14 +82,11 @@ class User(UserMixin, db.Model):
             raise ValueError("Password must be longer than 6 characters")
         elif len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = bcrypt.generate_password_hash(password)
     def __init__(self, username, password, **kwargs):
         super(User, self).__init__(**kwargs)
-        # if len(password) < 6:
-        #     raise ValueError("Password must be longer than 6 characters")
-        # elif len(password) > 30:
-        #     raise ValueError("Password must be shorter than 30 characters")
-        # self.password = bcrypt.generate_password_hash(password)
+        self.username = username
+        self.password = password
     def __repr__(self):
         return "<user {}>".format(self.username)
     def promote_to_admin(self):

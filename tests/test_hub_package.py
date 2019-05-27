@@ -23,7 +23,17 @@ class HubPackageTestCase(unittest.TestCase):
         # TODO: Expand Test of Details
         # GOOGLE HUB IS BACK, HORRAY
         results = hub.details(self.callback, self.topic)
-        self.assertEqual(results.status_code, 200)
+        self.assertIn("requests_url", results)
+        self.assertIn("response_object", results)
+        self.assertIn("state", results)
+        self.assertIn("stat", results)
+        self.assertIn("last_challenge", results)
+        self.assertIn("expiration", results)
+        self.assertIn("last_subscribe", results)
+        self.assertIn("last_unsubscribe", results)
+        self.assertIn("last_challenge_error", results)
+        self.assertIn("last_notification_error", results)
+        self.assertIn("last_notification", results)
         # Unsubscribe
         results = hub.unsubscribe(self.callback, self.topic)
         self.assertEqual(results.status_code, 202)
