@@ -16,13 +16,13 @@
 
 Tubee is a web application, provides dozens of handful features related to YouTube.
 
-The core functions is completly working, yet development stage is still beta right now, please pm if you're facing any issues😘
+The core functions is completly working, yet this application is still in development stage right now, please pm or leave issues if you run into any problems😘
 
 # Installation
 
 *Full guide will be released when stable version published, only important notice provided at the moment*
 
-* Database
+* Database (**Be aware that migration scripts will constantly modified during the whole dev stage**)
   * `MySQL 5.x`
     * The only fully-compatible-well-tested option
     * Please set encoding to `utf8mb4_unicode_ci` as video description can really be anything you couldn't expected.

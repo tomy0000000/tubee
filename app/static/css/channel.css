@@ -12,6 +12,14 @@
     width: 50%;
 }
 
+.col-third-one th {
+    width: 25%
+}
+
+.col-third-one td {
+    width: 75%
+}
+
 th.video-thumbnails img {
     width: 15rem;
 }

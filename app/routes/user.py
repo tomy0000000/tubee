@@ -16,7 +16,8 @@ def register():
     if form.validate_on_submit():
         query_user = User.query.filter_by(username=form.username.data).first()
         if not query_user:
-            new_user = User(form.username.data, form.password.data)
+            new_user = User(username=form.username.data,
+                            password=form.password.data)
             current_app.db.session.add(new_user)
             current_app.db.session.commit()
             login_user(new_user)

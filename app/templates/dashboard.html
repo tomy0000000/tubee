@@ -46,20 +46,20 @@
             <td class="align-middle channel-name">
                 {% if subscription.custom_url %}
                 <a href="https://www.youtube.com/{{ subscription.custom_url }}">
-                    <p>{{ subscription.channel_name }}</p>
+                    <p class="mb-0">{{ subscription.channel_name }}</p>
                 </a>
                 <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
-                    <p>{{ subscription.channel_id }}</p>
+                    <p class="mb-0">{{ subscription.channel_id }}</p>
                 </a>
                 <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.custom_url }}">
-                    <p>#{{ subscription.custom_url }}</p>
+                    <p class="mb-0">#{{ subscription.custom_url }}</p>
                 </a>
                 {% else %}
                 <a href="https://www.youtube.com/channel/{{ subscription.channel_id }}">
-                    <p>{{ subscription.channel_name }}</p>
+                    <p class="mb-0">{{ subscription.channel_name }}</p>
                 </a>
                 <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
-                    <p>{{ subscription.channel_id }}</p>
+                    <p class="mb-0">{{ subscription.channel_id }}</p>
                 </a>
                 {% endif %}
             </td>

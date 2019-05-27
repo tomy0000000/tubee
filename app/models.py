@@ -1,4 +1,5 @@
 """Database Models of Tubee"""
+import enum
 import urllib
 from datetime import datetime
 
@@ -15,6 +16,11 @@ def load_user(user_id):
     """Internal function for user info accessing"""
     return User.query.get(user_id)
 
+class ActionEnum(enum.Enum):
+    NOTIFICATION = 1
+    PLAYLIST = 2
+    DOWNLOAD = 3
+
 """
 sqlalchemy.schema.Column
     name
@@ -30,8 +36,9 @@ sqlalchemy.schema.ForeignKey
     name
 sqlalchemy.orm.relationship
     backref             backref object or related object property name
-sqlalchemy.orm.query.Query
-    https://docs.sqlalchemy.org/en/13/orm/query.html
+
+sqlalchemy.orm.query.Query          https://docs.sqlalchemy.org/en/13/orm/query.html
+sqlalchemy.types                    https://docs.sqlalchemy.org/en/13/core/type_basics.html
 """
 
 class UserSubscription(db.Model):
@@ -42,19 +49,21 @@ class UserSubscription(db.Model):
     subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
     tags = db.Column(db.PickleType)
+    def __repr__(self):
+        return "<UserSubscription: {} subscribe to {}>".format(subscriber_username, subscribing_channel_id)
 
 class User(UserMixin, db.Model):
     """
     username                username for identification (Max:30)
-    password                user's login password
+    password_hash           user's hashed login password
     admin                   user is Tubee Admin
     pushover_key            access key to Pushover Service
     youtube_credentials     access credentials to YouTube Service
     subscriptions           User's Subscription to YouTube Channels
     """
     __tablename__ = "user"
-    username = db.Column(db.String(30), primary_key=True)
-    password = db.Column(db.String(70), nullable=False)
+    username = db.Column(db.String(32), primary_key=True)
+    password_hash = db.Column(db.String(128), nullable=False)
     admin = db.Column(db.Boolean, server_default="0")
     pushover_key = db.Column(db.String(40))
     # language = db.Column(db.String(5))
@@ -64,17 +73,28 @@ class User(UserMixin, db.Model):
                                     backref=db.backref("subscriber", lazy="joined"),
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
-    def __init__(self, username, password):
-        self.username = username
+    @property
+    def password(self):
+        raise AttributeError("Password is not a readable attribute")
+    @password.setter
+    def password(self, password):
         if len(password) < 6:
             raise ValueError("Password must be longer than 6 characters")
         elif len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
-        self.password = bcrypt.generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
+    def __init__(self, username, password, **kwargs):
+        super(User, self).__init__(**kwargs)
+        # if len(password) < 6:
+        #     raise ValueError("Password must be longer than 6 characters")
+        # elif len(password) > 30:
+        #     raise ValueError("Password must be shorter than 30 characters")
+        # self.password = bcrypt.generate_password_hash(password)
     def __repr__(self):
-        return "<users %r>" %self.username
+        return "<user {}>".format(self.username)
     def promote_to_admin(self):
         self.admin = True
+        db.session.commit()
     def setting_pushover_key(self, key):
         pass
     """UserMixin Methods"""
@@ -92,7 +112,7 @@ class User(UserMixin, db.Model):
         return self.username
     def check_password(self, password):
         """Return True if provided password is valid to login"""
-        return bcrypt.check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
     # Channel Relation Method
     def is_subscribing(self, channel):
         return self.subscriptions.filter_by(subscribing_channel_id=channel.channel_id).first() is not None
@@ -151,9 +171,11 @@ class Channel(db.Model):
     country = db.Column(db.String(5))
     language = db.Column(db.String(5))
     custom_url = db.Column(db.String(100))
+    description = db.Column(db.Text)
     active = db.Column(db.Boolean, nullable=False, server_default=None, unique=False)
-    # latest_status = db.Column(db.String(20), nullable=True, server_default=None, unique=False)
-    # expire_datetime = db.Column(db.DateTime, nullable=True, server_default=None, unique=False)
+    latest_status = db.Column(db.String(20))
+    expire_datetime = db.Column(db.DateTime)
+    hub_infos = db.Column(db.JSON)
     renew_datetime = db.Column(db.DateTime)
     subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
@@ -201,11 +223,11 @@ class Channel(db.Model):
             self.unsubscribe_datetime = datetime.now()
         return response
 
-    def get_hub_details(self):
+    def get_hub_details(self, **kwargs):
         callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
-        response = hub.details(callback_url, topic_url)
+        response = hub.details(callback_url, topic_url, **kwargs)
         return response
 
     def renew_info(self):
@@ -262,15 +284,31 @@ class Channel(db.Model):
         response["hub"] = hub
         return response
 
-# class Video(db.Model):
-#     """Videos of Subscribed Channel"""
-#     __tablename__ = "video"
-#     id = db.Column(db.String(32), nullable=False, primary_key=True)
-#     channel_id = db.Column(db.String(30), db.ForeignKey("channel.channel_id"))
-#     channel = db.relationship("Channel", backref="videos")
-#     uploaded_datetime = db.Column(db.DateTime)
-#     def __init__(self, arg):
-#         self.arg = arg
+class Video(db.Model):
+    """Videos of Subscribed Channel"""
+    __tablename__ = "video"
+    video_id = db.Column(db.String(32), primary_key=True)
+    name = db.Column(db.String(100))
+    description = db.Column(db.Text)
+    channel_id = db.Column(db.String(30), db.ForeignKey("channel.channel_id"))
+    channel = db.relationship("Channel", backref="videos")
+    uploaded_datetime = db.Column(db.DateTime)
+    thumbnails_url = db.Column(db.String(200))
+    def __init__(self, video_id):
+        self.video_id = video_id
+    def update_infos(self):
+        # TODO
+        return None
+
+class Action(db.Model):
+    """Action to Perform when new video uploaded"""
+    __tablename__ = "action"
+    action_id = db.Column(db.Integer, primary_key=True)
+    action_type = db.Column(db.Enum(ActionEnum), nullable=False)
+    details = db.Column(db.String(32))
+    def __init__(self, action_type, details=None):
+        self.action_type = action_type
+        self.details = details
 
 class Callback(db.Model):
     """

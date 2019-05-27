@@ -50,7 +50,15 @@
 <div class="jumbotron media">
     <img src="{{ channel.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ channel.channel_name }}">
     <div class="media-body my-auto">
-        <h5 class="mt-0">{{ channel.channel_name }}</h5>
+        <h3 class="mt-0">{{ channel.channel_name }}</h5>
+        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.channel_id }}">
+            <p class="mb-0">{{ channel.channel_id }}</p>
+        </a>
+        {% if channel.custom_url %}
+        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.custom_url }}">
+            <p class="mb-0">#{{ channel.custom_url }}</p>
+        </a>
+        {% endif %}
         <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
         {% if current_user.is_subscribing(channel) %}
         <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
@@ -60,14 +68,14 @@
     </div>
 </div>
 {% if current_user.admin %}
-<div class="container mb-3">
+<div class="container mb-3" id="status-grid" data-api-endpoint="{{ url_for('api.channel_status', channel_id=channel.channel_id, _external=True) }}">
     <div class="row">
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">State</th>
-                        <td class="hub-table-cell border-top-0">
+                        <td class="hub-table-cell border-top-0" id="state">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -77,11 +85,11 @@
             </table>
         </div>
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Expiration</th>
-                        <td class="hub-table-cell border-top-0">
+                        <td class="hub-table-cell border-top-0" id="expiration">
                             <div class="spinner-border text-danger" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -93,11 +101,11 @@
     </div>
     <div class="row">
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Notification</th>
-                        <td class="hub-table-cell border-top-0">
+                        <td class="hub-table-cell border-top-0" id="last-notification">
                             <div class="spinner-border text-success" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -107,11 +115,27 @@
             </table>
         </div>
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Notification Error</th>
-                        <td class="hub-table-cell border-top-0">
+                        <td class="hub-table-cell border-top-0" id="last-notification-error">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-6 px-0">
+            <table class="table h-100 mb-0">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="table-dark align-middle border-top-0">Last Challenge</th>
+                        <td class="hub-table-cell border-top-0" id="last-challenge">
                             <div class="spinner-border text-success" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -120,28 +144,12 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="row">
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
-                <tbody>
-                    <tr>
-                        <th scope="row" class="table-dark align-middle border-top-0">Last Challenge</th>
-                        <td class="hub-table-cell border-top-0">
-                            <div class="spinner-border text-warning" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
                         <th scope="row" class="table-dark align-middle border-top-0">Last Challenge Error</th>
-                        <td class="hub-table-cell border-top-0">
+                        <td class="hub-table-cell border-top-0" id="last-challenge-error">
                             <div class="spinner-border text-warning" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -153,11 +161,11 @@
     </div>
     <div class="row">
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
-                        <th scope="row" class="table-dark align-middle border-top-0">Subscribe / Unsubscribe</th>
-                        <td class="hub-table-cell border-top-0">
+                        <th scope="row" class="table-dark align-middle border-top-0">Last Subscribe</th>
+                        <td class="hub-table-cell border-top-0" id="last-subscribe">
                             <div class="spinner-border text-info" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -167,11 +175,27 @@
             </table>
         </div>
         <div class="col-12 col-lg-6 px-0">
-            <table class="table mb-0">
+            <table class="table h-100 mb-0">
                 <tbody>
                     <tr>
+                        <th scope="row" class="table-dark align-middle border-top-0">Last Unsubscribe</th>
+                        <td class="hub-table-cell border-top-0" id="last-unsubscribe">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 px-0">
+            <table class="table h-100 mb-0">
+                <tbody>
+                    <tr class="col-third-one">
                         <th scope="row" class="table-dark align-middle border-top-0">Stat</th>
-                        <td class="hub-table-cell border-top-0">
+                        <td class="hub-table-cell border-top-0" id="stat">
                             <div class="spinner-border text-dark" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
