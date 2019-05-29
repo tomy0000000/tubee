@@ -77,7 +77,7 @@ def create_app(config_name):
     #         redis_store.srem("INSTANCE_SET", app.config["INSTANCE_ID"])
     #         app.logger.info(app.config["INSTANCE_ID"]+": Instance shutdown")
 
-    from .routes.main import main as main_blueprint
+    from .routes.main import main_blueprint
     app.register_blueprint(main_blueprint)
 
     from .routes.admin import admin as admin_blueprint
@@ -92,11 +92,11 @@ def create_app(config_name):
     from .routes.dev import dev as dev_blueprint
     app.register_blueprint(dev_blueprint, url_prefix="/dev")
 
-    from .routes.user import user as user_blueprint
+    from .routes.user import user_blueprint
     app.register_blueprint(user_blueprint, url_prefix="/user")
 
-    from .views import route_blueprint
-    app.register_blueprint(route_blueprint)
+    from .views import main_blueprint as tmp_blueprint
+    app.register_blueprint(tmp_blueprint)
 
     from .handler import handler
     app.register_blueprint(handler)

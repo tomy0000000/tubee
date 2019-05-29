@@ -3,6 +3,15 @@
     -webkit-filter: brightness(.5);
 }
 
+.youtube-btn {
+    background: #FF0000;
+    /*color: white;*/
+}
+
+.youtube-btn a {
+    color: white;
+}
+
 #content-container {
     position: relative;
     top: -350px;

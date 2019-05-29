@@ -26,58 +26,39 @@
         <tr>
             <th scope="col" class="align-middle"></th>
             <th scope="col" class="align-middle">Channel Name</th>
-            <th scope="col" class="align-middle">Last Active</th>
-            <th scope="col" class="align-middle">Active</th>
-            <th scope="col" class="align-middle">Renew Datetime</th>
-            <th scope="col" class="align-middle">Unsubscribe Datetime</th>
-            {% if current_user.admin %}
-            <th scope="col" class="align-middle">Renew</th>
-            {% endif %}
+            <th scope="col" class="align-middle">Recent Activity</th>
+            <th scope="col" class="align-middle">Action</th>
         </tr>
     </thead>
     <tbody>
         {% for subscription in subscriptions %}
         <tr>
-            <th scope="row" class="channel-thumbnails">
-                {% if subscription.thumbnails_url %}
-                <img src="{{ subscription.thumbnails_url }}" class="rounded-circle">
+            <th scope="row" class="align-middle channel-thumbnails">
+                {% if subscription.channel.thumbnails_url %}
+                <img src="{{ subscription.channel.thumbnails_url }}" class="rounded-circle">
                 {% endif %}
             </th>
             <td class="align-middle channel-name">
-                {% if subscription.custom_url %}
-                <a href="https://www.youtube.com/{{ subscription.custom_url }}">
-                    <p class="mb-0">{{ subscription.channel_name }}</p>
+                <a href="{{ url_for('channel.channel', channel_id=subscription.channel.channel_id) }}">
+                    <p class="mb-0">{{ subscription.channel.channel_name }}</p>
                 </a>
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
-                    <p class="mb-0">{{ subscription.channel_id }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel.channel_id }}">
+                    <p class="mb-0">{{ subscription.channel.channel_id }}</p>
                 </a>
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.custom_url }}">
-                    <p class="mb-0">#{{ subscription.custom_url }}</p>
-                </a>
-                {% else %}
-                <a href="https://www.youtube.com/channel/{{ subscription.channel_id }}">
-                    <p class="mb-0">{{ subscription.channel_name }}</p>
-                </a>
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
-                    <p class="mb-0">{{ subscription.channel_id }}</p>
+                {% if subscription.channel.custom_url %}
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel.custom_url }}">
+                    <p class="mb-0">#{{ subscription.channel.custom_url }}</p>
                 </a>
                 {% endif %}
             </td>
             <td class="align-middle"></td>
-            <td class="align-middle">{{ subscription.active }}</td>
-            <td class="align-middle">{{ moment(subscription.renew_datetime).format('lll') }}</td>
-            {% if subscription.unsubscribe_datetime %}
-            <td class="align-middle">{{ subscription.unsubscribe_datetime }}</td>
-            {% else %}
             <td class="align-middle">
-                <a href="{{ url_for('channel.unsubscribe', channel_id=subscription.channel_id) }}">Unsubscribe</a>
+                <a class="btn btn-danger" href="{{ url_for('channel.unsubscribe', channel_id=subscription.channel.channel_id) }}" role="button">Unsubscribe</a>
+                {% if current_user.admin %}
+                <br>
+                <button class="btn btn-warning renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel.channel_id) }}">Renew</button>
+                {% endif %}
             </td>
-            {% endif %}
-            {% if current_user.admin %}
-            <td class="align-middle">
-                <button class="btn btn-primary renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel_id) }}">Renew</button>
-            </td>
-            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

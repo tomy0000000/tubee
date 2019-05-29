@@ -1,17 +1,16 @@
 """Channel Related Routes"""
 import json
-from datetime import datetime
 
 import bs4
 import pyrfc3339
 import youtube_dl
 from apiclient.errors import HttpError
 from dateutil import parser
-from flask import Blueprint, current_app, jsonify, render_template, request
+from flask import Blueprint, current_app, jsonify, render_template, redirect, request, session, url_for
 from flask_login import current_user, login_required
 from .. import db
-from ..helper import send_notification, build_youtube_public_service
-from ..models import Callback, Channel, User, UserSubscription
+from ..helper.youtube import build_service
+from ..models import Callback, Channel, UserSubscription
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
     "skip_download": True,
@@ -22,29 +21,8 @@ youtube_dl_service = youtube_dl.YoutubeDL({
 
 @channel_blueprint.route("/<channel_id>")
 def channel(channel_id):
-    #
-    # Avatar                    Channel Name
-    # Avatar                    Channel ID
-    #
-    # State                                   Expiration
-    # Last Notification                       Last Notification Error
-    # Last Challenge                          Last Challenge Error
-    # Last Subscribe / Last Unsubscribe       Stat
-    # 
-    # Channel Videos
-    # 
-    # video_img     video_title         published_datetime    callback_dt
-    #               (msg_box: video_id)                 (msg_box: callback_cnt)
-    #                                                   (float: callback / notification detail)
-    # 
-    # (dynamic loading)
-
-    # TODO: Support New Un-Subscribed Channel
     channel_item = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    # url = "https://www.youtube.com/channel/{channel_id}/videos".format(channel_id=channel_id)
-    # channel_metadatas = youtube_dl_service.extract_info(url)
-    # videos = youtube_dl_service.extract_info(channel_metadatas["url"])
-    service = build_youtube_public_service()
+    service = build_service()
     videos = service.search().list(
         part="snippet",
         channelId=channel_id,
@@ -53,13 +31,12 @@ def channel(channel_id):
         type="video"
     ).execute()["items"]
     for video in videos:
-        # video["snippet"]["channelId"] = channel_id
         video["snippet"]["publishedAt"] = pyrfc3339.parse(video["snippet"]["publishedAt"])
         callback_search = Callback.query.filter_by(
             channel_id=channel_id,
             action="Hub Notification",
-            details=video["id"]["videoId"]).order_by(Callback.received_datetime.asc()
-                                                    ).all()
+            details=video["id"]["videoId"]).order_by(
+                Callback.received_datetime.asc()).all()
         video["snippet"]["callback"] = {
             "datetime": callback_search[0].received_datetime if bool(callback_search) else "",
             "count": len(callback_search)
@@ -76,21 +53,27 @@ def subscribe():
     (2) Submit the form POST request
     """
     if request.method == "GET":
-        prefilled = request.args["channelid"] if "channelid" in request.args else None
-        return render_template("subscribe.html", prefilled=prefilled)
+        return render_template("subscribe.html")
     if request.method == "POST":
 
-        # Build Subscription
         channel_id = request.form["channel_id"]
-        channel = Channel.query.get(channel_id)
-        if not channel:
-            channel = Channel(channel_id)
-            db.session.add(channel)
-            try:
-                db.session.commit()
-            except Exception as error:
-                current_app.logger.error("SQL Commit Failed")
+
+        # Check Existance
+        channel_object = Channel.filter_by(channel_id=channel_id).first()
+        if channel_object is None:
+            channel_object = Channel(channel_id)
+            db.session.add(channel_object)
+            db.session.commit()
         
+        # Connect Relationship
+        success = current_user.subscribe_to(channel_object)
+        if success:
+            session["alert"] = "Subscribe Success"
+            session["alert_type"] = "succes"
+        else:
+            session["alert"] = "Oops! Subscribe Failed for some reason"
+            session["alert_type"] = "danger"
+
         # Schedule renew datetime
         # job_response = scheduler.add_job(
         #     id="renew_"+channel_id,
@@ -98,32 +81,34 @@ def subscribe():
         #     trigger="interval",
         #     args=[new_subscription],
         #     days=4)
-
-        current_user.subscribe_to(channel)
-        response = {
-            # "Renew Jobs": job_response,
-            "HTTP Status Code": channel.activate_response.status_code
-        }
-        return render_template("empty.html", info=response)
+        return redirect(url_for("dashboard.html"))
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])
 @login_required
 def unsubscribe(channel_id):
     """
-    Page To Ubsubscribe
+    Page To Unsubscribe
     (1) Request confirmation with GET request
     (2) Submit the form POST request
     """
-    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    subscription = current_user.subscription.filter_by(subscribing_channel_id=channel_id).first()
+    if subscription is None:
+        session["alert"] = "You can't unsubscribe to {} since you havn't subscribe to it.".format(channel_id)
+        session["alert_type"] = "danger"
     if request.method == "GET":
-        response_page = render_template("unsubscribe.html", channel_name=channel.channel_name)
-    elif request.method == "POST":
-        response = channel.deactivate()
-        current_app.logger.info(response)
-        response_page = render_template("empty.html", info=response)
-    return response_page
-
+        return render_template("unsubscribe.html", channel_name=subscription.channel.channel_name)
+    if request.method == "POST":
+        # response = channel.deactivate()
+        # current_app.logger.info(response)
+        success = current_user.unbsubscribe_from(channel_id)
+        if success:
+            session["alert"] = "Unsubscribe Success"
+            session["alert_type"] = "succes"
+        else:
+            session["alert"] = "Oops! Unsubscribe Failed for some reason"
+            session["alert_type"] = "danger"
+    return redirect(url_for("dashboard.html"))
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/<channel_id>/callback", methods=["GET", "POST"])

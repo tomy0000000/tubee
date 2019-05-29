@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% set title = "YouTube Subcription" %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/youtube_subscription.css') }}">
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/youtube_subscription.js') }}"></script>
+{% endblock %}
+{% block content %}
+<table class="table table-striped table-hover" id="subscription-table" data-api-endpoint="{{ url_for('api.youtube_subscription') }}" data-next-page-token="{{ response.nextPageToken }}">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle"></th>
+            <th scope="col" class="align-middle">Channel Name</th>
+            <th scope="col" class="align-middle">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for channel in response["items"] %}
+        <tr>
+            <th scope="row" class="align-middle">
+                <img src="{{ channel.snippet.thumbnails.medium.url }}" class="rounded-circle channel-thumbnails">
+            </th>
+            <td class="align-middle">
+                <p class="mb-0 channel-name">{{ channel.snippet.title }}</p>
+                <a href="#" class="text-muted clipboard channel-id-a" data-clipboard-text="{{ channel.snippet.channelId }}">
+                    <p class="mb-0 channel-id-p">{{ channel.snippet.channelId }}</p>
+                </a>
+            </td>
+            <td class="align-middle channel-subscribed">
+                {% if not channel.snippet.subscribed %}
+                <a class="btn btn-success" href="{{ channel.snippet.subscribe_endpoint }}" role="button">Subscribe</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="d-flex justify-content-center" id="loading-spinner-div">
+    <div class="spinner-border text-primary" id="loading-spinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+{% endblock %}

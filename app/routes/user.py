@@ -2,14 +2,16 @@
 from flask import Blueprint, current_app, redirect, request, render_template, session, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from ..forms import LoginForm, RegisterForm
-from ..helper import build_youtube_flow
+from ..helper.youtube import build_flow
 from ..models import User
-user = Blueprint("user", __name__)
+user_blueprint = Blueprint("user", __name__)
 
-@user.route("/register", methods=["GET", "POST"])
+@user_blueprint.route("/register", methods=["GET", "POST"])
 def register():
     """User Register"""
     if current_user.is_authenticated:
+        session["alert"] = "You've already logined!"
+        session["alert_type"] = "success"
         return redirect(url_for("main.dashboard"))
     form = RegisterForm()
     alert = None
@@ -27,10 +29,12 @@ def register():
                            alert=alert,
                            alert_type="warning")
 
-@user.route("/login", methods=["GET", "POST"])
+@user_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     """User Login"""
     if current_user.is_authenticated:
+        session["alert"] = "You've already logined!"
+        session["alert_type"] = "success"
         return redirect(url_for("main.dashboard"))
     form = LoginForm()
     alert = session.pop("login_message_body", None)
@@ -47,7 +51,7 @@ def login():
                            alert=alert,
                            alert_type=alert_type)
 
-@user.route("/logout", methods=["GET"])
+@user_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
     """User Logout"""
@@ -56,7 +60,7 @@ def logout():
     session["login_message_type"] = "success"
     return redirect(url_for("user.login"))
 
-@user.route("/setting", methods=["GET", "POST"])
+@user_blueprint.route("/setting", methods=["GET", "POST"])
 @login_required
 def setting():
     """User Setting Page"""
@@ -66,10 +70,10 @@ def setting():
                            alert=alert,
                            alert_type=alert_type)
 
-@user.route('/setting/youtube/authorize')
+@user_blueprint.route('/setting/youtube/authorize')
 @login_required
 def setting_youtube_authorize():
-    flow = build_youtube_flow()
+    flow = build_flow()
     authorization_url, state = flow.authorization_url(
         # Enable offline access so that you can refresh an access token without
         # re-prompting the user for permission. Recommended for web server apps.
@@ -79,10 +83,10 @@ def setting_youtube_authorize():
     session["state"] = state
     return redirect(authorization_url)
 
-@user.route("/setting/youtube/oauth_callback")
+@user_blueprint.route("/setting/youtube/oauth_callback")
 @login_required
 def setting_youtube_oauth_callback():
-    flow = build_youtube_flow(state=session["state"])
+    flow = build_flow(state=session["state"])
     flow.fetch_token(authorization_response=request.url)
     credentials_dict = {
         "token": flow.credentials.token,
@@ -101,7 +105,7 @@ def setting_youtube_oauth_callback():
         session["action_response_status"] = "danger"
     return redirect(url_for("user.setting"))
 
-@user.route("/setting/youtube/revoke")
+@user_blueprint.route("/setting/youtube/revoke")
 @login_required
 def setting_youtube_revoke():
     """Revoke User's YouTube Crendential"""

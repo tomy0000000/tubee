@@ -38,6 +38,30 @@
                     </a>
                 </li>
                 {% endif %}
+                {% if title == "Explore" %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('main.explore') }}">
+                        Explore
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.explore') }}">
+                        Explore
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_user">
+                        <a class="dropdown-item" href="{{ url_for('user.login') }}">Login</a>
+                        <a class="dropdown-item" href="{{ url_for('user.register') }}">Register</a>
+                        <a class="dropdown-item" href="{{ url_for('user.setting') }}">Setting</a>
+                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">Logout</a>
+                    </div>
+                </li>
+                {% if current_user.admin %}
                 {% if title == "Hub Status" %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('main.hub_status') }}">
@@ -52,16 +76,6 @@
                     </a>
                 </li>
                 {% endif %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown_user">
-                        <a class="dropdown-item" href="{{ url_for('user.login') }}">Login</a>
-                        <a class="dropdown-item" href="{{ url_for('user.register') }}">Register</a>
-                        <a class="dropdown-item" href="{{ url_for('user.setting') }}">Setting</a>
-                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">Logout</a>
-                    </div>
-                </li>
-                {% if current_user.admin %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_admin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_admin">
@@ -84,11 +98,11 @@
                 </li>
                 {% endif %}
             </ul>
-            <span class="navbar-text mx-3">
-                {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated %}
+            <span class="navbar-text" id="username">
                 Hello! {{ current_user.username }}
-                {% endif %}
             </span>
+            {% endif %}
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

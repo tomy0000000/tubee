@@ -50,16 +50,29 @@
 <div class="jumbotron media">
     <img src="{{ channel.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ channel.channel_name }}">
     <div class="media-body my-auto">
-        <h3 class="mt-0">{{ channel.channel_name }}</h5>
-        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.channel_id }}">
-            <p class="mb-0">{{ channel.channel_id }}</p>
-        </a>
+        <h3 class="mt-0">{{ channel.channel_name }}</h3>
         {% if channel.custom_url %}
+        <button class="btn btn-sm youtube-btn">
+            <a href="https://www.youtube.com/{{ channel.custom_url }}" target="_blank" class="text-decoration-none">
+            <i class="fab fa-youtube"></i>
+            Open In YouTube
+            </a>
+        </button>
         <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.custom_url }}">
             <p class="mb-0">#{{ channel.custom_url }}</p>
         </a>
+        {% else %}
+        <button class="btn btn-sm youtube-btn">
+            <a href="https://www.youtube.com/channel/{{ channel.channel_id }}" target="_blank" class="text-decoration-none">
+            <i class="fab fa-youtube"></i>
+            Open In YouTube
+            </a>
+        </button>
         {% endif %}
-        <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.channel_id }}">
+            <p class="mb-0">{{ channel.channel_id }}</p>
+        </a>
+        <p>{{ channel.description }}</p>
         {% if current_user.is_subscribing(channel) %}
         <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
         {% else %}

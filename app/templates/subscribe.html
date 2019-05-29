@@ -2,11 +2,7 @@
 {% set title = "Subscribe" %}
 {% block content %}
     <form id="" name="" method="POST">
-        <input id="channel_id" class="form-control" name="channel_id" type="text" placeholder="YouTube Channel ID"
-        {% if prefilled %}
-        value="{{ prefilled }}"
-        {% endif %}
-        required>
-        <button id="submitBtn" class="btn btn-primary btn-lg m-2" type="submit">Subscribe</button>
+        <input class="form-control" name="channel_id" type="text" placeholder="YouTube Channel ID" required>
+        <button class="btn btn-primary btn-lg m-2" type="submit">Subscribe</button>
     </form>
 {% endblock %}

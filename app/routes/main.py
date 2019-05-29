@@ -1,19 +1,39 @@
 """The Main Routes"""
-import MySQLdb
-from flask import Blueprint, render_template
-from flask_login import login_required
-from ..models import Channel
-main = Blueprint("main", __name__)
+from flask import Blueprint, render_template, session, url_for
+from flask_login import current_user, login_required
+from ..helper.youtube import build_service
+main_blueprint = Blueprint("main", __name__)
 
-@main.route("/")
+@main_blueprint.route("/")
 @login_required
-def dashboard(alert="", alert_type=""):
+def dashboard():
     """Showing All Subscribed Channels"""
-    try:
-        channels = Channel.query.order_by(Channel.channel_name).all()
-        return render_template("dashboard.html",
-                               subscriptions=channels,
-                               alert=alert,
-                               alert_type=alert_type)
-    except MySQLdb.Error as e:
-        return "Oops"
+    alert = session.pop("alert", None)
+    alert_type = session.pop("alert_type", None)
+    subscriptions = current_user.subscriptions
+    return render_template("dashboard.html",
+                           subscriptions=subscriptions,
+                           alert=alert,
+                           alert_type=alert_type)
+
+@main_blueprint.route("/explore")
+def explore():
+    """Page to Explore New Channels"""
+    return render_template("explore.html")
+
+@main_blueprint.route("/youtube/subscription")
+@login_required
+def youtube_subscription():
+    """Showing User's YouTube Subsciptions"""
+    youtube_service = build_service(current_user.youtube_credentials)
+    response = youtube_service.subscriptions().list(
+        part="snippet",
+        maxResults=50,
+        mine=True,
+        order="alphabetical"
+    ).execute()
+    for channel in response["items"]:
+        channel_id = channel["snippet"]["resourceId"]["channelId"]
+        channel["snippet"]["subscribed"] = current_user.is_subscribing(channel_id)
+        channel["snippet"]["subscribe_endpoint"] = url_for("api.channel_subscribe", channel_id=channel_id)
+    return render_template("youtube_subscription.html", response=response)

@@ -1,6 +1,6 @@
 """API for Frontend Access"""
-from flask import Blueprint, jsonify
-from flask_login import login_required
+from flask import abort, Blueprint, jsonify, request, url_for
+from flask_login import current_user, login_required
 from .. import scheduler
 from ..models import Channel
 api_blueprint = Blueprint("api", __name__)
@@ -40,4 +40,27 @@ def channel_renew(channel_id):
     """Renew Subscription Info, Both Hub and Info"""
     subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     response = subscription.renew()
+    return jsonify(response)
+
+@api_blueprint.route("/youtube/subscription")
+@login_required
+def youtube_subscription():
+    """For Dynamically Loading User's YouTube Subscription"""
+    get_params = request.args.to_dict()
+    try:
+        page_token = get_params.pop("page_token")
+    except KeyError:
+        abort(404)
+    service = current_user.get_youtube_service()
+    response = service.subscriptions().list(
+        part="snippet",
+        maxResults=50,
+        mine=True,
+        order="alphabetical",
+        pageToken=page_token
+    ).execute()
+    for channel in response["items"]:
+        channel_id = channel["snippet"]["resourceId"]["channelId"]
+        channel["snippet"]["subscribed"] = current_user.is_subscribing(channel_id)
+        channel["snippet"]["subscribe_endpoint"] = url_for("api.channel_subscribe", channel_id=channel_id)
     return jsonify(response)

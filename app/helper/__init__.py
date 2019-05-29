@@ -2,13 +2,14 @@
 import codecs
 import json
 import os
+from functools import wraps
+
 import requests
 import pushover_complete
 import google.oauth2.credentials
 import googleapiclient.discovery
 from flask import abort, current_app, url_for
 from flask_login import current_user
-from functools import wraps
 from google_auth_oauthlib.flow import Flow
 from .. import db
 
@@ -79,35 +80,6 @@ def new_send_notification(user, *args, **kwargs):
         kwargs["image"] = requests.get(img_url, stream=True).content
     pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
     return pusher.send_message(user.pushover_key, *args, **kwargs)
-
-def build_youtube_flow(state=None):
-    with current_app.open_instance_resource(current_app.config["YOUTUBE_API_CLIENT_SECRET_FILE"], "r") as json_file:
-        client_config = json.load(json_file)
-    flow = Flow.from_client_config(client_config,
-                                   current_app.config["YOUTUBE_READ_WRITE_SSL_SCOPE"],
-                                   state=state)
-    flow.redirect_uri = url_for("user.setting_youtube_oauth_callback", _external=True)
-    return flow
-
-def build_youtube_credentials(credentials):
-    """Build Corresponding YouTube Credentials from User's Credentials"""
-    return google.oauth2.credentials.Credentials(**credentials)
-
-def build_youtube_public_service():
-    return googleapiclient.discovery.build(
-        current_app.config["YOUTUBE_API_SERVICE_NAME"],
-        current_app.config["YOUTUBE_API_VERSION"],
-        cache_discovery=False,
-        developerKey=current_app.config["YOUTUBE_API_DEVELOPER_KEY"])
-
-def build_youtube_service(credentials):
-    """Build Corresponding YouTube Service from User's Credentials"""
-    credentials = google.oauth2.credentials.Credentials(**credentials)
-    return googleapiclient.discovery.build(
-        current_app.config["YOUTUBE_API_SERVICE_NAME"],
-        current_app.config["YOUTUBE_API_VERSION"],
-        cache_discovery=False,
-        credentials=credentials)
 
 def auto_renew(channel):
     """Trigger channel"""
