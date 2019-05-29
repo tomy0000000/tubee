@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, session, url_for
 from flask_login import current_user, login_required
 from ..helper.youtube import build_service
+from ..models.user_subscription import UserSubscription
 main_blueprint = Blueprint("main", __name__)
 
 @main_blueprint.route("/")

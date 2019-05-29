@@ -1,5 +1,6 @@
 """Callback Model"""
 from .. import db
+from .. import helper
 
 class Callback(db.Model):
     """
