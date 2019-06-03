@@ -64,14 +64,14 @@
                 {% if current_user.admin %}
                 {% if title == "Hub Status" %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('main.hub_status') }}">
+                    <a class="nav-link" href="{{ url_for('dev.hub_status') }}">
                         Hub Status
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.hub_status') }}">
+                    <a class="nav-link" href="{{ url_for('dev.hub_status') }}">
                         Hub Status
                     </a>
                 </li>

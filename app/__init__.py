@@ -1,17 +1,19 @@
 """Main Application of Tubee"""
 import atexit
 import codecs
-import flask
-import flask_apscheduler
-import flask_bcrypt
-import flask_login
-import flask_moment
-import flask_redis
-import flask_sqlalchemy
 import json
 import logging.config
 import os
 import sys
+
+import flask
+from authlib.flask.client import OAuth
+from flask_apscheduler import APScheduler
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
+from flask_moment import Moment
+from flask_redis import Redis
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from config import config
 
@@ -24,12 +26,13 @@ naming_convention = {
     "pk": "pk_%(table_name)s"
 }
 metadata = MetaData(naming_convention=naming_convention)
-db = flask_sqlalchemy.SQLAlchemy(metadata=metadata)     # flask_sqlalchemy
-scheduler = flask_apscheduler.APScheduler()             # flask_apscheduler
-login_manager = flask_login.LoginManager()              # flask_login
-moment = flask_moment.Moment()                          # flask_moment
-bcrypt = flask_bcrypt.Bcrypt()                          # flask_bcrypt
-redis_store = flask_redis.Redis()                       # flask_redis
+oauth = OAuth()                                             # authlib
+scheduler = APScheduler()                                   # flask_apscheduler
+bcrypt = Bcrypt()                                           # flask_bcrypt
+login_manager = LoginManager()                              # flask_login
+moment = Moment()                                           # flask_moment
+redis_store = Redis()                                       # flask_redis
+db = SQLAlchemy(metadata=metadata)                          # flask_sqlalchemy
 
 def create_app(config_name):
     app = flask.Flask(__name__, instance_relative_config=True)
@@ -41,6 +44,9 @@ def create_app(config_name):
     db.init_app(app)
     app.db = db
     config[config_name].init_app(app)
+    oauth.init_app(app)
+    from .helper.line_notify import build_service
+    build_service(oauth)
     scheduler.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
@@ -80,7 +86,7 @@ def create_app(config_name):
     from .routes.main import main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from .routes.admin import admin as admin_blueprint
+    from .routes.admin import admin_blueprint
     app.register_blueprint(admin_blueprint, url_prefix="/admin")
 
     from .routes.api import api_blueprint
@@ -89,14 +95,11 @@ def create_app(config_name):
     from .routes.channel import channel_blueprint
     app.register_blueprint(channel_blueprint, url_prefix="/channel")
 
-    from .routes.dev import dev as dev_blueprint
+    from .routes.dev import dev_blueprint
     app.register_blueprint(dev_blueprint, url_prefix="/dev")
 
     from .routes.user import user_blueprint
     app.register_blueprint(user_blueprint, url_prefix="/user")
-
-    from .views import main_blueprint as tmp_blueprint
-    app.register_blueprint(tmp_blueprint)
 
     from .handler import handler
     app.register_blueprint(handler)

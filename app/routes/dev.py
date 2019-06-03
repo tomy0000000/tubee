@@ -6,9 +6,9 @@ from flask import Blueprint, current_app, render_template, url_for
 from flask_login import current_user, login_required
 from .. import login_manager, scheduler
 from ..helper import admin_required
-dev = Blueprint("dev", __name__)
+dev_blueprint = Blueprint("dev", __name__)
 
-@dev.route("/sitemap")
+@dev_blueprint.route("/sitemap")
 @login_required
 @admin_required
 def sitemap():
@@ -20,7 +20,7 @@ def sitemap():
     links.sort(key=lambda x: x[1])
     return render_template("map.html", links=links)
 
-@dev.route("/os")
+@dev_blueprint.route("/os")
 @login_required
 @admin_required
 def os_dict():
@@ -32,7 +32,7 @@ def os_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
-@dev.route("/sys")
+@dev_blueprint.route("/sys")
 @login_required
 @admin_required
 def sys_dict():
@@ -43,7 +43,7 @@ def sys_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
-@dev.route("/flask")
+@dev_blueprint.route("/flask")
 @login_required
 @admin_required
 def flask_dict():
@@ -55,7 +55,7 @@ def flask_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
-@dev.route("/login-manager")
+@dev_blueprint.route("/login-manager")
 @login_required
 @admin_required
 def login_manager_dict():
@@ -65,7 +65,7 @@ def login_manager_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
-@dev.route("/scheduler")
+@dev_blueprint.route("/scheduler")
 @login_required
 @admin_required
 def scheduler_dict():
@@ -76,7 +76,7 @@ def scheduler_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
-@dev.route("/user")
+@dev_blueprint.route("/user")
 @login_required
 @admin_required
 def user_dict():
@@ -86,7 +86,7 @@ def user_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
-@dev.route("/instance")
+@dev_blueprint.route("/instance")
 @login_required
 @admin_required
 def instance():
@@ -100,10 +100,12 @@ def instance():
     current_app.logger.info(response)
     return render_template("empty.html", info=response, pprint=True)
 
-@dev.route("/empty")
+@dev_blueprint.route("/empty")
 def empty():
     return render_template("empty.html")
 
-@dev.route("/debugger")
+@dev_blueprint.route("/debugger")
 def debugger():
     pass
+
+from . import tmp

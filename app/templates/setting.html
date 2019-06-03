@@ -46,5 +46,19 @@
         </div>
         {% endif %}
     </div>
+    <label for="line_notify_credentials" class="col-form-label">Line Notify Account</label>
+    <div class="input-group">
+        {% if current_user.line_notify_credentials %}
+        <input type="text" class="form-control" id="line_notify_credentials" value="{{ current_user.line_notify_credentials }}" aria-describedby="line_notify_revoke" readonly>
+        <div class="input-group-append">
+            <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_line_notify_revoke') }}" role="button" id="line_notify_revoke">Revoke</a>
+        </div>
+        {% else %}
+        <input type="text" class="form-control" id="line_notify_credentials" value="{{ current_user.line_notify_credentials }}" aria-describedby="line_notify_authorize" readonly>
+        <div class="input-group-append">
+            <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_line_notify_authorize') }}" role="button" id="line_notify_authorize">Authorize</a>
+        </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

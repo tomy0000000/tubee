@@ -2,7 +2,7 @@
 import requests
 from flask import current_app
 from flask_login import UserMixin
-from .. import bcrypt, db, login_manager
+from .. import bcrypt, db, login_manager, oauth
 from ..helper.youtube import build_credentials, build_service
 
 login_manager.login_view = "user.login"
@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     # language = db.Column(db.String(5))
     youtube_credentials = db.Column(db.JSON)
     # youtube_subscription = db.Column(db.JSON)
+    line_notify_credentials = db.Column(db.String(50))
     subscriptions = db.relationship("UserSubscription",
                                     foreign_keys="UserSubscription.subscriber_username",
                                     backref=db.backref("subscriber", lazy="joined"),
@@ -35,7 +36,7 @@ class User(UserMixin, db.Model):
                                     cascade="all, delete-orphan")
     @property
     def password(self):
-        """"""
+        """Password Property"""
         raise AttributeError("Password is not a readable attribute")
     @password.setter
     def password(self, password):
@@ -137,6 +138,25 @@ class User(UserMixin, db.Model):
         service = build_service(self.youtube_credentials)
         return service.playlistItems().insert(body=resource, part="snippet").execute()
     # Notification
+    def line_notify_init(self, credentials):
+        self.line_notify_credentials = credentials
+        db.session.commit()
+    def get_line_notify_credentials(self):
+        return dict(
+            access_token=self.line_notify_credentials,
+            token_type="bearer"
+        )
+    def line_notify_revoke(self):
+        response = oauth.LineNotify.post("api/revoke")
+        if response.status_code == 200:
+            self.line_notify_credentials = ""
+            db.session.commit()
+            return True
+        current_app.logger.info("Line Notify Revoke Failed for "+self.username)
+        current_app.logger.info("Response: "+str(response.status_code))
+        current_app.logger.info("Detail: ")
+        current_app.logger.info(response.text)
+        return response.text
     def send_notification(self, initiator, *args, **kwargs):
         from . import Notification
         new_notification = Notification(initiator, self, *args, **kwargs)

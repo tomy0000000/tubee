@@ -70,6 +70,13 @@ class Channel(db.Model):
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = details(callback_url, topic_url, **kwargs)
+        self.latest_status = response["state"]
+        self.expire_datetime = response["expiration"]
+        info_copy = response.copy()
+        info_copy.pop("requests_url")
+        info_copy.pop("response_object")
+        self.hub_infos = info_copy
+        db.session.commit()
         return response
 
     def renew_info(self):

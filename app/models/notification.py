@@ -30,7 +30,7 @@ class Notification(db.Model):
         if not kwargs.pop("raw_init", False):
             current_app.logger.info(args)
             current_app.logger.info(kwargs)
-            self.response = helper.new_send_notification(user, *args, **kwargs)
+            self.response = helper.send_notification(user, *args, **kwargs)
         db.session.add(self)
         db.session.commit()
     def __repr__(self):
@@ -39,5 +39,5 @@ class Notification(db.Model):
         """Aftermath sending"""
         if self.resopnse:
             raise RuntimeError("Notification has already sent")
-        self.response = helper.new_send_notification(self.user, self.message, self.kwargs)
+        self.response = helper.send_notification(self.user, self.message, self.kwargs)
         db.session.commit()

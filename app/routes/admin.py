@@ -4,9 +4,9 @@ from flask_login import current_user, login_required
 from .. import scheduler
 from ..helper import admin_required
 from ..models import Callback, Notification
-admin = Blueprint("admin", __name__)
+admin_blueprint = Blueprint("admin", __name__)
 
-@admin.route("/notification/dashboard")
+@admin_blueprint.route("/notification/dashboard")
 @login_required
 @admin_required
 def notification_dashboard():
@@ -15,7 +15,7 @@ def notification_dashboard():
     notifications = Notification.query.order_by(Notification.sent_datetime.desc()).all()
     return render_template("pushover_dashboard.html", notifications=notifications)
 
-@admin.route("/notification/push", methods=["GET", "POST"])
+@admin_blueprint.route("/notification/push", methods=["GET", "POST"])
 @login_required
 @admin_required
 def notification_push():
@@ -30,18 +30,15 @@ def notification_push():
                            alert=alert,
                            alert_type=alert_type)
 
-@admin.route("/scheduler/dashboard")
+@admin_blueprint.route("/scheduler/dashboard")
 @login_required
 @admin_required
 def scheduler_dashboard():
     """Show Scheduled Jobs"""
-    # TODO
     jobs = scheduler.get_jobs().copy()
-    for ind, val in enumerate(jobs):
-        jobs[ind] = str(val)
-    return render_template("empty.html", info=jobs)
+    return render_template("scheduler_dashboard.html", jobs=jobs)
 
-@admin.route("/hub/dashboard")
+@admin_blueprint.route("/hub/dashboard")
 @login_required
 @admin_required
 def hub_dashboard():

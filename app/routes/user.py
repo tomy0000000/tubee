@@ -1,6 +1,7 @@
 """Routes involves user credentials"""
 from flask import Blueprint, current_app, redirect, request, render_template, session, url_for
 from flask_login import current_user, login_user, logout_user, login_required
+from .. import oauth
 from ..forms import LoginForm, RegisterForm
 from ..helper.youtube import build_flow
 from ..models import User
@@ -64,8 +65,8 @@ def logout():
 @login_required
 def setting():
     """User Setting Page"""
-    alert = session.pop("action_response_message", None)
-    alert_type = session.pop("action_response_status", None)
+    alert = session.pop("alert", None)
+    alert_type = session.pop("alert_type", None)
     return render_template("setting.html",
                            alert=alert,
                            alert_type=alert_type)
@@ -98,11 +99,11 @@ def setting_youtube_oauth_callback():
     }
     current_user.youtube_init(credentials_dict)
     if flow.credentials.valid:
-        session["action_response_message"] = "YouTube Access Granted"
-        session["action_response_status"] = "success"
+        session["alert"] = "YouTube Access Granted"
+        session["alert_type"] = "success"
     else:
-        session["action_response_message"] = "YouTube Access Failed"
-        session["action_response_status"] = "danger"
+        session["alert"] = "YouTube Access Failed"
+        session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
 
 @user_blueprint.route("/setting/youtube/revoke")
@@ -110,14 +111,46 @@ def setting_youtube_oauth_callback():
 def setting_youtube_revoke():
     """Revoke User's YouTube Crendential"""
     if not current_user.youtube_credentials:
-        session["action_response_message"] = "YouTube Credential isn't set"
-        session["action_response_status"] = "warning"
+        session["alert"] = "YouTube Credential isn't set"
+        session["alert_type"] = "warning"
     else:
         response = current_user.youtube_revoke()
         if response is True:
-            session["action_response_message"] = "YouTube Access Revoke"
-            session["action_response_status"] = "success"
+            session["alert"] = "YouTube Access Revoke"
+            session["alert_type"] = "success"
         else:
-            session["action_response_message"] = response
-            session["action_response_status"] = "danger"
+            session["alert"] = response
+            session["alert_type"] = "danger"
+    return redirect(url_for("user.setting"))
+
+@user_blueprint.route("/setting/line-notify/authorize")
+@login_required
+def setting_line_notify_authorize():
+    redirect_uri = url_for("user.setting_line_notify_oauth_callback", _external=True)
+    return oauth.LineNotify.authorize_redirect(redirect_uri)
+
+@user_blueprint.route("/setting/line-notify/oauth_callback")
+@login_required
+def setting_line_notify_oauth_callback():
+    token = oauth.LineNotify.authorize_access_token()
+    current_user.line_notify_init(token["access_token"])
+    session["alert"] = "Line Notify Access Granted"
+    session["alert_type"] = "success"
+    return redirect(url_for("user.setting"))
+
+@user_blueprint.route("/setting/line-notify/revoke")
+@login_required
+def setting_line_notify_revoke():
+    """Revoke User's Line Notify Crendential"""
+    if not current_user.youtube_credentials:
+        session["alert"] = "Line Notify Credential isn't set"
+        session["alert_type"] = "warning"
+    else:
+        response = current_user.line_notify_revoke()
+        if response is True:
+            session["alert"] = "Line Notify Access Revoke"
+            session["alert_type"] = "success"
+        else:
+            session["alert"] = response
+            session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
