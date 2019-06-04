@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, session, url_for
 from flask_login import current_user, login_required
 from ..helper.youtube import build_service
+from ..models.channel import Channel
 from ..models.user_subscription import UserSubscription
 main_blueprint = Blueprint("main", __name__)
 
@@ -11,11 +12,19 @@ def dashboard():
     """Showing All Subscribed Channels"""
     alert = session.pop("alert", None)
     alert_type = session.pop("alert_type", None)
-    subscriptions = current_user.subscriptions
+    subscriptions = current_user.subscriptions.join(
+        UserSubscription.channel).order_by(
+            Channel.channel_name.asc()
+        ).all()
     return render_template("dashboard.html",
                            subscriptions=subscriptions,
                            alert=alert,
                            alert_type=alert_type)
+
+@main_blueprint.route("/tmp")
+def tmp():
+    subscriptions = current_user.subscriptions
+    return render_template("empty.html", info=subscriptions)
 
 @main_blueprint.route("/explore")
 def explore():

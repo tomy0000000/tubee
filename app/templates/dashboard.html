@@ -28,6 +28,9 @@
             <th scope="col" class="align-middle">Channel Name</th>
             <th scope="col" class="align-middle">Recent Activity</th>
             <th scope="col" class="align-middle">Action</th>
+            {% if current_user.admin %}
+            <th scope="col" class="align-middle">Hub Status</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -59,6 +62,13 @@
                 <button class="btn btn-warning renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel.channel_id) }}">Renew</button>
                 {% endif %}
             </td>
+            {% if current_user.admin %}
+            <td class="align-middle">
+                <span class="badge badge-primary">{{ subscription.channel.latest_status }}</span>
+                <br>
+                <span class="badge badge-warning">{{ moment(subscription.channel.expire_datetime).format('lll') }}</span>
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

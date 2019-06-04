@@ -59,7 +59,7 @@ def subscribe():
         channel_id = request.form["channel_id"]
 
         # Check Existance
-        channel_object = Channel.filter_by(channel_id=channel_id).first()
+        channel_object = Channel.query.filter_by(channel_id=channel_id).first()
         if channel_object is None:
             channel_object = Channel(channel_id)
             db.session.add(channel_object)
@@ -81,7 +81,7 @@ def subscribe():
         #     trigger="interval",
         #     args=[new_subscription],
         #     days=4)
-        return redirect(url_for("dashboard.html"))
+        return redirect(url_for("main.dashboard"))
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])

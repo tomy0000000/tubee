@@ -88,7 +88,7 @@ class User(UserMixin, db.Model):
             channel = Channel.query.filter_by(channel_id=channel)
         if not self.is_subscribing(channel):
             from . import UserSubscription
-            subscription = UserSubscription(subscribers=self, subscribing=channel)
+            subscription = UserSubscription(subscriber_username=self.username, subscribing_channel_id=channel.channel_id)
             db.session.add(subscription)
             db.session.commit()
         return True
