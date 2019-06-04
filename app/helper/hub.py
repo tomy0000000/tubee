@@ -84,11 +84,17 @@ def _formal_get_request(endpoint, **params):
     except requests.exceptions.RequestException:
         return -1
 
-def _parse_detail(query, **kwargs):
+def _parse_detail(query, fuzzy=False):
     try:
-        response = parser.parse(query, **kwargs)
+        response = parser.parse(query, fuzzy=fuzzy)
+        summary = re.search(r"\((.*)\)", query)
+        if summary:
+            summary = summary.groups()[0]
     except ValueError:
         response = None
+        summary = None
+    if fuzzy:
+        return (response, summary)
     return response
 
 def subscribe(callback_url, topic_url, **kwargs):
@@ -132,7 +138,6 @@ def details(callback_url, topic_url, **kwargs):
     Optional Parameters:
     secret              Subscriber-provided secret string
     """
-    stringify = kwargs.pop("stringify", False)
     params = {
         "hub.callback": callback_url,
         "hub.topic": topic_url,
@@ -143,36 +148,15 @@ def details(callback_url, topic_url, **kwargs):
     target = response_soup.find_all("dd")
     response_dict = {
         "requests_url": response_object.url,
-        "response_object": str(response_object) if stringify else response_object,
+        "response_object": response_object,
         "state": target[1].string,
         "stat": target[8].string
     }
-    from flask import current_app
-    response = _parse_detail(target[2].string)
-    response_dict["last_challenge"] = target[2].string if stringify and response is not None else response
-    response = _parse_detail(target[3].string)
-    response_dict["expiration"] = target[3].string if stringify and response is not None else response
-    response = _parse_detail(target[4].string)
-    response_dict["last_subscribe"] = target[4].string if stringify and response is not None else response
-    response = _parse_detail(target[5].string)
-    response_dict["last_unsubscribe"] = target[5].string if stringify and response is not None else response
-    
-    response = _parse_detail(target[6].string, fuzzy=True)
-    if response is not None:
-        summary = re.search(r"\((.*)\)", target[6].string)
-        if summary:
-            summary = summary.groups()[0]
-    current_app.logger.info(stringify and response is not None)
-    response_dict["last_challenge_error"] = None if response is None else target[6].string if stringify else (response, summary)
-    
-    response = _parse_detail(target[7].string, fuzzy=True)
-    if response is not None:
-        summary = re.search(r"\((.*)\)", target[7].string)
-        if summary:
-            summary = summary.groups()[0]
-    current_app.logger.info(stringify and response is not None)
-    response_dict["last_notification_error"] = None if response is None else target[7].string if stringify else (response, summary)
-    
-    response = _parse_detail(target[10].string)
-    response_dict["last_notification"] = target[10].string if stringify and response is not None else response
+    response_dict["last_challenge"] = _parse_detail(target[2].string)
+    response_dict["expiration"] = _parse_detail(target[3].string)
+    response_dict["last_subscribe"] = _parse_detail(target[4].string)
+    response_dict["last_unsubscribe"] = _parse_detail(target[5].string)
+    response_dict["last_challenge_error"] = _parse_detail(target[6].string, fuzzy=True)
+    response_dict["last_notification_error"] = _parse_detail(target[7].string, fuzzy=True)
+    response_dict["last_notification"] = _parse_detail(target[10].string)
     return response_dict

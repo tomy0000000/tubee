@@ -65,17 +65,23 @@ class Channel(db.Model):
             db.session.commit()
         return response
 
-    def get_hub_details(self, **kwargs):
+    def get_hub_details(self, stringify=False):
         callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
-        response = details(callback_url, topic_url, **kwargs)
+        response = details(callback_url, topic_url)
         self.latest_status = response["state"]
         self.expire_datetime = response["expiration"]
         info_copy = response.copy()
         info_copy.pop("requests_url")
         info_copy.pop("response_object")
+        for key, val in info_copy.items():
+            if isinstance(val, datetime):
+                info_copy[key] = str(val)
         self.hub_infos = info_copy
+        if stringify:
+            for key, val in response.items():
+                response[key] = str(val)
         db.session.commit()
         return response
 

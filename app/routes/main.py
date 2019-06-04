@@ -21,11 +21,6 @@ def dashboard():
                            alert=alert,
                            alert_type=alert_type)
 
-@main_blueprint.route("/tmp")
-def tmp():
-    subscriptions = current_user.subscriptions
-    return render_template("empty.html", info=subscriptions)
-
 @main_blueprint.route("/explore")
 def explore():
     """Page to Explore New Channels"""
