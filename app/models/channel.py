@@ -72,18 +72,22 @@ class Channel(db.Model):
         response = details(callback_url, topic_url)
         self.latest_status = response["state"]
         self.expire_datetime = response["expiration"]
-        info_copy = response.copy()
-        info_copy.pop("requests_url")
-        info_copy.pop("response_object")
-        for key, val in info_copy.items():
+        if not stringify:
+            response_copy = response.copy()
+        response.pop("requests_url")
+        response.pop("response_object")
+        for key, val in response.items():
+            if not val:
+                continue
             if isinstance(val, datetime):
-                info_copy[key] = str(val)
-        self.hub_infos = info_copy
-        if stringify:
-            for key, val in response.items():
                 response[key] = str(val)
+            elif isinstance(val[0], datetime):
+                response[key] = (str(val[0]), val[1])
+        if stringify:
+            response_copy = response.copy()
+        self.hub_infos = response
         db.session.commit()
-        return response
+        return response_copy
 
     def renew_info(self):
         service = build_service()

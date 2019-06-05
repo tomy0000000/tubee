@@ -29,7 +29,10 @@
             <th scope="col" class="align-middle">Recent Activity</th>
             <th scope="col" class="align-middle">Action</th>
             {% if current_user.admin %}
-            <th scope="col" class="align-middle">Hub Status</th>
+            <th scope="col" class="align-middle">
+                Hub Status
+                <button type="button" class="btn btn-warning btn-sm" id="renew-all-btn">Renew All</button>
+            </th>
             {% endif %}
         </tr>
     </thead>
@@ -58,7 +61,6 @@
             <td class="align-middle">
                 <a class="btn btn-danger" href="{{ url_for('channel.unsubscribe', channel_id=subscription.channel.channel_id) }}" role="button">Unsubscribe</a>
                 {% if current_user.admin %}
-                <br>
                 <button class="btn btn-warning renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel.channel_id) }}">Renew</button>
                 {% endif %}
             </td>

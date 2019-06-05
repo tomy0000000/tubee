@@ -86,16 +86,13 @@ def _formal_get_request(endpoint, **params):
 
 def _parse_detail(query, fuzzy=False):
     try:
-        response = parser.parse(query, fuzzy=fuzzy)
-        summary = re.search(r"\((.*)\)", query)
-        if summary:
-            summary = summary.groups()[0]
+        parsed_datetime = parser.parse(query, fuzzy=fuzzy)
     except ValueError:
-        response = None
-        summary = None
-    if fuzzy:
-        return (response, summary)
-    return response
+        parsed_datetime = None
+    if not fuzzy or not parsed_datetime:
+        return parsed_datetime
+    summary = re.search(r"\((.*)\)", query).groups()[0]
+    return (parsed_datetime, summary)
 
 def subscribe(callback_url, topic_url, **kwargs):
     """
@@ -150,7 +147,7 @@ def details(callback_url, topic_url, **kwargs):
         "requests_url": response_object.url,
         "response_object": response_object,
         "state": target[1].string,
-        "stat": target[8].string
+        "stat": target[8].string.strip("\n ")
     }
     response_dict["last_challenge"] = _parse_detail(target[2].string)
     response_dict["expiration"] = _parse_detail(target[3].string)
