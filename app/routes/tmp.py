@@ -8,22 +8,6 @@ from ..helper import admin_required
 from ..models import Channel
 from .dev import dev_blueprint
 
-@dev_blueprint.route("/hub/status")
-@login_required
-@admin_required
-def hub_status():
-    channels = Channel.query.order_by(Channel.channel_name).all()
-    return render_template("status.html", channels=channels)
-
-@dev_blueprint.route("/hub/renew")
-@login_required
-@admin_required
-def hub_renew():
-    response = {}
-    for channel in Channel.query.filter(Channel.active):
-        response[channel.channel_id] = channel.renew()
-    return render_template("empty.html", info=response)
-
 @dev_blueprint.route("/missle_testing")
 def register_auto_renew_test():
     response = None

@@ -68,7 +68,7 @@
             <td class="align-middle">
                 <span class="badge badge-primary">{{ subscription.channel.latest_status }}</span>
                 <br>
-                <span class="badge badge-warning">{{ moment(subscription.channel.expire_datetime).format('lll') }}</span>
+                <span class="badge badge-warning">{{ moment(subscription.channel.expire_datetime).fromNow() }}</span>
             </td>
             {% endif %}
         </tr>

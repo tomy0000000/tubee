@@ -97,13 +97,18 @@ class Channel(db.Model):
         ).execute()["items"][0]
         modification = {
             "channel_name": True,
+            "description": False,
             "thumbnails_url": True,
             "country": False,
             "defaultLanguage": False,
             "customUrl": False
         }
+        current_app.logger.info(retrieved_infos)
         self.channel_name = retrieved_infos["snippet"]["title"]
         self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["high"]["url"]
+        if "description" in retrieved_infos["snippet"]:
+            self.description = retrieved_infos["snippet"]["description"]
+            modification["description"] = True
         if "country" in retrieved_infos["snippet"]:
             self.country = retrieved_infos["snippet"]["country"]
             modification["country"] = True
@@ -133,7 +138,7 @@ class Channel(db.Model):
         return response.success
 
     def renew(self):
+        """Trigger renew_hub and renew_info"""
         response = self.renew_info()
-        hub = self.renew_hub()
-        response["hub"] = hub
+        response["hub"] = self.renew_hub()
         return response
