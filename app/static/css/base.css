@@ -11,7 +11,10 @@ span.line {
 }
 
 #alert-wrapper {
-    height: 0px;
+    position: sticky;
+    top: 100px;
+    z-index: 1;
+    height: 0;
 }
 
 @media (min-width: 992px) {

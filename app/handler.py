@@ -14,17 +14,17 @@ def not_logined():
 @handler.app_errorhandler(401)
 def unauthorized(alert):
     """Raised when User didn't logined yet"""
-    return render_template("error.html", alert=alert), 401
+    return render_template("error.html", alert=alert, alert_float=True), 401
 
 @handler.app_errorhandler(403)
 def forbidden(alert):
     """Raised when User did login, but didn't had the permission"""
-    return render_template("error.html", alert=alert), 403
+    return render_template("error.html", alert=alert, alert_float=True), 403
 
 @handler.app_errorhandler(404)
 def page_not_found(alert):
     """Raised when Page Not Found"""
-    return render_template("error.html", alert=alert), 404
+    return render_template("error.html", alert=alert, alert_float=True), 404
 
 # @handler.app_errorhandler(MySQLdb.Error)
 # @handler.app_errorhandler(MySQLdb._exceptions.OperationalError)

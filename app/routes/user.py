@@ -188,8 +188,7 @@ def setting_dropbox_oauth_callback():
         "url_state": oauth_result.url_state
     }
     current_user.dropbox_init(credentials_dict)
-    session["alert"] = str(oauth_result)
-    # session["alert"] = "Dropbx Access Granted"
+    session["alert"] = "Dropbx Access Granted"
     session["alert_type"] = "success"
     return redirect(url_for("user.setting"))
 

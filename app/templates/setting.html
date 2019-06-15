@@ -14,17 +14,17 @@
             Here
         </a>
     </small>
-    <label for="pushover_key" class="col-form-label">Pushover User Key</label>
+    <label for="pushover_key" class="col-form-label">Pushover</label>
     <div class="input-group">
         {% if current_user.pushover_key %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_change" readonly>
+        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_revoke" readonly>
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="pushover_change">Change</button>
+            <a class="btn btn-outline-secondary" href="#" role="button" id="pushover_revoke">Revoke</a>
         </div>
         {% else %}
         <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_validate">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="pushover_validate">Validate</button>
+            <a class="btn btn-outline-secondary" href="#" role="button" id="pushover_validate">Validate</a>
         </div>
         {% endif %}
     </div>
@@ -57,6 +57,20 @@
         <input type="text" class="form-control" id="line_notify_credentials" value="{{ current_user.line_notify_credentials }}" aria-describedby="line_notify_authorize" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_line_notify_authorize') }}" role="button" id="line_notify_authorize">Authorize</a>
+        </div>
+        {% endif %}
+    </div>
+    <label for="dropbox_credentials" class="col-form-label">Dropbox Account</label>
+    <div class="input-group">
+        {% if current_user.dropbox_credentials %}
+        <input type="text" class="form-control" id="dropbox_credentials" value="{{ current_user.dropbox_credentials }}" aria-describedby="dropbox_revoke" readonly>
+        <div class="input-group-append">
+            <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_dropbox_revoke') }}" role="button" id="dropbox_revoke">Revoke</a>
+        </div>
+        {% else %}
+        <input type="text" class="form-control" id="dropbox_credentials" value="{{ current_user.dropbox_credentials }}" aria-describedby="dropbox_authorize" readonly>
+        <div class="input-group-append">
+            <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_dropbox_authorize') }}" role="button" id="dropbox_authorize">Authorize</a>
         </div>
         {% endif %}
     </div>

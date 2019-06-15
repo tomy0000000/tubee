@@ -113,7 +113,7 @@ class User(UserMixin, db.Model):
                                  params={"token": credentials.token},
                                  headers={"content-type": "application/x-www-form-urlencoded"})
         if response.status_code == 200:
-            self.youtube_credentials = {}
+            self.youtube_credentials = None
             db.session.commit()
             return True
         current_app.logger.info("YouTube Revoke Failed for "+self.username)
@@ -150,7 +150,7 @@ class User(UserMixin, db.Model):
     def line_notify_revoke(self):
         response = oauth.LineNotify.post("api/revoke")
         if response.status_code == 200:
-            self.line_notify_credentials = ""
+            self.line_notify_credentials = None
             db.session.commit()
             return True
         current_app.logger.info("Line Notify Revoke Failed for "+self.username)
@@ -167,11 +167,17 @@ class User(UserMixin, db.Model):
     def dropbox_init(self, credentials):
         self.dropbox_credentials = credentials
         db.session.commit()
+    def dropbox_revoke(self):
+        service = dropbox.build_service(self.dropbox_credentials)
+        service.auth_token_revoke()
+        self.dropbox_credentials = None
+        db.session.commit()
+        return True
     def get_dropbox_credentials(self):
         return dropbox.build_credentials(self.dropbox_credentials)
     def get_dropbox_service(self):
         return dropbox.build_service(self.dropbox_credentials)
-    def dropbox_revoke(self):
-        service = dropbox.build_service(self.dropbox_credentials)
-        service.auth_token_revoke()
-        return True
+    def save_file_to_dropbox(self, file_path):
+        return dropbox.save_file_to_dropbox(self, file_path)
+    def save_url_to_dropbox(self, url, filename):
+        return dropbox.save_url_to_dropbox(self, url, filename)

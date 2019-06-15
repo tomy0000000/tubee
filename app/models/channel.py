@@ -103,7 +103,6 @@ class Channel(db.Model):
             "defaultLanguage": False,
             "customUrl": False
         }
-        current_app.logger.info(retrieved_infos)
         self.channel_name = retrieved_infos["snippet"]["title"]
         self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["high"]["url"]
         if "description" in retrieved_infos["snippet"]:
@@ -142,5 +141,7 @@ class Channel(db.Model):
         info_response = self.renew_info()
         subscription_response = self.renew_subscription()
         hub_response = self.renew_hub(stringify=True)
-        response = {"renew": subscription_response, **info_response, **hub_response}
+        response = info_response.copy()
+        response.update({"renew_subscription": subscription_response})
+        response.update(hub_response)
         return response
