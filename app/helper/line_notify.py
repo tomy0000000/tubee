@@ -2,6 +2,13 @@
 from flask import current_app, abort
 from flask_login import current_user
 
+# class LineNotify(object):
+#     """docstring for LineNotify"""
+#     def __init__(self, arg):
+#         super(LineNotify, self).__init__()
+#         self.arg = arg
+
+
 def build_service(oauth):
     # TODO: This Results in context issue, fix this someday
     # with current_app.app_context():

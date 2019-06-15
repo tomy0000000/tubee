@@ -12,7 +12,7 @@ from .dev import dev_blueprint
 def register_auto_renew_test():
     response = None
     channel = Channel.query.first()
-    infos = channel.get_hub_details()
+    infos = channel.renew_hub()
     delta = infos["expiration"] - datetime.now()
     random_num = random.randint(0, delta)
     renew_datetime = datetime.now() + timedelta(seconds=random_num)

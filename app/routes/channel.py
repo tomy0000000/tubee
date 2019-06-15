@@ -30,8 +30,20 @@ def channel(channel_id):
         order="date",
         type="video"
     ).execute()["items"]
+    current_app.logger.info(videos)
     for video in videos:
         video["snippet"]["publishedAt"] = pyrfc3339.parse(video["snippet"]["publishedAt"])
+        base_thumbnails_url = "/".join(video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
+        video["snippet"]["thumbnails"]["standard"] = {
+            "url": base_thumbnails_url+"/sddefault.jpg",
+            "width": 640,
+            "height": 480
+        }
+        video["snippet"]["thumbnails"]["maxres"] = {
+            "url": base_thumbnails_url+"/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+        }
         callback_search = Callback.query.filter_by(
             channel_id=channel_id,
             action="Hub Notification",

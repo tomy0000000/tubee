@@ -3,7 +3,7 @@ import unittest
 from app import create_app, db
 from app.models import User
 
-class RoutesTestCase(unittest.TestCase):
+class ChannelRoutesTestCase(unittest.TestCase):
     """Test Cases of Routes Response"""
     def setUp(self):
         self.app = create_app("testing")

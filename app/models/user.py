@@ -3,7 +3,7 @@ import requests
 from flask import current_app
 from flask_login import UserMixin
 from .. import bcrypt, db, login_manager, oauth
-from ..helper.youtube import build_credentials, build_service
+from ..helper import dropbox, youtube
 
 login_manager.login_view = "user.login"
 @login_manager.user_loader
@@ -29,6 +29,7 @@ class User(UserMixin, db.Model):
     youtube_credentials = db.Column(db.JSON)
     # youtube_subscription = db.Column(db.JSON)
     line_notify_credentials = db.Column(db.String(50))
+    dropbox_credentials = db.Column(db.JSON)
     subscriptions = db.relationship("UserSubscription",
                                     foreign_keys="UserSubscription.subscriber_username",
                                     backref=db.backref("subscriber", lazy="joined"),
@@ -107,7 +108,7 @@ class User(UserMixin, db.Model):
         self.youtube_credentials = credentials
         db.session.commit()
     def youtube_revoke(self):
-        credentials = build_credentials(self.youtube_credentials)
+        credentials = youtube.build_credentials(self.youtube_credentials)
         response = requests.post("https://accounts.google.com/o/oauth2/revoke",
                                  params={"token": credentials.token},
                                  headers={"content-type": "application/x-www-form-urlencoded"})
@@ -121,9 +122,9 @@ class User(UserMixin, db.Model):
         current_app.logger.info(response.text)
         return response.text
     def get_youtube_credentials(self):
-        return build_credentials(self.youtube_credentials)
+        return youtube.build_credentials(self.youtube_credentials)
     def get_youtube_service(self):
-        return build_service(self.youtube_credentials)
+        return youtube.build_service(self.youtube_credentials)
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
         resource = {
             "snippet": {
@@ -135,7 +136,7 @@ class User(UserMixin, db.Model):
                 "position": position
             }
         }
-        service = build_service(self.youtube_credentials)
+        service = youtube.build_service(self.youtube_credentials)
         return service.playlistItems().insert(body=resource, part="snippet").execute()
     # Notification
     def line_notify_init(self, credentials):
@@ -163,3 +164,14 @@ class User(UserMixin, db.Model):
         db.session.add(new_notification)
         db.session.commit()
         return new_notification.response
+    def dropbox_init(self, credentials):
+        self.dropbox_credentials = credentials
+        db.session.commit()
+    def get_dropbox_credentials(self):
+        return dropbox.build_credentials(self.dropbox_credentials)
+    def get_dropbox_service(self):
+        return dropbox.build_service(self.dropbox_credentials)
+    def dropbox_revoke(self):
+        service = dropbox.build_service(self.dropbox_credentials)
+        service.auth_token_revoke()
+        return True

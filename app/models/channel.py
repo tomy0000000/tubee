@@ -65,7 +65,7 @@ class Channel(db.Model):
             db.session.commit()
         return response
 
-    def get_hub_details(self, stringify=False):
+    def renew_hub(self, stringify=False):
         callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
@@ -119,10 +119,10 @@ class Channel(db.Model):
             self.custom_url = retrieved_infos["snippet"]["customUrl"]
             modification["customUrl"] = True
         db.session.commit()
-        # Consider adding localized infos(?)
+        # TODO: Consider adding localized infos(?)
         return modification
 
-    def renew_hub(self):
+    def renew_subscription(self):
         """Renew Subscription by submitting new Hub Subscription"""
         callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
@@ -139,6 +139,8 @@ class Channel(db.Model):
 
     def renew(self):
         """Trigger renew_hub and renew_info"""
-        response = self.renew_info()
-        response["hub"] = self.renew_hub()
+        info_response = self.renew_info()
+        subscription_response = self.renew_subscription()
+        hub_response = self.renew_hub(stringify=True)
+        response = {"renew": subscription_response, **info_response, **hub_response}
         return response

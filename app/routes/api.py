@@ -15,7 +15,7 @@ def scheduler_pause_job():
 def channel_status(channel_id):
     """From Hub fetch Status"""
     subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    response = subscription.get_hub_details(stringify=True)
+    response = subscription.renew_hub(stringify=True)
     return jsonify(response)
 
 @api_blueprint.route("/<channel_id>/subscribe")

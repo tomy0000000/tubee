@@ -1,13 +1,13 @@
 import os
+import uuid
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 basedir = os.path.abspath(os.path.dirname(__file__))
-
 
 class Config:
     """Universal Config"""
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "aef142c0-b8d5-4ad2-bbbc-d4b101adcd05"
+    SECRET_KEY = os.environ.get("SECRET_KEY") or str(uuid.uuid4())
     PREFERRED_URL_SCHEME = "https"
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_recycle": 300
@@ -36,8 +36,12 @@ class Config:
     YOUTUBE_API_VERSION = "v3"
 
     # Line Notify API
-    LINENOTIFY_CLIENT_ID = os.environ.get("LINENOTIFY_CLIENT_ID")
-    LINENOTIFY_CLIENT_SECRET = os.environ.get("LINENOTIFY_CLIENT_SECRET")
+    LINENOTIFY_CLIENT_ID = os.environ.get("LINENOTIFY_CLIENT_ID") or None
+    LINENOTIFY_CLIENT_SECRET = os.environ.get("LINENOTIFY_CLIENT_SECRET") or None
+
+    # Dropbox API
+    DROPBOX_APP_KEY = os.environ.get("DROPBOX_APP_KEY") or None
+    DROPBOX_APP_SECRET = os.environ.get("DROPBOX_APP_SECRET") or None
 
     # PubSubHubBub
     HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"

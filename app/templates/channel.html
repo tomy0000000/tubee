@@ -16,21 +16,21 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ videos[0].snippet.thumbnails.medium.url }}" class="d-block w-100" alt="{{ videos[0].snippet.title }}">
+                <img src="{{ videos[0].snippet.thumbnails.maxres.url }}" class="d-block w-100" alt="{{ videos[0].snippet.title }}">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ videos[0].snippet.title }}</h5>
                     <p>{{ videos[0].snippet.description }}</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ videos[1].snippet.thumbnails.medium.url }}" class="d-block w-100" alt="{{ videos[1].snippet.title }}">
+                <img src="{{ videos[1].snippet.thumbnails.maxres.url }}" class="d-block w-100" alt="{{ videos[1].snippet.title }}">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ videos[1].snippet.title }}</h5>
                     <p>{{ videos[1].snippet.description }}</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ videos[2].snippet.thumbnails.medium.url }}" class="d-block w-100" alt="{{ videos[2].snippet.title }}">
+                <img src="{{ videos[2].snippet.thumbnails.maxres.url }}" class="d-block w-100" alt="{{ videos[2].snippet.title }}">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ videos[2].snippet.title }}</h5>
                     <p>{{ videos[2].snippet.description }}</p>
@@ -72,7 +72,7 @@
         <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.channel_id }}">
             <p class="mb-0">{{ channel.channel_id }}</p>
         </a>
-        <p>{{ channel.description }}</p>
+        <pre>{{ channel.description }}</pre>
         {% if current_user.is_subscribing(channel) %}
         <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
         {% else %}
@@ -206,7 +206,7 @@
         <div class="col-12 px-0">
             <table class="table h-100 mb-0">
                 <tbody>
-                    <tr class="col-third-one">
+                    <tr class="col-lg-third-one">
                         <th scope="row" class="table-dark align-middle border-top-0">Stat</th>
                         <td class="align-middle border-top-0 hub-table-cell" id="stat">
                             <div class="spinner-border text-dark" role="status">
