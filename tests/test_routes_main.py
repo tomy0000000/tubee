@@ -1,7 +1,9 @@
 """Test Cases of Routes Response"""
 import unittest
+from flask_login import current_user
+from unittest.mock import patch
 from app import create_app, db
-from app.models import User
+from app.models import User, UserSubscription
 
 class MainRoutesTestCase(unittest.TestCase):
     """Test Cases of Routes Response"""
@@ -18,6 +20,16 @@ class MainRoutesTestCase(unittest.TestCase):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+
+    # def test_dashboard(self):
+    #     with patch("flask_login.current_user.subscriptions") as check:
+    #         check.return_value = [
+    #             UserSubscription(subscriber_username=self.client_username, subscribing_channel_id="test_channel_id_1"),
+    #             UserSubscription(subscriber_username=self.client_username, subscribing_channel_id="test_channel_id_2")
+    #         ]
+    #         response = self.client.get("/")
+    #         check.assert_called_once()
+    #         self.assertEqual(response.status_code, 200)
 
     def test_register_login_logout(self):
         """

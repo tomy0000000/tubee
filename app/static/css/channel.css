@@ -12,6 +12,10 @@
     color: white;
 }
 
+#channel-description {
+    white-space: pre-line;
+}
+
 #content-container {
     position: relative;
     top: -350px;

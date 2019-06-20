@@ -30,7 +30,6 @@ def channel(channel_id):
         order="date",
         type="video"
     ).execute()["items"]
-    current_app.logger.info(videos)
     for video in videos:
         video["snippet"]["publishedAt"] = pyrfc3339.parse(video["snippet"]["publishedAt"])
         base_thumbnails_url = "/".join(video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
@@ -69,30 +68,34 @@ def subscribe():
     if request.method == "POST":
 
         channel_id = request.form["channel_id"]
+        current_app.logger.info("----------New Subscription Begin----------")
+        current_app.logger.info("Channel ID: {}".format(channel_id))
 
         # Check Existance
         channel_object = Channel.query.filter_by(channel_id=channel_id).first()
-        if channel_object is None:
+        new_channel = bool(channel_object is None)
+        current_app.logger.info("Is New Channel: {}".format(new_channel))
+        if new_channel:
             channel_object = Channel(channel_id)
             db.session.add(channel_object)
             db.session.commit()
-        
+
+            # Schedule renew datetime
+            # job_response = scheduler.add_job(
+            #     id="renew_"+channel_id,
+            #     func=renew_subscription,
+            #     trigger="interval",
+            #     args=[new_subscription],
+            #     days=4)
+
         # Connect Relationship
         success = current_user.subscribe_to(channel_object)
         if success:
             session["alert"] = "Subscribe Success"
-            session["alert_type"] = "succes"
+            session["alert_type"] = "success"
         else:
             session["alert"] = "Oops! Subscribe Failed for some reason"
             session["alert_type"] = "danger"
-
-        # Schedule renew datetime
-        # job_response = scheduler.add_job(
-        #     id="renew_"+channel_id,
-        #     func=renew_subscription,
-        #     trigger="interval",
-        #     args=[new_subscription],
-        #     days=4)
         return redirect(url_for("main.dashboard"))
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
@@ -104,23 +107,21 @@ def unsubscribe(channel_id):
     (1) Request confirmation with GET request
     (2) Submit the form POST request
     """
-    subscription = current_user.subscription.filter_by(subscribing_channel_id=channel_id).first()
+    subscription = current_user.subscriptions.filter_by(subscribing_channel_id=channel_id).first()
     if subscription is None:
         session["alert"] = "You can't unsubscribe to {} since you havn't subscribe to it.".format(channel_id)
-        session["alert_type"] = "danger"
+        session["alert_type"] = "warning"
     if request.method == "GET":
         return render_template("unsubscribe.html", channel_name=subscription.channel.channel_name)
     if request.method == "POST":
-        # response = channel.deactivate()
-        # current_app.logger.info(response)
         success = current_user.unbsubscribe_from(channel_id)
         if success:
             session["alert"] = "Unsubscribe Success"
-            session["alert_type"] = "succes"
+            session["alert_type"] = "success"
         else:
             session["alert"] = "Oops! Unsubscribe Failed for some reason"
             session["alert_type"] = "danger"
-    return redirect(url_for("dashboard.html"))
+    return redirect(url_for("main.dashboard"))
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/<channel_id>/callback", methods=["GET", "POST"])

@@ -35,21 +35,18 @@ class Channel(db.Model):
             part="snippet",
             id=channel_id
         ).execute()["items"][0]["snippet"]["title"]
-        self.activate_response = self.activate()
+        self.renew_info()
+        self.renew_hub()
+        self.activate()
 
     def __repr__(self):
         return "<channel {}(#{})>".format(self.channel_name, self.channel_id)
 
     def activate(self):
-        """Submitting Hub Subscription"""
-        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
-        param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
-        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
-        response = subscribe(callback_url, topic_url)
-        if response.success:
+        """Activate Subscription"""
+        response = self.renew_subscription()
+        if response:
             self.active = True
-            self.subscribe_datetime = datetime.now()
-            self.renew_datetime = datetime.now()
             db.session.commit()
         return response
 

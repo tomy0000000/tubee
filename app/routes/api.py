@@ -14,8 +14,8 @@ def scheduler_pause_job():
 @api_blueprint.route("/<channel_id>/status")
 def channel_status(channel_id):
     """From Hub fetch Status"""
-    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    response = subscription.renew_hub(stringify=True)
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    response = channel.renew_hub(stringify=True)
     return jsonify(response)
 
 @api_blueprint.route("/<channel_id>/subscribe")
@@ -23,7 +23,7 @@ def channel_status(channel_id):
 def channel_subscribe(channel_id):
     """Subscribe to a Channel"""
     # TODO
-    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
 
 @api_blueprint.route("/<channel_id>/unsubscribe")
@@ -31,15 +31,15 @@ def channel_subscribe(channel_id):
 def channel_unsubscribe(channel_id):
     """Unsubscribe to a Channel"""
     # TODO
-    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
 
 @api_blueprint.route("/<channel_id>/renew")
 @login_required
 def channel_renew(channel_id):
     """Renew Subscription Info, Both Hub and Info"""
-    subscription = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    response = subscription.renew()
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    response = channel.renew()
     return jsonify(response)
 
 @api_blueprint.route("/youtube/subscription")

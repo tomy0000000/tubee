@@ -97,9 +97,11 @@ class User(UserMixin, db.Model):
         """Delete Subscription Relationship"""
         from . import Channel
         if not isinstance(channel, Channel):
-            channel = Channel.query.filter_by(channel_id=channel)
-        if self.is_subscribing(channel):
-            subscription = self.subscriptions.filter_by(channel_id=channel.channel_id).first()
+            current_app.logger.info("Convert Channel")
+            current_app.logger.info(channel)
+            channel = Channel.query.filter_by(channel_id=channel).first()
+        subscription = self.subscriptions.filter_by(subscribing_channel_id=channel.channel_id).first()
+        if subscription:
             db.session.delete(subscription)
             db.session.commit()
         return True

@@ -26,6 +26,21 @@ def page_not_found(alert):
     """Raised when Page Not Found"""
     return render_template("error.html", alert=alert, alert_float=True), 404
 
+@handler.app_errorhandler(500)
+def page_not_found(alert):
+    """Raised when Page Not Found"""
+    return render_template("error.html", alert=alert, alert_float=True), 500
+
+@handler.app_errorhandler(501)
+def page_not_found(alert):
+    """Raised when Page Not Found"""
+    return render_template("error.html", alert=alert, alert_float=True), 501
+
+@handler.app_errorhandler(502)
+def page_not_found(alert):
+    """Raised when Page Not Found"""
+    return render_template("error.html", alert=alert, alert_float=True), 502
+
 # @handler.app_errorhandler(MySQLdb.Error)
 # @handler.app_errorhandler(MySQLdb._exceptions.OperationalError)
 # @handler.app_errorhandler(sqlalchemy.exc.StatementError)

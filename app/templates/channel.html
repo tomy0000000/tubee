@@ -72,7 +72,7 @@
         <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.channel_id }}">
             <p class="mb-0">{{ channel.channel_id }}</p>
         </a>
-        <pre>{{ channel.description }}</pre>
+        <p id="channel-description">{{ channel.description }}</p>
         {% if current_user.is_subscribing(channel) %}
         <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
         {% else %}
@@ -238,7 +238,7 @@
                 <img src="{{ video.snippet.thumbnails.medium.url }}" class="rounded vidoe-thumbnails">
             </th>
             <td class="align-middle video-title">
-                <a href="https://youtu.be/{{ video.id.videoId }}">
+                <a href="https://youtu.be/{{ video.id.videoId }}" target="_blank">
                     {{ video.snippet.title }}
                 </a>
                 <a href="#" class="text-muted clipboard" data-clipboard-text="{{ video.id.videoId }}">
