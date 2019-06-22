@@ -43,6 +43,7 @@ def create_app(config_name):
 
     db.init_app(app)
     app.db = db
+    db.app = app
     config[config_name].init_app(app)
     oauth.init_app(app)
     from .helper.line_notify import build_service

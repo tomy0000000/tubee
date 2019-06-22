@@ -134,9 +134,9 @@ class Channel(db.Model):
         return response.success
 
     def renew(self):
-        """Trigger renew_hub and renew_info"""
-        info_response = self.renew_info()
+        """Trigger renew functions"""
         subscription_response = self.renew_subscription()
+        info_response = self.renew_info()
         hub_response = self.renew_hub(stringify=True)
         response = info_response.copy()
         response.update({"renew_subscription": subscription_response})

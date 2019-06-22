@@ -3,7 +3,6 @@ import codecs
 import json
 import os
 from functools import wraps
-
 import requests
 import pushover_complete
 import google.oauth2.credentials
@@ -47,14 +46,5 @@ def send_notification(user, *args, **kwargs):
     if "image" in kwargs and kwargs["image"]:
         img_url = kwargs["image"]
         kwargs["image"] = requests.get(img_url, stream=True).content
-    pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
+    pusher = pushover_complete.PushoverAPI(os.environ.get("PUSHOVER_TOKEN"))
     return pusher.send_message(user.pushover_key, *args, **kwargs)
-
-def auto_renew(channel):
-    """Trigger channel"""
-    response = channel.renew()
-    current_app.logger.info("----------------Auto Renewed Start----------------")
-    current_app.logger.info("{}<{}>".format(channel.channel_name, channel.channel_id))
-    current_app.logger.info(response)
-    current_app.logger.info("--------------Auto Renewed Complete--------------")
-    return response

@@ -4,66 +4,53 @@ from datetime import datetime, timedelta
 from flask import redirect, render_template, session, url_for
 from flask_login import current_user, login_required
 from .. import scheduler, oauth
-from ..helper import admin_required, youtube_dl
+from ..helper import admin_required, schedule_function, youtube_dl
 from ..models import Channel
 from .dev import dev_blueprint
 
-@dev_blueprint.route("/missle_testing")
-def register_auto_renew_test():
-    response = None
-    channel = Channel.query.first()
+@dev_blueprint.route("/<channel_id>/register_auto_renew")
+def register_auto_renew(channel_id):
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+
+    # Setup runtime
     infos = channel.renew_hub()
     delta = infos["expiration"] - datetime.now()
     random_num = random.randint(0, delta)
     renew_datetime = datetime.now() + timedelta(seconds=random_num)
-    scheduler.add_job("renew_channel_{}".format(channel.channel_id), test_func, run_date=renew_datetime)
+
+    # Setup runtime (beta)
+    # renew_datetime = datetime.now() + timedelta(seconds=10)
+
+    response = scheduler.add_job(id="renew_channel_{}".format(channel.channel_name),
+                                 func=schedule_function.renew_channel,
+                                 args=[channel],
+                                 run_date=renew_datetime)
     return render_template("empty.html", info=response)
 
-@dev_blueprint.route("/missle_launched")
-def register_auto_renew_official():
-    response = None
-    return render_template("empty.html", info=response)
-
-def test_func_auto_reschedule():
-    print("hello")
-    job = scheduler.get_job("test_resch")
-    random_num = random.randint(0, 30)
-    print("next run at {} seconds later".format(random_num))
-    target_datetime = datetime.now() + timedelta(seconds=random_num)
-    # job.reschedule(run_date=target_datetime)
-    response = scheduler.add_job("test_resch", test_func_auto_reschedule, run_date=target_datetime)
-
-@dev_blueprint.route("/regist_job_resch")
+@dev_blueprint.route("/<channel_id>/deregister_auto_renew")
 @login_required
 @admin_required
-def regist_job_resch():
-    target_datetime = datetime.now() + timedelta(seconds=10)
-    response = scheduler.add_job("test_resch", test_func_auto_reschedule, run_date=target_datetime)
-    return render_template("empty.html", info=response)
+def deregister_auto_renew(channel_id):
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    scheduler.remove_job("renew_channel_{}".format(channel.channel_name))
+    return redirect(url_for("admin.scheduler_dashboard"))
 
-@dev_blueprint.route("/remove_job_resch")
+@dev_blueprint.route("/register_test_job")
 @login_required
 @admin_required
-def remove_job_resch():
-    response = scheduler.remove_job("test_resch")
+def register_test_job():
+    response = scheduler.add_job("test", schedule_function.test_func, trigger="interval", seconds=2)
     return render_template("empty.html", info=response)
 
-def test_func():
-    print("123")
-
-@dev_blueprint.route("/regist_job")
+@dev_blueprint.route("/remove_test_job")
 @login_required
 @admin_required
-def regist_job():
-    response = scheduler.add_job("test", test_func, trigger="interval", seconds=2)
-    return render_template("empty.html", info=response)
+def remove_test_job():
+    scheduler.remove_job("test")
+    return redirect(url_for("admin.scheduler_dashboard"))
 
-@dev_blueprint.route("/remove_job")
-@login_required
-@admin_required
-def remove_job():
-    response = scheduler.remove_job("test")
-    return render_template("empty.html", info=response)
+
+
 
 @dev_blueprint.route("/post-line-notify")
 @login_required

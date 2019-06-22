@@ -35,21 +35,16 @@ The core functions is completly working, yet this application is still in develo
 # Features
 
 * Channel Subscribing
-  * New Video Push Notification (via [Pushover](https://pushover.net/))
+  * New Video Push Notification (via [Pushover](https://pushover.net/), [LINE Notify](https://notify-bot.line.me))
   * New Video to Playlist
+  * New Video Download (Save to Dropbox)
 
 ## More on the Way
 
-* Push Notification with LINE Integration
-* New Video Auto download (coming soon)
-* Channel Inspection (coming soon)
+* Channel Inspection
 * Audio Streaming
 
-
-
-
-# TODOs
-### Config
+# Config
 
 * Environment Variables
   * `SECRET_KEY`
