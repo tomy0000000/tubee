@@ -1,7 +1,7 @@
 """Beta views"""
 import random
-from datetime import datetime, timedelta
-from flask import redirect, render_template, session, url_for
+from datetime import datetime, timedelta, timezone
+from flask import redirect, render_template, session, url_for, current_app
 from flask_login import current_user, login_required
 from .. import scheduler, oauth
 from ..helper import admin_required, schedule_function, youtube_dl
@@ -14,8 +14,9 @@ def register_auto_renew(channel_id):
 
     # Setup runtime
     infos = channel.renew_hub()
-    delta = infos["expiration"] - datetime.now()
-    random_num = random.randint(0, delta)
+    current_app.logger.info(infos["expiration"])
+    delta = infos["expiration"] - datetime.now(timezone.utc)
+    random_num = random.randint(0, int(delta.total_seconds()))
     renew_datetime = datetime.now() + timedelta(seconds=random_num)
 
     # Setup runtime (beta)

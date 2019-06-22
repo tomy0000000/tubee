@@ -14,7 +14,7 @@
         <tr>
             <th scope="row" class="align-middle">{{ job.id }}</th>
             <td class="align-middle">{{ job.trigger }}</td>
-            <td class="align-middle">{{ job.next_run_time }}</td>
+            <td class="align-middle">{{ moment(job.next_run_time).format('lll') }}</td>
         </tr>
         {% endfor %}
     </tbody>
