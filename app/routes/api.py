@@ -39,7 +39,7 @@ def channel_unsubscribe(channel_id):
 def channel_renew(channel_id):
     """Renew Subscription Info, Both Hub and Info"""
     channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    response = channel.renew()
+    response = channel.renew(stringify=True)
     return jsonify(response)
 
 @api_blueprint.route("/youtube/subscription")

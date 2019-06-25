@@ -2,7 +2,7 @@
 import random
 from datetime import datetime, timedelta
 from ..models import User
-from .. import scheduler
+from .. import db, scheduler
 
 def test_func():
     print("Hello World")
@@ -13,7 +13,8 @@ def renew_channel(channel):
     print("Running Renew for Channel: {}".format(channel.channel_name))
 
     # Main
-    infos = channel.renew()
+    with db.app.app_context():
+        infos = channel.renew()
     renew_datetime = infos["expiration"] - timedelta(days=1)
 
     # Main (beta)

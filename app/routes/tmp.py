@@ -28,6 +28,16 @@ def register_auto_renew(channel_id):
                                  run_date=renew_datetime)
     return render_template("empty.html", info=response)
 
+@dev_blueprint.route("/<channel_id>/register_auto_renew_10_sec")
+def register_auto_renew_10(channel_id):
+    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    renew_datetime = datetime.now() + timedelta(seconds=10)
+    response = scheduler.add_job(id="renew_channel_{}".format(channel.channel_name),
+                                 func=schedule_function.renew_channel,
+                                 args=[channel],
+                                 run_date=renew_datetime)
+    return render_template("empty.html", info=response)
+
 @dev_blueprint.route("/<channel_id>/deregister_auto_renew")
 @login_required
 @admin_required

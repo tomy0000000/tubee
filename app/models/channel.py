@@ -133,11 +133,11 @@ class Channel(db.Model):
             db.session.commit()
         return response.success
 
-    def renew(self):
+    def renew(self, stringify=False):
         """Trigger renew functions"""
         subscription_response = self.renew_subscription()
         info_response = self.renew_info()
-        hub_response = self.renew_hub(stringify=True)
+        hub_response = self.renew_hub(stringify=stringify)
         response = info_response.copy()
         response.update({"renew_subscription": subscription_response})
         response.update(hub_response)

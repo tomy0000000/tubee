@@ -7,8 +7,10 @@ class Config:
     """Universal Config"""
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.environ.get("SECRET_KEY") or str(uuid.uuid4())
     PREFERRED_URL_SCHEME = "https"
+    SERVER_NAME = os.environ.get("SERVER_NAME") or None
+    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT") or None
+    SECRET_KEY = os.environ.get("SECRET_KEY") or str(uuid.uuid4())
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_recycle": 300
     }
