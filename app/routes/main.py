@@ -1,6 +1,7 @@
 """The Main Routes"""
 from flask import Blueprint, render_template, session, url_for
 from flask_login import current_user, login_required
+from ..helper import youtube_required
 from ..helper.youtube import build_service
 from ..models.channel import Channel
 from ..models.user_subscription import UserSubscription
@@ -28,6 +29,7 @@ def explore():
 
 @main_blueprint.route("/youtube/subscription")
 @login_required
+@youtube_required
 def youtube_subscription():
     """Showing User's YouTube Subsciptions"""
     youtube_service = build_service(current_user.youtube_credentials)

@@ -51,8 +51,7 @@ def youtube_subscription():
         page_token = get_params.pop("page_token")
     except KeyError:
         abort(404)
-    service = current_user.get_youtube_service()
-    response = service.subscriptions().list(
+    response = current_user.youtube.subscriptions().list(
         part="snippet",
         maxResults=50,
         mine=True,

@@ -64,3 +64,8 @@ The core functions is completly working, yet this application is still in develo
 * Heroku
   * `Procfile`
 
+# Logging
+
+* Stack
+
+[Documentation](https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_default_service_account)

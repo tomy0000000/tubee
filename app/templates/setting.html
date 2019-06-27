@@ -16,13 +16,13 @@
     </small>
     <label for="pushover_key" class="col-form-label">Pushover</label>
     <div class="input-group">
-        {% if current_user.pushover_key %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_revoke" readonly>
+        {% if current_user.pushover %}
+        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover }}" aria-describedby="pushover_revoke" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="#" role="button" id="pushover_revoke">Revoke</a>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover_key }}" aria-describedby="pushover_validate">
+        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover }}" aria-describedby="pushover_validate">
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="#" role="button" id="pushover_validate">Validate</a>
         </div>

@@ -22,9 +22,9 @@ class User(UserMixin, db.Model):
     """
     __tablename__ = "user"
     username = db.Column(db.String(32), primary_key=True)
-    password_hash = db.Column(db.String(128), nullable=False)
+    _password_hash = db.Column(db.String(128), nullable=False)
     admin = db.Column(db.Boolean, server_default="0")
-    pushover_key = db.Column(db.String(40))
+    _pushover_key = db.Column(db.String(40))
     # language = db.Column(db.String(5))
     youtube_credentials = db.Column(db.JSON)
     # youtube_subscription = db.Column(db.JSON)
@@ -45,18 +45,24 @@ class User(UserMixin, db.Model):
             raise ValueError("Password must be longer than 6 characters")
         if len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
-        self.password_hash = bcrypt.generate_password_hash(password)
+        self._password_hash = bcrypt.generate_password_hash(password)
+    @property
+    def pushover(self):
+        """Pushover Property"""
+        return self._pushover_key
+    @pushover.setter
+    def pushover(self, key):
+        self._pushover_key = key
+        db.session.commit()
+    @pushover.deleter
+    def pushover(self):
+        del self._pushover_key
     def __init__(self, username, password, **kwargs):
         super(User, self).__init__(**kwargs)
         self.username = username
         self.password = password
     def __repr__(self):
         return "<user {}>".format(self.username)
-    def promote_to_admin(self):
-        self.admin = True
-        db.session.commit()
-    def setting_pushover_key(self, key):
-        pass
     """UserMixin Methods"""
     # def is_authenticated(self):
     #     # TODO
@@ -72,7 +78,7 @@ class User(UserMixin, db.Model):
         return self.username
     def check_password(self, password):
         """Return True if provided password is valid to login"""
-        return bcrypt.check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self._password_hash, password)
     # Channel Relation Method
     def is_subscribing(self, channel):
         """Check if User is subscribing to a channel"""
@@ -106,10 +112,18 @@ class User(UserMixin, db.Model):
             db.session.commit()
         return True
     # YouTube Service Methods
-    def youtube_init(self, credentials):
+    @property
+    def youtube(self):
+        """Return a Request-Ready Service"""
+        if not self.youtube_credentials:
+            return None
+        return youtube.build_service(self.youtube_credentials)
+    @youtube.setter
+    def youtube(self, credentials):
         self.youtube_credentials = credentials
         db.session.commit()
-    def youtube_revoke(self):
+    @youtube.deleter
+    def youtube(self):
         credentials = youtube.build_credentials(self.youtube_credentials)
         response = requests.post("https://accounts.google.com/o/oauth2/revoke",
                                  params={"token": credentials.token},
@@ -117,16 +131,12 @@ class User(UserMixin, db.Model):
         if response.status_code == 200:
             self.youtube_credentials = None
             db.session.commit()
-            return True
-        current_app.logger.info("YouTube Revoke Failed for "+self.username)
-        current_app.logger.info("Response: "+str(response.status_code))
-        current_app.logger.info("Detail: ")
-        current_app.logger.info(response.text)
-        return response.text
-    def get_youtube_credentials(self):
-        return youtube.build_credentials(self.youtube_credentials)
-    def get_youtube_service(self):
-        return youtube.build_service(self.youtube_credentials)
+        else:
+            current_app.logger.info("YouTube Revoke Failed for "+self.username)
+            current_app.logger.info("Response: "+str(response.status_code))
+            current_app.logger.info("Detail: ")
+            current_app.logger.info(response.text)
+            raise ValueError(response.text)
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
         resource = {
             "snippet": {
@@ -138,8 +148,8 @@ class User(UserMixin, db.Model):
                 "position": position
             }
         }
-        service = youtube.build_service(self.youtube_credentials)
-        return service.playlistItems().insert(body=resource, part="snippet").execute()
+        # service = youtube.build_service(self.youtube_credentials)
+        return self.youtube.playlistItems().insert(body=resource, part="snippet").execute()
     # Notification
     def line_notify_init(self, credentials):
         self.line_notify_credentials = credentials
@@ -166,19 +176,21 @@ class User(UserMixin, db.Model):
         db.session.add(new_notification)
         db.session.commit()
         return new_notification.response
-    def dropbox_init(self, credentials):
+    @property
+    def dropbox(self):
+        if not self.dropbox_credentials:
+            return None
+        return dropbox.build_service(self.dropbox_credentials)
+    @dropbox.setter
+    def dropbox(self, credentials):
         self.dropbox_credentials = credentials
         db.session.commit()
-    def dropbox_revoke(self):
-        service = dropbox.build_service(self.dropbox_credentials)
-        service.auth_token_revoke()
+    @dropbox.deleter
+    def dropbox(self):
+        self.dropbox.auth_token_revoke()
         self.dropbox_credentials = None
         db.session.commit()
-        return True
-    def get_dropbox_credentials(self):
-        return dropbox.build_credentials(self.dropbox_credentials)
-    def get_dropbox_service(self):
-        return dropbox.build_service(self.dropbox_credentials)
+
     def save_file_to_dropbox(self, file_path):
         return dropbox.save_file_to_dropbox(self, file_path)
     def save_url_to_dropbox(self, url, filename):

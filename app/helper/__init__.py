@@ -13,10 +13,19 @@ from google_auth_oauthlib.flow import Flow
 from .. import db
 
 def admin_required(func):
-    """A decorator making view function for admin only"""
+    """Restrict view function to admin-only"""
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if not current_user.admin:
+            abort(403)
+        return func(*args, **kwargs)
+    return decorated_function
+
+def youtube_required(func):
+    """Check if user has authenticated youtube access"""
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.youtube:
             abort(403)
         return func(*args, **kwargs)
     return decorated_function
@@ -47,4 +56,4 @@ def send_notification(user, *args, **kwargs):
         img_url = kwargs["image"]
         kwargs["image"] = requests.get(img_url, stream=True).content
     pusher = pushover_complete.PushoverAPI(os.environ.get("PUSHOVER_TOKEN"))
-    return pusher.send_message(user.pushover_key, *args, **kwargs)
+    return pusher.send_message(user.pushover, *args, **kwargs)

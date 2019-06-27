@@ -8,8 +8,10 @@ class Config:
     DEBUG = False
     TESTING = False
     PREFERRED_URL_SCHEME = "https"
-    SERVER_NAME = os.environ.get("SERVER_NAME") or None
-    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT") or ""
+    if "SERVER_NAME" in os.environ:
+        SERVER_NAME = os.environ.get("SERVER_NAME")
+    if "APPLICATION_ROOT" in os.environ:
+        APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT")
     SECRET_KEY = os.environ.get("SECRET_KEY") or str(uuid.uuid4())
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_recycle": 300
@@ -116,6 +118,16 @@ class UnixConfig(ProductionConfig):
         syslog_handler.setLevel(logging.INFO)
         app.logger.addHandler(syslog_handler)
 
+class GoogleCloudComputeEngineConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
+        # log to stackdriver
+        import google.cloud.logging
+        client = google.cloud.logging.Client()
+        client.setup_logging()
+
 config = {
     "development": DevelopmentConfig,
     "testing": TestingConfig,
@@ -123,5 +135,6 @@ config = {
     "heroku": HerokuConfig,
     # "docker": DockerConfig,
     "unix": UnixConfig,
+    "gce": GoogleCloudComputeEngineConfig,
     "default": DevelopmentConfig
 }

@@ -90,16 +90,15 @@ def setting_youtube_authorize():
 def setting_youtube_oauth_callback():
     flow = youtube.build_flow(state=session["state"])
     flow.fetch_token(authorization_response=request.url)
-    credentials_dict = {
-        "token": flow.credentials.token,
-        "refresh_token": flow.credentials.refresh_token,
-        "token_uri": flow.credentials.token_uri,
-        "client_id": flow.credentials.client_id,
-        "client_secret": flow.credentials.client_secret,
-        "scopes": flow.credentials.scopes
-    }
-    current_user.youtube_init(credentials_dict)
     if flow.credentials.valid:
+        current_user.youtube = {
+            "token": flow.credentials.token,
+            "refresh_token": flow.credentials.refresh_token,
+            "token_uri": flow.credentials.token_uri,
+            "client_id": flow.credentials.client_id,
+            "client_secret": flow.credentials.client_secret,
+            "scopes": flow.credentials.scopes
+        }
         session["alert"] = "YouTube Access Granted"
         session["alert_type"] = "success"
     else:
@@ -111,16 +110,16 @@ def setting_youtube_oauth_callback():
 @login_required
 def setting_youtube_revoke():
     """Revoke User's YouTube Crendential"""
-    if not current_user.youtube_credentials:
+    if not current_user.youtube:
         session["alert"] = "YouTube Credential isn't set"
         session["alert_type"] = "warning"
     else:
-        response = current_user.youtube_revoke()
-        if response is True:
+        try:
+            del current_user.youtube
             session["alert"] = "YouTube Access Revoke"
             session["alert_type"] = "success"
-        else:
-            session["alert"] = response
+        except ValueError as error:
+            session["alert"] = str(error)
             session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
 
@@ -181,13 +180,18 @@ def setting_dropbox_oauth_callback():
     except ProviderException as error:
         # I Have no clue of what this is for...?
         abort(403)
-    credentials_dict = {
+    # credentials_dict = {
+    #     "access_token": oauth_result.access_token,
+    #     "account_id": oauth_result.account_id,
+    #     "user_id": oauth_result.user_id,
+    #     "url_state": oauth_result.url_state
+    # }
+    current_user.dropbox = {
         "access_token": oauth_result.access_token,
         "account_id": oauth_result.account_id,
         "user_id": oauth_result.user_id,
         "url_state": oauth_result.url_state
     }
-    current_user.dropbox_init(credentials_dict)
     session["alert"] = "Dropbx Access Granted"
     session["alert_type"] = "success"
     return redirect(url_for("user.setting"))
@@ -196,15 +200,15 @@ def setting_dropbox_oauth_callback():
 @login_required
 def setting_dropbox_revoke():
     """Revoke User's Dropbx Crendential"""
-    if not current_user.dropbox_credentials:
+    if not current_user.dropbox:
         session["alert"] = "Dropbx Credential isn't set"
         session["alert_type"] = "warning"
     else:
-        response = current_user.dropbox_revoke()
-        if response is True:
+        try:
+            del current_user.dropbox
             session["alert"] = "Dropbx Access Revoke"
             session["alert_type"] = "success"
-        else:
-            session["alert"] = response
+        except Exception as error:
+            session["alert"] = str("{}: {}".format(type(error), error))
             session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
