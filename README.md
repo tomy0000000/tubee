@@ -7,9 +7,9 @@
 [![heroku](http://img.shields.io/badge/%E2%86%91%20Deploy%20to-Heroku-7056bf.svg)](https://tubee-heroku.herokuapp.com/)
 
 <p align="center">
-    <img src="app/static/favicon.png" align="center">
+    <img src="backend/app/static/favicon.png" align="center">
     <br>
-    <img width="150" src="app/static/img/tubee_text.png" align="center">
+    <img width="150" src="backend/app/static/img/tubee_text.png" align="center">
 </p>
 
 # Overview
@@ -20,17 +20,17 @@ The core functions is completly working, yet this application is still in develo
 
 # Installation
 
-*Full guide will be released when stable version published, only important notice provided at the moment*
+*Full guide will be released when stable version published, only important notice will be provided at the moment*
 
 * Database (**Be aware that migration scripts will constantly modified during the whole dev stage**)
-  * `MySQL 5.x`
-    * The only fully-compatible-well-tested option
+  * `MySQL`
+    * The only fully-compatible-well-tested option...at least for now.
     * Please set encoding to `utf8mb4_unicode_ci` as video description can really be anything you couldn't expected.
   * `SQLite`
     * Might worked initially
-    * Even though `render_as_batch=True` is set on Flask-Migrate, but upgrade scripts won't always be compatible
+    * Even though `render_as_batch=True` is set on Flask-Migrate, but upgrade scripts doesn't always works as expected.
   * `PostgreSQL`  
-    * Doesn't compatible with hashed `user.password` field, might be available in future patched
+    * Doesn't compatible with hashed `user.password` field, might be fix in future patched.
 
 # Features
 
