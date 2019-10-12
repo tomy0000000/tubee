@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/tubee_text.png">
+  <div id="LogoBox">
+    <img alt="Tubee Text Logo" src="@/assets/tubee_text.png">
   </div>
 </template>
 
@@ -9,3 +9,9 @@ export default {
   name: 'home'
 }
 </script>
+
+<style lang="scss">
+#LogoBox {
+  text-align: center;
+}
+</style>
