@@ -10,6 +10,7 @@ before_install:
   -in .travis/gcloud-app-engine-key.json.enc -out gcloud-app-engine-key.json -d
 install:
 - pip install pipenv
+- pipenv run pip install pip==18.0 # Temp Work Around
 - pipenv install --dev
 script: flask test --coverage
 after_script: codecov
