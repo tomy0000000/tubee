@@ -1,21 +1,16 @@
 dist: xenial
 language: python
 python:
-  - 3.4
-  - 3.5
-  - 3.6
-  - 3.7
+- 3.4
+- 3.5
+- 3.6
+- 3.7
 script: flask test --coverage
-jobs:
-  include:
-  - stage: deploy
-    install: skip
-    script:
-      - openssl aes-256-cbc -K $encrypted_c32b465e7480_key -iv $encrypted_c32b465e7480_iv
-        -in .travis/travis_key.enc -out ./travis_key -d
-      - eval "$(ssh-agent -s)"
-      - chmod 600 ./travis_key
-      - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-      - ssh-add ./travis_key
-      - ssh $SERVER_USERNAME@$SERVER_IP_ADDRESS bin/deploy.sh
+before_install:
+- openssl aes-256-cbc -K $encrypted_96405f5a4310_key -iv $encrypted_96405f5a4310_iv
+  -in .travis/gcloud-app-engine-key.json.enc -out gcloud-app-engine-key.json -d
+deploy:
+  provider: gae
+  keyfile: gcloud-app-engine-key.json
+  project: tubee-253706
 after_script: codecov

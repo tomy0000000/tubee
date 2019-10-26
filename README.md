@@ -4,12 +4,11 @@
 [![Build Status](https://travis-ci.com/tomy0000000/Tubee.svg?token=pcX4zcaLzopbPNP4Hs2J&branch=master)](https://travis-ci.com/tomy0000000/Tubee)
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
 [![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)](https://github.com/tomy0000000/Tubee/blob/master/LICENSE)
-[![heroku](http://img.shields.io/badge/%E2%86%91%20Deploy%20to-Heroku-7056bf.svg)](https://tubee-heroku.herokuapp.com/)
 
 <p align="center">
-    <img src="backend/app/static/favicon.png" align="center">
+    <img src="app/static/favicon.png" align="center">
     <br>
-    <img width="150" src="backend/app/static/img/tubee_text.png" align="center">
+    <img width="150" src="app/static/img/tubee_text.png" align="center">
 </p>
 
 # Overview

@@ -5,6 +5,10 @@ from .. import scheduler
 from ..models import Channel
 api_blueprint = Blueprint("api", __name__)
 
+@api_blueprint.route("/login", methods="POST")
+def login():
+    pass
+
 @api_blueprint.route("/scheduler/pause_job")
 def scheduler_pause_job():
     """Pause Specific Scheduled Job"""
