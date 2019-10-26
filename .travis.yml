@@ -5,12 +5,15 @@ python:
 - 3.5
 - 3.6
 - 3.7
-script: flask test --coverage
 before_install:
 - openssl aes-256-cbc -K $encrypted_96405f5a4310_key -iv $encrypted_96405f5a4310_iv
   -in .travis/gcloud-app-engine-key.json.enc -out gcloud-app-engine-key.json -d
+install:
+- pip install pipenv
+- pipenv install --dev
+script: flask test --coverage
+after_script: codecov
 deploy:
   provider: gae
   keyfile: gcloud-app-engine-key.json
   project: tubee-253706
-after_script: codecov
