@@ -5,7 +5,7 @@ from .. import scheduler
 from ..models import Channel
 api_blueprint = Blueprint("api", __name__)
 
-@api_blueprint.route("/login", methods="POST")
+@api_blueprint.route("/login", methods=["POST"])
 def login():
     pass
 

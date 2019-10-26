@@ -2,8 +2,8 @@
 import unittest
 from flask_login import current_user
 from unittest.mock import patch
-from app import create_app, db
-from app.models import User, UserSubscription
+from tubee import create_app, db
+from tubee.models import User, UserSubscription
 
 class MainRoutesTestCase(unittest.TestCase):
     """Test Cases of Routes Response"""

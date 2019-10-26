@@ -9,14 +9,14 @@ if os.path.exists(dotenv_path):
 COV = None
 if os.environ.get("FLASK_COVERAGE"):
     import coverage
-    COV = coverage.coverage(branch=True, include="app/*")
+    COV = coverage.coverage(branch=True, include="tubee/*")
     COV.start()
 
 import sys
 import click
 from flask_migrate import Migrate, upgrade
-from app import create_app, db
-from app.models import User
+from tubee import create_app, db
+from tubee.models import User
 
 app = create_app(os.getenv("FLASK_ENV") or "default")
 migrate = Migrate()

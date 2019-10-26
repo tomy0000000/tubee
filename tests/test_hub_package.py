@@ -1,7 +1,7 @@
 """Test Cases of helper.hub"""
 import unittest
 import uuid
-from app.helper import hub
+from tubee.helper import hub
 
 class HubPackageTestCase(unittest.TestCase):
     """Test Cases of App Basics"""

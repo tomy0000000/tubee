@@ -49,7 +49,8 @@ def create_app(config_name):
     oauth.init_app(app)
     from .helper.line_notify import build_service
     build_service(oauth)
-    scheduler.init_app(app)
+    if not app.testing:
+        scheduler.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     moment.init_app(app)

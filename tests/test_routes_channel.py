@@ -1,7 +1,7 @@
 """Test Cases of Routes of Channel"""
 import unittest
-from app import create_app, db
-from app.models import User
+from tubee import create_app, db
+from tubee.models import User
 
 class ChannelRoutesTestCase(unittest.TestCase):
     """Test Cases of Routes Response"""
