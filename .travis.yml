@@ -17,6 +17,7 @@ after_script: codecov
 jobs:
   include:
   - stage: deploy
-    provider: gae
-    keyfile: gcloud-app-engine-key.json
-    project: tubee-253706
+    deploy:
+      provider: gae
+      keyfile: gcloud-app-engine-key.json
+      project: tubee-253706
