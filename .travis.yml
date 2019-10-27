@@ -1,7 +1,6 @@
 dist: xenial
 language: python
 python:
-- 3.4
 - 3.5
 - 3.6
 - 3.7
@@ -14,7 +13,10 @@ install:
 - pipenv install
 script: flask test --coverage
 after_script: codecov
-deploy:
-  provider: gae
-  keyfile: gcloud-app-engine-key.json
-  project: tubee-253706
+
+jobs:
+  include:
+  - stage: deploy
+    provider: gae
+    keyfile: gcloud-app-engine-key.json
+    project: tubee-253706
