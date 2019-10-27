@@ -11,7 +11,7 @@ before_install:
 install:
 - pip install pipenv
 - pipenv run pip install pip==18.0 # Temp Work Around
-- pipenv install --dev
+- pipenv install
 script: flask test --coverage
 after_script: codecov
 deploy:
