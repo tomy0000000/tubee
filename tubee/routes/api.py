@@ -48,6 +48,16 @@ def channel_unsubscribe(channel_id):
     channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     return "{}"
 
+@api_blueprint.route("/channels/renew")
+@login_required
+def channels_renew():
+    """Renew Subscription Info, Both Hub and Info"""
+    channels = Channel.query.all()
+    response = {}
+    for channel in channels:
+        response[channel.channel_id] = channel.renew(stringify=True)
+    return jsonify(response)
+
 @api_blueprint.route("/<channel_id>/renew")
 @login_required
 def channel_renew(channel_id):

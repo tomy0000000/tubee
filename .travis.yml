@@ -24,14 +24,9 @@ jobs:
     - pwd
     - ls -lah
     deploy:
-    - provider: gae
+      provider: gae
       keyfile: gcloud-app-engine-key.json
       project: tubee-253706
-      skip_cleanup: true
-    - provider: gae
-      keyfile: gcloud-app-engine-key.json
-      project: tubee-253706
-      config: cron.yaml
       skip_cleanup: true
     # after_deploy:
     # - (Find a way to run db upgrade)
