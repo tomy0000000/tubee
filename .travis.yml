@@ -15,13 +15,13 @@ jobs:
   include:
   - stage: deploy
     before_deploy:
-    - pipenv run pip freeze > requirements.txt
-    - cp deploy/gae-gunicorn.conf.py gunicorn.conf.py
-    - mkdir instance
     - openssl aes-256-cbc -K $encrypted_160cde0a2a6f_key -iv $encrypted_160cde0a2a6f_iv
       -in .travis/deploy_files.tar.enc -out deploy_files.tar -d
     - tar xvf deploy_files.tar
-    - mv client_secret.json.enc instance/client_secret.json
+    - mkdir instance
+    - mv client_secret.json instance/client_secret.json
+    - cp deploy/gae-gunicorn.conf.py gunicorn.conf.py
+    - pipenv run pip freeze > requirements.txt
     deploy:
       provider: gae
       keyfile: gcloud-app-engine-key.json
