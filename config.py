@@ -8,10 +8,8 @@ class Config:
     DEBUG = False
     TESTING = False
     PREFERRED_URL_SCHEME = "https"
-    if "SERVER_NAME" in os.environ:
-        SERVER_NAME = os.environ.get("SERVER_NAME")
-    if "APPLICATION_ROOT" in os.environ:
-        APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT")
+    SERVER_NAME = os.environ.get("SERVER_NAME")
+    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT") or "/"
     SECRET_KEY = os.environ.get("SECRET_KEY") or str(uuid.uuid4())
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_recycle": 300
@@ -26,10 +24,10 @@ class Config:
         "pk": "pk_%(table_name)s"
     }
 
-    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD") or None
-    REDIS_HOST = os.environ.get("REDIS_HOST") or None
-    REDIS_PORT = os.environ.get("REDIS_PORT") or None
-    REDIS_DB = os.environ.get("REDIS_DB") or None
+    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
+    REDIS_HOST = os.environ.get("REDIS_HOST")
+    REDIS_PORT = os.environ.get("REDIS_PORT")
+    REDIS_DB = os.environ.get("REDIS_DB")
     YOUTUBE_API_DEVELOPER_KEY = os.environ.get("YOUTUBE_API_DEVELOPER_KEY")
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 
@@ -40,12 +38,12 @@ class Config:
     YOUTUBE_API_VERSION = "v3"
 
     # Line Notify API
-    LINENOTIFY_CLIENT_ID = os.environ.get("LINENOTIFY_CLIENT_ID") or None
-    LINENOTIFY_CLIENT_SECRET = os.environ.get("LINENOTIFY_CLIENT_SECRET") or None
+    LINENOTIFY_CLIENT_ID = os.environ.get("LINENOTIFY_CLIENT_ID")
+    LINENOTIFY_CLIENT_SECRET = os.environ.get("LINENOTIFY_CLIENT_SECRET")
 
     # Dropbox API
-    DROPBOX_APP_KEY = os.environ.get("DROPBOX_APP_KEY") or None
-    DROPBOX_APP_SECRET = os.environ.get("DROPBOX_APP_SECRET") or None
+    DROPBOX_APP_KEY = os.environ.get("DROPBOX_APP_KEY")
+    DROPBOX_APP_SECRET = os.environ.get("DROPBOX_APP_SECRET")
 
     # PubSubHubBub
     HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
@@ -66,8 +64,8 @@ class DevelopmentConfig(Config):
     
     @classmethod
     def init_app(cls, app):
-        Config.init_app(app)
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+        Config.init_app(app)
 
 class TestingConfig(Config):
     """Config for Testing, Travis CI"""
@@ -93,8 +91,6 @@ class HerokuConfig(ProductionConfig):
 
     @classmethod
     def init_app(cls, app):
-        ProductionConfig.init_app(app)
-
         # handle reverse proxy server headers
         from werkzeug.contrib.fixers import ProxyFix
         app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -106,11 +102,11 @@ class HerokuConfig(ProductionConfig):
         file_handler.setLevel(logging.INFO)
         app.logger.addHandler(file_handler)
 
+        ProductionConfig.init_app(app)
+
 class UnixConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
-        ProductionConfig.init_app(app)
-
         # log to syslog
         import logging
         from logging.handlers import SysLogHandler
@@ -118,15 +114,22 @@ class UnixConfig(ProductionConfig):
         syslog_handler.setLevel(logging.INFO)
         app.logger.addHandler(syslog_handler)
 
-class GoogleCloudComputeEngineConfig(ProductionConfig):
+        ProductionConfig.init_app(app)
+
+class GoogleCloudAppEngineConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
+class GoogleCloudComputeEngineConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
         # log to stackdriver
         import google.cloud.logging
         client = google.cloud.logging.Client()
         client.setup_logging()
+
+        ProductionConfig.init_app(app)
 
 config = {
     "development": DevelopmentConfig,
@@ -135,6 +138,7 @@ config = {
     "heroku": HerokuConfig,
     # "docker": DockerConfig,
     "unix": UnixConfig,
+    "gae": GoogleCloudAppEngineConfig,
     "gce": GoogleCloudComputeEngineConfig,
     "default": DevelopmentConfig
 }

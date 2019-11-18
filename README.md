@@ -46,12 +46,13 @@ The core functions is completly working, yet this application is still in develo
 # Config
 
 * Environment Variables
+  * `SERVER_NAME`
+  * `APPLICATION_ROOT`
   * `SECRET_KEY`
   * `DATABASE_URL`
   * `REDIS_PASSWORD`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`
-  * `YOUTUBE_API_DEVELOPER_KEY`
+* `YOUTUBE_API_DEVELOPER_KEY`
   * `PUSHOVER_TOKEN`
-
 * Files
   * `instance/client_secret`
 
@@ -62,9 +63,3 @@ The core functions is completly working, yet this application is still in develo
 
 * Heroku
   * `Procfile`
-
-# Logging
-
-* Stack
-
-[Documentation](https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_default_service_account)

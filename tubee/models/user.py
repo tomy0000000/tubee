@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
     """
     __tablename__ = "user"
     username = db.Column(db.String(32), primary_key=True)
-    _password_hash = db.Column(db.String(128), nullable=False)
+    _password_hash = db.Column(db.LargeBinary(128), nullable=False)
     admin = db.Column(db.Boolean, server_default="0")
     _pushover_key = db.Column(db.String(40))
     # language = db.Column(db.String(5))
@@ -45,6 +45,9 @@ class User(UserMixin, db.Model):
             raise ValueError("Password must be longer than 6 characters")
         if len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
+        current_app.logger.info("Username: {}".format(self.username))
+        current_app.logger.info("Password: {}".format(password))
+        current_app.logger.info("Hashed Password: {}".format(bcrypt.generate_password_hash(password)))
         self._password_hash = bcrypt.generate_password_hash(password)
     @property
     def pushover(self):
@@ -78,6 +81,7 @@ class User(UserMixin, db.Model):
         return self.username
     def check_password(self, password):
         """Return True if provided password is valid to login"""
+        current_app.logger.info("Check Password: {}".format(self._password_hash))
         return bcrypt.check_password_hash(self._password_hash, password)
     # Channel Relation Method
     def is_subscribing(self, channel):

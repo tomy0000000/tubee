@@ -1,9 +1,19 @@
 """API for Frontend Access"""
-from flask import abort, Blueprint, jsonify, request, url_for
+from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
+from flask_migrate import Migrate, upgrade
 from .. import scheduler
 from ..models import Channel
 api_blueprint = Blueprint("api", __name__)
+
+@api_blueprint.route("/deploy")
+def deploy():
+    """Run deployment tasks."""
+    # migrate database to latest revision
+    migrate = Migrate(current_app, current_app.db, render_as_batch=True)
+    upgrade()
+    print("DB Upgrade on {}".format(current_app.db.engine.url))
+    return jsonify("Deployment Task Completed")
 
 @api_blueprint.route("/login", methods=["POST"])
 def login():

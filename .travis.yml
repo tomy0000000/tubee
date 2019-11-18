@@ -4,20 +4,31 @@ python:
 - 3.5
 - 3.6
 - 3.7
-before_install:
-- openssl aes-256-cbc -K $encrypted_96405f5a4310_key -iv $encrypted_96405f5a4310_iv
-  -in .travis/gcloud-app-engine-key.json.enc -out gcloud-app-engine-key.json -d
+# before_install:
 install:
 - pip install pipenv
 - pipenv run pip install pip==18.0 # Temp Work Around
 - pipenv install
 script: flask test --coverage
 after_script: codecov
-
 jobs:
   include:
   - stage: deploy
+    before_deploy:
+    - pipenv run pip freeze > requirements.txt
+    - cp deploy/gae-gunicorn.conf.py gunicorn.conf.py
+    - mkdir instance
+    - openssl aes-256-cbc -K $encrypted_96405f5a4310_key -iv $encrypted_96405f5a4310_iv
+      -in .travis/gcloud-app-engine-key.json.enc -out gcloud-app-engine-key.json -d
+    - openssl aes-256-cbc -K $encrypted_160cde0a2a6f_key -iv $encrypted_160cde0a2a6f_iv
+      -in .travis/app.yaml.enc -out app.yaml -d
+    - openssl aes-256-cbc -K $encrypted_160cde0a2a6f_key -iv $encrypted_160cde0a2a6f_iv
+      -in .travis/cron.yaml.enc -out cron.yaml -d
+    - openssl aes-256-cbc -K $encrypted_160cde0a2a6f_key -iv $encrypted_160cde0a2a6f_iv
+      -in .travis/client_secret.json.enc -out instance/client_secret.json -d
     deploy:
       provider: gae
       keyfile: gcloud-app-engine-key.json
       project: tubee-253706
+    # after_deploy:
+    # - (Find a way to run db upgrade)
