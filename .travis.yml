@@ -22,9 +22,14 @@ jobs:
     - mv client_secret.json instance/client_secret.json
     - cp deploy/gae-gunicorn.conf.py gunicorn.conf.py
     - pipenv run pip freeze > requirements.txt
+    - ls -lah
     deploy:
-      provider: gae
+    - provider: gae
       keyfile: gcloud-app-engine-key.json
       project: tubee-253706
+    - provider: gae
+      keyfile: gcloud-app-engine-key.json
+      project: tubee-253706
+      config: cron.yaml
     # after_deploy:
     # - (Find a way to run db upgrade)
