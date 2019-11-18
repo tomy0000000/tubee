@@ -21,7 +21,6 @@ jobs:
     - mkdir instance
     - mv client_secret.json instance/client_secret.json
     - cp deploy/gae-gunicorn.conf.py gunicorn.conf.py
-    - pipenv run pip freeze > requirements.txt
     - pwd
     - ls -lah
     deploy:
