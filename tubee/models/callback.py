@@ -1,6 +1,7 @@
 """Callback Model"""
+import codecs
+import os
 from .. import db
-from .. import helper
 
 class Callback(db.Model):
     """
@@ -25,7 +26,7 @@ class Callback(db.Model):
     user_agent = db.Column(db.String(200))
 
     def __init__(self, channel_id, action, details, method, path, arguments, data, user_agent):
-        self.id = helper.generate_random_id()
+        self.id = codecs.encode(os.urandom(16), "hex").decode()
         self.channel_id = channel_id
         self.action = action
         self.details = details

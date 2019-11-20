@@ -1,7 +1,6 @@
 """Routes for Admin Access"""
 from flask import Blueprint, render_template, request
 from flask_login import current_user, login_required
-from .. import scheduler
 from ..helper import admin_required
 from ..models import Callback, Notification
 admin_blueprint = Blueprint("admin", __name__)
@@ -29,14 +28,6 @@ def notification_push():
     return render_template("pushover_push.html",
                            alert=alert,
                            alert_type=alert_type)
-
-@admin_blueprint.route("/scheduler/dashboard")
-@login_required
-@admin_required
-def scheduler_dashboard():
-    """Show Scheduled Jobs"""
-    jobs = scheduler.get_jobs().copy()
-    return render_template("scheduler_dashboard.html", jobs=jobs)
 
 @admin_blueprint.route("/hub/dashboard")
 @login_required

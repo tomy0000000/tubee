@@ -33,8 +33,10 @@ with app.app_context():
 def make_shell_context():
     return dict(db=db, User=User)
 
+
 @app.cli.command()
-@click.option("--coverage/--no-coverage", default=False,
+@click.option("--coverage/--no-coverage",
+              default=False,
               help="Run tests under code coverage.")
 def test(coverage):
     """Run the unit tests."""
@@ -57,6 +59,7 @@ def test(coverage):
         print("HTML version: file://%s/index.html" % covdir)
     sys.exit(not results.wasSuccessful())
 
+
 # @app.cli.command()
 # @click.option("--length", default=25,
 #               help="Number of functions to include in the profiler report.")
@@ -75,6 +78,7 @@ def deploy():
     """Run deployment tasks."""
     # migrate database to latest revision
     upgrade()
+
 
 if __name__ == "__main__":
     app.run()

@@ -15,18 +15,22 @@ jobs:
   include:
   - stage: deploy
     before_deploy:
+      # Unzip
     - openssl aes-256-cbc -K $encrypted_160cde0a2a6f_key -iv $encrypted_160cde0a2a6f_iv
       -in .travis/deploy_files.tar.gz.enc -out deploy_files.tar.gz -d
     - tar xvfz deploy_files.tar.gz
+      # client_secret & gunicorn config
     - mkdir instance
     - mv client_secret.json instance/client_secret.json
-    - cp deploy/gae-gunicorn.conf.py gunicorn.conf.py
-    - pwd
-    - ls -lah
+    - cp deploy/gae-gunicorn.conf.py instance/gunicorn.conf.py
+      # .env
+    - DEPLOY_KEY=`openssl rand -base64 12`
+    - sed -i '/DEPLOY_KEY= /s/$/'"$DEPLOY_KEY"'/' env
+    - mv env .env
     deploy:
       provider: gae
       keyfile: gcloud-app-engine-key.json
       project: tubee-253706
       skip_cleanup: true
-    # after_deploy:
-    # - (Find a way to run db upgrade)
+    after_deploy:
+    - curl -X GET 'https://tubee.tomy.me/api/deploy?key='$DEPLOY_KEY

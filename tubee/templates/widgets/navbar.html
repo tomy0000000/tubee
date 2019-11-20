@@ -66,7 +66,6 @@
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_admin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_admin">
                         <a class="dropdown-item" href="{{ url_for('admin.notification_dashboard') }}">Dashboard: Notification</a>
-                        <a class="dropdown-item" href="{{ url_for('admin.scheduler_dashboard') }}">Dashboard: Scheduler</a>
                         <a class="dropdown-item" href="{{ url_for('admin.hub_dashboard') }}">Dashboard: Hub</a>
                         <a class="dropdown-item" href="{{ url_for('admin.notification_push') }}">Send Test Notification</a>
                     </div>
@@ -78,7 +77,6 @@
                         <a class="dropdown-item" href="{{ url_for('dev.os_dict') }}">Dict: OS</a>
                         <a class="dropdown-item" href="{{ url_for('dev.sys_dict') }}">Dict: System</a>
                         <a class="dropdown-item" href="{{ url_for('dev.flask_dict') }}">Dict: Flask</a>
-                        <a class="dropdown-item" href="{{ url_for('dev.scheduler_dict') }}">Dict: Scheduler</a>
                         <a class="dropdown-item" href="{{ url_for('dev.user_dict') }}">Dict: User</a>
                     </div>
                 </li>

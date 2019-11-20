@@ -9,8 +9,9 @@ class Config:
     TESTING = False
     PREFERRED_URL_SCHEME = "https"
     SERVER_NAME = os.environ.get("SERVER_NAME")
-    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT") or "/"
-    SECRET_KEY = os.environ.get("SECRET_KEY") or str(uuid.uuid4())
+    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT", "/")
+    DEPLOY_KEY = os.environ.get("DEPLOY_KEY")
+    SECRET_KEY = os.environ.get("SECRET_KEY", str(uuid.uuid4()))
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_recycle": 300
     }
@@ -61,7 +62,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get("DEV_DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
-    
+
     @classmethod
     def init_app(cls, app):
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -81,7 +82,8 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data.sqlite")
-    
+    DEPLOY_KEY = os.environ.get("DEPLOY_KEY")
+
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)

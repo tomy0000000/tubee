@@ -1,16 +1,11 @@
-"""Helper Functions for Tubee"""
-import codecs
-import json
-import os
+"""Helper Functions"""
 from functools import wraps
 import requests
 import pushover_complete
-import google.oauth2.credentials
-import googleapiclient.discovery
-from flask import abort, current_app, url_for
+from flask import abort, current_app
 from flask_login import current_user
-from google_auth_oauthlib.flow import Flow
-from .. import db
+from ..models.user import User
+
 
 def admin_required(func):
     """Restrict view function to admin-only"""
@@ -21,6 +16,7 @@ def admin_required(func):
         return func(*args, **kwargs)
     return decorated_function
 
+
 def youtube_required(func):
     """Check if user has authenticated youtube access"""
     @wraps(func)
@@ -30,9 +26,16 @@ def youtube_required(func):
         return func(*args, **kwargs)
     return decorated_function
 
-def generate_random_id():
-    """Generate a 16-chars long id"""
-    return codecs.encode(os.urandom(16), "hex").decode()
+
+def notify_admin(initiator, *args, **kwargs):
+    """Send Notification to all Admin with pushover set"""
+    admins = User.query.filter_by(admin=True).all()
+    response = {}
+    for admin in admins:
+        if admin.pushover:
+            response[admin.username] = admin.send_notification(initiator, *args, **kwargs)
+    return response
+
 
 def send_notification(user, *args, **kwargs):
     """
@@ -55,5 +58,5 @@ def send_notification(user, *args, **kwargs):
     if "image" in kwargs and kwargs["image"]:
         img_url = kwargs["image"]
         kwargs["image"] = requests.get(img_url, stream=True).content
-    pusher = pushover_complete.PushoverAPI(os.environ.get("PUSHOVER_TOKEN"))
+    pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
     return pusher.send_message(user.pushover, *args, **kwargs)

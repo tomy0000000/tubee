@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cdb1e844f5207f6fc5518b509399a8f6d0f26a0b5e4dd73077773dd7d26951b7"
+            "sha256": "772e63e4c8cd388f13335e8d34202bb103b07fab55aa4089d69f53ca7e4887bd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -234,22 +234,6 @@
             "index": "pypi",
             "version": "==1.0.2"
         },
-        "flask-and-redis": {
-            "hashes": [
-                "sha256:4e6282089c4e3e23b54ee1b9deffc0b46cb085455aad4b41762ccde27935a3e5",
-                "sha256:7005ca42a8db76fe901023c15b7ecf1828974594b0e8f0ac7ecbef5941fe861a",
-                "sha256:e519f003f4ec02ed889ba791500c192d4ee4c768bcfa0af5951a77caa78e7d6b"
-            ],
-            "index": "pypi",
-            "version": "==1.0.0"
-        },
-        "flask-apscheduler": {
-            "hashes": [
-                "sha256:7911d66e449f412d92a1a6c524217f44f4c40a5c92148c60d5189c6c402f87d0"
-            ],
-            "index": "pypi",
-            "version": "==1.11.0"
-        },
         "flask-bcrypt": {
             "hashes": [
                 "sha256:d71c8585b2ee1c62024392ebdbc447438564e2c8c02b4e57b56a4cafd8d13c5f"
@@ -296,16 +280,6 @@
             "index": "pypi",
             "version": "==0.14.2"
         },
-        "google-api-core": {
-            "extras": [
-                "grpc"
-            ],
-            "hashes": [
-                "sha256:b95895a9398026bc0500cf9b4a3f82c3f72c3f9150b26ff53af40c74e91c264a",
-                "sha256:df8adc4b97f5ab4328a0e745bee77877cf4a7d4601cb1cd5959d2bbf8fba57aa"
-            ],
-            "version": "==1.14.3"
-        },
         "google-api-python-client": {
             "hashes": [
                 "sha256:06907006ed5ce831018f03af3852d739c0b2489cdacfda6971bcc2075c762858",
@@ -337,21 +311,6 @@
             ],
             "index": "pypi",
             "version": "==0.3.0"
-        },
-        "google-cloud-core": {
-            "hashes": [
-                "sha256:0ee17abc74ff02176bee221d4896a00a3c202f3fb07125a7d814ccabd20d7eb5",
-                "sha256:10750207c1a9ad6f6e082d91dbff3920443bdaf1c344a782730489a9efa802f1"
-            ],
-            "version": "==1.0.3"
-        },
-        "google-cloud-firestore": {
-            "hashes": [
-                "sha256:5b8e0bd84d98b7ec42abc75b5241a00114777b59ccdfa0df247ac12b16831823",
-                "sha256:7fec7b523ab5e1f87721ca61181114818579bb4d17de768a3993811c9d2aacfe"
-            ],
-            "index": "pypi",
-            "version": "==1.6.0"
         },
         "googleapis-common-protos": {
             "hashes": [
@@ -702,14 +661,6 @@
             "index": "pypi",
             "version": "==1.2.0"
         },
-        "rfc3339": {
-            "hashes": [
-                "sha256:589c8b8cab8a35f85313cb80f1b0b0b3ca16a527f354beadb59882fd4473f187",
-                "sha256:a8167214d37449a6af9b463285baffc87a6d65e013507fd1ba63a48a60b62043"
-            ],
-            "index": "pypi",
-            "version": "==6.0"
-        },
         "rsa": {
             "hashes": [
                 "sha256:14ba45700ff1ec9eeb206a2ce76b32814958a98e372006c8fb76ba820211be66",
@@ -778,13 +729,6 @@
             ],
             "index": "pypi",
             "version": "==2.0.18"
-        },
-        "visitor": {
-            "hashes": [
-                "sha256:2c737903b2b6864ebc6167eef7cf3b997126f1aa94bdf590f90f1436d23e480a"
-            ],
-            "index": "pypi",
-            "version": "==0.1.3"
         },
         "werkzeug": {
             "hashes": [
