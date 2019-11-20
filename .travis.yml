@@ -6,9 +6,7 @@ python:
 - 3.7
 # before_install:
 install:
-- pip install pipenv
-- pipenv run pip install pip==18.0 # Temp Work Around
-- pipenv install
+- pip install -r requirements.txt
 script: flask test --coverage
 after_script: codecov
 jobs:
@@ -24,9 +22,11 @@ jobs:
     - mv client_secret.json instance/client_secret.json
     - cp deploy/gae-gunicorn.conf.py instance/gunicorn.conf.py
       # .env
-    - DEPLOY_KEY=`openssl rand -base64 12`
-    - sed -i '.bak' '/DEPLOY_KEY=/s/$/'"$DEPLOY_KEY"'/' env
+    - DEPLOY_KEY=`openssl rand -base64 29 | tr -d "=+/" | cut -c1-25`
+    - sed -i '/DEPLOY_KEY=/s/$/'"$DEPLOY_KEY"'/' env
     - mv env .env
+      # app.yaml
+    - cp deploy/gae-app.yaml app.yaml
     deploy:
       provider: gae
       keyfile: gcloud-app-engine-key.json
