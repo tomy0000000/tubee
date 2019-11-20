@@ -25,7 +25,7 @@ jobs:
     - cp deploy/gae-gunicorn.conf.py instance/gunicorn.conf.py
       # .env
     - DEPLOY_KEY=`openssl rand -base64 12`
-    - sed -i '/DEPLOY_KEY= /s/$/'"$DEPLOY_KEY"'/' env
+    - sed -i '.bak' '/DEPLOY_KEY=/s/$/'"$DEPLOY_KEY"'/' env
     - mv env .env
     deploy:
       provider: gae
