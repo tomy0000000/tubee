@@ -18,9 +18,9 @@ from flask_migrate import Migrate, upgrade
 from tubee import create_app, db
 from tubee.models import User
 
-config = os.getenv("FLASK_ENV")
+config = os.environ.get("FLASK_ENV")
 if not config:
-    if os.getenv("GAE_INSTANCE"):
+    if os.environ.get("GAE_INSTANCE"):
         config = "gae"
     else:
         config = "default"
