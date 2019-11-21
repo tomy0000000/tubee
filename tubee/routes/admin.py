@@ -23,7 +23,7 @@ def notification_push():
     alert = alert_type = ""
     if request.method == "POST":
         form_datas = request.form
-        alert = current_user.send_notification("Test", form_datas["message"], title=form_datas["title"])
+        alert = current_user.send_notification("Test", message=form_datas["message"], title=form_datas["title"])
         alert_type = "success"
     return render_template("pushover_push.html",
                            alert=alert,

@@ -27,13 +27,13 @@ def youtube_required(func):
     return decorated_function
 
 
-def notify_admin(initiator, *args, **kwargs):
+def notify_admin(initiator, **kwargs):
     """Send Notification to all Admin with pushover set"""
     admins = User.query.filter_by(admin=True).all()
     response = {}
     for admin in admins:
         if admin.pushover:
-            response[admin.username] = admin.send_notification(initiator, *args, **kwargs)
+            response[admin.username] = admin.send_notification(initiator, **kwargs)
     return response
 
 

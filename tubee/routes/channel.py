@@ -194,7 +194,8 @@ def callback(channel_id):
                 title = "New from " + subscription.channel.channel_name
                 message = soup.entry.find("title").string + "\n" + video_description
                 notification_response = subscription.subscriber.send_notification(
-                    "Callback", message,
+                    "Callback",
+                    message=message,
                     title=title,
                     url="https://www.youtube.com/watch?v="+video_id,
                     url_title=soup.entry.find("title").string,

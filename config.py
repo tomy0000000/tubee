@@ -25,10 +25,6 @@ class Config:
         "pk": "pk_%(table_name)s"
     }
 
-    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
-    REDIS_HOST = os.environ.get("REDIS_HOST")
-    REDIS_PORT = os.environ.get("REDIS_PORT")
-    REDIS_DB = os.environ.get("REDIS_DB")
     YOUTUBE_API_DEVELOPER_KEY = os.environ.get("YOUTUBE_API_DEVELOPER_KEY")
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 
@@ -49,6 +45,7 @@ class Config:
     # PubSubHubBub
     HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
     HUB_YOUTUBE_TOPIC = "https://www.youtube.com/xml/feeds/videos.xml?"
+    HUB_RECEIVE_DOMAIN = os.environ.get("HUB_RECEIVE_DOMAIN", SERVER_NAME)
 
     @staticmethod
     def init_app(app):

@@ -152,7 +152,6 @@ class User(UserMixin, db.Model):
                 "position": position
             }
         }
-        # service = youtube.build_service(self.youtube_credentials)
         return self.youtube.playlistItems().insert(body=resource, part="snippet").execute()
     # Notification
     def line_notify_init(self, credentials):
@@ -174,12 +173,11 @@ class User(UserMixin, db.Model):
         current_app.logger.info("Detail: ")
         current_app.logger.info(response.text)
         return response.text
-    def send_notification(self, initiator, *args, **kwargs):
-        from . import Notification
-        new_notification = Notification(initiator, self, *args, **kwargs)
-        db.session.add(new_notification)
-        db.session.commit()
-        return new_notification.response
+    def send_notification(self, initiator, **kwargs):
+        from . import Notification, Service
+        # TODO: Think of a better way
+        ntf = Notification(initiator, self, Service.PUSHOVER, **kwargs)
+        return ntf.response
     @property
     def dropbox(self):
         if not self.dropbox_credentials:

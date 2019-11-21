@@ -2,10 +2,11 @@
 import urllib
 from datetime import datetime
 
-from flask import url_for, current_app
+from flask import current_app, request, url_for
 from .. import db
 from ..helper.hub import subscribe, unsubscribe, details
 from ..helper.youtube import build_service
+
 
 class Channel(db.Model):
     __tablename__ = "channel"
@@ -21,20 +22,22 @@ class Channel(db.Model):
     expire_datetime = db.Column(db.DateTime)
     hub_infos = db.Column(db.JSON)
     renew_datetime = db.Column(db.DateTime)
-    subscribe_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    subscribe_datetime = db.Column(db.DateTime,
+                                   server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
-    subscribers = db.relationship("UserSubscription",
-                                  foreign_keys="UserSubscription.subscribing_channel_id",
-                                  backref=db.backref("channel", lazy="joined"),
-                                  lazy="dynamic",
-                                  cascade="all, delete-orphan")
+    subscribers = db.relationship(
+        "UserSubscription",
+        foreign_keys="UserSubscription.subscribing_channel_id",
+        backref=db.backref("channel", lazy="joined"),
+        lazy="dynamic",
+        cascade="all, delete-orphan")
+
     def __init__(self, channel_id):
         service = build_service()
         self.channel_id = channel_id
         self.channel_name = service.channels().list(
             part="snippet",
-            id=channel_id
-        ).execute()["items"][0]["snippet"]["title"]
+            id=channel_id).execute()["items"][0]["snippet"]["title"]
         self.renew_info()
         self.renew_hub()
         self.activate()
@@ -52,7 +55,11 @@ class Channel(db.Model):
 
     def deactivate(self):
         """Submitting Hub Unsubscription"""
-        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.callback",
+                               channel_id=self.channel_id,
+                               _external=True)
+        callback_url = callback_url.replace(
+            request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = unsubscribe(callback_url, topic_url)
@@ -63,7 +70,11 @@ class Channel(db.Model):
         return response
 
     def renew_hub(self, stringify=False):
-        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.callback",
+                               channel_id=self.channel_id,
+                               _external=True)
+        callback_url = callback_url.replace(
+            request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = details(callback_url, topic_url)
@@ -89,9 +100,7 @@ class Channel(db.Model):
     def renew_info(self):
         service = build_service()
         retrieved_infos = service.channels().list(
-            part="snippet",
-            id=self.channel_id
-        ).execute()["items"][0]
+            part="snippet", id=self.channel_id).execute()["items"][0]
         modification = {
             "channel_name": True,
             "description": False,
@@ -101,7 +110,8 @@ class Channel(db.Model):
             "customUrl": False
         }
         self.channel_name = retrieved_infos["snippet"]["title"]
-        self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["high"]["url"]
+        self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["high"][
+            "url"]
         if "description" in retrieved_infos["snippet"]:
             self.description = retrieved_infos["snippet"]["description"]
             modification["description"] = True
@@ -120,14 +130,19 @@ class Channel(db.Model):
 
     def renew_subscription(self):
         """Renew Subscription by submitting new Hub Subscription"""
-        callback_url = url_for("channel.callback", channel_id=self.channel_id, _external=True)
+        callback_url = url_for("channel.callback",
+                               channel_id=self.channel_id,
+                               _external=True)
+        callback_url = callback_url.replace(
+            request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = subscribe(callback_url, topic_url)
         current_app.logger.info("Callback URL: {}".format(callback_url))
         current_app.logger.info("Topic URL   : {}".format(topic_url))
         current_app.logger.info("Channel ID  : {}".format(self.channel_id))
-        current_app.logger.info("Response    : {}".format(response.status_code))
+        current_app.logger.info("Response    : {}".format(
+            response.status_code))
         if response.success:
             self.renew_datetime = datetime.now()
             db.session.commit()

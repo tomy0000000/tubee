@@ -1,62 +1,137 @@
 """Notification Model"""
-import codecs
-import os
+import requests
+from enum import Enum
 from datetime import datetime
-from .. import db, helper
+from flask import current_app
+from pushover_complete import PushoverAPI
+from uuid import uuid4
+from .. import db
+
+
+class Service(Enum):
+    ALL = "ALL"
+    PUSHOVER = "Pushover"
+    LINE_NOTIFY = "Line Notify"
 
 
 class Notification(db.Model):
     """An Object which describe a Notification for a specific user
 
-    [description]
-
-    Extends:
-        db.Model
-
     Variables:
         id {str} -- identifier of this notification
         initiator {str} -- function or task which fire this notification
         user_id {str} -- receiver's username
-        user {models.user.User} -- receiver user object
-        sent_datetime {datetime.datetime} -- datetime when this object is created
+        user {user.User} -- receiver user object
+        service {notification.Service} -- service used to send notification
         message {str} -- notification body
         kwargs {dict} -- other miscs of this notification
+        sent_datetime {datetime.datetime} -- datetime when this object is created
         response {dict} -- server response when notification is sent
     """
     __tablename__ = "notification"
-    id = db.Column(db.String(32), primary_key=True)
+    id = db.Column(db.String(36), primary_key=True)
     initiator = db.Column(db.String(15), nullable=False)
     user_id = db.Column(db.String(30), db.ForeignKey("user.username"))
     user = db.relationship("User", backref="notifications")
-    sent_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
-    message = db.Column(db.String(2000), nullable=False)
+    service = db.Column(db.Enum(Service))
+    message = db.Column(db.String(2000))
     kwargs = db.Column(db.JSON)
+    sent_datetime = db.Column(db.DateTime)
     response = db.Column(db.JSON)
 
-    def __init__(self, initiator, user, *args, **kwargs):
+    def __init__(self, initiator, user, service, send=True, **kwargs):
         """An Object which describe a Notification for a specific user
-
-        [description]
 
         Arguments:
             initiator {str} -- function or task which fire this notification
-            user {models.user.User} -- receiver user object
+            user {user.User} -- receiver user object
+            service {notification.Service} -- service used to send notification
+
+        Keyword Arguments:
+            send {bool} -- Send on initialize (default: {True})
+            message {str} -- message of Notification
         """
-        self.id = codecs.encode(os.urandom(16), "hex").decode()
+        self.id = str(uuid4())
         self.initiator = initiator
         self.user = user
-        self.sent_datetime = datetime.now()
-        self.message = args[0]
+        self.service = service
+        self.message = kwargs.pop("message", None)
         self.kwargs = kwargs
-        if not kwargs.pop("raw_init", False):
-            self.response = helper.send_notification(user, *args, **kwargs)
         db.session.add(self)
         db.session.commit()
+        if not send and self.sendable:
+            self.send()
+
     def __repr__(self):
-        return "<notification %r>" %self.id
+        return "Notification for {} fired by {}".format(
+            self.user_id, self.initiator)
+
+    def sendable(self, alert=False):
+        """Check if this object can be send
+
+        Keyword Arguments:
+            alert {bool} -- raise error when notification can not be send (default: {False})
+
+        Returns:
+            bool -- Whether Notification can be send
+
+        Raises:
+            RuntimeError -- Details of why notification can't be send (raise only when alert=True)
+        """
+        if not self.service:
+            if alert:
+                raise RuntimeError("Service is not set")
+            return False
+        if not self.message:
+            if alert:
+                raise RuntimeError("Message is empty")
+            return False
+        if self.sent_datetime:
+            if alert:
+                raise RuntimeError("This Notification has already sent")
+            return False
+        return True
+
     def send(self):
-        """Aftermath sending"""
-        if self.resopnse:
-            raise RuntimeError("Notification has already sent")
-        self.response = helper.send_notification(self.user, self.message, self.kwargs)
+        """Trigger Sending with the service assigned
+
+        Returns:
+            dict -- Response from service
+
+        Raises:
+            RuntimeError -- Description of why notification is unsentable
+        """
+        self.sendable(alert=True)
+        if self.service is Service.ALL or self.service is Service.PUSHOVER:
+            return self._send_with_pushover()
+        if self.service is Service.ALL or self.service == Service.LINE_NOTIFY:
+            return self._send_with_line_notify()
+        raise RuntimeError(
+            "Notification is sendable, but something went wrong")
+
+    def _send_with_pushover(self):
+        """Send Notification with Pushover API
+
+        Returns:
+            dict -- Response from service
+        """
+        img_url = self.kwargs.pop("image")
+        if img_url:
+            img = requests.get(img_url, stream=True).content
+        pusher = PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
+        self.resopnse = pusher.send_message(self.user.pushover,
+                                            self.message,
+                                            image=img,
+                                            **self.kwargs)
+        self.sent_datetime = datetime.now()
         db.session.commit()
+        return self.response
+
+    def _send_with_line_notify(self):
+        """Send Notification with Line Notify API
+
+        Returns:
+            dict -- Response from service
+        """
+        # TODO: Move Line Notify Function to here
+        pass

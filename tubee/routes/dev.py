@@ -8,6 +8,11 @@ from .. import login_manager
 from ..helper import admin_required
 dev_blueprint = Blueprint("dev", __name__)
 
+@dev_blueprint.route("generate_url")
+@login_required
+def generate_url():
+    return render_template("empty.html", info=url_for("dev.sitemap", _external=True))
+
 @dev_blueprint.route("/sitemap")
 @login_required
 @admin_required

@@ -26,7 +26,7 @@ def deploy():
         response = "Deployment Task Completed"
     except Exception as error:
         response = helper.notify_admin("Deployment",
-                                       error,
+                                       message=error,
                                        title="Deployment Error")
     return jsonify(response)
 
@@ -38,7 +38,7 @@ def test_cron():
             datetime.now()))
         abort(401)
     response = helper.notify_admin("test_cron_job",
-                                   datetime.now(),
+                                   message=datetime.now(),
                                    title="Test Cron Job Triggered",
                                    priority=-2)
     current_app.logger.info("Test Cron Job Triggered at {}".format(
