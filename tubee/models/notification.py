@@ -29,7 +29,7 @@ class Notification(db.Model):
         response {dict} -- server response when notification is sent
     """
     __tablename__ = "notification"
-    id = db.Column(db.String(36), primary_key=True)
+    notification_id = db.Column(db.String(36), primary_key=True)
     initiator = db.Column(db.String(15), nullable=False)
     user_id = db.Column(db.String(30), db.ForeignKey("user.username"))
     user = db.relationship("User", backref="notifications")
@@ -51,7 +51,7 @@ class Notification(db.Model):
             send {bool} -- Send on initialize (default: {True})
             message {str} -- message of Notification
         """
-        self.id = str(uuid4())
+        self.notification_id = str(uuid4())
         self.initiator = initiator
         self.user = user
         self.service = service

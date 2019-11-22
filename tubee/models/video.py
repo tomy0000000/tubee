@@ -1,6 +1,7 @@
 """Video Model"""
 from .. import db
 
+
 class Video(db.Model):
     """Videos of Subscribed Channel"""
     __tablename__ = "video"
@@ -11,8 +12,10 @@ class Video(db.Model):
     channel = db.relationship("Channel", backref="videos")
     uploaded_datetime = db.Column(db.DateTime)
     thumbnails_url = db.Column(db.String(200))
+
     def __init__(self, video_id):
         self.video_id = video_id
+
     def update_infos(self):
         # TODO
         return None

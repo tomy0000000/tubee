@@ -130,10 +130,11 @@ def callback(channel_id):
     GET: Receive Hub Challenges to maintain subscription
     POST: New Update from Hub
     """
+    channel_item = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     if request.method == "GET":
         get_args = request.args.to_dict()
         response = get_args.pop("hub.challenge", "Error")
-        new_callback = Callback(channel_id, "Unknown GET Request" \
+        new_callback = Callback(channel_item, "Unknown GET Request" \
                                 if response == "Error" else "Hub Challenge", response,
                                 request.method, request.path, request.args,
                                 request.data, request.user_agent)
@@ -145,7 +146,7 @@ def callback(channel_id):
         published_datetime = parser.parse(soup.entry.find("published").string).replace(tzinfo=None)
 
         # Append Callback SQL Record
-        new_callback = Callback(channel_id, "Hub Notification", video_id,
+        new_callback = Callback(channel_item, "Hub Notification", video_id,
                                 request.method, request.path, request.args,
                                 request.data, request.user_agent)
 

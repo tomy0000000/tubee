@@ -1,7 +1,7 @@
 """Callback Model"""
-import codecs
-import os
+from uuid import uuid4
 from .. import db
+
 
 class Callback(db.Model):
     """
@@ -14,9 +14,13 @@ class Callback(db.Model):
     user_agent           Sender's Identity
     """
     __tablename__ = "callback"
-    id = db.Column(db.String(32), primary_key=True)
-    received_datetime = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
-    channel_id = db.Column(db.String(30), nullable=False)
+    callback_id = db.Column(db.String(36), primary_key=True)
+    received_datetime = db.Column(db.DateTime,
+                                  server_default=db.text("CURRENT_TIMESTAMP"))
+    channel_id = db.Column(db.String(30),
+                           db.ForeignKey("channel.channel_id"),
+                           nullable=False)
+    channel = db.relationship("Channel", backref="videos")
     action = db.Column(db.String(30))
     details = db.Column(db.String(20))
     method = db.Column(db.String(10))
@@ -25,9 +29,10 @@ class Callback(db.Model):
     data = db.Column(db.Text)
     user_agent = db.Column(db.String(200))
 
-    def __init__(self, channel_id, action, details, method, path, arguments, data, user_agent):
-        self.id = codecs.encode(os.urandom(16), "hex").decode()
-        self.channel_id = channel_id
+    def __init__(self, channel, action, details, method, path, arguments, data,
+                 user_agent):
+        self.callback_id = str(uuid4())
+        self.channel = channel
         self.action = action
         self.details = details
         self.method = method
@@ -35,5 +40,6 @@ class Callback(db.Model):
         self.arguments = arguments
         self.data = data
         self.user_agent = user_agent
+
     def __repr__(self):
-        return "<callback %r>" %self.id
+        return "<callback %r>" % self.callback_id
