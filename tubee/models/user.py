@@ -30,9 +30,8 @@ class User(UserMixin, db.Model):
     # youtube_subscription = db.Column(db.JSON)
     line_notify_credentials = db.Column(db.String(50))
     dropbox_credentials = db.Column(db.JSON)
-    subscriptions = db.relationship("UserSubscription",
-                                    foreign_keys="UserSubscription.subscriber_username",
-                                    backref=db.backref("subscriber", lazy="joined"),
+    subscriptions = db.relationship("Subscription",
+                                    back_populates="subscriber",
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
     @property
@@ -62,7 +61,7 @@ class User(UserMixin, db.Model):
         self.username = username
         self.password = password
     def __repr__(self):
-        return "<user {}>".format(self.username)
+        return "<User: {}>".format(self.username)
     """UserMixin Methods"""
     # def is_authenticated(self):
     #     # TODO
@@ -95,8 +94,8 @@ class User(UserMixin, db.Model):
         if not isinstance(channel, Channel):
             channel = Channel.query.filter_by(channel_id=channel)
         if not self.is_subscribing(channel):
-            from . import UserSubscription
-            subscription = UserSubscription(subscriber_username=self.username, subscribing_channel_id=channel.channel_id)
+            from . import Subscription
+            subscription = Subscription(subscriber_username=self.username, subscribing_channel_id=channel.channel_id)
             db.session.add(subscription)
             db.session.commit()
         return True

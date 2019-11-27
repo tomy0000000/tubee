@@ -8,10 +8,13 @@ from .. import login_manager
 from ..helper import admin_required
 dev_blueprint = Blueprint("dev", __name__)
 
+
 @dev_blueprint.route("generate_url")
 @login_required
 def generate_url():
-    return render_template("empty.html", info=url_for("dev.sitemap", _external=True))
+    return render_template("empty.html",
+                           info=url_for("dev.sitemap", _external=True))
+
 
 @dev_blueprint.route("/sitemap")
 @login_required
@@ -25,6 +28,7 @@ def sitemap():
     links.sort(key=lambda x: x[1])
     return render_template("map.html", links=links)
 
+
 @dev_blueprint.route("/os")
 @login_required
 @admin_required
@@ -34,6 +38,7 @@ def os_dict():
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
+
 
 @dev_blueprint.route("/sys")
 @login_required
@@ -46,6 +51,7 @@ def sys_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
+
 @dev_blueprint.route("/flask")
 @login_required
 @admin_required
@@ -55,6 +61,7 @@ def flask_dict():
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
+
 
 @dev_blueprint.route("/login-manager")
 @login_required
@@ -66,6 +73,7 @@ def login_manager_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
+
 @dev_blueprint.route("/user")
 @login_required
 @admin_required
@@ -76,18 +84,22 @@ def user_dict():
         target_dict = pprint.pformat(target_dict)
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
+
 @dev_blueprint.route("/empty")
 def empty():
     return render_template("empty.html")
 
+
 @dev_blueprint.route("/debugger")
 def debugger():
     pass
+
 
 @dev_blueprint.route("/handler/<status_code>")
 @login_required
 @admin_required
 def handler(status_code):
     abort(int(status_code))
+
 
 from . import tmp

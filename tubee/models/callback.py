@@ -42,4 +42,4 @@ class Callback(db.Model):
         self.user_agent = user_agent
 
     def __repr__(self):
-        return "<callback %r>" % self.callback_id
+        return "<Callback {}>".format(self.callback_id)

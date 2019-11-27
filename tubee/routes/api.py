@@ -14,7 +14,8 @@ def deploy():
 
     # Verify Key
     server_key = current_app.config["DEPLOY_KEY"]
-    client_key = request.args.to_dict()["key"] if "key" in request.args.to_dict() else None
+    client_key = request.args.to_dict(
+    )["key"] if "key" in request.args.to_dict() else None
     if not server_key or not client_key or server_key != client_key:
         abort(401)
 

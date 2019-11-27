@@ -23,13 +23,11 @@ The core functions is completly working, yet this application is still in develo
 
 * Database (**Be aware that migration scripts will constantly modified during the whole dev stage**)
   * `MySQL`
-    * The only fully-compatible-well-tested option...at least for now.
-    * Please set encoding to `utf8mb4_unicode_ci` as video description can really be anything you couldn't expected.
+    * Encoding: `utf8mb4`
+    * Collation: `utf8mb4_unicode_ci`
+  * `PostgreSQL`
   * `SQLite`
-    * Might worked initially
     * Even though `render_as_batch=True` is set on Flask-Migrate, but upgrade scripts doesn't always works as expected.
-  * `PostgreSQL`  
-    * Doesn't compatible with hashed `user.password` field, might be fix in future patched.
 
 # Features
 

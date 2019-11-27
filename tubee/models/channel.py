@@ -25,12 +25,10 @@ class Channel(db.Model):
     subscribe_datetime = db.Column(db.DateTime,
                                    server_default=db.text("CURRENT_TIMESTAMP"))
     unsubscribe_datetime = db.Column(db.DateTime)
-    subscribers = db.relationship(
-        "UserSubscription",
-        foreign_keys="UserSubscription.subscribing_channel_id",
-        backref=db.backref("channel", lazy="joined"),
-        lazy="dynamic",
-        cascade="all, delete-orphan")
+    subscribers = db.relationship("Subscription",
+                                  back_populates="channel",
+                                  lazy="dynamic",
+                                  cascade="all, delete-orphan")
 
     def __init__(self, channel_id):
         service = build_service()
@@ -43,7 +41,7 @@ class Channel(db.Model):
         self.activate()
 
     def __repr__(self):
-        return "<channel {}(#{})>".format(self.channel_name, self.channel_id)
+        return "<Channel {}(#{})>".format(self.channel_name, self.channel_id)
 
     def activate(self):
         """Activate Subscription"""

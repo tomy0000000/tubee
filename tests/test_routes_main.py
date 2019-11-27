@@ -3,7 +3,7 @@ import unittest
 from flask_login import current_user
 from unittest.mock import patch
 from tubee import create_app, db
-from tubee.models import User, UserSubscription
+from tubee.models import User, Subscription
 
 class MainRoutesTestCase(unittest.TestCase):
     """Test Cases of Routes Response"""
@@ -24,8 +24,8 @@ class MainRoutesTestCase(unittest.TestCase):
     # def test_dashboard(self):
     #     with patch("flask_login.current_user.subscriptions") as check:
     #         check.return_value = [
-    #             UserSubscription(subscriber_username=self.client_username, subscribing_channel_id="test_channel_id_1"),
-    #             UserSubscription(subscriber_username=self.client_username, subscribing_channel_id="test_channel_id_2")
+    #             Subscription(subscriber_username=self.client_username, subscribing_channel_id="test_channel_id_1"),
+    #             Subscription(subscriber_username=self.client_username, subscribing_channel_id="test_channel_id_2")
     #         ]
     #         response = self.client.get("/")
     #         check.assert_called_once()

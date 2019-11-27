@@ -59,12 +59,12 @@ class Notification(db.Model):
         self.kwargs = kwargs
         db.session.add(self)
         db.session.commit()
-        if not send and self.sendable:
+        if self.sendable and send:
             self.send()
 
     def __repr__(self):
-        return "Notification for {} fired by {}".format(
-            self.user_id, self.initiator)
+        return "<Notification: {}'s notification send with {}>".format(
+            self.user.username, self.initiator)
 
     def sendable(self, alert=False):
         """Check if this object can be send

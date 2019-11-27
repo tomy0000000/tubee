@@ -1,12 +1,33 @@
 """Routes involves user credentials"""
-from flask import abort, Blueprint, current_app, redirect, request, render_template, session, url_for
-from flask_login import current_user, login_user, logout_user, login_required
-from dropbox.oauth import BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException
+from flask import (
+    abort,
+    Blueprint,
+    current_app,
+    redirect,
+    request,
+    render_template,
+    session,
+    url_for,
+)
+from flask_login import (
+    current_user,
+    login_user,
+    logout_user,
+    login_required,
+)
+from dropbox.oauth import (
+    BadRequestException,
+    BadStateException,
+    CsrfException,
+    NotApprovedException,
+    ProviderException,
+)
 from .. import oauth
 from ..forms import LoginForm, RegisterForm
 from ..helper import dropbox, youtube
 from ..models import User
 user_blueprint = Blueprint("user", __name__)
+
 
 @user_blueprint.route("/register", methods=["GET", "POST"])
 def register():
@@ -31,6 +52,7 @@ def register():
                            alert=alert,
                            alert_type="warning")
 
+
 @user_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     """User Login"""
@@ -53,6 +75,7 @@ def login():
                            alert=alert,
                            alert_type=alert_type)
 
+
 @user_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
@@ -62,15 +85,15 @@ def logout():
     session["login_message_type"] = "success"
     return redirect(url_for("user.login"))
 
+
 @user_blueprint.route("/setting", methods=["GET", "POST"])
 @login_required
 def setting():
     """User Setting Page"""
     alert = session.pop("alert", None)
     alert_type = session.pop("alert_type", None)
-    return render_template("setting.html",
-                           alert=alert,
-                           alert_type=alert_type)
+    return render_template("setting.html", alert=alert, alert_type=alert_type)
+
 
 @user_blueprint.route('/setting/youtube/authorize')
 @login_required
@@ -84,6 +107,7 @@ def setting_youtube_authorize():
         include_granted_scopes="true")
     session["state"] = state
     return redirect(authorization_url)
+
 
 @user_blueprint.route("/setting/youtube/oauth_callback")
 @login_required
@@ -106,6 +130,7 @@ def setting_youtube_oauth_callback():
         session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
 
+
 @user_blueprint.route("/setting/youtube/revoke")
 @login_required
 def setting_youtube_revoke():
@@ -123,11 +148,14 @@ def setting_youtube_revoke():
             session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
 
+
 @user_blueprint.route("/setting/line-notify/authorize")
 @login_required
 def setting_line_notify_authorize():
-    redirect_uri = url_for("user.setting_line_notify_oauth_callback", _external=True)
+    redirect_uri = url_for("user.setting_line_notify_oauth_callback",
+                           _external=True)
     return oauth.LineNotify.authorize_redirect(redirect_uri)
+
 
 @user_blueprint.route("/setting/line-notify/oauth_callback")
 @login_required
@@ -137,6 +165,7 @@ def setting_line_notify_oauth_callback():
     session["alert"] = "Line Notify Access Granted"
     session["alert_type"] = "success"
     return redirect(url_for("user.setting"))
+
 
 @user_blueprint.route("/setting/line-notify/revoke")
 @login_required
@@ -155,11 +184,13 @@ def setting_line_notify_revoke():
             session["alert_type"] = "danger"
     return redirect(url_for("user.setting"))
 
+
 @user_blueprint.route("/setting/dropbox/authorize")
 @login_required
 def setting_dropbox_authorize():
     authorize_url = dropbox.build_flow(session).start()
     return redirect(authorize_url)
+
 
 @user_blueprint.route("/setting/dropbox/oauth_callback")
 @login_required
@@ -195,6 +226,7 @@ def setting_dropbox_oauth_callback():
     session["alert"] = "Dropbx Access Granted"
     session["alert_type"] = "success"
     return redirect(url_for("user.setting"))
+
 
 @user_blueprint.route("/setting/dropbox/revoke")
 @login_required
