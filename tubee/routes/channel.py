@@ -8,11 +8,11 @@ from dateutil import parser
 from flask import (
     Blueprint,
     current_app,
+    flash,
     jsonify,
     render_template,
     redirect,
     request,
-    session,
     url_for,
 )
 from flask_login import current_user, login_required
@@ -105,11 +105,9 @@ def subscribe():
         # Connect Relationship
         success = current_user.subscribe_to(channel_object)
         if success:
-            session["alert"] = "Subscribe Success"
-            session["alert_type"] = "success"
+            flash("Subscribe Success", "success")
         else:
-            session["alert"] = "Oops! Subscribe Failed for some reason"
-            session["alert_type"] = "danger"
+            flash("Oops! Subscribe Failed for some reason", "danger")
         return redirect(url_for("main.dashboard"))
 
 
@@ -125,21 +123,16 @@ def unsubscribe(channel_id):
     subscription = current_user.subscriptions.filter_by(
         subscribing_channel_id=channel_id).first()
     if subscription is None:
-        session[
-            "alert"] = "You can't unsubscribe to {} since you havn't subscribe to it.".format(
-                channel_id)
-        session["alert_type"] = "warning"
+        flash("You can't unsubscribe to {} since you havn't subscribe to it.".format(channel_id), "warning")
     if request.method == "GET":
         return render_template("unsubscribe.html",
                                channel_name=subscription.channel.channel_name)
     if request.method == "POST":
         success = current_user.unbsubscribe_from(channel_id)
         if success:
-            session["alert"] = "Unsubscribe Success"
-            session["alert_type"] = "success"
+            flash("Unsubscribe Success", "success")
         else:
-            session["alert"] = "Oops! Unsubscribe Failed for some reason"
-            session["alert_type"] = "danger"
+            flash("Oops! Unsubscribe Failed for some reason", "danger")
     return redirect(url_for("main.dashboard"))
 
 

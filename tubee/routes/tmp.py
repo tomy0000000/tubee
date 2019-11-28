@@ -1,5 +1,5 @@
 """Beta views"""
-from flask import redirect, render_template, session, url_for
+from flask import flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 from .. import oauth
 from ..helper import admin_required, youtube_dl
@@ -21,11 +21,7 @@ def send_line():
 @admin_required
 def test_dropbox():
     response = current_user.save_file_to_dropbox("instance/my-file.txt")
-    if response[0]:
-        session["alert_type"] = "success"
-    else:
-        session["alert_type"] = "danger"
-    session["alert"] = str(response[1])
+    flash(str(response[1]), "success" if response[0] else "danger")
     return redirect(url_for("main.dashboard"))
 
 
@@ -36,9 +32,5 @@ def test_download_to_dropbox(video_id):
     metadata = youtube_dl.fetch_video_metadata(video_id)
     response = current_user.save_url_to_dropbox(
         metadata["url"], "{}.mp4".format(metadata["title"]))
-    if response[0]:
-        session["alert_type"] = "success"
-    else:
-        session["alert_type"] = "danger"
-    session["alert"] = str(response[1])
+    flash(str(response[1]), "success" if response[0] else "danger")
     return redirect(url_for("main.dashboard"))

@@ -17,6 +17,15 @@ def admin_required(func):
     return decorated_function
 
 
+def pushover_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.pushover:
+            abort(403)
+        return func(*args, **kwargs)
+    return decorated_function
+
+
 def youtube_required(func):
     """Check if user has authenticated youtube access"""
     @wraps(func)

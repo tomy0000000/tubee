@@ -1,4 +1,4 @@
-{% import 'widgets/alert.html' as alert_widget %}
+{% import 'widgets/message.html' as message_widget %}
 {% import 'widgets/dev_test_ribbon.html' as ribbon %}
 {% import 'widgets/navbar.html' as navbar %}
 {% import 'widgets/stylesheets.html' as stylesheets %}
@@ -23,7 +23,7 @@
     <main role="main" class="flex-grow-1">
         <!-- CONTAINER -->
         <div id="content-container" class="container h-100">
-            {{ alert_widget.alert(alert, alert_type, alert_float) }}
+            {{ message_widget.message(message_float) }}
             <!-- CONTENT -->
             {% block content %}{% endblock %}
             <!-- END CONTENT -->

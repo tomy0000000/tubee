@@ -3,6 +3,7 @@ from flask import (
     abort,
     Blueprint,
     current_app,
+    flash,
     redirect,
     request,
     render_template,
@@ -24,7 +25,12 @@ from dropbox.oauth import (
 )
 from .. import oauth
 from ..forms import LoginForm, RegisterForm
-from ..helper import dropbox, youtube
+from ..helper import (
+    dropbox,
+    pushover_required,
+    youtube,
+    youtube_required,
+)
 from ..models import User
 user_blueprint = Blueprint("user", __name__)
 
@@ -33,47 +39,35 @@ user_blueprint = Blueprint("user", __name__)
 def register():
     """User Register"""
     if current_user.is_authenticated:
-        session["alert"] = "You've already logined!"
-        session["alert_type"] = "success"
+        flash("You've already logined!", "success")
         return redirect(url_for("main.dashboard"))
     form = RegisterForm()
-    alert = None
     if form.validate_on_submit():
-        query_user = User.query.filter_by(username=form.username.data).first()
-        if not query_user:
+        exist_user = User.query.get(form.username.data)
+        if not exist_user:
             new_user = User(form.username.data, form.password.data)
             current_app.db.session.add(new_user)
             current_app.db.session.commit()
             login_user(new_user)
             return redirect(url_for("main.dashboard"))
-        alert = "The Username is Taken"
-    return render_template("register.html",
-                           form=form,
-                           alert=alert,
-                           alert_type="warning")
+        flash("The Username is Taken", "warning")
+    return render_template("register.html", form=form)
 
 
 @user_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     """User Login"""
     if current_user.is_authenticated:
-        session["alert"] = "You've already logined!"
-        session["alert_type"] = "success"
+        flash("You've already logined!", "success")
         return redirect(url_for("main.dashboard"))
     form = LoginForm()
-    alert = session.pop("login_message_body", None)
-    alert_type = session.pop("login_message_type", None)
     if form.validate_on_submit():
-        query_user = User.query.filter_by(username=form.username.data).first()
+        query_user = User.query.get(form.username.data)
         if query_user and query_user.check_password(form.password.data):
             login_user(query_user)
             return redirect(url_for("main.dashboard"))
-        alert = "Invalid username or password."
-        alert_type = "warning"
-    return render_template("login.html",
-                           form=form,
-                           alert=alert,
-                           alert_type=alert_type)
+        flash("Invalid username or password.", "warning")
+    return render_template("login.html", form=form)
 
 
 @user_blueprint.route("/logout", methods=["GET"])
@@ -81,8 +75,7 @@ def login():
 def logout():
     """User Logout"""
     logout_user()
-    session["login_message_body"] = "You've Logged Out"
-    session["login_message_type"] = "success"
+    flash("You've Logged Out", "success")
     return redirect(url_for("user.login"))
 
 
@@ -90,20 +83,15 @@ def logout():
 @login_required
 def setting():
     """User Setting Page"""
-    alert = session.pop("alert", None)
-    alert_type = session.pop("alert_type", None)
-    return render_template("setting.html", alert=alert, alert_type=alert_type)
+    return render_template("setting.html")
 
 
-@user_blueprint.route('/setting/youtube/authorize')
+@user_blueprint.route("/setting/youtube/authorize")
 @login_required
 def setting_youtube_authorize():
     flow = youtube.build_flow()
     authorization_url, state = flow.authorization_url(
-        # Enable offline access so that you can refresh an access token without
-        # re-prompting the user for permission. Recommended for web server apps.
         access_type="offline",
-        # Enable incremental authorization. Recommended as a best practice.
         include_granted_scopes="true")
     session["state"] = state
     return redirect(authorization_url)
@@ -114,38 +102,28 @@ def setting_youtube_authorize():
 def setting_youtube_oauth_callback():
     flow = youtube.build_flow(state=session["state"])
     flow.fetch_token(authorization_response=request.url)
-    if flow.credentials.valid:
-        current_user.youtube = {
-            "token": flow.credentials.token,
-            "refresh_token": flow.credentials.refresh_token,
-            "token_uri": flow.credentials.token_uri,
-            "client_id": flow.credentials.client_id,
-            "client_secret": flow.credentials.client_secret,
-            "scopes": flow.credentials.scopes
-        }
-        session["alert"] = "YouTube Access Granted"
-        session["alert_type"] = "success"
+    try:
+        current_user.youtube = flow.credentials
+    except (TypeError, ValueError) as error:
+        flash("YouTube Access Failed: {}".format(error), "danger")
     else:
-        session["alert"] = "YouTube Access Failed"
-        session["alert_type"] = "danger"
+        flash("YouTube Access Granted", "success")
     return redirect(url_for("user.setting"))
 
 
 @user_blueprint.route("/setting/youtube/revoke")
 @login_required
+@youtube_required
 def setting_youtube_revoke():
-    """Revoke User's YouTube Crendential"""
     if not current_user.youtube:
-        session["alert"] = "YouTube Credential isn't set"
-        session["alert_type"] = "warning"
+        flash("YouTube Credential isn't set", "warning")
     else:
         try:
             del current_user.youtube
-            session["alert"] = "YouTube Access Revoke"
-            session["alert_type"] = "success"
         except ValueError as error:
-            session["alert"] = str(error)
-            session["alert_type"] = "danger"
+            flash(str(error), "danger")
+        else:
+            flash("YouTube Access Revoke", "success")
     return redirect(url_for("user.setting"))
 
 
@@ -161,9 +139,8 @@ def setting_line_notify_authorize():
 @login_required
 def setting_line_notify_oauth_callback():
     token = oauth.LineNotify.authorize_access_token()
-    current_user.line_notify_init(token["access_token"])
-    session["alert"] = "Line Notify Access Granted"
-    session["alert_type"] = "success"
+    current_user.line_notify = token["access_token"]
+    flash("Line Notify Access Granted", "success")
     return redirect(url_for("user.setting"))
 
 
@@ -172,16 +149,14 @@ def setting_line_notify_oauth_callback():
 def setting_line_notify_revoke():
     """Revoke User's Line Notify Crendential"""
     if not current_user.line_notify_credentials:
-        session["alert"] = "Line Notify Credential isn't set"
-        session["alert_type"] = "warning"
+        flash("Line Notify Credential isn't set", "warning")
     else:
-        response = current_user.line_notify_revoke()
-        if response is True:
-            session["alert"] = "Line Notify Access Revoke"
-            session["alert_type"] = "success"
+        try:
+            del current_user.line_notify
+        except RuntimeError as error:
+            flash(str(error), "danger")
         else:
-            session["alert"] = response
-            session["alert_type"] = "danger"
+            flash("Line Notify Access Revoke", "success")
     return redirect(url_for("user.setting"))
 
 
@@ -211,20 +186,13 @@ def setting_dropbox_oauth_callback():
     except ProviderException as error:
         # I Have no clue of what this is for...?
         abort(403)
-    # credentials_dict = {
-    #     "access_token": oauth_result.access_token,
-    #     "account_id": oauth_result.account_id,
-    #     "user_id": oauth_result.user_id,
-    #     "url_state": oauth_result.url_state
-    # }
     current_user.dropbox = {
         "access_token": oauth_result.access_token,
         "account_id": oauth_result.account_id,
         "user_id": oauth_result.user_id,
         "url_state": oauth_result.url_state
     }
-    session["alert"] = "Dropbx Access Granted"
-    session["alert_type"] = "success"
+    flash("Dropbx Access Granted", "success")
     return redirect(url_for("user.setting"))
 
 
@@ -233,14 +201,11 @@ def setting_dropbox_oauth_callback():
 def setting_dropbox_revoke():
     """Revoke User's Dropbx Crendential"""
     if not current_user.dropbox:
-        session["alert"] = "Dropbx Credential isn't set"
-        session["alert_type"] = "warning"
+        flash("Dropbx Credential isn't set", "warning")
     else:
         try:
             del current_user.dropbox
-            session["alert"] = "Dropbx Access Revoke"
-            session["alert_type"] = "success"
+            flash("Dropbx Access Revoke", "success")
         except Exception as error:
-            session["alert"] = str("{}: {}".format(type(error), error))
-            session["alert_type"] = "danger"
+            flash("{}: {}".format(type(error), error), "danger")
     return redirect(url_for("user.setting"))

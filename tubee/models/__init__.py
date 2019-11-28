@@ -1,4 +1,7 @@
-"""Collecting Models"""
+"""Model Pacakge
+
+Collect models for import
+"""
 from .action import Action
 from .callback import Callback
 from .channel import Channel

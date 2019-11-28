@@ -1,5 +1,5 @@
 """Routes for Admin Access"""
-from flask import Blueprint, render_template, request
+from flask import Blueprint, flash, render_template, request
 from flask_login import current_user, login_required
 from ..helper import admin_required
 from ..models import Callback, Notification
@@ -24,16 +24,12 @@ def notification_dashboard():
 def notification_push():
     """Send Test Notification to User"""
     # TODO
-    alert = alert_type = ""
     if request.method == "POST":
         form_datas = request.form
-        alert = current_user.send_notification("Test",
-                                               message=form_datas["message"],
-                                               title=form_datas["title"])
-        alert_type = "success"
-    return render_template("pushover_push.html",
-                           alert=alert,
-                           alert_type=alert_type)
+        response = current_user.send_notification(
+            "Test", message=form_datas["message"], title=form_datas["title"])
+        flash(response, "success")
+    return render_template("pushover_push.html")
 
 
 @admin_blueprint.route("/hub/dashboard")

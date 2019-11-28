@@ -2,11 +2,11 @@
 from flask import (
     Blueprint,
     current_app,
+    flash,
     jsonify,
     redirect,
     render_template,
     request,
-    session,
     url_for,
 )
 from werkzeug.exceptions import HTTPException
@@ -16,8 +16,7 @@ handler = Blueprint("handler", __name__)
 
 @login_manager.unauthorized_handler
 def not_logined():
-    session["login_message_body"] = "You Must Login First"
-    session["login_message_type"] = "warning"
+    flash("You Must Login First", "warning")
     return redirect(url_for("user.login"))
 
 
@@ -37,4 +36,5 @@ def unhandled_exception(error):
     current_app.logger.error(error)
     if request.path.startswith("/api"):
         return jsonify({"code": code, "description": str(error)}), code
-    return render_template("error.html", alert=error), code
+    flash(error, "danger")
+    return render_template("error.html"), code

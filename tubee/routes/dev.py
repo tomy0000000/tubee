@@ -9,13 +9,6 @@ from ..helper import admin_required
 dev_blueprint = Blueprint("dev", __name__)
 
 
-@dev_blueprint.route("generate_url")
-@login_required
-def generate_url():
-    return render_template("empty.html",
-                           info=url_for("dev.sitemap", _external=True))
-
-
 @dev_blueprint.route("/sitemap")
 @login_required
 @admin_required
@@ -78,7 +71,13 @@ def login_manager_dict():
 @login_required
 @admin_required
 def user_dict():
-    target_dict = current_user.__dict__
+    # target_dict = current_user.__dict__
+    target_dict = {
+        "is_authenticated": current_user.is_authenticated,
+        "is_active": current_user.is_active,
+        "is_anonymous": current_user.is_anonymous,
+        "get_id()": current_user.get_id(),
+    }
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)

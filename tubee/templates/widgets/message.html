@@ -1,0 +1,37 @@
+{% macro dismiss_but() %}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+{% endmacro %}
+
+{% set special_message_type = ["secondary", "success", "danger", "warning", "info", "light", "dark"] %}
+
+{% macro message(message_float=False) %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<!-- MESSAGE -->
+    {% if message_float %}
+    <div id="message-wrapper">
+    {% endif %}
+
+    {% for category, message in messages %}
+        {% if category in special_message_type %}
+        <div id="main-alert" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            {{ dismiss_but() }}
+        </div>
+        {% else %}
+        <div id="main-alert" class="alert alert-primary alert-dismissible fade show" role="alert">
+            {{ message }}
+            {{ dismiss_but() }}
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    {% if message_float %}
+    </div>
+    {% endif %}
+<!-- END MESSAGE -->
+{% endif %}
+{% endwith %}
+{% endmacro %}

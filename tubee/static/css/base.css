@@ -10,7 +10,7 @@ span.line {
     height: 2rem;
 }
 
-#alert-wrapper {
+#message-wrapper {
     position: sticky;
     top: 100px;
     z-index: 1;

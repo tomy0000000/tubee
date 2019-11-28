@@ -62,7 +62,7 @@ class MainRoutesTestCase(unittest.TestCase):
         # Logout
         response = self.client.get("/user/logout", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("ALERT", response.get_data(as_text=True))
+        self.assertIn("MESSAGE", response.get_data(as_text=True))
         self.assertIn("Logged Out", response.get_data(as_text=True))
         # Login and redirect to Dashboard
         response = self.client.post("/user/login", data={
@@ -74,5 +74,5 @@ class MainRoutesTestCase(unittest.TestCase):
         # Logout again
         response = self.client.get("/user/logout", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("ALERT", response.get_data(as_text=True))
+        self.assertIn("MESSAGE", response.get_data(as_text=True))
         self.assertIn("Logged Out", response.get_data(as_text=True))

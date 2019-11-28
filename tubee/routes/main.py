@@ -1,5 +1,5 @@
 """The Main Routes"""
-from flask import Blueprint, render_template, session, url_for
+from flask import Blueprint, render_template, url_for
 from flask_login import current_user, login_required
 from ..helper import youtube_required
 from ..helper.youtube import build_service
@@ -12,14 +12,10 @@ main_blueprint = Blueprint("main", __name__)
 @login_required
 def dashboard():
     """Showing All Subscribed Channels"""
-    alert = session.pop("alert", None)
-    alert_type = session.pop("alert_type", None)
     subscriptions = current_user.subscriptions.join(
         Subscription.channel).order_by(Channel.channel_name.asc()).all()
     return render_template("dashboard.html",
-                           subscriptions=subscriptions,
-                           alert=alert,
-                           alert_type=alert_type)
+                           subscriptions=subscriptions)
 
 
 @main_blueprint.route("/explore")
