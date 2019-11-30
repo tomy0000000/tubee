@@ -1,7 +1,9 @@
 """Beta views"""
+from os.path import basename
+from dropbox.files import WriteMode
+from dropbox.exceptions import ApiError
 from flask import flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
-from .. import oauth
 from ..helper import admin_required, youtube_dl
 from .dev import dev_blueprint
 
@@ -10,9 +12,8 @@ from .dev import dev_blueprint
 @login_required
 @admin_required
 def send_line():
-    response = oauth.LineNotify.post("api/notify",
-                                     data={"message": "Test message"})
-    print(response)
+    response = current_user.line_notify.post("api/notify",
+                                             data={"message": "Test message"})
     return render_template("empty.html", info=response.text)
 
 
@@ -20,8 +21,18 @@ def send_line():
 @login_required
 @admin_required
 def test_dropbox():
-    response = current_user.save_file_to_dropbox("instance/my-file.txt")
-    flash(str(response[1]), "success" if response[0] else "danger")
+    file_path = "instance/my-file.txt"
+    filename = basename(file_path)
+    with open(file_path, "rb") as file:
+        try:
+            response = current_user.dropbox.files_upload(
+                file.read(),
+                "/{}".format(filename),
+                mode=WriteMode("overwrite"))
+        except ApiError as error:
+            flash(str(error), "danger")
+        else:
+            flash(str(response), "success")
     return redirect(url_for("main.dashboard"))
 
 
@@ -30,7 +41,7 @@ def test_dropbox():
 @admin_required
 def test_download_to_dropbox(video_id):
     metadata = youtube_dl.fetch_video_metadata(video_id)
-    response = current_user.save_url_to_dropbox(
-        metadata["url"], "{}.mp4".format(metadata["title"]))
-    flash(str(response[1]), "success" if response[0] else "danger")
+    response = current_user.dropbox.files_save_url(
+        "/{}".format("{}.mp4".format(metadata["title"])), metadata["url"])
+    flash(str(response), "success")
     return redirect(url_for("main.dashboard"))

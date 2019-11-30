@@ -91,8 +91,6 @@ def subscribe():
         current_app.logger.info("Is New Channel: {}".format(new_channel))
         if new_channel:
             channel_object = Channel(channel_id)
-            db.session.add(channel_object)
-            db.session.commit()
 
             # Schedule renew datetime
             # job_response = scheduler.add_job(

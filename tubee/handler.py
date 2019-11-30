@@ -4,20 +4,11 @@ from flask import (
     current_app,
     flash,
     jsonify,
-    redirect,
     render_template,
     request,
-    url_for,
 )
 from werkzeug.exceptions import HTTPException
-from . import login_manager
 handler = Blueprint("handler", __name__)
-
-
-@login_manager.unauthorized_handler
-def not_logined():
-    flash("You Must Login First", "warning")
-    return redirect(url_for("user.login"))
 
 
 @handler.app_errorhandler(Exception)
@@ -32,6 +23,8 @@ def unhandled_exception(error):
     501: Raised when the endpoint is not implemented yet
     https://werkzeug.palletsprojects.com/en/0.16.x/exceptions/#error-classes
     """
+    if current_app.debug:
+        raise error
     code = error.code if isinstance(error, HTTPException) else 500
     current_app.logger.error(error)
     if request.path.startswith("/api"):

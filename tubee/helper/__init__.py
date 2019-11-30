@@ -1,8 +1,9 @@
 """Helper Functions"""
-from functools import wraps
 import requests
 import pushover_complete
-from flask import abort, current_app
+from functools import wraps
+from urllib.parse import urlparse, urljoin
+from flask import abort, current_app, request
 from flask_login import current_user
 from ..models.user import User
 
@@ -14,6 +15,7 @@ def admin_required(func):
         if not current_user.admin:
             abort(403)
         return func(*args, **kwargs)
+
     return decorated_function
 
 
@@ -23,6 +25,7 @@ def pushover_required(func):
         if not current_user.pushover:
             abort(403)
         return func(*args, **kwargs)
+
     return decorated_function
 
 
@@ -33,7 +36,15 @@ def youtube_required(func):
         if not current_user.youtube:
             abort(403)
         return func(*args, **kwargs)
+
     return decorated_function
+
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ("http",
+                               "https") and ref_url.netloc == test_url.netloc
 
 
 def notify_admin(initiator, **kwargs):
@@ -42,7 +53,8 @@ def notify_admin(initiator, **kwargs):
     response = {}
     for admin in admins:
         if admin.pushover:
-            response[admin.username] = admin.send_notification(initiator, **kwargs)
+            response[admin.username] = admin.send_notification(
+                initiator, **kwargs)
     return response
 
 
@@ -67,5 +79,6 @@ def send_notification(user, *args, **kwargs):
     if "image" in kwargs and kwargs["image"]:
         img_url = kwargs["image"]
         kwargs["image"] = requests.get(img_url, stream=True).content
-    pusher = pushover_complete.PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
+    pusher = pushover_complete.PushoverAPI(
+        current_app.config["PUSHOVER_TOKEN"])
     return pusher.send_message(user.pushover, *args, **kwargs)

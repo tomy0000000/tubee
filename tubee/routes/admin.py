@@ -2,7 +2,7 @@
 from flask import Blueprint, flash, render_template, request
 from flask_login import current_user, login_required
 from ..helper import admin_required
-from ..models import Callback, Notification
+from ..models import Callback, Notification, Service
 admin_blueprint = Blueprint("admin", __name__)
 
 
@@ -23,13 +23,13 @@ def notification_dashboard():
 @admin_required
 def notification_push():
     """Send Test Notification to User"""
-    # TODO
     if request.method == "POST":
-        form_datas = request.form
         response = current_user.send_notification(
-            "Test", message=form_datas["message"], title=form_datas["title"])
+            "Test",
+            Service(request.form.get("service", "ALL")),
+            message=request.form["message"])
         flash(response, "success")
-    return render_template("pushover_push.html")
+    return render_template("test_notification.html")
 
 
 @admin_blueprint.route("/hub/dashboard")

@@ -21,11 +21,6 @@ def build_flow(state=None):
     return flow
 
 
-def build_credentials(credentials):
-    """Build Credentials Object with params"""
-    return Credentials(**credentials)
-
-
 def build_service(credentials=None):
     """Build Service with params"""
     kwargs = {}

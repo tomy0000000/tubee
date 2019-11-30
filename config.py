@@ -1,5 +1,6 @@
 import os
 import uuid
+from datetime import timedelta
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,7 +17,6 @@ class Config:
         "pool_recycle": 300
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # SQLALCHEMY_RECORD_QUERIES = True
     CUSTOM_SQLALCHEMY_NAMEING_CONVENTIONS = {
         "ix": "ix_%(column_0_label)s",
         "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -24,6 +24,8 @@ class Config:
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
         "pk": "pk_%(table_name)s"
     }
+    REMEMBER_COOKIE_DURATION = timedelta(days=30)
+    REMEMBER_COOKIE_SECURE = True
 
     YOUTUBE_API_DEVELOPER_KEY = os.environ.get("YOUTUBE_API_DEVELOPER_KEY")
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")

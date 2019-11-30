@@ -2,10 +2,10 @@
 import json
 import logging.config
 import os
-import flask
-from authlib.flask.client import OAuth
+from authlib.integrations.flask_client import OAuth
+from flask import Flask
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
+from flask_login import current_user, LoginManager
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
@@ -13,7 +13,7 @@ from config import config
 
 # TODO: TRY IMPLEMENT IN ANOTHER WAY
 naming_convention = {
-    "ix": 'ix_%(column_0_label)s',
+    "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
     "ck": "ck_%(table_name)s_%(column_0_name)s",
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
@@ -21,15 +21,15 @@ naming_convention = {
 }
 
 metadata = MetaData(naming_convention=naming_convention)
-oauth = OAuth()                                             # authlib
-bcrypt = Bcrypt()                                           # flask_bcrypt
-login_manager = LoginManager()                              # flask_login
-moment = Moment()                                           # flask_moment
-db = SQLAlchemy(metadata=metadata)                          # flask_sqlalchemy
+db = SQLAlchemy(metadata=metadata)
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+moment = Moment()
+oauth = OAuth()
 
 
 def create_app(config_name):
-    app = flask.Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
     if os.path.isfile(os.path.join(app.instance_path, "logging.cfg")):
         with app.open_instance_resource("logging.cfg", "r") as json_file:
@@ -37,14 +37,25 @@ def create_app(config_name):
 
     db.init_app(app)
     app.db = db
-    db.app = app
     config[config_name].init_app(app)
-    oauth.init_app(app)
-    from .helper.line_notify import build_service
-    build_service(oauth)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     moment.init_app(app)
+    oauth.init_app(app)
+
+    login_manager.login_view = "user.login"
+    login_manager.login_message = "Please log in to access this page."
+    login_manager.login_message_category = "warning"
+    oauth.register(name="LineNotify",
+                   access_token_url="https://notify-bot.line.me/oauth/token",
+                   access_token_params=None,
+                   authorize_url="https://notify-bot.line.me/oauth/authorize",
+                   authorize_params=dict(response_type="code", scope="notify"),
+                   api_base_url="https://notify-api.line.me/",
+                   client_kwargs=None,
+                   fetch_token=lambda: dict(access_token=current_user.
+                                            line_notify_credentials,
+                                            token_type="bearer"))
 
     from .routes.main import main_blueprint
     app.register_blueprint(main_blueprint)

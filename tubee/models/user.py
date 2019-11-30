@@ -1,10 +1,13 @@
 """User Model"""
 import requests
+import dropbox
 from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
+from pushover_complete import PushoverAPI
+from .notification import Notification, Service
 from .. import bcrypt, db, login_manager, oauth
-from ..helper import dropbox, youtube
+from ..helper import youtube
 login_manager.login_view = "user.login"
 
 
@@ -32,11 +35,20 @@ class User(UserMixin, db.Model):
     youtube_credentials = db.Column(db.JSON)
     # youtube_subscription = db.Column(db.JSON)
     line_notify_credentials = db.Column(db.String(50))
+    # preferred_notification_service = db.Column(db.Enum(Service))
     dropbox_credentials = db.Column(db.JSON)
     subscriptions = db.relationship("Subscription",
                                     back_populates="subscriber",
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
+
+    #     ######
+    #     #     #   ##    ####   ####  #    #  ####  #####  #####
+    #     #     #  #  #  #      #      #    # #    # #    # #    #
+    #     ######  #    #  ####   ####  #    # #    # #    # #    #
+    #     #       ######      #      # # ## # #    # #####  #    #
+    #     #       #    # #    # #    # ##  ## #    # #   #  #    #
+    #     #       #    #  ####   ####  #    #  ####  #    # #####
 
     @property
     def password(self):
@@ -50,6 +62,18 @@ class User(UserMixin, db.Model):
         if len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
+
+    def check_password(self, password):
+        """Return True if provided password is valid to login"""
+        return bcrypt.check_password_hash(self._password_hash, password)
+
+    #     ######
+    #     #     # #    #  ####  #    #  ####  #    # ###### #####
+    #     #     # #    # #      #    # #    # #    # #      #    #
+    #     ######  #    #  ####  ###### #    # #    # #####  #    #
+    #     #       #    #      # #    # #    # #    # #      #####
+    #     #       #    # #    # #    # #    #  #  #  #      #   #
+    #     #        ####   ####  #    #  ####    ##   ###### #    #
 
     @property
     def pushover(self):
@@ -74,7 +98,10 @@ class User(UserMixin, db.Model):
         Arguments:
             key {str} -- User's pushover key obtain from https://pushover.net
         """
-        # TODO: Implement Validating Function
+        pusher = PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
+        response = pusher.validate(key)
+        if response["status"] != 1:
+            raise ValueError("Invalid Pushover User Key")
         self._pushover_key = key
         db.session.commit()
 
@@ -86,6 +113,14 @@ class User(UserMixin, db.Model):
         """
         del self._pushover_key
         db.session.commit()
+
+    #     #     #               #######
+    #      #   #   ####  #    #    #    #    # #####  ######
+    #       # #   #    # #    #    #    #    # #    # #
+    #        #    #    # #    #    #    #    # #####  #####
+    #        #    #    # #    #    #    #    # #    # #
+    #        #    #    # #    #    #    #    # #    # #
+    #        #     ####   ####     #     ####  #####  ######
 
     @property
     def youtube(self):
@@ -149,6 +184,14 @@ class User(UserMixin, db.Model):
         del self.youtube_credentials
         db.session.commit()
 
+    #     ######
+    #     #     # #####   ####  #####  #####   ####  #    #
+    #     #     # #    # #    # #    # #    # #    #  #  #
+    #     #     # #    # #    # #    # #####  #    #   ##
+    #     #     # #####  #    # #####  #    # #    #   ##
+    #     #     # #   #  #    # #      #    # #    #  #  #
+    #     ######  #    #  ####  #      #####   ####  #    #
+
     @property
     def dropbox(self):
         """Dropbox Service
@@ -163,11 +206,16 @@ class User(UserMixin, db.Model):
         """
         if not self.dropbox_credentials:
             raise AttributeError("User has not authorized Dropbox access")
-        return dropbox.build_service(self.dropbox_credentials)
+        return dropbox.Dropbox(self.dropbox_credentials["access_token"])
 
     @dropbox.setter
     def dropbox(self, credentials):
-        self.dropbox_credentials = credentials
+        self.dropbox_credentials = dict(
+            access_token=credentials.access_token,
+            account_id=credentials.account_id,
+            user_id=credentials.user_id,
+            url_state=credentials.url_state
+        )
         db.session.commit()
 
     @dropbox.deleter
@@ -176,9 +224,19 @@ class User(UserMixin, db.Model):
         del self.dropbox_credentials
         db.session.commit()
 
+    #     #                          #     #
+    #     #       # #    # ######    ##    #  ####  ##### # ###### #   #
+    #     #       # ##   # #         # #   # #    #   #   # #       # #
+    #     #       # # #  # #####     #  #  # #    #   #   # #####    #
+    #     #       # #  # # #         #   # # #    #   #   # #        #
+    #     #       # #   ## #         #    ## #    #   #   # #        #
+    #     ####### # #    # ######    #     #  ####    #   # #        #
+
     @property
     def line_notify(self):
-        pass
+        if not self.line_notify_credentials:
+            raise AttributeError("User has not authorized Line Notify access")
+        return oauth.LineNotify
 
     @line_notify.setter
     def line_notify(self, credentials):
@@ -187,27 +245,37 @@ class User(UserMixin, db.Model):
 
     @line_notify.deleter
     def line_notify(self):
-        response = oauth.LineNotify.post("api/revoke")
-        if response.status_code != 200:
+        response = self.line_notify.post("api/revoke")
+        if response.status_code != 200 and response.status_code != 401:
             raise RuntimeError(response.text)
         del self.line_notify_credentials
         db.session.commit()
 
-    def line_notify_init(self, credentials):
-        self.line_notify_credentials = credentials
-        db.session.commit()
-
-    def get_line_notify_credentials(self):
-        return dict(access_token=self.line_notify_credentials,
-                    token_type="bearer")
+    #      #####
+    #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
+    #     #       #       #  #  #      #      ##  ## #        #   #    # #    # #    #
+    #     #       #      #    #  ####   ####  # ## # #####    #   ###### #    # #    #
+    #     #       #      ######      #      # #    # #        #   #    # #    # #    #
+    #     #     # #      #    # #    # #    # #    # #        #   #    # #    # #    #
+    #      #####  ###### #    #  ####   ####  #    # ######   #   #    #  ####  #####
 
     def __init__(self, username, password, **kwargs):
         super(User, self).__init__(**kwargs)
         self.username = username
         self.password = password
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return "<User: {}>".format(self.username)
+
+    #     #     #                      #     #
+    #     #     #  ####  ###### #####  ##   ## # #    # # #    #
+    #     #     # #      #      #    # # # # # #  #  #  # ##   #
+    #     #     #  ####  #####  #    # #  #  # #   ##   # # #  #
+    #     #     #      # #      #####  #     # #   ##   # #  # #
+    #     #     # #    # #      #   #  #     # #  #  #  # #   ##
+    #      #####   ####  ###### #    # #     # # #    # # #    #
 
     """Flask-Login UserMixin Properties and Methods"""
     """https://flask-login.readthedocs.io/en/latest/#your-user-class"""
@@ -244,9 +312,13 @@ class User(UserMixin, db.Model):
         """
         return self.username
 
-    def check_password(self, password):
-        """Return True if provided password is valid to login"""
-        return bcrypt.check_password_hash(self._password_hash, password)
+    #     #     #
+    #     ##   ## #  ####   ####
+    #     # # # # # #      #    #
+    #     #  #  # #  ####  #
+    #     #     # #      # #
+    #     #     # # #    # #    #
+    #     #     # #  ####   ####
 
     # YouTube Method
     def is_subscribing(self, channel):
@@ -305,14 +377,8 @@ class User(UserMixin, db.Model):
                                                    part="snippet").execute()
 
     # Pushover, Line Notify Methods
-    def send_notification(self, initiator, **kwargs):
-        from . import Notification, Service
-        ntf = Notification(initiator, self, Service.PUSHOVER, **kwargs)
+    def send_notification(self, initiator, service="default", **kwargs):
+        # if service == "default":
+        #     service = self.preferred_notification_service
+        ntf = Notification(initiator, self, service, **kwargs)
         return ntf.response
-
-    # Dropbox Methods
-    def save_file_to_dropbox(self, file_path):
-        return dropbox.save_file_to_dropbox(self, file_path)
-
-    def save_url_to_dropbox(self, url, filename):
-        return dropbox.save_url_to_dropbox(self, url, filename)

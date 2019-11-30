@@ -47,7 +47,7 @@ class MainRoutesTestCase(unittest.TestCase):
         # Dashboard Attempt
         response = self.client.get("/", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("You Must Login First", response.get_data(as_text=True))
+        self.assertIn("Please log in to access this page.", response.get_data(as_text=True))
         # Register
         response = self.client.get("/user/register")
         self.assertEqual(response.status_code, 200)

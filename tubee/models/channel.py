@@ -1,7 +1,6 @@
 """Channel Model"""
 import urllib
 from datetime import datetime
-
 from flask import current_app, request, url_for
 from .. import db
 from ..helper.hub import subscribe, unsubscribe, details
@@ -31,11 +30,14 @@ class Channel(db.Model):
                                   cascade="all, delete-orphan")
 
     def __init__(self, channel_id):
-        service = build_service()
         self.channel_id = channel_id
+        service = build_service()
+        # TODO: Validate Channel
         self.channel_name = service.channels().list(
             part="snippet",
             id=channel_id).execute()["items"][0]["snippet"]["title"]
+        db.session.add(self)
+        db.session.commit()
         self.renew_info()
         self.renew_hub()
         self.activate()

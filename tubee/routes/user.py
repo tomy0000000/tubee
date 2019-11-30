@@ -27,6 +27,7 @@ from .. import oauth
 from ..forms import LoginForm, RegisterForm
 from ..helper import (
     dropbox,
+    is_safe_url,
     pushover_required,
     youtube,
     youtube_required,
@@ -46,8 +47,6 @@ def register():
         exist_user = User.query.get(form.username.data)
         if not exist_user:
             new_user = User(form.username.data, form.password.data)
-            current_app.db.session.add(new_user)
-            current_app.db.session.commit()
             login_user(new_user)
             return redirect(url_for("main.dashboard"))
         flash("The Username is Taken", "warning")
@@ -64,7 +63,10 @@ def login():
     if form.validate_on_submit():
         query_user = User.query.get(form.username.data)
         if query_user and query_user.check_password(form.password.data):
-            login_user(query_user)
+            login_user(query_user, remember=True)
+            redirect_url = request.args.get("next")
+            if redirect_url and is_safe_url(redirect_url):
+                return redirect(redirect_url)
             return redirect(url_for("main.dashboard"))
         flash("Invalid username or password.", "warning")
     return render_template("login.html", form=form)
@@ -113,17 +115,13 @@ def setting_youtube_oauth_callback():
 
 @user_blueprint.route("/setting/youtube/revoke")
 @login_required
-@youtube_required
 def setting_youtube_revoke():
-    if not current_user.youtube:
-        flash("YouTube Credential isn't set", "warning")
+    try:
+        del current_user.youtube
+    except ValueError as error:
+        flash(str(error), "danger")
     else:
-        try:
-            del current_user.youtube
-        except ValueError as error:
-            flash(str(error), "danger")
-        else:
-            flash("YouTube Access Revoke", "success")
+        flash("YouTube Access Revoke", "success")
     return redirect(url_for("user.setting"))
 
 
@@ -148,15 +146,12 @@ def setting_line_notify_oauth_callback():
 @login_required
 def setting_line_notify_revoke():
     """Revoke User's Line Notify Crendential"""
-    if not current_user.line_notify_credentials:
-        flash("Line Notify Credential isn't set", "warning")
+    try:
+        del current_user.line_notify
+    except RuntimeError as error:
+        flash(str(error), "danger")
     else:
-        try:
-            del current_user.line_notify
-        except RuntimeError as error:
-            flash(str(error), "danger")
-        else:
-            flash("Line Notify Access Revoke", "success")
+        flash("Line Notify Access Revoke", "success")
     return redirect(url_for("user.setting"))
 
 
@@ -186,12 +181,7 @@ def setting_dropbox_oauth_callback():
     except ProviderException as error:
         # I Have no clue of what this is for...?
         abort(403)
-    current_user.dropbox = {
-        "access_token": oauth_result.access_token,
-        "account_id": oauth_result.account_id,
-        "user_id": oauth_result.user_id,
-        "url_state": oauth_result.url_state
-    }
+    current_user.dropbox = oauth_result
     flash("Dropbx Access Granted", "success")
     return redirect(url_for("user.setting"))
 
@@ -200,12 +190,6 @@ def setting_dropbox_oauth_callback():
 @login_required
 def setting_dropbox_revoke():
     """Revoke User's Dropbx Crendential"""
-    if not current_user.dropbox:
-        flash("Dropbx Credential isn't set", "warning")
-    else:
-        try:
-            del current_user.dropbox
-            flash("Dropbx Access Revoke", "success")
-        except Exception as error:
-            flash("{}: {}".format(type(error), error), "danger")
+    del current_user.dropbox
+    flash("Dropbx Access Revoke", "success")
     return redirect(url_for("user.setting"))

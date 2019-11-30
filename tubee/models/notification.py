@@ -14,6 +14,16 @@ class Service(Enum):
     LINE_NOTIFY = "Line Notify"
 
 
+VALID_ARGS = {
+    Service.PUSHOVER: [
+        "device", "title", "url", "url_title", "image_url", "priority",
+        "retry", "expire", "callback_url", "timestamp", "sound", "html"
+    ],
+    Service.LINE_NOTIFY:
+    ["image_url", "stickerPackageId", "stickerId", "notificationDisabled"]
+}
+
+
 class Notification(db.Model):
     """An Object which describe a Notification for a specific user
 
@@ -50,6 +60,7 @@ class Notification(db.Model):
         Keyword Arguments:
             send {bool} -- Send on initialize (default: {True})
             message {str} -- message of Notification
+            image_url {str} -- URL of the image
         """
         self.notification_id = str(uuid4())
         self.initiator = initiator
@@ -59,38 +70,22 @@ class Notification(db.Model):
         self.kwargs = kwargs
         db.session.add(self)
         db.session.commit()
-        if self.sendable and send:
+        if send:
             self.send()
 
     def __repr__(self):
         return "<Notification: {}'s notification send with {}>".format(
             self.user.username, self.initiator)
 
-    def sendable(self, alert=False):
-        """Check if this object can be send
-
-        Keyword Arguments:
-            alert {bool} -- raise error when notification can not be send (default: {False})
-
-        Returns:
-            bool -- Whether Notification can be send
-
-        Raises:
-            RuntimeError -- Details of why notification can't be send (raise only when alert=True)
-        """
-        if not self.service:
-            if alert:
-                raise RuntimeError("Service is not set")
-            return False
-        if not self.message:
-            if alert:
-                raise RuntimeError("Message is empty")
-            return False
-        if self.sent_datetime:
-            if alert:
-                raise RuntimeError("This Notification has already sent")
-            return False
-        return True
+    @staticmethod
+    def _clean_up_kwargs(kwargs, service):
+        for key, val in kwargs.items():
+            if key not in VALID_ARGS[service]:
+                current_app.logger.warning(
+                    "Invalid {} Notification Arguments ({}, {}) is ommited".
+                    format(service.value, key, val))
+                kwargs.pop(key)
+        return kwargs
 
     def send(self):
         """Trigger Sending with the service assigned
@@ -99,15 +94,23 @@ class Notification(db.Model):
             dict -- Response from service
 
         Raises:
-            RuntimeError -- Description of why notification is unsentable
+            AttributeError -- Description of why notification is unsentable
         """
-        self.sendable(alert=True)
+        if not self.service:
+            raise AttributeError("Service is not set")
+        if not self.message:
+            raise AttributeError("Message is empty")
+        if self.sent_datetime:
+            raise AttributeError("This Notification has already sent")
+        response = {}
         if self.service is Service.ALL or self.service is Service.PUSHOVER:
-            return self._send_with_pushover()
+            response["Pushover"] = self._send_with_pushover()
         if self.service is Service.ALL or self.service == Service.LINE_NOTIFY:
-            return self._send_with_line_notify()
-        raise RuntimeError(
-            "Notification is sendable, but something went wrong")
+            response["Line Notify"] = self._send_with_line_notify()
+        self.resopnse = response
+        self.sent_datetime = datetime.now()
+        db.session.commit()
+        return response
 
     def _send_with_pushover(self):
         """Send Notification with Pushover API
@@ -115,17 +118,13 @@ class Notification(db.Model):
         Returns:
             dict -- Response from service
         """
-        img_url = self.kwargs.pop("image")
-        if img_url:
-            img = requests.get(img_url, stream=True).content
+        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(),
+                                               self.service)
+        image_url = kwargs.pop("image_url", None)
+        if image_url:
+            kwargs["image"] = requests.get(image_url, stream=True).content
         pusher = PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
-        self.resopnse = pusher.send_message(self.user.pushover,
-                                            self.message,
-                                            image=img,
-                                            **self.kwargs)
-        self.sent_datetime = datetime.now()
-        db.session.commit()
-        return self.response
+        return pusher.send_message(self.user.pushover, self.message, **kwargs)
 
     def _send_with_line_notify(self):
         """Send Notification with Line Notify API
@@ -133,5 +132,9 @@ class Notification(db.Model):
         Returns:
             dict -- Response from service
         """
-        # TODO: Move Line Notify Function to here
-        pass
+        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(),
+                                               self.service)
+        kwargs["imageFullsize"] = kwargs.pop("image_url", None)
+        return self.user.line_notify.post("api/notify",
+                                          data=dict(message=self.message,
+                                                    **kwargs))
