@@ -7,14 +7,16 @@ class Video(db.Model):
     __tablename__ = "video"
     video_id = db.Column(db.String(32), primary_key=True)
     name = db.Column(db.String(100))
-    description = db.Column(db.Text)
-    channel_id = db.Column(db.String(30), db.ForeignKey("channel.channel_id"))
-    channel = db.relationship("Channel", backref="videos")
+    channel_id = db.Column(db.String(30), db.ForeignKey("channel.channel_id"), nullable=False)
+    channel = db.relationship("Channel", back_populates="videos")
     uploaded_datetime = db.Column(db.DateTime)
-    thumbnails_url = db.Column(db.String(200))
+    details = db.Column(db.JSON)
 
-    def __init__(self, video_id):
+    def __init__(self, channel_id, video_id):
+        self.channel_id = channel_id
         self.video_id = video_id
+        db.session.add(self)
+        db.session.commit()
 
     def update_infos(self):
         # TODO

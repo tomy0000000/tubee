@@ -4,7 +4,7 @@ from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 from .. import helper
-from ..models import Channel
+from ..models import Channel, Service
 api_blueprint = Blueprint("api", __name__)
 
 
@@ -39,6 +39,7 @@ def test_cron():
             datetime.now()))
         abort(401)
     response = helper.notify_admin("test_cron_job",
+                                   Service.PUSHOVER,
                                    message=datetime.now(),
                                    title="Test Cron Job Triggered",
                                    priority=-2)

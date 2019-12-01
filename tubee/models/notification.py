@@ -42,7 +42,7 @@ class Notification(db.Model):
     notification_id = db.Column(db.String(36), primary_key=True)
     initiator = db.Column(db.String(15), nullable=False)
     user_id = db.Column(db.String(30), db.ForeignKey("user.username"))
-    user = db.relationship("User", backref="notifications")
+    user = db.relationship("User", back_populates="notifications")
     service = db.Column(db.Enum(Service))
     message = db.Column(db.String(2000))
     kwargs = db.Column(db.JSON)

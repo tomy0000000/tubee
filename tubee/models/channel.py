@@ -16,7 +16,7 @@ class Channel(db.Model):
     language = db.Column(db.String(5))
     custom_url = db.Column(db.String(100))
     description = db.Column(db.Text)
-    active = db.Column(db.Boolean, nullable=False)
+    active = db.Column(db.Boolean)
     latest_status = db.Column(db.String(20))
     expire_datetime = db.Column(db.DateTime)
     hub_infos = db.Column(db.JSON)
@@ -28,6 +28,14 @@ class Channel(db.Model):
                                   back_populates="channel",
                                   lazy="dynamic",
                                   cascade="all, delete-orphan")
+    videos = db.relationship("Video",
+                             back_populates="channel",
+                             lazy="dynamic",
+                             cascade="all, delete-orphan")
+    callbacks = db.relationship("Callback",
+                                back_populates="channel",
+                                lazy="dynamic",
+                                cascade="all, delete-orphan")
 
     def __init__(self, channel_id):
         self.channel_id = channel_id
@@ -58,8 +66,9 @@ class Channel(db.Model):
         callback_url = url_for("channel.callback",
                                channel_id=self.channel_id,
                                _external=True)
-        callback_url = callback_url.replace(
-            request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
+        if current_app.config["HUB_RECEIVE_DOMAIN"]:
+            callback_url = callback_url.replace(
+                request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = unsubscribe(callback_url, topic_url)
@@ -73,8 +82,9 @@ class Channel(db.Model):
         callback_url = url_for("channel.callback",
                                channel_id=self.channel_id,
                                _external=True)
-        callback_url = callback_url.replace(
-            request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
+        if current_app.config["HUB_RECEIVE_DOMAIN"]:
+            callback_url = callback_url.replace(
+                request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = details(callback_url, topic_url)
@@ -133,8 +143,9 @@ class Channel(db.Model):
         callback_url = url_for("channel.callback",
                                channel_id=self.channel_id,
                                _external=True)
-        callback_url = callback_url.replace(
-            request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
+        if current_app.config["HUB_RECEIVE_DOMAIN"]:
+            callback_url = callback_url.replace(
+                request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
         param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = subscribe(callback_url, topic_url)

@@ -41,6 +41,10 @@ class User(UserMixin, db.Model):
                                     back_populates="subscriber",
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
+    notifications = db.relationship("Notification",
+                                    back_populates="user",
+                                    lazy="dynamic",
+                                    cascade="all, delete-orphan")
 
     #     ######
     #     #     #   ##    ####   ####  #    #  ####  #####  #####

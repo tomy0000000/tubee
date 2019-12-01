@@ -20,7 +20,7 @@ class Callback(db.Model):
     channel_id = db.Column(db.String(30),
                            db.ForeignKey("channel.channel_id"),
                            nullable=False)
-    channel = db.relationship("Channel", backref="callbacks")
+    channel = db.relationship("Channel", back_populates="callbacks")
     action = db.Column(db.String(30))
     details = db.Column(db.String(20))
     method = db.Column(db.String(10))

@@ -17,7 +17,20 @@ class Subscription(db.Model):
     tags = db.Column(db.PickleType)
     subscriber = db.relationship("User", back_populates="subscriptions")
     channel = db.relationship("Channel", back_populates="subscribers")
+    actions = db.relationship("Action",
+                              back_populates="subscription",
+                              lazy="dynamic",
+                              cascade="all, delete-orphan")
 
     def __repr__(self):
         return "<Subscription: {} subscribe to {}>".format(
             self.subscriber_username, self.subscribing_channel_id)
+
+    def run_actions():
+        pass
+
+    def add_action():
+        pass
+
+    def remove_action():
+        pass
