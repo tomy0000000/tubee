@@ -27,6 +27,7 @@ def deploy():
         response = "Deployment Task Completed"
     except Exception as error:
         response = helper.notify_admin("Deployment",
+                                       Service.PUSHOVER,
                                        message=error,
                                        title="Deployment Error")
     return jsonify(response)
@@ -45,6 +46,19 @@ def test_cron():
                                    priority=-2)
     current_app.logger.info("Test Cron Job Triggered at {}".format(
         datetime.now()))
+    return jsonify(response)
+
+
+@api_blueprint.route("/channels/cron-renew")
+def channels_cron_renew():
+    if not request.headers.get("X-Appengine-Cron"):
+        current_app.logger.info("Forbidden Triggered at {}".format(
+            datetime.now()))
+        abort(401)
+    channels = Channel.query.all()
+    response = {}
+    for channel in channels:
+        response[channel.channel_id] = channel.renew(stringify=True)
     return jsonify(response)
 
 

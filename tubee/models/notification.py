@@ -103,9 +103,9 @@ class Notification(db.Model):
         if self.sent_datetime:
             raise AttributeError("This Notification has already sent")
         response = {}
-        if self.service is Service.ALL or self.service is Service.PUSHOVER:
+        if self.service is Service.PUSHOVER:
             response["Pushover"] = self._send_with_pushover()
-        if self.service is Service.ALL or self.service == Service.LINE_NOTIFY:
+        if self.service is Service.LINE_NOTIFY:
             response["Line Notify"] = self._send_with_line_notify()
         self.resopnse = response
         self.sent_datetime = datetime.now()
