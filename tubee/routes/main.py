@@ -2,9 +2,7 @@
 from flask import Blueprint, render_template, url_for
 from flask_login import current_user, login_required
 from ..helper import youtube_required
-from ..helper.youtube import build_service
-from ..models.channel import Channel
-from ..models.subscription import Subscription
+from ..models import Channel, Subscription
 main_blueprint = Blueprint("main", __name__)
 
 
@@ -29,8 +27,7 @@ def explore():
 @youtube_required
 def youtube_subscription():
     """Showing User's YouTube Subsciptions"""
-    youtube_service = build_service(current_user.youtube_credentials)
-    response = youtube_service.subscriptions().list(
+    response = current_user.youtube.subscriptions().list(
         part="snippet", maxResults=50, mine=True,
         order="alphabetical").execute()
     for channel in response["items"]:

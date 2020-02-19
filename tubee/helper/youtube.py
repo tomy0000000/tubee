@@ -21,7 +21,7 @@ def build_flow(state=None):
     return flow
 
 
-def build_service(credentials=None):
+def build_youtube_api(credentials=None):
     """Build Service with params"""
     kwargs = {}
     if credentials:

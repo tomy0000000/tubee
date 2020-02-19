@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import current_app, request, url_for
 from .. import db
 from ..helper.hub import subscribe, unsubscribe, details
-from ..helper.youtube import build_service
+from ..helper.youtube import build_youtube_api
 
 
 class Channel(db.Model):
@@ -39,9 +39,8 @@ class Channel(db.Model):
 
     def __init__(self, channel_id):
         self.channel_id = channel_id
-        service = build_service()
         # TODO: Validate Channel
-        self.channel_name = service.channels().list(
+        self.channel_name = build_youtube_api().channels().list(
             part="snippet",
             id=channel_id).execute()["items"][0]["snippet"]["title"]
         db.session.add(self)
@@ -56,6 +55,15 @@ class Channel(db.Model):
     def activate(self):
         """Activate Subscription"""
         response = self.renew_subscription()
+
+        # Schedule renew datetime
+        # job_response = scheduler.add_job(
+        #     id="renew_"+channel_id,
+        #     func=renew_subscription,
+        #     trigger="interval",
+        #     args=[new_subscription],
+        #     days=4)
+
         if response:
             self.active = True
             db.session.commit()
@@ -108,8 +116,7 @@ class Channel(db.Model):
         return response_copy
 
     def renew_info(self):
-        service = build_service()
-        retrieved_infos = service.channels().list(
+        retrieved_infos = build_youtube_api().channels().list(
             part="snippet", id=self.channel_id).execute()["items"][0]
         modification = {
             "channel_name": True,

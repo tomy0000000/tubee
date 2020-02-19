@@ -69,13 +69,14 @@ def create_app(config_name):
     from .routes.channel import channel_blueprint
     app.register_blueprint(channel_blueprint, url_prefix="/channel")
 
-    from .routes.dev import dev_blueprint
-    app.register_blueprint(dev_blueprint, url_prefix="/dev")
-
     from .routes.user import user_blueprint
     app.register_blueprint(user_blueprint, url_prefix="/user")
 
     from .handler import handler
     app.register_blueprint(handler)
+
+    if app.debug:
+        from .routes.dev import dev_blueprint
+        app.register_blueprint(dev_blueprint, url_prefix="/dev")
 
     return app

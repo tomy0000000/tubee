@@ -17,7 +17,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from .. import db
-from ..helper.youtube import build_service
+from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel, Subscription, Service
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
@@ -32,12 +32,11 @@ youtube_dl_service = youtube_dl.YoutubeDL({
 def channel(channel_id):
     channel_item = Channel.query.filter_by(
         channel_id=channel_id).first_or_404()
-    service = build_service()
-    videos = service.search().list(part="snippet",
-                                   channelId=channel_id,
-                                   maxResults=50,
-                                   order="date",
-                                   type="video").execute()["items"]
+    videos = build_youtube_api().search().list(part="snippet",
+                                               channelId=channel_id,
+                                               maxResults=50,
+                                               order="date",
+                                               type="video").execute()["items"]
     for video in videos:
         video["snippet"]["publishedAt"] = pyrfc3339.parse(
             video["snippet"]["publishedAt"])
@@ -68,7 +67,6 @@ def channel(channel_id):
     return render_template("channel.html", channel=channel_item, videos=videos)
 
 
-# TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])
 @login_required
 def subscribe():
@@ -80,29 +78,7 @@ def subscribe():
     if request.method == "GET":
         return render_template("subscribe.html")
     if request.method == "POST":
-
-        channel_id = request.form["channel_id"]
-        current_app.logger.info("----------New Subscription Begin----------")
-        current_app.logger.info("Channel ID: {}".format(channel_id))
-
-        # Check Existance
-        channel_object = Channel.query.filter_by(channel_id=channel_id).first()
-        new_channel = bool(channel_object is None)
-        current_app.logger.info("Is New Channel: {}".format(new_channel))
-        if new_channel:
-            channel_object = Channel(channel_id)
-
-            # Schedule renew datetime
-            # job_response = scheduler.add_job(
-            #     id="renew_"+channel_id,
-            #     func=renew_subscription,
-            #     trigger="interval",
-            #     args=[new_subscription],
-            #     days=4)
-
-        # Connect Relationship
-        success = current_user.subscribe_to(channel_object)
-        if success:
+        if current_user.subscribe_to(request.form["channel_id"]):
             flash("Subscribe Success", "success")
         else:
             flash("Oops! Subscribe Failed for some reason", "danger")

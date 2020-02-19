@@ -9,17 +9,16 @@ from .. import db
 
 
 class Service(Enum):
-    ALL = "ALL"
-    PUSHOVER = "Pushover"
-    LINE_NOTIFY = "Line Notify"
+    Pushover = "Pushover"
+    LineNotify = "LineNotify"
 
 
 VALID_ARGS = {
-    Service.PUSHOVER: [
+    Service.Pushover: [
         "device", "title", "url", "url_title", "image_url", "priority",
         "retry", "expire", "callback_url", "timestamp", "sound", "html"
     ],
-    Service.LINE_NOTIFY:
+    Service.LineNotify:
     ["image_url", "stickerPackageId", "stickerId", "notificationDisabled"]
 }
 
@@ -55,7 +54,7 @@ class Notification(db.Model):
         Arguments:
             initiator {str} -- function or task which fire this notification
             user {user.User} -- receiver user object
-            service {notification.Service} -- service used to send notification
+            service {str or notification.Service} -- service used to send notification
 
         Keyword Arguments:
             send {bool} -- Send on initialize (default: {True})
@@ -65,7 +64,7 @@ class Notification(db.Model):
         self.notification_id = str(uuid4())
         self.initiator = initiator
         self.user = user
-        self.service = service
+        self.service = service if service is Service else Service(service)
         self.message = kwargs.pop("message", None)
         self.kwargs = kwargs
         db.session.add(self)
@@ -103,9 +102,9 @@ class Notification(db.Model):
         if self.sent_datetime:
             raise AttributeError("This Notification has already sent")
         response = {}
-        if self.service is Service.PUSHOVER:
+        if self.service is Service.Pushover:
             response["Pushover"] = self._send_with_pushover()
-        if self.service is Service.LINE_NOTIFY:
+        if self.service is Service.LineNotify:
             response["Line Notify"] = self._send_with_line_notify()
         self.resopnse = response
         self.sent_datetime = datetime.now()

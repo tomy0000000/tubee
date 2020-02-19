@@ -2,7 +2,7 @@
 
 Collect models for import
 """
-from .action import Action
+from .action import Action, ActionEnum
 from .callback import Callback
 from .channel import Channel
 from .notification import Notification, Service

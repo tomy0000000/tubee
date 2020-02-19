@@ -26,11 +26,12 @@ class Subscription(db.Model):
         return "<Subscription: {} subscribe to {}>".format(
             self.subscriber_username, self.subscribing_channel_id)
 
-    def run_actions():
-        pass
-
-    def add_action():
-        pass
+    def add_action(self, action_type, details):
+        from . import Action
+        return Action(action_type, self.subscriber, self.channel, details)
 
     def remove_action():
+        pass
+
+    def edit_action():
         pass

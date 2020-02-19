@@ -5,7 +5,7 @@ from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
 from pushover_complete import PushoverAPI
-from .notification import Notification, Service
+from .notification import Notification
 from .. import bcrypt, db, login_manager, oauth
 from ..helper import youtube
 login_manager.login_view = "user.login"
@@ -46,6 +46,24 @@ class User(UserMixin, db.Model):
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
 
+    #      #####
+    #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
+    #     #       #       #  #  #      #      ##  ## #        #   #    # #    # #    #
+    #     #       #      #    #  ####   ####  # ## # #####    #   ###### #    # #    #
+    #     #       #      ######      #      # #    # #        #   #    # #    # #    #
+    #     #     # #      #    # #    # #    # #    # #        #   #    # #    # #    #
+    #      #####  ###### #    #  ####   ####  #    # ######   #   #    #  ####  #####
+
+    def __init__(self, username, password, **kwargs):
+        super(User, self).__init__(**kwargs)
+        self.username = username
+        self.password = password
+        db.session.add(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return "<User: {}>".format(self.username)
+
     #     ######
     #     #     #   ##    ####   ####  #    #  ####  #####  #####
     #     #     #  #  #  #      #      #    # #    # #    # #    #
@@ -57,7 +75,7 @@ class User(UserMixin, db.Model):
     @property
     def password(self):
         """Password Property"""
-        raise AttributeError("password is not a readable attribute")
+        raise AttributeError("Password is not a readable attribute")
 
     @password.setter
     def password(self, password):
@@ -140,7 +158,7 @@ class User(UserMixin, db.Model):
         """
         if not self.youtube_credentials:
             raise AttributeError("User has not authorized YouTube access")
-        return youtube.build_service(self.youtube_credentials)
+        return youtube.build_youtube_api(self.youtube_credentials)
 
     @youtube.setter
     def youtube(self, credentials):
@@ -165,8 +183,7 @@ class User(UserMixin, db.Model):
             token_uri=credentials.token_uri,
             client_id=credentials.client_id,
             client_secret=credentials.client_secret,
-            scopes=credentials.scopes
-        )
+            scopes=credentials.scopes)
         db.session.commit()
 
     @youtube.deleter
@@ -214,12 +231,10 @@ class User(UserMixin, db.Model):
 
     @dropbox.setter
     def dropbox(self, credentials):
-        self.dropbox_credentials = dict(
-            access_token=credentials.access_token,
-            account_id=credentials.account_id,
-            user_id=credentials.user_id,
-            url_state=credentials.url_state
-        )
+        self.dropbox_credentials = dict(access_token=credentials.access_token,
+                                        account_id=credentials.account_id,
+                                        user_id=credentials.user_id,
+                                        url_state=credentials.url_state)
         db.session.commit()
 
     @dropbox.deleter
@@ -255,24 +270,6 @@ class User(UserMixin, db.Model):
         del self.line_notify_credentials
         db.session.commit()
 
-    #      #####
-    #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
-    #     #       #       #  #  #      #      ##  ## #        #   #    # #    # #    #
-    #     #       #      #    #  ####   ####  # ## # #####    #   ###### #    # #    #
-    #     #       #      ######      #      # #    # #        #   #    # #    # #    #
-    #     #     # #      #    # #    # #    # #    # #        #   #    # #    # #    #
-    #      #####  ###### #    #  ####   ####  #    # ######   #   #    #  ####  #####
-
-    def __init__(self, username, password, **kwargs):
-        super(User, self).__init__(**kwargs)
-        self.username = username
-        self.password = password
-        db.session.add(self)
-        db.session.commit()
-
-    def __repr__(self):
-        return "<User: {}>".format(self.username)
-
     #     #     #                      #     #
     #     #     #  ####  ###### #####  ##   ## # #    # # #    #
     #     #     # #      #      #    # # # # # #  #  #  # ##   #
@@ -280,10 +277,8 @@ class User(UserMixin, db.Model):
     #     #     #      # #      #####  #     # #   ##   # #  # #
     #     #     # #    # #      #   #  #     # #  #  #  # #   ##
     #      #####   ####  ###### #    # #     # # #    # # #    #
-
     """Flask-Login UserMixin Properties and Methods"""
     """https://flask-login.readthedocs.io/en/latest/#your-user-class"""
-
     @property
     def is_authenticated(self):
         """Used to authenticate access to @login_required views.
@@ -335,18 +330,19 @@ class User(UserMixin, db.Model):
         return self.subscriptions.filter_by(
             subscribing_channel_id=channel_id).first() is not None
 
-    def subscribe_to(self, channel):
+    def subscribe_to(self, channel_id):
         """Create Subscription Relationship"""
-        from . import Channel
-        if not isinstance(channel, Channel):
-            channel = Channel.query.filter_by(channel_id=channel)
-        if not self.is_subscribing(channel):
-            from . import Subscription
-            subscription = Subscription(
-                subscriber_username=self.username,
-                subscribing_channel_id=channel.channel_id)
-            db.session.add(subscription)
-            db.session.commit()
+        from . import Channel, Subscription
+        channel = Channel.query.get(channel_id)
+        if self.is_subscribing(channel):
+            raise AttributeError("You've' already subscribed this channel")
+        if not channel:
+            channel = Channel(channel_id)
+        subscription = Subscription(
+            subscriber_username=self.username,
+            subscribing_channel_id=channel.channel_id)
+        db.session.add(subscription)
+        db.session.commit()
         return True
 
     def unbsubscribe_from(self, channel):
@@ -381,8 +377,16 @@ class User(UserMixin, db.Model):
                                                    part="snippet").execute()
 
     # Pushover, Line Notify Methods
-    def send_notification(self, initiator, service="default", **kwargs):
-        # if service == "default":
-        #     service = self.preferred_notification_service
+    def send_notification(self, initiator, service, **kwargs):
+        """Send notification to user
+
+        Arguments:
+            initiator {str} -- Action or reason that trigger this notification
+            service {str or notification.Service} -- Service used to send notification
+            **kwargs {dict} -- optional arguments passed to notification
+
+        Returns:
+            dict -- Reponse from notification service
+        """
         ntf = Notification(initiator, self, service, **kwargs)
         return ntf.response
