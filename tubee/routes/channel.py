@@ -18,7 +18,7 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..helper.youtube import build_service
-from ..models import Callback, Channel, Subscription
+from ..models import Callback, Channel, Subscription, Service
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
     "skip_download": True,
@@ -121,7 +121,9 @@ def unsubscribe(channel_id):
     subscription = current_user.subscriptions.filter_by(
         subscribing_channel_id=channel_id).first()
     if subscription is None:
-        flash("You can't unsubscribe to {} since you havn't subscribe to it.".format(channel_id), "warning")
+        flash(
+            "You can't unsubscribe to {} since you havn't subscribe to it.".
+            format(channel_id), "warning")
     if request.method == "GET":
         return render_template("unsubscribe.html",
                                channel_name=subscription.channel.channel_name)
@@ -217,19 +219,19 @@ def callback(channel_id):
                 "Playlist Appended: {}".format(proceed_add_playlist))
             # Push Notification
             if proceed_notification:
-                title = "New from " + subscription.channel.channel_name
-                message = soup.entry.find(
-                    "title").string + "\n" + video_description
-                notification_response = subscription.subscriber.send_notification(
+                ntf = subscription.subscriber.send_notification(
                     "Callback",
-                    message=message,
-                    title=title,
-                    url="https://www.youtube.com/watch?v=" + video_id,
+                    Service.PUSHOVER,
+                    message="{}\n{}".format(
+                        soup.entry.find("title").string, video_description),
+                    title="New from {}".format(
+                        subscription.channel.channel_name),
+                    url="https://www.youtube.com/watch?v={}".format(video_id),
                     url_title=soup.entry.find("title").string,
                     image=video_thumbnails)
                 response["notification_to"][
-                    subscription.subscriber_username] = notification_response
-                current_app.logger.info(notification_response)
+                    subscription.subscriber_username] = ntf
+                current_app.logger.info(ntf)
             current_app.logger.info(
                 "Notification Send: {}".format(proceed_notification))
             current_app.logger.info("------------------------")

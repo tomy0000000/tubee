@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
-from .. import helper
+from ..helper import notify_admin, app_engine_required
 from ..models import Channel, Service
 api_blueprint = Blueprint("api", __name__)
 
@@ -26,35 +26,29 @@ def deploy():
         upgrade()
         response = "Deployment Task Completed"
     except Exception as error:
-        response = helper.notify_admin("Deployment",
-                                       Service.PUSHOVER,
-                                       message=error,
-                                       title="Deployment Error")
+        response = notify_admin("Deployment",
+                                Service.PUSHOVER,
+                                message=error,
+                                title="Deployment Error")
     return jsonify(response)
 
 
 @api_blueprint.route("/test_cron_job")
+@app_engine_required
 def test_cron():
-    if not request.headers.get("X-Appengine-Cron"):
-        current_app.logger.info("Forbidden Triggered at {}".format(
-            datetime.now()))
-        abort(401)
-    response = helper.notify_admin("test_cron_job",
-                                   Service.PUSHOVER,
-                                   message=datetime.now(),
-                                   title="Test Cron Job Triggered",
-                                   priority=-2)
+    response = notify_admin("test_cron_job",
+                            Service.PUSHOVER,
+                            message=datetime.now(),
+                            title="Test Cron Job Triggered",
+                            priority=-2)
     current_app.logger.info("Test Cron Job Triggered at {}".format(
         datetime.now()))
     return jsonify(response)
 
 
 @api_blueprint.route("/channels/cron-renew")
+@app_engine_required
 def channels_cron_renew():
-    if not request.headers.get("X-Appengine-Cron"):
-        current_app.logger.info("Forbidden Triggered at {}".format(
-            datetime.now()))
-        abort(401)
     channels = Channel.query.all()
     response = {}
     for channel in channels:
