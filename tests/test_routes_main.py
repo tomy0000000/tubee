@@ -58,7 +58,7 @@ class MainRoutesTestCase(unittest.TestCase):
             "password_confirm": self.client_user_password
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Hello! "+self.client_username, response.get_data(as_text=True))
+        self.assertIn(self.client_username, response.get_data(as_text=True))
         # Logout
         response = self.client.get("/user/logout", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
@@ -70,7 +70,7 @@ class MainRoutesTestCase(unittest.TestCase):
             "password": self.client_user_password
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Hello! "+self.client_username, response.get_data(as_text=True))
+        self.assertIn(self.client_username, response.get_data(as_text=True))
         # Logout again
         response = self.client.get("/user/logout", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
