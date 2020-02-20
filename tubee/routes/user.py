@@ -2,7 +2,6 @@
 from flask import (
     abort,
     Blueprint,
-    current_app,
     flash,
     redirect,
     request,
@@ -28,9 +27,7 @@ from ..forms import LoginForm, RegisterForm
 from ..helper import (
     dropbox,
     is_safe_url,
-    pushover_required,
     youtube,
-    youtube_required,
 )
 from ..models import User
 user_blueprint = Blueprint("user", __name__)

@@ -1,46 +1,60 @@
-"""Forms for Tubee"""
-import wtforms
-import flask_wtf
+"""Forms"""
+from flask_wtf import FlaskForm
+from wtforms.fields import (
+    PasswordField,
+    SelectField,
+    StringField,
+    SubmitField,
+)
+from wtforms.validators import (
+    DataRequired,
+    EqualTo,
+    Length,
+)
 
 
-class LoginForm(flask_wtf.FlaskForm):
+class LoginForm(FlaskForm):
     """Login form"""
-    username = wtforms.TextField("Username",
-                                 validators=[
-                                     wtforms.validators.InputRequired(),
-                                     wtforms.validators.Length(min=6, max=30)
-                                 ])
-    password = wtforms.PasswordField("Password",
-                                     validators=[
-                                         wtforms.validators.InputRequired(),
-                                         wtforms.validators.Length(min=6,
-                                                                   max=20)
-                                     ])
-    submit = wtforms.SubmitField("Sign In")
+    username = StringField("Username",
+                           validators=[DataRequired(),
+                                       Length(min=6, max=30)])
+    password = PasswordField(
+        "Password", validators=[DataRequired(),
+                                Length(min=6, max=20)])
+    submit = SubmitField("Sign In")
 
 
-class RegisterForm(flask_wtf.FlaskForm):
+class RegisterForm(FlaskForm):
     """Register form"""
-    username = wtforms.TextField("Username",
-                                 validators=[
-                                     wtforms.validators.InputRequired(),
-                                     wtforms.validators.Length(min=6, max=30)
-                                 ])
-    password = wtforms.PasswordField("Password",
+    username = StringField("Username",
+                           validators=[DataRequired(),
+                                       Length(min=6, max=30)])
+    password = PasswordField("Password",
+                             validators=[
+                                 DataRequired(),
+                                 Length(min=6, max=20),
+                                 EqualTo("password_confirm",
+                                         message="Password Mismatched!")
+                             ])
+    password_confirm = PasswordField("Password Confirm",
                                      validators=[
-                                         wtforms.validators.InputRequired(),
-                                         wtforms.validators.Length(min=6,
-                                                                   max=20),
-                                         wtforms.validators.EqualTo(
-                                             "password_confirm",
+                                         DataRequired(),
+                                         Length(min=6, max=20),
+                                         EqualTo(
+                                             "password",
                                              message="Password Mismatched!")
                                      ])
-    password_confirm = wtforms.PasswordField(
-        "Password Confirm",
-        validators=[
-            wtforms.validators.InputRequired(),
-            wtforms.validators.Length(min=6, max=20),
-            wtforms.validators.EqualTo("password",
-                                       message="Password Mismatched!")
-        ])
-    submit = wtforms.SubmitField("Register")
+    submit = SubmitField("Register")
+
+
+class ActionForm(FlaskForm):
+    """Action Form"""
+    action_name = StringField("Name",
+                              validators=[DataRequired()],
+                              render_kw={"class": "form-control"})
+    action_type = SelectField("Type",
+                              validators=[DataRequired()],
+                              render_kw={"class": "form-control"})
+    submit = SubmitField("Save",
+                         validators=[DataRequired()],
+                         render_kw={"class": "btn btn-success"})

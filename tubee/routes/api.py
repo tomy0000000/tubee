@@ -4,7 +4,7 @@ from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 from ..helper import notify_admin, app_engine_required
-from ..models import Channel
+from ..models import Action, Channel
 api_blueprint = Blueprint("api", __name__)
 
 
@@ -102,10 +102,23 @@ def channel_renew(channel_id):
     return jsonify(response)
 
 
-@api_blueprint.route("/<channel_id>/actions")
-def channel_actions(channel_id):
-    """List Actions associated with user's subscription"""
-    pass
+@api_blueprint.route("/<action_id>")
+@login_required
+def action(action_id):
+    """Get JSON of subscription action"""
+    action = Action.query.filter_by(action_id=action_id).first_or_404()
+    return jsonify(
+        dict(action_id=action.action_id,
+             action_name=action.action_name,
+             action_type=action.action_type.value,
+             details=action.details))
+
+
+@api_blueprint.route("/<action_id>/edit", methods=["POST"])
+@login_required
+def action_edit(action_id):
+    # request.form
+    return jsonify({})
 
 
 @api_blueprint.route("/youtube/subscription")

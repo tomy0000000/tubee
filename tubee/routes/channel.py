@@ -15,8 +15,9 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from .. import db
+from ..forms import ActionForm
 from ..helper.youtube import build_youtube_api
-from ..models import Callback, Channel, Subscription
+from ..models import ActionEnum, Callback, Channel, Subscription
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
     "skip_download": True,
@@ -30,39 +31,47 @@ youtube_dl_service = youtube_dl.YoutubeDL({
 def channel(channel_id):
     channel_item = Channel.query.filter_by(
         channel_id=channel_id).first_or_404()
-    videos = build_youtube_api().search().list(part="snippet",
-                                               channelId=channel_id,
-                                               maxResults=50,
-                                               order="date",
-                                               type="video").execute()["items"]
-    for video in videos:
-        video["snippet"]["publishedAt"] = pyrfc3339.parse(
-            video["snippet"]["publishedAt"])
-        base_thumbnails_url = "/".join(
-            video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
-        video["snippet"]["thumbnails"]["standard"] = {
-            "url": base_thumbnails_url + "/sddefault.jpg",
-            "width": 640,
-            "height": 480
-        }
-        video["snippet"]["thumbnails"]["maxres"] = {
-            "url": base_thumbnails_url + "/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-        }
-        callback_search = Callback.query.filter_by(
-            channel_id=channel_id,
-            action="Hub Notification",
-            details=video["id"]["videoId"]).order_by(
-                Callback.received_datetime.asc()).all()
-        video["snippet"]["callback"] = {
-            "datetime":
-            callback_search[0].received_datetime
-            if bool(callback_search) else "",
-            "count":
-            len(callback_search)
-        }
-    return render_template("channel.html", channel=channel_item, videos=videos)
+    # videos = build_youtube_api().search().list(part="snippet",
+    #                                            channelId=channel_id,
+    #                                            maxResults=50,
+    #                                            order="date",
+    #                                            type="video").execute()["items"]
+    # for video in videos:
+    #     video["snippet"]["publishedAt"] = pyrfc3339.parse(
+    #         video["snippet"]["publishedAt"])
+    #     base_thumbnails_url = "/".join(
+    #         video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
+    #     video["snippet"]["thumbnails"]["standard"] = {
+    #         "url": base_thumbnails_url + "/sddefault.jpg",
+    #         "width": 640,
+    #         "height": 480
+    #     }
+    #     video["snippet"]["thumbnails"]["maxres"] = {
+    #         "url": base_thumbnails_url + "/maxresdefault.jpg",
+    #         "width": 1280,
+    #         "height": 720
+    #     }
+    #     callback_search = Callback.query.filter_by(
+    #         channel_id=channel_id,
+    #         action="Hub Notification",
+    #         details=video["id"]["videoId"]).order_by(
+    #             Callback.received_datetime.asc()).all()
+    #     video["snippet"]["callback"] = {
+    #         "datetime":
+    #         callback_search[0].received_datetime
+    #         if bool(callback_search) else "",
+    #         "count":
+    #         len(callback_search)
+    #     }
+    actions = current_user.subscriptions.filter_by(
+        subscribing_channel_id=channel_id).first().actions.all()
+    form = ActionForm()
+    form.action_type.choices = [(item.name, item.value) for item in ActionEnum]
+    return render_template("channel.html",
+                           channel=channel_item,
+                           # videos=videos,
+                           actions=actions,
+                           form=form)
 
 
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])

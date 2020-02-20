@@ -9,46 +9,7 @@
 {% block content %}
 
 <!-- BEGIN Video Thumbnails Carousel -->
-<div class="bd-example">
-    <div id="video-carousel" class="carousel slide carousel-fade" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#video-carousel" data-slide-to="0" class="active"></li>
-            <li data-target="#video-carousel" data-slide-to="1"></li>
-            <li data-target="#video-carousel" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ videos[0].snippet.thumbnails.maxres.url }}" class="d-block w-100" alt="{{ videos[0].snippet.title }}">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>{{ videos[0].snippet.title }}</h5>
-                    <p>{{ videos[0].snippet.description }}</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ videos[1].snippet.thumbnails.maxres.url }}" class="d-block w-100" alt="{{ videos[1].snippet.title }}">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>{{ videos[1].snippet.title }}</h5>
-                    <p>{{ videos[1].snippet.description }}</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ videos[2].snippet.thumbnails.maxres.url }}" class="d-block w-100" alt="{{ videos[2].snippet.title }}">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>{{ videos[2].snippet.title }}</h5>
-                    <p>{{ videos[2].snippet.description }}</p>
-                </div>
-            </div>
-        </div>
-        <a class="carousel-control-prev" href="#video-carousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#video-carousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-</div>
+
 <!-- END Video Thumbnails Carousel -->
 
 <!-- BEGIN Video Infos -->
@@ -93,26 +54,94 @@
         <tr>
             <th scope="col"></th>
             <th scope="col">Type</th>
-            <th scope="col">Options</th>
+            <th scope="col">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit_action_modal" data-action-id="new">New</button>
+                <!-- <a class="btn btn-success" href="" role="button">New</a> -->
+            </th>
         </tr>
     </thead>
     <tbody>
-        {% set actions = [] %}
         {% for action in actions %}
+        <!-- BEGIN Action Row -->
         <tr>
             <th>
                 <p class="mb-0">{{ action.action_name }}</p>
-                <p class="mb-0 text-muted clipboard" data-clipboard-text="{{ action.action_id }}">{{ action.action_id }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ action.action_id }}">
+                    <p class="mb-0">{{ action.action_id }}</p>
+                </a>
             </th>
-            <td>{{ action.action_type }}</td>
-            <td>
-                
+            <td class="align-middle">{{ action.action_type.value }}</td>
+            <td class="align-middle">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit_action_modal" data-action-id="{{ action.action_id }}">Edit</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove_action_modal" data-action-id="{{ action.action_id }}">Remove</button>
             </td>
         </tr>
+        <!-- END Action Row -->
         {% endfor %}
     </tbody>
 </table>
 <!-- END Action Infos -->
+
+
+
+<!-- BEGIN Edit Action Modal -->
+<div class="modal fade" id="edit_action_modal" tabindex="-1" role="dialog" aria-labelledby="edit_action_modal_title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit_action_modal_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="edit_action_modal_spinner" class="text-center">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <!-- BEGIN Action Form -->
+                <form id="action_form" name="action_form" class="needs-validation" method="POST" novalidate>
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.action_name.label }}
+                        {{ form.action_name() }}
+                        {{ form.action_type.label }}
+                        {{ form.action_type() }}
+                    </div>
+                </form>
+                <!-- END Action Form -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Reset</button>
+                {{ form.submit() }}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Edit Action Modal -->
+
+
+<!-- BEGIN Remove Action Modal -->
+<div class="modal fade" id="remove_action_modal" tabindex="-1" role="dialog" aria-labelledby="remove_action_modal_title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="remove_action_modal_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Remove Action Modal -->
 
 <!-- BEGIN Hub Infos -->
 {% if current_user.admin %}
@@ -258,46 +287,7 @@
 <!-- END Hub Infos -->
 
 <!-- BEGIN Video Table -->
-<table class="table table-striped table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col" class="align-middle"></th>
-            <th scope="col" class="align-middle">Title</th>
-            <th scope="col" class="align-middle">Published Datetime</th>
-            {% if current_user.admin %}
-            <th scope="col" class="align-middle">Callback</th>
-            {% endif %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for video in videos %}
-        <tr>
-            <th scope="row" class="video-thumbnails">
-                <img src="{{ video.snippet.thumbnails.medium.url }}" class="rounded vidoe-thumbnails">
-            </th>
-            <td class="align-middle video-title">
-                <a href="https://youtu.be/{{ video.id.videoId }}" target="_blank">
-                    {{ video.snippet.title }}
-                </a>
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ video.id.videoId }}">
-                    <p>#{{ video.id.videoId }}</p>
-                </a>
-            </td>
-            <td class="align-middle">{{ moment(video.snippet.publishedAt).format('lll') }}</td>
-            {% if current_user.admin %}
-            <td class="align-middle">
-                <button type="button" class="btn btn-primary">
-                    {% if video.snippet.callback.datetime %}
-                    {{ moment(video.snippet.callback.datetime).format('lll') }}
-                    {% else %}{% endif %}
-                    <span class="badge badge-light">{{ video.snippet.callback.count }}</span>
-                </button>
-            </td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
 <!-- END Video Table -->
 
 {% endblock %}
