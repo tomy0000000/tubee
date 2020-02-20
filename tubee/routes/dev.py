@@ -2,7 +2,7 @@
 import os
 import sys
 import pprint
-from flask import abort, Blueprint, current_app, render_template, url_for
+from flask import abort, Blueprint, current_app, render_template, request, url_for
 from flask_login import current_user, login_required
 from .. import login_manager
 from ..helper import admin_required
@@ -50,6 +50,17 @@ def sys_dict():
 @admin_required
 def flask_dict():
     target_dict = current_app.__dict__
+    pprint_en = isinstance(target_dict, dict)
+    if pprint_en:
+        target_dict = pprint.pformat(target_dict)
+    return render_template("empty.html", info=target_dict, pprint=pprint_en)
+
+
+@dev_blueprint.route("/request")
+@login_required
+@admin_required
+def request_dict():
+    target_dict = str(request.user_agent)
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)

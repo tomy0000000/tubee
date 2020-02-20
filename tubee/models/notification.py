@@ -78,12 +78,15 @@ class Notification(db.Model):
 
     @staticmethod
     def _clean_up_kwargs(kwargs, service):
-        for key, val in kwargs.items():
-            if key not in VALID_ARGS[service]:
-                current_app.logger.warning(
-                    "Invalid {} Notification Arguments ({}, {}) is ommited".
-                    format(service.value, key, val))
-                kwargs.pop(key)
+        invalid_args = {
+            key: val
+            for key, val in kwargs.items() if key not in VALID_ARGS
+        }
+        for key, val in invalid_args.items():
+            current_app.logger.warning(
+                "Invalid {} Notification Arguments ({}, {}) is ommited".format(
+                    service.value, key, val))
+            kwargs.pop(key)
         return kwargs
 
     def send(self):

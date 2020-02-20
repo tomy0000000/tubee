@@ -28,7 +28,8 @@ class Action(db.Model):
 
     def __init__(self, action_type, user, channel, details=None):
         self.action_id = str(uuid4())
-        self.action_type = action_type if action_type is ActionEnum else ActionEnum(action_type)
+        self.action_type = action_type if action_type is ActionEnum else ActionEnum(
+            action_type)
         self.subscription_username = user.username
         self.subscription_channel_id = channel.channel_id
         self.details = details
@@ -57,10 +58,12 @@ class Action(db.Model):
     def channel(self, channel_id):
         raise AttributeError("Channel can't be modified")
 
-    # def execute(self):
-    #     if self.action_type is ActionEnum.NOTIFICATION:
-    #         details_copy = self.details.copy()
-    #         service = details_copy.pop("service")
-    #         return self.user.send_notification("Subscription Action", service, **details_copy)
-    #     if self.action_type is ActionEnum.PLAYLIST:
-    #         self.user.youtube.
+    def execute(self, **parameters):
+        if self.action_type is ActionEnum.Notification:
+            return self.user.send_notification(
+                "Action", self.details.get("service", None), **parameters)
+        if self.action_type is ActionEnum.Playlist:
+            return self.user.insert_video_to_playlist(
+                parameters["video_id"],
+                playlist_id=self.details.get("playlist_id", None),
+                position=self.details.get("position", None))

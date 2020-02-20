@@ -1,9 +1,7 @@
 """Channel Related Routes"""
-import json
 import bs4
 import pyrfc3339
 import youtube_dl
-from apiclient.errors import HttpError
 from dateutil import parser
 from flask import (
     Blueprint,
@@ -18,7 +16,7 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..helper.youtube import build_youtube_api
-from ..models import Callback, Channel, Subscription, Service
+from ..models import Callback, Channel, Subscription
 channel_blueprint = Blueprint("channel", __name__)
 youtube_dl_service = youtube_dl.YoutubeDL({
     "skip_download": True,
@@ -104,8 +102,7 @@ def unsubscribe(channel_id):
         return render_template("unsubscribe.html",
                                channel_name=subscription.channel.channel_name)
     if request.method == "POST":
-        success = current_user.unbsubscribe_from(channel_id)
-        if success:
+        if current_user.unbsubscribe(channel_id):
             flash("Unsubscribe Success", "success")
         else:
             flash("Oops! Unsubscribe Failed for some reason", "danger")
@@ -127,19 +124,26 @@ def callback(channel_id):
         new_callback = Callback(channel_item, "Unknown GET Request" \
                                 if response == "Error" else "Hub Challenge", response,
                                 request.method, request.path, request.args,
-                                request.data, request.user_agent)
+                                request.data, str(request.user_agent))
     elif request.method == "POST":
         test_mode = bool("testing" in request.args.to_dict())
         post_datas = request.get_data()
         soup = bs4.BeautifulSoup(post_datas, "xml")
         video_id = soup.find("yt:videoId").string
+        video_title = soup.entry.find("title").string
         published_datetime = parser.parse(
             soup.entry.find("published").string).replace(tzinfo=None)
+
+        video_infos = build_youtube_api().videos().list(part="snippet",
+                                                        id=video_id).execute()
+        video_description = video_infos["items"][0]["snippet"]["description"]
+        video_thumbnails = video_infos["items"][0]["snippet"]["thumbnails"][
+            "medium"]["url"]
 
         # Append Callback SQL Record
         new_callback = Callback(channel_item, "Hub Notification", video_id,
                                 request.method, request.path, request.args,
-                                request.data, request.user_agent)
+                                request.data, str(request.user_agent))
         """
         1. List Users who subscribe to this channel
         (for each user)
@@ -148,14 +152,13 @@ def callback(channel_id):
         """
 
         # Decide to Pass or Not
-        subscriptions = Subscription.query.filter_by(
-            subscribing_channel_id=channel_id)
+        subs = Subscription.query.filter_by(subscribing_channel_id=channel_id)
         new_video_update = bool(
             Callback.query.filter_by(details=video_id).count())
         response = {"append_wl_to": {}, "notification_to": {}}
-        for subscription in subscriptions:
+        for sub in subs:
             old_video_update = bool(
-                published_datetime < subscription.subscribe_datetime)
+                published_datetime < sub.subscribe_datetime)
             current_app.logger.info(
                 "New Video Update: {}".format(new_video_update))
             current_app.logger.info(
@@ -163,55 +166,55 @@ def callback(channel_id):
             current_app.logger.info(
                 "Action as Test Mode: {}".format(test_mode))
             current_app.logger.info("Subscriber is Admin: {}".format(
-                subscription.subscriber.admin))
-            proceed_add_playlist = proceed_notification = True
-            if test_mode and subscription.subscriber.admin:
+                sub.subscriber.admin))
+            if test_mode and sub.subscriber.admin:
                 pass
             elif old_video_update or new_video_update:
-                proceed_add_playlist = proceed_notification = False
-            # Append to WL
-            if proceed_add_playlist:
-                # TODO: Make Try/Except a part of user method
-                try:
-                    playlist_insert_response = subscription.subscriber.insert_video_to_playlist(
-                        video_id)
-                    video_description = playlist_insert_response["snippet"][
-                        "description"]
-                    video_thumbnails = playlist_insert_response["snippet"][
-                        "thumbnails"]["high"]["url"]
-                except HttpError as error:
-                    playlist_insert_response = json.loads(
-                        error.content)["error"]["message"]
-                    current_app.logger.error(
-                        "Faield to insert {} to {}'s playlist".format(
-                            video_id, subscription.subscriber_username))
-                    current_app.logger.error(playlist_insert_response)
-                    proceed_notification = False
-                response["append_wl_to"][
-                    subscription.
-                    subscriber_username] = playlist_insert_response
-                current_app.logger.info(playlist_insert_response)
-            current_app.logger.info(
-                "Playlist Appended: {}".format(proceed_add_playlist))
+                return jsonify(None)
+
+            # # Append to WL
+            # if proceed_add_playlist:
+            #     try:
+            #         response = sub.subscriber.insert_video_to_playlist(video_id)
+            #     except RuntimeError as error:
+            #         response = error.args[0]
+            #     response["append_wl_to"][sub.subscriber_username] = response
+            # current_app.logger.info(
+            #     "Playlist Appended: {}".format(proceed_add_playlist))
+
             # Push Notification
-            if proceed_notification:
-                ntf = subscription.subscriber.send_notification(
-                    "Callback",
-                    Service.PUSHOVER,
-                    message="{}\n{}".format(
-                        soup.entry.find("title").string, video_description),
-                    title="New from {}".format(
-                        subscription.channel.channel_name),
+            # if proceed_notification:
+            #     ntf = sub.subscriber.send_notification(
+            #         "Callback",
+            #         "Pushover",
+            #         message="{}\n{}".format(
+            #             video_title, video_description),
+            #         title="New from {}".format(
+            #             sub.channel.channel_name),
+            #         url="https://www.youtube.com/watch?v={}".format(video_id),
+            #         url_title=video_title,
+            #         image=video_thumbnails)
+            #     response["notification_to"][
+            #         sub.subscriber_username] = ntf
+            #     current_app.logger.info(ntf)
+            # current_app.logger.info(
+            #     "Notification Send: {}".format(proceed_notification))
+            # current_app.logger.info("------------------------")
+
+            # Subscription Action
+            for action in sub.actions:
+                action.execute(
+                    video_id=video_id,
+                    message=video_title,
+                    # message="{}\n{}".format(video_title, video_description),
+                    title="New from {}".format(sub.channel.channel_name),
                     url="https://www.youtube.com/watch?v={}".format(video_id),
-                    url_title=soup.entry.find("title").string,
-                    image=video_thumbnails)
-                response["notification_to"][
-                    subscription.subscriber_username] = ntf
-                current_app.logger.info(ntf)
-            current_app.logger.info(
-                "Notification Send: {}".format(proceed_notification))
-            current_app.logger.info("------------------------")
-            response = jsonify(response)
+                    url_title=video_title,
+                    image=video_thumbnails,
+                )
+
+        response = jsonify(response)
+
     db.session.add(new_callback)
     try:
         db.session.commit()

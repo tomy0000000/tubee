@@ -31,6 +31,5 @@ jobs:
       provider: gae
       keyfile: gcloud-app-engine-key.json
       project: tubee-253706
-      skip_cleanup: true
     after_deploy:
     - curl -X GET 'https://tubee.tomy.me/api/deploy?key='$DEPLOY_KEY

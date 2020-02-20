@@ -1,6 +1,8 @@
 """User Model"""
+import json
 import requests
 import dropbox
+from apiclient.errors import HttpError
 from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
@@ -338,25 +340,21 @@ class User(UserMixin, db.Model):
             raise AttributeError("You've' already subscribed this channel")
         if not channel:
             channel = Channel(channel_id)
-        subscription = Subscription(
-            subscriber_username=self.username,
-            subscribing_channel_id=channel.channel_id)
+        subscription = Subscription(subscriber_username=self.username,
+                                    subscribing_channel_id=channel.channel_id)
         db.session.add(subscription)
         db.session.commit()
         return True
 
-    def unbsubscribe_from(self, channel):
+    def unbsubscribe(self, channel_id):
         """Delete Subscription Relationship"""
-        from . import Channel
-        if not isinstance(channel, Channel):
-            current_app.logger.info("Convert Channel")
-            current_app.logger.info(channel)
-            channel = Channel.query.filter_by(channel_id=channel).first()
         subscription = self.subscriptions.filter_by(
-            subscribing_channel_id=channel.channel_id).first()
-        if subscription:
-            db.session.delete(subscription)
-            db.session.commit()
+            subscribing_channel_id=channel_id).first()
+        if not subscription:
+            raise AttributeError("User {} hasn't subscribe to {}".format(
+                self.username, channel_id))
+        db.session.delete(subscription)
+        db.session.commit()
         return True
 
     def insert_video_to_playlist(self,
@@ -373,8 +371,16 @@ class User(UserMixin, db.Model):
                 "position": position
             }
         }
-        return self.youtube.playlistItems().insert(body=resource,
-                                                   part="snippet").execute()
+        try:
+            return self.youtube.playlistItems().insert(
+                part="snippet", body=resource).execute()
+        except HttpError as error:
+            error_message = json.loads(error.content)["error"]["message"]
+            current_app.logger.error(
+                "Faield to insert {} to {}'s playlist".format(
+                    video_id, self.username))
+            current_app.logger.error(error_message)
+            raise RuntimeError(error_message)
 
     # Pushover, Line Notify Methods
     def send_notification(self, initiator, service, **kwargs):

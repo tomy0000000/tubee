@@ -4,7 +4,7 @@ from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 from ..helper import notify_admin, app_engine_required
-from ..models import Channel, Service
+from ..models import Channel
 api_blueprint = Blueprint("api", __name__)
 
 
@@ -27,7 +27,7 @@ def deploy():
         response = "Deployment Task Completed"
     except Exception as error:
         response = notify_admin("Deployment",
-                                Service.PUSHOVER,
+                                "Pushover",
                                 message=error,
                                 title="Deployment Error")
     return jsonify(response)
@@ -37,7 +37,7 @@ def deploy():
 @app_engine_required
 def test_cron():
     response = notify_admin("test_cron_job",
-                            Service.PUSHOVER,
+                            "Pushover",
                             message=datetime.now(),
                             title="Test Cron Job Triggered",
                             priority=-2)
@@ -100,6 +100,12 @@ def channel_renew(channel_id):
     channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
     response = channel.renew(stringify=True)
     return jsonify(response)
+
+
+@api_blueprint.route("/<channel_id>/actions")
+def channel_actions(channel_id):
+    """List Actions associated with user's subscription"""
+    pass
 
 
 @api_blueprint.route("/youtube/subscription")
