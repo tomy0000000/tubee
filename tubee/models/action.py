@@ -26,8 +26,9 @@ class Action(db.Model):
             "subscription.subscribing_channel_id"
         ]), {})
 
-    def __init__(self, action_type, user, channel, details=None):
+    def __init__(self, action_name, action_type, user, channel, details=None):
         self.action_id = str(uuid4())
+        self.action_name = action_name
         self.action_type = action_type if action_type is ActionEnum else ActionEnum(
             action_type)
         self.subscription_username = user.username
@@ -61,9 +62,27 @@ class Action(db.Model):
     def execute(self, **parameters):
         if self.action_type is ActionEnum.Notification:
             return self.user.send_notification(
-                "Action", self.details.get("service", None), **parameters)
+                "Action",
+                self.details.get("service", None),
+                message=self.details.get("message",
+                                         "{video_title}").format(**parameters),
+                title=self.details.get(
+                    "title", "New from {channel_name}").format(**parameters),
+                url=self.details.get(
+                    "url",
+                    "https://www.youtube.com/watch?v={video_id}").format(
+                        **parameters),
+                url_title=self.details.get(
+                    "url_title", "{video_title}").format(**parameters),
+                image_url=self.details.get(
+                    "image_url", "{video_thumbnails}").format(**parameters))
         if self.action_type is ActionEnum.Playlist:
             return self.user.insert_video_to_playlist(
                 parameters["video_id"],
                 playlist_id=self.details.get("playlist_id", None),
                 position=self.details.get("position", None))
+        if self.action_type is ActionEnum.Download:
+            return self.user.dropbox.files_save_url(
+                self.details.get("file_path",
+                                 "/{video_title}.mp4").format(**parameters),
+                parameters["video_file_url"])

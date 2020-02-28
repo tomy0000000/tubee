@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
+from ..forms import ActionForm
 from ..helper import notify_admin, app_engine_required
 from ..models import Action, Channel
 api_blueprint = Blueprint("api", __name__)
@@ -44,6 +45,15 @@ def test_cron():
     current_app.logger.info("Test Cron Job Triggered at {}".format(
         datetime.now()))
     return jsonify(response)
+
+
+@api_blueprint.route("/user/services")
+@login_required
+def user_info():
+    status = {}
+    for service in ["youtube", "pushover", "line_notify", "dropbox"]:
+        status[service] = bool(getattr(current_user, service))
+    return jsonify(status)
 
 
 @api_blueprint.route("/channels/cron-renew")
@@ -107,6 +117,8 @@ def channel_renew(channel_id):
 def action(action_id):
     """Get JSON of subscription action"""
     action = Action.query.filter_by(action_id=action_id).first_or_404()
+    if action.subscription not in current_user.subscriptions:
+        abort(403)
     return jsonify(
         dict(action_id=action.action_id,
              action_name=action.action_name,
@@ -114,11 +126,52 @@ def action(action_id):
              details=action.details))
 
 
+@api_blueprint.route("/action/new", methods=["POST"])
+@login_required
+def action_new():
+    form = ActionForm()
+    if form.validate_on_submit():
+        subscription = current_user.subscriptions.filter_by(
+            subscribing_channel_id=form.channel_id.data).first_or_404()
+        if form.action_type.data == "Notification":
+            details = {
+                "service": "Pushover",
+                "message": "{video_title}",
+                "title": "New from {channel_name}",
+                "url": "https://www.youtube.com/watch?v={video_id}",
+                "url_title": "{video_title}",
+                "image_url": "{video_thumbnails}",
+            }
+        elif form.action_type.data == "Playlist":
+            details = {"playlist_id": "WL"}
+        elif form.action_type.data == "Download":
+            details = {"file_path": "/{video_title}.mp4"}
+        response = subscription.add_action(form.action_name.data,
+                                           form.action_type.data, details)
+        return jsonify(str(response))
+    abort(403)
+
+
 @api_blueprint.route("/<action_id>/edit", methods=["POST"])
 @login_required
 def action_edit(action_id):
-    # request.form
+    action = Action.query.filter_by(action_id=action_id).first_or_404()
+    if action.subscription not in current_user.subscriptions:
+        abort(403)
+    form = ActionForm()
+    if form.validate_on_submit():
+        subscription = current_user.subscriptions.filter_by(
+            subscribing_channel_id=form.channel_id.data).first_or_404()
     return jsonify({})
+
+
+@api_blueprint.route("/<action_id>/remove")
+@login_required
+def action_remove(action_id):
+    action = Action.query.filter_by(action_id=action_id).first_or_404()
+    if action.subscription not in current_user.subscriptions:
+        abort(403)
+    return str(action.subscription.remove_action(action_id))
 
 
 @api_blueprint.route("/youtube/subscription")

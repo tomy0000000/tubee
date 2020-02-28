@@ -279,8 +279,10 @@ class User(UserMixin, db.Model):
     #     #     #      # #      #####  #     # #   ##   # #  # #
     #     #     # #    # #      #   #  #     # #  #  #  # #   ##
     #      #####   ####  ###### #    # #     # # #    # # #    #
+
     """Flask-Login UserMixin Properties and Methods"""
     """https://flask-login.readthedocs.io/en/latest/#your-user-class"""
+
     @property
     def is_authenticated(self):
         """Used to authenticate access to @login_required views.

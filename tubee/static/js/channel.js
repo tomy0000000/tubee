@@ -35,25 +35,48 @@ $(document).ready(function() {
         console.log('Request Sent');
     });
 
-    // Action Modals
+    // Edit Action Modals
     $('#edit_action_modal').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget); // Button that triggered the modal
         let action_id = button.data('action-id'); // Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        
+        $('#edit_save_spinner').hide();
+        $(this).find('#submit').prop("disabled", false);
+        let api_endpoint;
+
         if (action_id === 'new') {
             $(this).find('.modal-title').text('New Action');
-            // $(this).find('.modal-body input').val(recipient)
+            api_endpoint = '/api/action/new';
+            $('#action_type').prop('disabled', false);
+            $('#edit_loading_spinner').hide();
         } else {
-            $('#edit_action_modal_spinner').show();
+            $(this).find('.modal-title').text('Edit Action');
+            api_endpoint = '/api/action/edit';
+            $('#edit_loading_spinner').show();
             $('#action_form').hide();
             $.get(`/api/${action_id}`).done(function(data) {
                 $('#action_name').val(data.action_name);
-                $('#action_type').val(data.action_type);
-                $('#edit_action_modal_spinner').hide();
+                $('#action_type').val(data.action_type).prop('disabled', true);
+                $('#edit_loading_spinner').hide();
                 $('#action_form').show();
             });
-            $(this).find('.modal-title').text('Edit Action');
         }
+        $(this).find('#submit').on('click', function(event) {
+            $(this).find('#edit_save_spinner').show();
+            $(this).prop("disabled", true);
+            $('#action_form').serializeArray();
+            $.post(api_endpoint, $('#action_form').serializeArray(), function(data, textStatus, xhr) {
+                console.log(data);
+            });
+        });
+    });
+
+    // Remove Action Modals
+    $('#remove_action_modal').on('show.bs.modal', function(event) {
+        let button = $(event.relatedTarget);
+        let action_id = button.data('action-id');
+        let action_name = button.data('action-name');
+        $(this).find('.modal-body').text(`Are you sure you want to remove action ${action_name}?`);
+        $(this).find('#remove_button').attr('href', `/api/${action_id}/remove`);
     });
 });

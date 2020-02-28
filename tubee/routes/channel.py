@@ -1,7 +1,5 @@
 """Channel Related Routes"""
 import bs4
-import pyrfc3339
-import youtube_dl
 from dateutil import parser
 from flask import (
     Blueprint,
@@ -16,15 +14,10 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..forms import ActionForm
+from ..helper import youtube_dl
 from ..helper.youtube import build_youtube_api
-from ..models import ActionEnum, Callback, Channel, Subscription
+from ..models import Callback, Channel, Subscription
 channel_blueprint = Blueprint("channel", __name__)
-youtube_dl_service = youtube_dl.YoutubeDL({
-    "skip_download": True,
-    "ignoreerrors": True,
-    "extract_flat": True,
-    "playlistend": 30
-})
 
 
 @channel_blueprint.route("/<channel_id>")
@@ -66,12 +59,12 @@ def channel(channel_id):
     actions = current_user.subscriptions.filter_by(
         subscribing_channel_id=channel_id).first().actions.all()
     form = ActionForm()
-    form.action_type.choices = [(item.name, item.value) for item in ActionEnum]
-    return render_template("channel.html",
-                           channel=channel_item,
-                           # videos=videos,
-                           actions=actions,
-                           form=form)
+    return render_template(
+        "channel.html",
+        channel=channel_item,
+        # videos=videos,
+        actions=actions,
+        form=form)
 
 
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])
@@ -148,6 +141,7 @@ def callback(channel_id):
         video_description = video_infos["items"][0]["snippet"]["description"]
         video_thumbnails = video_infos["items"][0]["snippet"]["thumbnails"][
             "medium"]["url"]
+        video_file_url = youtube_dl.fetch_video_metadata(video_id)["url"]
 
         # Append Callback SQL Record
         new_callback = Callback(channel_item, "Hub Notification", video_id,
@@ -164,8 +158,9 @@ def callback(channel_id):
         subs = Subscription.query.filter_by(subscribing_channel_id=channel_id)
         new_video_update = bool(
             Callback.query.filter_by(details=video_id).count())
-        response = {"append_wl_to": {}, "notification_to": {}}
+        response = {}
         for sub in subs:
+            response[sub.subscriber.username] = {}
             old_video_update = bool(
                 published_datetime < sub.subscribe_datetime)
             current_app.logger.info(
@@ -212,15 +207,15 @@ def callback(channel_id):
 
             # Subscription Action
             for action in sub.actions:
-                action.execute(
-                    video_id=video_id,
-                    message=video_title,
-                    # message="{}\n{}".format(video_title, video_description),
-                    title="New from {}".format(sub.channel.channel_name),
-                    url="https://www.youtube.com/watch?v={}".format(video_id),
-                    url_title=video_title,
-                    image=video_thumbnails,
-                )
+                results = action.execute(
+                        video_id=video_id,
+                        video_title=video_title,
+                        video_description=video_description,
+                        video_thumbnails=video_thumbnails,
+                        video_file_url=video_file_url,
+                        channel_name=channel_item.channel_name)
+                response[sub.subscriber.username][
+                    action.action_id] = str(results)
 
         response = jsonify(response)
 

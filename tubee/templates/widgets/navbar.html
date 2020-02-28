@@ -2,8 +2,8 @@
 <!-- STICKY NAVBAR -->
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <a class="navbar-left" href="{{ url_for('main.dashboard') }}">
-            <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}">
+        <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">
+            <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}" class="d-inline-block align-top">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -85,6 +85,7 @@
                     </div>
                 </li>
                 {% else %}
+
                 {% if title == "Login" %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('user.login') }}">
@@ -99,6 +100,7 @@
                     </a>
                 </li>
                 {% endif %}
+
                 {% if title == "Register" %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('user.register') }}">
@@ -113,6 +115,7 @@
                     </a>
                 </li>
                 {% endif %}
+
                 {% endif %}
             </ul>
             <form class="form-inline mx-2">

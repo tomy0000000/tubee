@@ -1,6 +1,8 @@
 """Forms"""
 from flask_wtf import FlaskForm
 from wtforms.fields import (
+    FieldList,
+    HiddenField,
     PasswordField,
     SelectField,
     StringField,
@@ -11,6 +13,7 @@ from wtforms.validators import (
     EqualTo,
     Length,
 )
+from .models import ActionEnum
 
 
 class LoginForm(FlaskForm):
@@ -47,14 +50,18 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
+class ClassName(object):
+    """docstring for ClassName"""
+    def __init__(self, arg):
+        super(ClassName, self).__init__()
+        self.arg = arg
+
+
 class ActionForm(FlaskForm):
     """Action Form"""
-    action_name = StringField("Name",
-                              validators=[DataRequired()],
-                              render_kw={"class": "form-control"})
+    action_name = StringField("Name", validators=[Length(max=32)])
     action_type = SelectField("Type",
                               validators=[DataRequired()],
-                              render_kw={"class": "form-control"})
-    submit = SubmitField("Save",
-                         validators=[DataRequired()],
-                         render_kw={"class": "btn btn-success"})
+                              choices=[(item.name, item.value)
+                                       for item in ActionEnum])
+    channel_id = HiddenField("Channel ID", validators=[DataRequired()])

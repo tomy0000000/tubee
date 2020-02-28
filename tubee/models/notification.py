@@ -80,7 +80,7 @@ class Notification(db.Model):
     def _clean_up_kwargs(kwargs, service):
         invalid_args = {
             key: val
-            for key, val in kwargs.items() if key not in VALID_ARGS
+            for key, val in kwargs.items() if key not in VALID_ARGS[service]
         }
         for key, val in invalid_args.items():
             current_app.logger.warning(

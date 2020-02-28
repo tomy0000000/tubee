@@ -26,12 +26,17 @@ class Subscription(db.Model):
         return "<Subscription: {} subscribe to {}>".format(
             self.subscriber_username, self.subscribing_channel_id)
 
-    def add_action(self, action_type, details):
+    def add_action(self, action_name, action_type, details):
         from . import Action
-        return Action(action_type, self.subscriber, self.channel, details)
+        return Action(action_name, action_type, self.subscriber, self.channel, details)
 
-    def remove_action():
-        pass
+    def remove_action(self, action_id):
+        action = self.actions.filter_by(action_id=action_id).first()
+        if action:
+            db.session.delete(action)
+            db.session.commit()
+            return True
+        return False
 
     def edit_action():
         pass
