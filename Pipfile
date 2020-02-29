@@ -63,6 +63,7 @@ Werkzeug = "*"
 WTForms = "*"
 python-dotenv = "*"
 youtube-dl = "*"
+pg8000 = "*"
 
 [requires]
 python_version = "3.7"
