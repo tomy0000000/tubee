@@ -36,11 +36,6 @@ The core functions is completly working, yet this application is still in develo
   * New Video to Playlist
   * New Video Download (Save to Dropbox)
 
-## More on the Way
-
-* Channel Inspection
-* Audio Streaming
-
 # Config
 
 * Environment Variables
@@ -48,8 +43,7 @@ The core functions is completly working, yet this application is still in develo
   * `APPLICATION_ROOT`
   * `SECRET_KEY`
   * `DATABASE_URL`
-  * `REDIS_PASSWORD`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`
-* `YOUTUBE_API_DEVELOPER_KEY`
+  * `YOUTUBE_API_DEVELOPER_KEY`
   * `PUSHOVER_TOKEN`
 * Files
   * `instance/client_secret`
