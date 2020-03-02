@@ -1,5 +1,5 @@
 """The Main Routes"""
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, current_app, redirect, render_template, url_for
 from flask_login import current_user, login_required
 from ..helper import youtube_required
 from ..models import Channel, Subscription
@@ -14,6 +14,17 @@ def dashboard():
         Subscription.channel).order_by(Channel.channel_name.asc()).all()
     return render_template("dashboard.html",
                            subscriptions=subscriptions)
+
+
+@main_blueprint.route("/test-logger")
+@login_required
+def test_logger():
+    current_app.logger.debug("DEBUG LOG")
+    current_app.logger.info("INFO LOG")
+    current_app.logger.warning("WARNING LOG")
+    current_app.logger.error("ERROR LOG")
+    current_app.logger.critical("CRITICAL LOG")
+    return redirect(url_for("main.dashboard"))
 
 
 @main_blueprint.route("/explore")

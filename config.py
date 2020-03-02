@@ -12,7 +12,6 @@ class Config:
     PREFERRED_URL_SCHEME = "https"
     SERVER_NAME = os.environ.get("SERVER_NAME")
     APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT", "/")
-    DEPLOY_KEY = os.environ.get("DEPLOY_KEY")
     SECRET_KEY = os.environ.get("SECRET_KEY", str(uuid.uuid4()))
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_recycle": 300}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -65,8 +64,8 @@ class DevelopmentConfig(Config):
 
     @classmethod
     def init_app(cls, app):
-        os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
         Config.init_app(app)
+        os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 
 class TestingConfig(Config):
@@ -94,6 +93,8 @@ class ProductionConfig(Config):
 class UnixConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
         # log to syslog
         import logging
         from logging.handlers import SysLogHandler
@@ -101,14 +102,14 @@ class UnixConfig(ProductionConfig):
         syslog_handler.setLevel(logging.INFO)
         app.logger.addHandler(syslog_handler)
 
-        ProductionConfig.init_app(app)
-
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = bool(os.environ.get("DYNO"))
 
     @classmethod
     def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
         # handle reverse proxy server headers
         from werkzeug.contrib.fixers import ProxyFix
         app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -120,12 +121,11 @@ class HerokuConfig(ProductionConfig):
         file_handler.setLevel(logging.INFO)
         app.logger.addHandler(file_handler)
 
-        ProductionConfig.init_app(app)
-
 
 class GoogleCloudAppEngineConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
+        ProductionConfig.init_app(app)
 
         # logs from stderr will be redirected to stackdriver
         import logging
@@ -133,20 +133,18 @@ class GoogleCloudAppEngineConfig(ProductionConfig):
         stream_handler = StreamHandler()
         app.logger.addHandler(stream_handler)
         app.logger.setLevel(logging.INFO)
-
-        ProductionConfig.init_app(app)
         app.logger.info("App Engine Config Loaded")
 
 
 class GoogleCloudComputeEngineConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
         # log to stackdriver
         import google.cloud.logging
         client = google.cloud.logging.Client()
         client.setup_logging()
-
-        ProductionConfig.init_app(app)
 
 
 config = {

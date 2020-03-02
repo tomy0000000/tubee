@@ -174,7 +174,7 @@ def callback(channel_id):
             if test_mode and sub.subscriber.admin:
                 pass
             elif old_video_update or new_video_update:
-                return jsonify(None)
+                continue
 
             # # Append to WL
             # if proceed_add_playlist:

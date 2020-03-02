@@ -34,16 +34,3 @@ def build_youtube_api(credentials=None):
                  current_app.config["YOUTUBE_API_VERSION"],
                  cache_discovery=False,
                  **kwargs)
-
-
-def auto_renew(channel):
-    """Trigger Channel Renewal"""
-    response = channel.renew()
-    current_app.logger.info(
-        "----------------Auto Renewed Start----------------")
-    current_app.logger.info("{}<{}>".format(channel.channel_name,
-                                            channel.channel_id))
-    current_app.logger.info(response)
-    current_app.logger.info(
-        "--------------Auto Renewed Complete--------------")
-    return response
