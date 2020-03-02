@@ -4,6 +4,7 @@ from datetime import timedelta
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 class Config:
     """Universal Config"""
     DEBUG = False
@@ -13,9 +14,7 @@ class Config:
     APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT", "/")
     DEPLOY_KEY = os.environ.get("DEPLOY_KEY")
     SECRET_KEY = os.environ.get("SECRET_KEY", str(uuid.uuid4()))
-    SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_recycle": 300
-    }
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_recycle": 300}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CUSTOM_SQLALCHEMY_NAMEING_CONVENTIONS = {
         "ix": "ix_%(column_0_label)s",
@@ -31,7 +30,8 @@ class Config:
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 
     # YouTube Data API
-    YOUTUBE_API_CLIENT_SECRET_FILE = os.environ.get("YOUTUBE_API_CLIENT_SECRET_FILE")
+    YOUTUBE_API_CLIENT_SECRET_FILE = os.environ.get(
+        "YOUTUBE_API_CLIENT_SECRET_FILE")
     YOUTUBE_READ_WRITE_SSL_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
@@ -56,6 +56,7 @@ class Config:
                 "default": SQLAlchemyJobStore(engine=app.db.engine)
             }
 
+
 class DevelopmentConfig(Config):
     """Config for local Development"""
     DEBUG = True
@@ -66,6 +67,7 @@ class DevelopmentConfig(Config):
     def init_app(cls, app):
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
         Config.init_app(app)
+
 
 class TestingConfig(Config):
     """Config for Testing, Travis CI"""
@@ -78,6 +80,7 @@ class TestingConfig(Config):
     def init_app(cls, app):
         Config.init_app(app)
 
+
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data.sqlite")
@@ -86,6 +89,20 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
+
+
+class UnixConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        # log to syslog
+        import logging
+        from logging.handlers import SysLogHandler
+        syslog_handler = SysLogHandler()
+        syslog_handler.setLevel(logging.INFO)
+        app.logger.addHandler(syslog_handler)
+
+        ProductionConfig.init_app(app)
+
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = bool(os.environ.get("DYNO"))
@@ -105,22 +122,21 @@ class HerokuConfig(ProductionConfig):
 
         ProductionConfig.init_app(app)
 
-class UnixConfig(ProductionConfig):
-    @classmethod
-    def init_app(cls, app):
-        # log to syslog
-        import logging
-        from logging.handlers import SysLogHandler
-        syslog_handler = SysLogHandler()
-        syslog_handler.setLevel(logging.INFO)
-        app.logger.addHandler(syslog_handler)
-
-        ProductionConfig.init_app(app)
 
 class GoogleCloudAppEngineConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
+
+        # logs from stderr will be redirected to stackdriver
+        import logging
+        from logging import StreamHandler
+        stream_handler = StreamHandler()
+        app.logger.addHandler(stream_handler)
+        app.logger.setLevel(logging.INFO)
+
         ProductionConfig.init_app(app)
+        app.logger.info("App Engine Config Loaded")
+
 
 class GoogleCloudComputeEngineConfig(ProductionConfig):
     @classmethod
@@ -132,14 +148,15 @@ class GoogleCloudComputeEngineConfig(ProductionConfig):
 
         ProductionConfig.init_app(app)
 
+
 config = {
+    "default": DevelopmentConfig,
     "development": DevelopmentConfig,
     "testing": TestingConfig,
     "production": ProductionConfig,
-    "heroku": HerokuConfig,
-    # "docker": DockerConfig,
     "unix": UnixConfig,
+    "heroku": HerokuConfig,
     "gae": GoogleCloudAppEngineConfig,
     "gce": GoogleCloudComputeEngineConfig,
-    "default": DevelopmentConfig
+    # "docker": DockerConfig,
 }

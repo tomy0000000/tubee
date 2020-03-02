@@ -63,6 +63,12 @@ def channels_cron_renew():
     response = {}
     for channel in channels:
         response[channel.channel_id] = channel.renew(stringify=True)
+    current_app.logger.info("Cron Renew Triggered")
+    current_app.logger.info(response)
+    notify_admin("Cron Renew",
+                 "Pushover",
+                 message=str(response),
+                 title="Cron Renew Triggered")
     return jsonify(response)
 
 

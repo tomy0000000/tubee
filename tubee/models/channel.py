@@ -172,6 +172,9 @@ class Channel(db.Model):
         info_response = self.renew_info()
         hub_response = self.renew_hub(stringify=stringify)
         response = info_response.copy()
+        current_app.logger.info("Channel Renewed: {}<{}>".format(
+            self.channel_name, self.channel_id))
+        current_app.logger.info(response)
         response.update({"renew_subscription": subscription_response})
         response.update(hub_response)
         return response

@@ -34,6 +34,7 @@ def create_app(config_name):
     if os.path.isfile(os.path.join(app.instance_path, "logging.cfg")):
         with app.open_instance_resource("logging.cfg", "r") as json_file:
             logging.config.dictConfig(json.load(json_file))
+            app.logger.info("External logging.cfg Loaded")
 
     db.init_app(app)
     app.db = db

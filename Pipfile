@@ -64,6 +64,7 @@ WTForms = "*"
 python-dotenv = "*"
 youtube-dl = "*"
 pg8000 = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
