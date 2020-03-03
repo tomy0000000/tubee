@@ -130,8 +130,7 @@ class GoogleCloudAppEngineConfig(ProductionConfig):
         # logs from stderr will be redirected to stackdriver
         import logging
         from logging import StreamHandler
-        stream_handler = StreamHandler()
-        app.logger.addHandler(stream_handler)
+        app.logger.addHandler(StreamHandler())
         app.logger.setLevel(logging.INFO)
         app.logger.info("App Engine Config Loaded")
 

@@ -1,5 +1,6 @@
 """Channel Related Routes"""
 import bs4
+import pyrfc3339
 from dateutil import parser
 from flask import (
     Blueprint,
@@ -24,45 +25,45 @@ channel_blueprint = Blueprint("channel", __name__)
 def channel(channel_id):
     channel_item = Channel.query.filter_by(
         channel_id=channel_id).first_or_404()
-    # videos = build_youtube_api().search().list(part="snippet",
-    #                                            channelId=channel_id,
-    #                                            maxResults=50,
-    #                                            order="date",
-    #                                            type="video").execute()["items"]
-    # for video in videos:
-    #     video["snippet"]["publishedAt"] = pyrfc3339.parse(
-    #         video["snippet"]["publishedAt"])
-    #     base_thumbnails_url = "/".join(
-    #         video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
-    #     video["snippet"]["thumbnails"]["standard"] = {
-    #         "url": base_thumbnails_url + "/sddefault.jpg",
-    #         "width": 640,
-    #         "height": 480
-    #     }
-    #     video["snippet"]["thumbnails"]["maxres"] = {
-    #         "url": base_thumbnails_url + "/maxresdefault.jpg",
-    #         "width": 1280,
-    #         "height": 720
-    #     }
-    #     callback_search = Callback.query.filter_by(
-    #         channel_id=channel_id,
-    #         action="Hub Notification",
-    #         details=video["id"]["videoId"]).order_by(
-    #             Callback.received_datetime.asc()).all()
-    #     video["snippet"]["callback"] = {
-    #         "datetime":
-    #         callback_search[0].received_datetime
-    #         if bool(callback_search) else "",
-    #         "count":
-    #         len(callback_search)
-    #     }
+    videos = build_youtube_api().search().list(part="snippet",
+                                               channelId=channel_id,
+                                               maxResults=50,
+                                               order="date",
+                                               type="video").execute()["items"]
+    for video in videos:
+        video["snippet"]["publishedAt"] = pyrfc3339.parse(
+            video["snippet"]["publishedAt"])
+        base_thumbnails_url = "/".join(
+            video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
+        video["snippet"]["thumbnails"]["standard"] = {
+            "url": base_thumbnails_url + "/sddefault.jpg",
+            "width": 640,
+            "height": 480
+        }
+        video["snippet"]["thumbnails"]["maxres"] = {
+            "url": base_thumbnails_url + "/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+        }
+        callback_search = Callback.query.filter_by(
+            channel_id=channel_id,
+            action="Hub Notification",
+            details=video["id"]["videoId"]).order_by(
+                Callback.received_datetime.asc()).all()
+        video["snippet"]["callback"] = {
+            "datetime":
+            callback_search[0].received_datetime
+            if bool(callback_search) else "",
+            "count":
+            len(callback_search)
+        }
     actions = current_user.subscriptions.filter_by(
         subscribing_channel_id=channel_id).first().actions.all()
     form = ActionForm()
     return render_template(
         "channel.html",
         channel=channel_item,
-        # videos=videos,
+        videos=videos,
         actions=actions,
         form=form)
 

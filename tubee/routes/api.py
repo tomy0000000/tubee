@@ -1,6 +1,6 @@
 """API for Frontend Access"""
 from datetime import datetime
-from flask import abort, Blueprint, current_app, jsonify, request, url_for
+from flask import abort, Blueprint, current_app, flash, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 from ..forms import ActionForm
@@ -95,18 +95,14 @@ def channel_status(channel_id):
 @login_required
 def channel_subscribe(channel_id):
     """Subscribe to a Channel"""
-    # TODO
-    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    return "{}"
+    return current_user.subscribe_to(channel_id)
 
 
 @api_blueprint.route("/<channel_id>/unsubscribe")
 @login_required
 def channel_unsubscribe(channel_id):
     """Unsubscribe to a Channel"""
-    # TODO
-    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    return "{}"
+    return current_user.unbsubscribe(channel_id)
 
 
 @api_blueprint.route("/<channel_id>/renew")
@@ -161,6 +157,7 @@ def action_new():
 @api_blueprint.route("/<action_id>/edit", methods=["POST"])
 @login_required
 def action_edit(action_id):
+    # TODO
     action = Action.query.filter_by(action_id=action_id).first_or_404()
     if action.subscription not in current_user.subscriptions:
         abort(403)

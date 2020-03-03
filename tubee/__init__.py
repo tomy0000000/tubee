@@ -36,7 +36,6 @@ def create_app(config_name):
             logging.config.dictConfig(json.load(json_file))
             app.logger.info("External logging.cfg Loaded")
 
-    app.logger.info("Config Loaded in create_app")
     db.init_app(app)
     app.db = db
     config[config_name].init_app(app)
@@ -77,9 +76,8 @@ def create_app(config_name):
     from .handler import handler
     app.register_blueprint(handler)
 
-    if app.debug or True:
+    if app.debug:
         from .routes.dev import dev_blueprint
         app.register_blueprint(dev_blueprint, url_prefix="/dev")
 
-    app.logger.info("app created")
     return app

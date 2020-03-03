@@ -21,10 +21,11 @@ jobs:
     - mkdir instance
     - mv client_secret.json instance/client_secret.json
     - cp deploy/gae-gunicorn.conf.py instance/gunicorn.conf.py
-    # .env
+    # .env & .gcloudignore
     - DEPLOY_KEY=`openssl rand -base64 29 | tr -d "=+/" | cut -c1-25`
     - sed -i '/DEPLOY_KEY=/s/$/'"$DEPLOY_KEY"'/' env
     - mv env .env
+    - mv gcloudignore .gcloudignore
     # app.yaml
     - cp deploy/gae-app.yaml app.yaml
     deploy:

@@ -149,7 +149,8 @@ class Channel(db.Model):
         """Renew Subscription by submitting new Hub Subscription"""
         callback_url = url_for("channel.callback",
                                channel_id=self.channel_id,
-                               _external=True)
+                               _external=True,
+                               _scheme="https")
         if current_app.config["HUB_RECEIVE_DOMAIN"]:
             callback_url = callback_url.replace(
                 request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
