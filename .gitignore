@@ -2,6 +2,9 @@
 deploy_files.tar.gz
 gcloud-app-engine-key.json
 client_secret.json
+app.yaml
+.env-tmp
+instance-tmp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
