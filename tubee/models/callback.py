@@ -29,17 +29,11 @@ class Callback(db.Model):
     data = db.Column(db.Text)
     user_agent = db.Column(db.String(200))
 
-    def __init__(self, channel, action, details, method, path, arguments, data,
-                 user_agent):
+    def __init__(self, channel):
         self.callback_id = str(uuid4())
         self.channel = channel
-        self.action = action
-        self.details = details
-        self.method = method
-        self.path = path
-        self.arguments = arguments
-        self.data = data
-        self.user_agent = user_agent
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return "<Callback {}>".format(self.callback_id)

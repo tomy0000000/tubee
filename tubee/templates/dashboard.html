@@ -65,7 +65,7 @@
             </td>
             <td class="align-middle"></td>
             <td class="align-middle">
-                <a class="btn btn-danger" href="{{ url_for('channel.unsubscribe', channel_id=subscription.channel.channel_id) }}" role="button">Unsubscribe</a>
+                <button type="button" class="btn btn-danger unsubscribe-btn" data-channel-name="{{ subscription.channel.channel_name }}" data-api-endpoint="{{ url_for('api.channel_unsubscribe', channel_id=subscription.channel.channel_id) }}">Unsubscribe</button>
                 {% if current_user.admin %}
                 <button class="btn btn-warning renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel.channel_id) }}">Renew</button>
                 {% endif %}
@@ -82,4 +82,5 @@
     </tbody>
 </table>
 <!-- END Subscription Table -->
+
 {% endblock %}

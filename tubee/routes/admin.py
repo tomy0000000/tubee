@@ -6,6 +6,14 @@ from ..models import Callback, Notification, Service
 admin_blueprint = Blueprint("admin", __name__)
 
 
+@admin_blueprint.route("/server")
+@login_required
+@admin_required
+def server():
+    # TODO
+    pass
+
+
 @admin_blueprint.route("/notification/dashboard")
 @login_required
 @admin_required

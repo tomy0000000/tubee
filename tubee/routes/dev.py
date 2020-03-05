@@ -38,7 +38,6 @@ def os_dict():
 @admin_required
 def sys_dict():
     target_dict = sys.__dict__
-    target_dict = sys.thread_info.__dict__
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
@@ -56,11 +55,11 @@ def flask_dict():
     return render_template("empty.html", info=target_dict, pprint=pprint_en)
 
 
-@dev_blueprint.route("/request")
+@dev_blueprint.route("/request", methods=["GET", "POST"])
 @login_required
 @admin_required
 def request_dict():
-    target_dict = str(request.user_agent)
+    target_dict = request.get_data()
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)

@@ -16,23 +16,6 @@ def dashboard():
                            subscriptions=subscriptions)
 
 
-@main_blueprint.route("/test-logger")
-@login_required
-def test_logger():
-    current_app.logger.debug("DEBUG LOG")
-    current_app.logger.info("INFO LOG")
-    current_app.logger.warning("WARNING LOG")
-    current_app.logger.error("ERROR LOG")
-    current_app.logger.critical("CRITICAL LOG")
-    return redirect(url_for("main.dashboard"))
-
-
-@main_blueprint.route("/explore")
-def explore():
-    """Page to Explore New Channels"""
-    return render_template("explore.html")
-
-
 @main_blueprint.route("/youtube/subscription")
 @login_required
 @youtube_required

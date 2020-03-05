@@ -1,8 +1,9 @@
 """API for Frontend Access"""
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import abort, Blueprint, current_app, flash, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
+from ..exceptions import UserError
 from ..forms import ActionForm
 from ..helper import notify_admin, app_engine_required
 from ..models import Action, Channel
@@ -34,19 +35,6 @@ def deploy():
     return jsonify(response)
 
 
-@api_blueprint.route("/test_cron_job")
-@app_engine_required
-def test_cron():
-    response = notify_admin("test_cron_job",
-                            "Pushover",
-                            message=datetime.now(),
-                            title="Test Cron Job Triggered",
-                            priority=-2)
-    current_app.logger.info("Test Cron Job Triggered at {}".format(
-        datetime.now()))
-    return jsonify(response)
-
-
 @api_blueprint.route("/user/services")
 @login_required
 def user_info():
@@ -59,7 +47,8 @@ def user_info():
 @api_blueprint.route("/channels/cron-renew")
 @app_engine_required
 def channels_cron_renew():
-    channels = Channel.query.all()
+    channels = Channel.query.filter(
+        Channel.expire_datetime < datetime.now() + timedelta(days=2)).all()
     response = {}
     for channel in channels:
         response[channel.channel_id] = channel.renew(stringify=True)
@@ -95,14 +84,14 @@ def channel_status(channel_id):
 @login_required
 def channel_subscribe(channel_id):
     """Subscribe to a Channel"""
-    return current_user.subscribe_to(channel_id)
+    return jsonify(current_user.subscribe_to(channel_id))
 
 
 @api_blueprint.route("/<channel_id>/unsubscribe")
 @login_required
 def channel_unsubscribe(channel_id):
     """Unsubscribe to a Channel"""
-    return current_user.unbsubscribe(channel_id)
+    return jsonify(current_user.unbsubscribe(channel_id))
 
 
 @api_blueprint.route("/<channel_id>/renew")

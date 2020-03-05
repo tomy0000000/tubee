@@ -38,17 +38,17 @@
                     </a>
                 </li>
                 {% endif %}
-                {% if title == "Explore" %}
+                {% if title == "YouTube Subcription" %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('main.explore') }}">
-                        Explore
+                    <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
+                        YouTube Subcription
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.explore') }}">
-                        Explore
+                    <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
+                        YouTube Subcription
                     </a>
                 </li>
                 {% endif %}
@@ -119,8 +119,8 @@
                 {% endif %}
             </ul>
             <form class="form-inline mx-2">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <input class="form-control mr-sm-2" type="text" placeholder="Channel ID" aria-label="Channel ID">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Subscribe</button>
             </form>
         </div>
     </nav>

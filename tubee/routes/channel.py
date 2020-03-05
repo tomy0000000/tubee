@@ -1,6 +1,7 @@
 """Channel Related Routes"""
 import bs4
 import pyrfc3339
+from datetime import datetime, timedelta
 from dateutil import parser
 from flask import (
     Blueprint,
@@ -60,12 +61,11 @@ def channel(channel_id):
     actions = current_user.subscriptions.filter_by(
         subscribing_channel_id=channel_id).first().actions.all()
     form = ActionForm()
-    return render_template(
-        "channel.html",
-        channel=channel_item,
-        videos=videos,
-        actions=actions,
-        form=form)
+    return render_template("channel.html",
+                           channel=channel_item,
+                           videos=videos,
+                           actions=actions,
+                           form=form)
 
 
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])
@@ -121,108 +121,112 @@ def callback(channel_id):
     """
     channel_item = Channel.query.filter_by(
         channel_id=channel_id).first_or_404()
-    if request.method == "GET":
-        get_args = request.args.to_dict()
-        response = get_args.pop("hub.challenge", "Error")
-        new_callback = Callback(channel_item, "Unknown GET Request" \
-                                if response == "Error" else "Hub Challenge", response,
-                                request.method, request.path, request.args,
-                                request.data, str(request.user_agent))
-    elif request.method == "POST":
-        test_mode = bool("testing" in request.args.to_dict())
-        post_datas = request.get_data()
-        soup = bs4.BeautifulSoup(post_datas, "xml")
-        video_id = soup.find("yt:videoId").string
-        video_title = soup.entry.find("title").string
-        published_datetime = parser.parse(
-            soup.entry.find("published").string).replace(tzinfo=None)
-
-        video_infos = build_youtube_api().videos().list(part="snippet",
-                                                        id=video_id).execute()
-        video_description = video_infos["items"][0]["snippet"]["description"]
-        video_thumbnails = video_infos["items"][0]["snippet"]["thumbnails"][
-            "medium"]["url"]
-        video_file_url = youtube_dl.fetch_video_metadata(video_id)["url"]
-
-        # Append Callback SQL Record
-        new_callback = Callback(channel_item, "Hub Notification", video_id,
-                                request.method, request.path, request.args,
-                                request.data, str(request.user_agent))
-        """
-        1. List Users who subscribe to this channel
-        (for each user)
-        2. List Actions which should be execute
-        3. Execute Actions
-        """
-
-        # Decide to Pass or Not
-        subs = Subscription.query.filter_by(subscribing_channel_id=channel_id)
-        new_video_update = bool(
-            Callback.query.filter_by(details=video_id).count())
-        response = {}
-        for sub in subs:
-            response[sub.subscriber.username] = {}
-            old_video_update = bool(
-                published_datetime < sub.subscribe_datetime)
-            current_app.logger.info(
-                "New Video Update: {}".format(new_video_update))
-            current_app.logger.info(
-                "Old Video Update: {}".format(old_video_update))
-            current_app.logger.info(
-                "Action as Test Mode: {}".format(test_mode))
-            current_app.logger.info("Subscriber is Admin: {}".format(
-                sub.subscriber.admin))
-            if test_mode and sub.subscriber.admin:
-                pass
-            elif old_video_update or new_video_update:
-                continue
-
-            # # Append to WL
-            # if proceed_add_playlist:
-            #     try:
-            #         response = sub.subscriber.insert_video_to_playlist(video_id)
-            #     except RuntimeError as error:
-            #         response = error.args[0]
-            #     response["append_wl_to"][sub.subscriber_username] = response
-            # current_app.logger.info(
-            #     "Playlist Appended: {}".format(proceed_add_playlist))
-
-            # Push Notification
-            # if proceed_notification:
-            #     ntf = sub.subscriber.send_notification(
-            #         "Callback",
-            #         "Pushover",
-            #         message="{}\n{}".format(
-            #             video_title, video_description),
-            #         title="New from {}".format(
-            #             sub.channel.channel_name),
-            #         url="https://www.youtube.com/watch?v={}".format(video_id),
-            #         url_title=video_title,
-            #         image=video_thumbnails)
-            #     response["notification_to"][
-            #         sub.subscriber_username] = ntf
-            #     current_app.logger.info(ntf)
-            # current_app.logger.info(
-            #     "Notification Send: {}".format(proceed_notification))
-            # current_app.logger.info("------------------------")
-
-            # Subscription Action
-            for action in sub.actions:
-                results = action.execute(
-                        video_id=video_id,
-                        video_title=video_title,
-                        video_description=video_description,
-                        video_thumbnails=video_thumbnails,
-                        video_file_url=video_file_url,
-                        channel_name=channel_item.channel_name)
-                response[sub.subscriber.username][
-                    action.action_id] = str(results)
-
-        response = jsonify(response)
-
-    db.session.add(new_callback)
+    callback_item = Callback(channel_item)
+    callback_item.method = request.method
+    callback_item.path = request.path
+    callback_item.arguments = request.args
+    callback_item.user_agent = str(request.user_agent)
     try:
-        db.session.commit()
+        if request.method == "GET":
+            get_args = request.args.to_dict()
+            response = get_args.get("hub.challenge")
+            if response:
+                callback_item.action = "Hub Challenge"
+                callback_item.details = response
+            else:
+                callback_item.action = "Unknown GET Request"
+        elif request.method == "POST":
+            test_mode = bool("testing" in request.args.to_dict())
+            post_datas = request.get_data()
+            soup = bs4.BeautifulSoup(post_datas, "xml")
+            video_id = soup.find("yt:videoId").string
+            video_title = soup.entry.find("title").string
+            published_datetime = parser.parse(
+                soup.entry.find("published").string).replace(tzinfo=None)
+
+            video_infos = build_youtube_api().videos().list(
+                part="snippet", id=video_id).execute()
+            video_description = video_infos["items"][0]["snippet"][
+                "description"]
+            video_thumbnails = video_infos["items"][0]["snippet"][
+                "thumbnails"]["medium"]["url"]
+
+            # TODO
+            try:
+                video_file_url = youtube_dl.fetch_video_metadata(
+                    video_id)["url"]
+            except Exception as e:
+                video_file_url = None
+
+            # Append Callback SQL Record
+            callback_item.action = "Hub Notification"
+            callback_item.details = video_id
+            callback_item.data = post_datas
+            """
+            1. List Users who subscribe to this channel
+            (for each user)
+            2. List Actions which should be execute
+            3. Execute Actions
+            """
+            subs = Subscription.query.filter_by(
+                subscribing_channel_id=channel_id).all()
+            current_app.logger.info(Callback.query.filter_by(details=video_id).count() - 1)
+            new_video_update = bool(
+                Callback.query.filter_by(details=video_id).count() - 1)  # Don't count this callback
+            response = {}
+            for sub in subs:
+                old_video_update = bool(
+                    published_datetime < sub.subscribe_datetime)
+                current_app.logger.info(
+                    "New Video Update: {}".format(new_video_update))
+                current_app.logger.info(
+                    "Old Video Update: {}".format(old_video_update))
+                current_app.logger.info(
+                    "Action as Test Mode: {}".format(test_mode))
+                current_app.logger.info("Subscriber is Admin: {}".format(
+                    sub.subscriber.admin))
+                # Decide to Pass or Not
+                if test_mode and sub.subscriber.admin:
+                    pass
+                elif old_video_update or new_video_update:
+                    continue
+
+                # Subscription Action
+                response[sub.subscriber.username] = {}
+                for action in sub.actions:
+                    try:
+                        results = action.execute(
+                            video_id=video_id,
+                            video_title=video_title,
+                            video_description=video_description,
+                            video_thumbnails=video_thumbnails,
+                            video_file_url=video_file_url,
+                            channel_name=channel_item.channel_name)
+                        current_app.logger.info("{}-{}: OK".format(
+                            sub.subscriber_username, action.action_id))
+                    except Exception as error:
+                        current_app.logger.info("{}-{}: {}".format(
+                            sub.subscriber_username, action.action_id, error))
+                        results = error
+                    response[sub.subscriber_username][action.action_id] = str(
+                        results)
+
+            # Auto Renew if expiration is close
+            if channel_item.expire_datetime and channel_item.expire_datetime - datetime.now() < timedelta(
+                    days=2):
+                response["renew"] = channel_item.renew()
+                current_app.logger.info("Channel renewed during callback")
+                current_app.logger.info(response["renew"])
+                notify_admin("Deployment",
+                             "Pushover",
+                             message="{} <{}>".format(
+                                 channel_item.channel_name,
+                                 channel_item.channel_id),
+                             title="Channel renewed during callback")
+            response = jsonify(response)
     except Exception as error:
-        current_app.logger.error("SQL Commit Failed")
+        current_app.logger.info("Unexpected Error")
+        current_app.logger.info(error)
+    finally:
+        db.session.commit()
     return response
