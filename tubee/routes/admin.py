@@ -1,5 +1,6 @@
 """Routes for Admin Access"""
-from flask import Blueprint, flash, render_template, request
+import os
+from flask import Blueprint, current_app, flash, render_template, request
 from flask_login import current_user, login_required
 from ..helper import admin_required
 from ..models import Callback, Notification, Service
@@ -10,8 +11,9 @@ admin_blueprint = Blueprint("admin", __name__)
 @login_required
 @admin_required
 def server():
-    # TODO
-    pass
+    os_environment_variables = os.environ
+    flask_config = current_app.config
+    # return render_template("")
 
 
 @admin_blueprint.route("/notification/dashboard")
@@ -21,8 +23,8 @@ def notification_dashboard():
     """Show Recent Pushed Notification"""
     # TODO
     notifications = Notification.query.order_by(
-        Notification.sent_datetime.desc()).all()
-    return render_template("pushover_dashboard.html",
+        Notification.sent_datetime.desc()).paginate()
+    return render_template("notification_dashboard.html",
                            notifications=notifications)
 
 
@@ -34,7 +36,7 @@ def notification_push():
     if request.method == "POST":
         response = current_user.send_notification(
             "Test",
-            Service(request.form.get("service", "ALL")),
+            Service(request.form.get("service", "Pushover")),
             message=request.form["message"])
         flash(response, "success")
     return render_template("test_notification.html")

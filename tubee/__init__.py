@@ -11,7 +11,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from config import config
 
-# TODO: TRY IMPLEMENT IN ANOTHER WAY
 naming_convention = {
     "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -26,7 +25,6 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 moment = Moment()
 oauth = OAuth()
-
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)

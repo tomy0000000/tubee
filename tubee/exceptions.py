@@ -11,7 +11,7 @@ class TubeeError(Exception):
 
 
 class UserError(TubeeError):
-    """Errors related to user
+    """Base Class for errors related to user
 
     Extends:
         TubeeError
@@ -20,10 +20,19 @@ class UserError(TubeeError):
 
 
 class BackendError(TubeeError):
-    """Errors happening in the background
+    """Base Class for errors happening in the background
 
     Extends:
         TubeeError
+    """
+    pass
+
+
+class InvalidParameter(UserError):
+    """Raised when user filled in invalid parameter
+
+    Extends:
+        UserError
     """
     pass
 
@@ -37,10 +46,10 @@ class ServiceNotSet(UserError):
     pass
 
 
-class SubscriptionNotFound(UserError):
-    """Raised when user attempt to make interaction with subscription that doesn't exists
+# class SubscriptionNotFound(UserError):
+#     """Raised when user attempt to make interaction with subscription that doesn't exists
 
-    Extends:
-        UserError
-    """
-    pass
+#     Extends:
+#         UserError
+#     """
+#     pass

@@ -104,15 +104,13 @@ class Notification(db.Model):
             raise AttributeError("Message is empty")
         if self.sent_datetime:
             raise AttributeError("This Notification has already sent")
-        response = {}
         if self.service is Service.Pushover:
-            response["Pushover"] = self._send_with_pushover()
+            self.response = self._send_with_pushover()
         if self.service is Service.LineNotify:
-            response["Line Notify"] = self._send_with_line_notify()
-        self.resopnse = response
+            self.response = self._send_with_line_notify()
         self.sent_datetime = datetime.now()
         db.session.commit()
-        return response
+        return self.response
 
     def _send_with_pushover(self):
         """Send Notification with Pushover API

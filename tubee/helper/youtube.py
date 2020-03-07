@@ -14,7 +14,7 @@ def build_flow(state=None):
         client_config = json.load(json_file)
     flow = Flow.from_client_config(
         client_config,
-        current_app.config["YOUTUBE_READ_WRITE_SSL_SCOPE"],
+        scopes=current_app.config["YOUTUBE_READ_WRITE_SSL_SCOPE"],
         state=state)
     flow.redirect_uri = url_for("user.setting_youtube_oauth_callback",
                                 _external=True)

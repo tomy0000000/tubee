@@ -7,9 +7,13 @@ from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
 from pushover_complete import PushoverAPI
-from .notification import Notification
 from .. import bcrypt, db, login_manager, oauth
 from ..helper import youtube
+from ..exceptions import (
+    BackendError,
+    InvalidParameter,
+    ServiceNotSet,
+)
 login_manager.login_view = "user.login"
 
 
@@ -77,14 +81,14 @@ class User(UserMixin, db.Model):
     @property
     def password(self):
         """Password Property"""
-        raise AttributeError("Password is not a readable attribute")
+        raise InvalidParameter("Password is not a readable attribute")
 
     @password.setter
     def password(self, password):
         if len(password) < 6:
-            raise ValueError("Password must be longer than 6 characters")
+            raise InvalidParameter("Password must be longer than 6 characters")
         if len(password) > 30:
-            raise ValueError("Password must be shorter than 30 characters")
+            raise InvalidParameter("Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
 
     def check_password(self, password):
@@ -107,10 +111,10 @@ class User(UserMixin, db.Model):
             str -- User's Pushover Key
 
         Raises:
-            AttributeError -- Raised when user has not setup Pushover key yet.
+            ServiceNotSet -- Raised when user has not setup Pushover key yet.
         """
         if not self._pushover_key:
-            raise AttributeError("User has not setup Pushover key")
+            raise ServiceNotSet("User has not setup Pushover key")
         return self._pushover_key
 
     @pushover.setter
@@ -119,13 +123,19 @@ class User(UserMixin, db.Model):
 
         Validating Key and save iff valid
 
+        Decorators:
+            pushover.setter
+
         Arguments:
             key {str} -- User's pushover key obtain from https://pushover.net
+
+        Raises:
+            InvalidParameter -- Raised when user gave an invalid user key
         """
         pusher = PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
         response = pusher.validate(key)
         if response["status"] != 1:
-            raise ValueError("Invalid Pushover User Key")
+            raise InvalidParameter("Invalid Pushover User Key")
         self._pushover_key = key
         db.session.commit()
 
@@ -135,7 +145,7 @@ class User(UserMixin, db.Model):
 
         Remove Key
         """
-        del self._pushover_key
+        self._pushover_key = None
         db.session.commit()
 
     #     #     #               #######
@@ -153,13 +163,14 @@ class User(UserMixin, db.Model):
         build service with user's saved credentials.
 
         Returns:
-            googleapiclient.discovery.Resource -- API-calling-ready YouTube Service
+            googleapiclient.discovery.Resource -- API-calling-ready YouTube
+                                                  Service
 
         Raises:
-            AttributeError -- Raised when user has not authorized yet.
+            ServiceNotSet -- Raised when user has not authorized yet.
         """
         if not self.youtube_credentials:
-            raise AttributeError("User has not authorized YouTube access")
+            raise ServiceNotSet("User has not authorized YouTube access")
         return youtube.build_youtube_api(self.youtube_credentials)
 
     @youtube.setter
@@ -172,13 +183,10 @@ class User(UserMixin, db.Model):
             credentials {google.oauth2.credentials.Credentials} -- User's YouTube Credentials
 
         Raises:
-            TypeError -- Raised when provided credentials is not a valid type.
-            ValueError -- Raised when provided credentials is not valid.
+            InvalidParameter -- Raised when provided credentials is not valid
         """
-        if not isinstance(credentials, Credentials):
-            raise TypeError("Invalid Type")
-        if not credentials.valid:
-            raise ValueError("Credentials is invalid")
+        if not isinstance(credentials, Credentials) or not credentials.valid:
+            raise InvalidParameter("Invalid Credentials")
         self.youtube_credentials = dict(
             token=credentials.token,
             refresh_token=credentials.refresh_token,
@@ -196,16 +204,22 @@ class User(UserMixin, db.Model):
         successfully.
 
         Raises:
-            RuntimeError -- Raised when revoke failed to complete.
+            BackendError -- Raised when revoke encounter issue
+                                (not necessarily failed)
         """
         response = requests.post(
-            "https://accounts.google.com/o/oauth2/revoke",
+            "https://oauth2.googleapis.com/revoke",
             params={"token": self.youtube_credentials["token"]},
             headers={"content-type": "application/x-www-form-urlencoded"})
-        if response.status_code != 200:
-            raise RuntimeError(response.text)
-        del self.youtube_credentials
-        db.session.commit()
+        error_description = response.json()["error_description"]
+        if response.status_code == 200:
+            self.youtube_credentials = None
+            db.session.commit()
+        elif error_description == "Token expired or revoked":
+            self.youtube_credentials = None
+            db.session.commit()
+            raise BackendError(error_description, "success")
+        raise BackendError(error_description, "danger")
 
     #     ######
     #     #     # #####   ####  #####  #####   ####  #    #
@@ -225,10 +239,10 @@ class User(UserMixin, db.Model):
             [type] -- [description]
 
         Raises:
-            AttributeError -- Raised when user has not authorized yet.
+            ServiceNotSet -- Raised when user has not authorized yet.
         """
         if not self.dropbox_credentials:
-            raise AttributeError("User has not authorized Dropbox access")
+            raise ServiceNotSet("User has not authorized Dropbox access")
         return dropbox.Dropbox(self.dropbox_credentials["access_token"])
 
     @dropbox.setter
@@ -242,7 +256,7 @@ class User(UserMixin, db.Model):
     @dropbox.deleter
     def dropbox(self):
         self.dropbox.auth_token_revoke()
-        del self.dropbox_credentials
+        self.dropbox_credentials = None
         db.session.commit()
 
     #     #                          #     #
@@ -256,7 +270,7 @@ class User(UserMixin, db.Model):
     @property
     def line_notify(self):
         if not self.line_notify_credentials:
-            raise AttributeError("User has not authorized Line Notify access")
+            raise ServiceNotSet("User has not authorized Line Notify access")
         return oauth.LineNotify
 
     @line_notify.setter
@@ -268,8 +282,8 @@ class User(UserMixin, db.Model):
     def line_notify(self):
         response = self.line_notify.post("api/revoke")
         if response.status_code != 200 and response.status_code != 401:
-            raise RuntimeError(response.text)
-        del self.line_notify_credentials
+            raise BackendError(response.text)
+        self.line_notify_credentials = None
         db.session.commit()
 
     #     #     #                      #     #
@@ -339,7 +353,7 @@ class User(UserMixin, db.Model):
         from . import Channel, Subscription
         channel = Channel.query.get(channel_id)
         if self.is_subscribing(channel):
-            raise AttributeError("You've' already subscribed this channel")
+            raise InvalidParameter("You've' already subscribed this channel")
         if not channel:
             channel = Channel(channel_id)
         subscription = Subscription(subscriber_username=self.username,
@@ -353,7 +367,7 @@ class User(UserMixin, db.Model):
         subscription = self.subscriptions.filter_by(
             subscribing_channel_id=channel_id).first()
         if not subscription:
-            raise AttributeError("User {} hasn't subscribe to {}".format(
+            raise InvalidParameter("User {} hasn't subscribe to {}".format(
                 self.username, channel_id))
         db.session.delete(subscription)
         db.session.commit()
@@ -382,7 +396,7 @@ class User(UserMixin, db.Model):
                 "Faield to insert {} to {}'s playlist".format(
                     video_id, self.username))
             current_app.logger.error(error_message)
-            raise RuntimeError(error_message)
+            raise BackendError(error_message)
 
     # Pushover, Line Notify Methods
     def send_notification(self, initiator, service, **kwargs):
@@ -396,5 +410,6 @@ class User(UserMixin, db.Model):
         Returns:
             dict -- Reponse from notification service
         """
+        from . import Notification
         ntf = Notification(initiator, self, service, **kwargs)
         return ntf.response

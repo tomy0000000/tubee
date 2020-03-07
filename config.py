@@ -15,13 +15,6 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", str(uuid.uuid4()))
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_recycle": 300}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    CUSTOM_SQLALCHEMY_NAMEING_CONVENTIONS = {
-        "ix": "ix_%(column_0_label)s",
-        "uq": "uq_%(table_name)s_%(column_0_name)s",
-        "ck": "ck_%(table_name)s_%(constraint_name)s",
-        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-        "pk": "pk_%(table_name)s"
-    }
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
     REMEMBER_COOKIE_SECURE = True
 
@@ -31,7 +24,7 @@ class Config:
     # YouTube Data API
     YOUTUBE_API_CLIENT_SECRET_FILE = os.environ.get(
         "YOUTUBE_API_CLIENT_SECRET_FILE")
-    YOUTUBE_READ_WRITE_SSL_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
+    YOUTUBE_READ_WRITE_SSL_SCOPE = ["https://www.googleapis.com/auth/youtube.force-ssl"]
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
 
