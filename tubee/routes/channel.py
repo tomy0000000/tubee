@@ -16,7 +16,7 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..forms import ActionForm
-from ..helper import youtube_dl
+from ..helper import notify_admin, youtube_dl
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel, Subscription
 channel_blueprint = Blueprint("channel", __name__)
@@ -136,47 +136,40 @@ def callback(channel_id):
             else:
                 callback_item.action = "Unknown GET Request"
         elif request.method == "POST":
+
+            # Preprocessing
             test_mode = bool("testing" in request.args.to_dict())
             post_datas = request.get_data()
             soup = bs4.BeautifulSoup(post_datas, "xml")
             video_id = soup.find("yt:videoId").string
+
+            # Append Callback SQL Record
+            callback_item.action = "Hub Notification"
+            callback_item.details = video_id
+            callback_item.data = post_datas.decode("utf-8")
+
+            # Fetching Video Infos
             video_title = soup.entry.find("title").string
-            published_datetime = parser.parse(
+            video_datetime = parser.parse(
                 soup.entry.find("published").string).replace(tzinfo=None)
-
             video_infos = build_youtube_api().videos().list(
-                part="snippet", id=video_id).execute()
-            video_description = video_infos["items"][0]["snippet"][
-                "description"]
-            video_thumbnails = video_infos["items"][0]["snippet"][
-                "thumbnails"]["medium"]["url"]
-
-            # TODO
-            try:
+                part="snippet", id=video_id).execute()["items"][0]["snippet"]
+            video_description = video_infos["description"]
+            video_thumbnails = video_infos["thumbnails"]["medium"]["url"]
+            previous_callback = Callback.query.filter_by(details=video_id).count() - 1  # Don't count this callback
+            new_video_update = bool(previous_callback)
+            try:  # TODO
                 video_file_url = youtube_dl.fetch_video_metadata(
                     video_id)["url"]
             except Exception as e:
                 video_file_url = None
 
-            # Append Callback SQL Record
-            callback_item.action = "Hub Notification"
-            callback_item.details = video_id
-            callback_item.data = post_datas
-            """
-            1. List Users who subscribe to this channel
-            (for each user)
-            2. List Actions which should be execute
-            3. Execute Actions
-            """
-            subs = Subscription.query.filter_by(
-                subscribing_channel_id=channel_id).all()
-            current_app.logger.info(Callback.query.filter_by(details=video_id).count() - 1)
-            new_video_update = bool(
-                Callback.query.filter_by(details=video_id).count() - 1)  # Don't count this callback
+            
+            # List users
             response = {}
-            for sub in subs:
+            for sub in Subscription.query.filter_by(subscribing_channel_id=channel_id).all():
                 old_video_update = bool(
-                    published_datetime < sub.subscribe_datetime)
+                    video_datetime < sub.subscribe_datetime)
                 current_app.logger.info(
                     "New Video Update: {}".format(new_video_update))
                 current_app.logger.info(
@@ -185,13 +178,14 @@ def callback(channel_id):
                     "Action as Test Mode: {}".format(test_mode))
                 current_app.logger.info("Subscriber is Admin: {}".format(
                     sub.subscriber.admin))
-                # Decide to Pass or Not
+                
+                # Decide to Run or Not
                 if test_mode and sub.subscriber.admin:
                     pass
                 elif old_video_update or new_video_update:
                     continue
 
-                # Subscription Action
+                # Execute Actions
                 response[sub.subscriber.username] = {}
                 for action in sub.actions:
                     try:
@@ -212,8 +206,8 @@ def callback(channel_id):
                         results)
 
             # Auto Renew if expiration is close
-            if channel_item.expire_datetime and channel_item.expire_datetime - datetime.now() < timedelta(
-                    days=2):
+            if channel_item.expire_datetime and channel_item.expire_datetime - datetime.now(
+            ) < timedelta(days=2):
                 response["renew"] = channel_item.renew()
                 current_app.logger.info("Channel renewed during callback")
                 current_app.logger.info(response["renew"])

@@ -56,10 +56,10 @@ def flask_dict():
 
 
 @dev_blueprint.route("/request", methods=["GET", "POST"])
-@login_required
-@admin_required
+# @login_required
+# @admin_required
 def request_dict():
-    target_dict = request.get_data()
+    target_dict = request.get_data().decode("utf-8")
     pprint_en = isinstance(target_dict, dict)
     if pprint_en:
         target_dict = pprint.pformat(target_dict)
