@@ -1,6 +1,6 @@
 # Tubee
 
-![Python Version](https://img.shields.io/badge/python-3.4+-blue.svg)
+![Python Version](https://img.shields.io/badge/python-3.5+-blue.svg)
 [![Build Status](https://travis-ci.com/tomy0000000/Tubee.svg?token=pcX4zcaLzopbPNP4Hs2J&branch=master)](https://travis-ci.com/tomy0000000/Tubee)
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
 [![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)](https://github.com/tomy0000000/Tubee/blob/master/LICENSE)
@@ -11,47 +11,59 @@
     <img width="150" src="tubee/static/img/tubee_text.png" align="center">
 </p>
 
-# Overview
+## Overview
 
-Tubee is a web application, provides dozens of handful features related to YouTube.
+Tubee is a web application, provides some handful features related to YouTube.
 
 The core functions is completly working, yet this application is still in development stage right now, please pm or leave issues if you run into any problems😘
 
-# Installation
-
-*Full guide will be released when stable version published, only important notice will be provided at the moment*
-
-* Database (**Be aware that migration scripts will constantly modified during the whole dev stage**)
-  * `MySQL`
-    * Encoding: `utf8mb4`
-    * Collation: `utf8mb4_unicode_ci`
-  * `PostgreSQL`
-  * `SQLite`
-    * Even though `render_as_batch=True` is set on Flask-Migrate, but upgrade scripts doesn't always works as expected.
-
-# Features
+## Features
 
 * Channel Subscribing
   * New Video Push Notification (via [Pushover](https://pushover.net/), [LINE Notify](https://notify-bot.line.me))
   * New Video to Playlist
   * New Video Download (Save to Dropbox)
 
-# Config
+## Requirement
 
-* Environment Variables
-  * `SERVER_NAME`
-  * `APPLICATION_ROOT`
-  * `SECRET_KEY`
-  * `DATABASE_URL`
-  * `YOUTUBE_API_DEVELOPER_KEY`
-  * `PUSHOVER_TOKEN`
-* Files
-  * `instance/client_secret`
+* Python 3.5+
+* A web server along with a WSGI server / proxy
+  * Nginx + Gunicorn (Recommanded)
+  * Nginx + uWSGI
+  * Apache + mod_wsgi
+  * *Docker (Under Development)*
+  * ...
+* A SQL database supported by [SQLAlchemy](https://docs.sqlalchemy.org/en/13/dialects/)
+  Be aware this appplication implement some modern modal such as Enum and Json, some database and older version of database might not be compatible.
+  * PostgresSQL (Recommanded)
+  * MySQL
+  * SQLite
+  * ...
+* [YouTube Data API](https://developers.google.com/youtube/registering_an_application) authorization credentials in **Both**
+  * OAuth 2.0 token: used for accessing user information
+  * API Keys: used for querying public metadata
 
-### Testing/Deployment
+For additional operation, you might also need
 
-* Travis CI
-  * `.travis.yml`
+* [Pushover](https://pushover.net/) API Token
+* [Line Notify](https://notify-bot.line.me/zh_TW/) Client ID / Client Secret
+* [Dropbox](https://www.dropbox.com/developers/apps) App Key / App Secret
 
-* Heroku
-  * `Procfile`
+## Installation
+
+* Create a `.env` Environment Variables sheet in the following format
+
+```python
+SECRET_KEY=  # Can be generate by running 'import uuid; print(str(uuid.uuid4()))'
+DATABASE_URL=
+YOUTUBE_API_CLIENT_SECRET_FILE=  # Filename without path
+YOUTUBE_API_DEVELOPER_KEY=
+PUSHOVER_TOKEN=
+LINENOTIFY_CLIENT_ID=
+LINENOTIFY_CLIENT_SECRET=
+DROPBOX_APP_KEY=
+DROPBOX_APP_SECRET=
+```
+
+* Place your YouTube Data API Client Secret File under `instance`
+

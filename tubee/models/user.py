@@ -211,11 +211,12 @@ class User(UserMixin, db.Model):
             "https://oauth2.googleapis.com/revoke",
             params={"token": self.youtube_credentials["token"]},
             headers={"content-type": "application/x-www-form-urlencoded"})
-        error_description = response.json()["error_description"]
         if response.status_code == 200:
             self.youtube_credentials = None
             db.session.commit()
-        elif error_description == "Token expired or revoked":
+            return
+        error_description = response.json()["error_description"]
+        if error_description == "Token expired or revoked":
             self.youtube_credentials = None
             db.session.commit()
             raise BackendError(error_description, "success")

@@ -156,7 +156,8 @@ def callback(channel_id):
                 part="snippet", id=video_id).execute()["items"][0]["snippet"]
             video_description = video_infos["description"]
             video_thumbnails = video_infos["thumbnails"]["medium"]["url"]
-            previous_callback = Callback.query.filter_by(details=video_id).count() - 1  # Don't count this callback
+            previous_callback = Callback.query.filter_by(
+                details=video_id).count() - 1  # Don't count this callback
             new_video_update = bool(previous_callback)
             try:  # TODO
                 video_file_url = youtube_dl.fetch_video_metadata(
@@ -164,10 +165,10 @@ def callback(channel_id):
             except Exception as e:
                 video_file_url = None
 
-            
             # List users
             response = {}
-            for sub in Subscription.query.filter_by(subscribing_channel_id=channel_id).all():
+            for sub in Subscription.query.filter_by(
+                    subscribing_channel_id=channel_id).all():
                 old_video_update = bool(
                     video_datetime < sub.subscribe_datetime)
                 current_app.logger.info(
@@ -178,7 +179,7 @@ def callback(channel_id):
                     "Action as Test Mode: {}".format(test_mode))
                 current_app.logger.info("Subscriber is Admin: {}".format(
                     sub.subscriber.admin))
-                
+
                 # Decide to Run or Not
                 if test_mode and sub.subscriber.admin:
                     pass
