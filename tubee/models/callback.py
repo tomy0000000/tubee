@@ -1,4 +1,5 @@
 """Callback Model"""
+from datetime import datetime
 from uuid import uuid4
 from .. import db
 
@@ -14,20 +15,14 @@ class Callback(db.Model):
     user_agent           Sender's Identity
     """
     __tablename__ = "callback"
-    callback_id = db.Column(db.String(36), primary_key=True)
-    received_datetime = db.Column(db.DateTime,
-                                  server_default=db.text("CURRENT_TIMESTAMP"))
-    channel_id = db.Column(db.String(30),
-                           db.ForeignKey("channel.channel_id"),
-                           nullable=False)
-    channel = db.relationship("Channel", back_populates="callbacks")
-    action = db.Column(db.String(30))
-    details = db.Column(db.String(20))
-    method = db.Column(db.String(10))
-    path = db.Column(db.String(100))
-    arguments = db.Column(db.JSON)
-    data = db.Column(db.Text)
-    user_agent = db.Column(db.String(200))
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(32))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    infos = db.Column(db.JSON)
+    channel_id = db.Column(db.String(32),
+                           db.ForeignKey("channel.id"))
+    video_id = db.Column(db.String(32),
+                         db.ForeignKey("video.id"))
 
     def __init__(self, channel):
         self.callback_id = str(uuid4())
@@ -36,4 +31,4 @@ class Callback(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "<Callback {}>".format(self.callback_id)
+        return "<{}'s Callback {}>".format(self.channel_id, self.callback_id)

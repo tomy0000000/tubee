@@ -7,7 +7,7 @@
     <label for="username" class="col-form-label">Username</label>
     <input type="text" class="form-control" id="username" value="{{ current_user.username }}" readonly>
     <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" aria-describedby="passwordHelp" value="........" readonly>
+    <input type="password" class="form-control" id="password" aria-describedby="passwordHelp" value=".........." readonly>
     <small id="passwordHelp" class="form-text text-muted">
         To Change Password, Click
         <a href="">
@@ -16,13 +16,13 @@
     </small>
     <label for="pushover_key" class="col-form-label">Pushover</label>
     <div class="input-group">
-        {% if current_user.pushover %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover }}" aria-describedby="pushover_revoke" readonly>
+        {% if current_user.pushover_configured() %}
+        <input type="password" class="form-control" id="pushover_key" value=".........." aria-describedby="pushover_revoke" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="#" role="button" id="pushover_revoke">Revoke</a>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="pushover_key" value="{{ current_user.pushover }}" aria-describedby="pushover_validate">
+        <input type="text" class="form-control" id="pushover_key" aria-describedby="pushover_validate">
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="#" role="button" id="pushover_validate">Validate</a>
         </div>
@@ -34,13 +34,13 @@
     </small>
     <label for="youtube_credentials" class="col-form-label">YouTube Account</label>
     <div class="input-group">
-        {% if current_user.youtube_credentials %}
-        <input type="text" class="form-control" id="youtube_credentials" value="{{ current_user.youtube_credentials }}" aria-describedby="youtube_revoke" readonly>
+        {% if current_user.youtube_configured() %}
+        <input type="password" class="form-control" id="youtube_credentials" value=".........." aria-describedby="youtube_revoke" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_youtube_revoke') }}" role="button" id="youtube_revoke">Revoke</a>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="youtube_credentials" value="{{ current_user.youtube_credentials }}" aria-describedby="youtube_authorize" readonly>
+        <input type="text" class="form-control" id="youtube_credentials" aria-describedby="youtube_authorize" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_youtube_authorize') }}" role="button" id="youtube_authorize">Authorize</a>
         </div>
@@ -48,13 +48,13 @@
     </div>
     <label for="line_notify_credentials" class="col-form-label">Line Notify Account</label>
     <div class="input-group">
-        {% if current_user.line_notify_credentials %}
-        <input type="text" class="form-control" id="line_notify_credentials" value="{{ current_user.line_notify_credentials }}" aria-describedby="line_notify_revoke" readonly>
+        {% if current_user.line_notify_configured() %}
+        <input type="password" class="form-control" id="line_notify_credentials" value=".........." aria-describedby="line_notify_revoke" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_line_notify_revoke') }}" role="button" id="line_notify_revoke">Revoke</a>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="line_notify_credentials" value="{{ current_user.line_notify_credentials }}" aria-describedby="line_notify_authorize" readonly>
+        <input type="text" class="form-control" id="line_notify_credentials" aria-describedby="line_notify_authorize" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_line_notify_authorize') }}" role="button" id="line_notify_authorize">Authorize</a>
         </div>
@@ -62,13 +62,13 @@
     </div>
     <label for="dropbox_credentials" class="col-form-label">Dropbox Account</label>
     <div class="input-group">
-        {% if current_user.dropbox_credentials %}
-        <input type="text" class="form-control" id="dropbox_credentials" value="{{ current_user.dropbox_credentials }}" aria-describedby="dropbox_revoke" readonly>
+        {% if current_user.dropbox_configured() %}
+        <input type="password" class="form-control" id="dropbox_credentials" value=".........." aria-describedby="dropbox_revoke" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_dropbox_revoke') }}" role="button" id="dropbox_revoke">Revoke</a>
         </div>
         {% else %}
-        <input type="text" class="form-control" id="dropbox_credentials" value="{{ current_user.dropbox_credentials }}" aria-describedby="dropbox_authorize" readonly>
+        <input type="text" class="form-control" id="dropbox_credentials" aria-describedby="dropbox_authorize" readonly>
         <div class="input-group-append">
             <a class="btn btn-outline-secondary" href="{{ url_for('user.setting_dropbox_authorize') }}" role="button" id="dropbox_authorize">Authorize</a>
         </div>

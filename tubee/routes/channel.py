@@ -24,8 +24,7 @@ channel_blueprint = Blueprint("channel", __name__)
 
 @channel_blueprint.route("/<channel_id>")
 def channel(channel_id):
-    channel_item = Channel.query.filter_by(
-        channel_id=channel_id).first_or_404()
+    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
     videos = build_youtube_api().search().list(part="snippet",
                                                channelId=channel_id,
                                                maxResults=50,
@@ -48,9 +47,9 @@ def channel(channel_id):
         }
         callback_search = Callback.query.filter_by(
             channel_id=channel_id,
-            action="Hub Notification",
-            details=video["id"]["videoId"]).order_by(
-                Callback.received_datetime.asc()).all()
+            type="Hub Notification",
+            video_id=video["id"]["videoId"]).order_by(
+                Callback.timestamp.asc()).all()
         video["snippet"]["callback"] = {
             "datetime":
             callback_search[0].received_datetime
@@ -58,8 +57,7 @@ def channel(channel_id):
             "count":
             len(callback_search)
         }
-    actions = current_user.subscriptions.filter_by(
-        subscribing_channel_id=channel_id).first().actions.all()
+    actions = current_user.subscriptions.filter_by(channel_id=channel_id).first().actions.all()
     form = ActionForm()
     return render_template("channel.html",
                            channel=channel_item,
@@ -96,7 +94,7 @@ def unsubscribe(channel_id):
     (2) Submit the form POST request
     """
     subscription = current_user.subscriptions.filter_by(
-        subscribing_channel_id=channel_id).first()
+        channel_id=channel_id).first()
     if subscription is None:
         flash(
             "You can't unsubscribe to {} since you havn't subscribe to it.".
@@ -119,34 +117,32 @@ def callback(channel_id):
     GET: Receive Hub Challenges to maintain subscription
     POST: New Update from Hub
     """
-    channel_item = Channel.query.filter_by(
-        channel_id=channel_id).first_or_404()
+    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
     callback_item = Callback(channel_item)
-    callback_item.method = request.method
-    callback_item.path = request.path
-    callback_item.arguments = request.args
-    callback_item.user_agent = str(request.user_agent)
-    try:
-        if request.method == "GET":
-            get_args = request.args.to_dict()
-            response = get_args.get("hub.challenge")
-            if response:
-                callback_item.action = "Hub Challenge"
-                callback_item.details = response
-            else:
-                callback_item.action = "Unknown GET Request"
-        elif request.method == "POST":
-
+    infos = {
+        "method": request.method,
+        "arguments": request.args,
+        "user_agent": str(request.user_agent),
+    }
+    if request.method == "GET":
+        response = request.args.to_dict().get("hub.challenge")
+        if response:
+            callback_item.type = "Hub Challenge"
+            infos["details"] = response
+        else:
+            callback_item.type = "Unknown GET Request"
+    elif request.method == "POST":
+        try:
             # Preprocessing
             test_mode = bool("testing" in request.args.to_dict())
-            post_datas = request.get_data()
+            post_datas = request.get_data().decode("utf-8")
             soup = bs4.BeautifulSoup(post_datas, "xml")
             video_id = soup.find("yt:videoId").string
 
             # Append Callback SQL Record
-            callback_item.action = "Hub Notification"
-            callback_item.details = video_id
-            callback_item.data = post_datas.decode("utf-8")
+            callback_item.type = "Hub Notification"
+            # callback_item.video_id = video_id
+            infos["data"] = post_datas
 
             # Fetching Video Infos
             video_title = soup.entry.find("title").string
@@ -157,7 +153,7 @@ def callback(channel_id):
             video_description = video_infos["description"]
             video_thumbnails = video_infos["thumbnails"]["medium"]["url"]
             previous_callback = Callback.query.filter_by(
-                details=video_id).count() - 1  # Don't count this callback
+                video_id=video_id).count() - 1  # Don't count this callback
             new_video_update = bool(previous_callback)
             try:  # TODO
                 video_file_url = youtube_dl.fetch_video_metadata(
@@ -168,9 +164,9 @@ def callback(channel_id):
             # List users
             response = {}
             for sub in Subscription.query.filter_by(
-                    subscribing_channel_id=channel_id).all():
+                    channel_id=channel_id).all():
                 old_video_update = bool(
-                    video_datetime < sub.subscribe_datetime)
+                    video_datetime < sub.subscribe_timestamp)
                 current_app.logger.info(
                     "New Video Update: {}".format(new_video_update))
                 current_app.logger.info(
@@ -178,16 +174,16 @@ def callback(channel_id):
                 current_app.logger.info(
                     "Action as Test Mode: {}".format(test_mode))
                 current_app.logger.info("Subscriber is Admin: {}".format(
-                    sub.subscriber.admin))
+                    sub.user.admin))
 
                 # Decide to Run or Not
-                if test_mode and sub.subscriber.admin:
+                if test_mode and sub.user.admin:
                     pass
                 elif old_video_update or new_video_update:
                     continue
 
                 # Execute Actions
-                response[sub.subscriber.username] = {}
+                response[sub.username] = {}
                 for action in sub.actions:
                     try:
                         results = action.execute(
@@ -196,32 +192,30 @@ def callback(channel_id):
                             video_description=video_description,
                             video_thumbnails=video_thumbnails,
                             video_file_url=video_file_url,
-                            channel_name=channel_item.channel_name)
+                            channel_name=channel_item.name)
                         current_app.logger.info("{}-{}: OK".format(
-                            sub.subscriber_username, action.action_id))
+                            sub.username, action.id))
                     except Exception as error:
                         current_app.logger.info("{}-{}: {}".format(
-                            sub.subscriber_username, action.action_id, error))
+                            sub.username, action.id, error))
                         results = error
-                    response[sub.subscriber_username][action.action_id] = str(
-                        results)
+                    response[sub.username][action.id] = str(results)
 
             # Auto Renew if expiration is close
-            if channel_item.expire_datetime and channel_item.expire_datetime - datetime.now(
-            ) < timedelta(days=2):
+            if channel_item.hub_infos["expiration"] and channel_item.hub_infos[
+                    "expiration"] - datetime.now() < timedelta(days=2):
                 response["renew"] = channel_item.renew()
                 current_app.logger.info("Channel renewed during callback")
                 current_app.logger.info(response["renew"])
                 notify_admin("Deployment",
                              "Pushover",
-                             message="{} <{}>".format(
-                                 channel_item.channel_name,
-                                 channel_item.channel_id),
+                             message="{} <{}>".format(channel_item.name,
+                                                      channel_item.id),
                              title="Channel renewed during callback")
             response = jsonify(response)
-    except Exception as error:
-        current_app.logger.info("Unexpected Error")
-        current_app.logger.info(error)
-    finally:
-        db.session.commit()
+        except Exception as error:
+            current_app.logger.info("Unexpected Error")
+            current_app.logger.info(error)
+    callback_item.infos = infos
+    db.session.commit()
     return response

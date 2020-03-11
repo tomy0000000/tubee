@@ -13,7 +13,7 @@ from wtforms.validators import (
     EqualTo,
     Length,
 )
-from .models import ActionEnum
+from .models import ActionType
 
 
 class LoginForm(FlaskForm):
@@ -63,5 +63,5 @@ class ActionForm(FlaskForm):
     action_type = SelectField("Type",
                               validators=[DataRequired()],
                               choices=[(item.name, item.value)
-                                       for item in ActionEnum])
+                                       for item in ActionType])
     channel_id = HiddenField("Channel ID", validators=[DataRequired()])

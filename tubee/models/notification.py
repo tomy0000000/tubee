@@ -6,6 +6,7 @@ from flask import current_app
 from pushover_complete import PushoverAPI
 from uuid import uuid4
 from .. import db
+from ..exceptions import ServiceNotSet
 
 
 class Service(Enum):
@@ -38,14 +39,13 @@ class Notification(db.Model):
         response {dict} -- server response when notification is sent
     """
     __tablename__ = "notification"
-    notification_id = db.Column(db.String(36), primary_key=True)
-    initiator = db.Column(db.String(15), nullable=False)
-    user_id = db.Column(db.String(30), db.ForeignKey("user.username"))
-    user = db.relationship("User", back_populates="notifications")
+    id = db.Column(db.Integer, primary_key=True)
+    initiator = db.Column(db.String(16), nullable=False)
+    username = db.Column(db.String(32), db.ForeignKey("user.username"))
     service = db.Column(db.Enum(Service))
-    message = db.Column(db.String(2000))
+    message = db.Column(db.Text)
     kwargs = db.Column(db.JSON)
-    sent_datetime = db.Column(db.DateTime)
+    sent_timestamp = db.Column(db.DateTime, index=True)
     response = db.Column(db.JSON)
 
     def __init__(self, initiator, user, service, send=True, **kwargs):
@@ -102,13 +102,13 @@ class Notification(db.Model):
             raise AttributeError("Service is not set")
         if not self.message:
             raise AttributeError("Message is empty")
-        if self.sent_datetime:
+        if self.sent_timestamp:
             raise AttributeError("This Notification has already sent")
         if self.service is Service.Pushover:
             self.response = self._send_with_pushover()
         if self.service is Service.LineNotify:
             self.response = self._send_with_line_notify()
-        self.sent_datetime = datetime.now()
+        self.sent_timestamp = datetime.utcnow()
         db.session.commit()
         return self.response
 

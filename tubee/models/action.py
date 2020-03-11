@@ -1,10 +1,9 @@
 """Action Model"""
 from enum import Enum
-from uuid import uuid4
 from .. import db
 
 
-class ActionEnum(Enum):
+class ActionType(Enum):
     Notification = "Notification"
     Playlist = "Playlist"
     Download = "Download"
@@ -13,38 +12,35 @@ class ActionEnum(Enum):
 class Action(db.Model):
     """Action to Perform when new video uploaded"""
     __tablename__ = "action"
-    action_id = db.Column(db.String(36), primary_key=True)
-    action_name = db.Column(db.String(32))
-    action_type = db.Column(db.Enum(ActionEnum), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), nullable=False)
+    type = db.Column(db.Enum(ActionType), nullable=False)
     details = db.Column(db.JSON)
-    subscription = db.relationship("Subscription", back_populates="actions")
-    subscription_username = db.Column(db.String(32))
-    subscription_channel_id = db.Column(db.String(30))
+    username = db.Column(db.String(32), db.ForeignKey("subscription.username"))
+    channel_id = db.Column(db.String(32),
+                           db.ForeignKey("subscription.channel_id"))
     __table_args__ = (db.ForeignKeyConstraint(
-        [subscription_username, subscription_channel_id], [
-            "subscription.subscriber_username",
-            "subscription.subscribing_channel_id"
-        ]), {})
+        [username, channel_id],
+        ["subscription.username", "subscription.channel_id"]), {})
 
     def __init__(self, action_name, action_type, user, channel, details=None):
-        self.action_id = str(uuid4())
-        self.action_name = action_name
-        self.action_type = action_type if action_type is ActionEnum else ActionEnum(
+        self.name = action_name
+        self.type = action_type if action_type is ActionType else ActionType(
             action_type)
-        self.subscription_username = user.username
-        self.subscription_channel_id = channel.channel_id
+        self.username = user.username
+        self.channel_id = channel.id
         self.details = details
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
         return "<Action: {} associate with user {} for {}>".format(
-            self.action_type, self.user.username, self.channel.channel_id)
+            self.type, self.username, self.channel_id)
 
     @property
     def user(self):
         from . import User
-        return User.query.get(self.subscription_username)
+        return User.query.get(self.username)
 
     @user.setter
     def user(self, user_id):
@@ -53,14 +49,14 @@ class Action(db.Model):
     @property
     def channel(self):
         from . import Channel
-        return Channel.query.get(self.subscription_channel_id)
+        return Channel.query.get(self.channel_id)
 
     @channel.setter
     def channel(self, channel_id):
         raise AttributeError("Channel can't be modified")
 
     def execute(self, **parameters):
-        if self.action_type is ActionEnum.Notification:
+        if self.type is ActionType.Notification:
             return self.user.send_notification(
                 "Action",
                 self.details.get("service", None),
@@ -76,12 +72,12 @@ class Action(db.Model):
                     "url_title", "{video_title}").format(**parameters),
                 image_url=self.details.get(
                     "image_url", "{video_thumbnails}").format(**parameters))
-        if self.action_type is ActionEnum.Playlist:
+        if self.type is ActionType.Playlist:
             return self.user.insert_video_to_playlist(
                 parameters["video_id"],
                 playlist_id=self.details.get("playlist_id", None),
                 position=self.details.get("position", None))
-        if self.action_type is ActionEnum.Download:
+        if self.type is ActionType.Download:
             return self.user.dropbox.files_save_url(
                 self.details.get("file_path",
                                  "/{video_title}.mp4").format(**parameters),

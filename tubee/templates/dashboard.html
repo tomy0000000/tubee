@@ -49,35 +49,35 @@
         {% for subscription in subscriptions %}
         <tr>
             <th scope="row" class="align-middle channel-thumbnails">
-                {% if subscription.channel.thumbnails_url %}
-                <img src="{{ subscription.channel.thumbnails_url }}" class="rounded-circle">
+                {% if subscription.channel.infos.snippet.thumbnails.high.url %}
+                <img src="{{ subscription.channel.infos.snippet.thumbnails.high.url }}" class="rounded-circle">
                 {% endif %}
             </th>
             <td class="align-middle channel-name">
-                <a href="{{ url_for('channel.channel', channel_id=subscription.channel.channel_id) }}">
-                    <p class="mb-0">{{ subscription.channel.channel_name }}</p>
+                <a href="{{ url_for('channel.channel', channel_id=subscription.channel_id) }}">
+                    <p class="mb-0">{{ subscription.channel.name }}</p>
                 </a>
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel.channel_id }}">
-                    <p class="mb-0">{{ subscription.channel.channel_id }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel_id }}">
+                    <p class="mb-0">{{ subscription.channel_id }}</p>
                 </a>
-                {% if subscription.channel.custom_url %}
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel.custom_url }}">
-                    <p class="mb-0">#{{ subscription.channel.custom_url }}</p>
+                {% if subscription.channel.infos.snippet.customUrl %}
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ subscription.channel.infos.snippet.customUrl }}">
+                    <p class="mb-0">#{{ subscription.channel.infos.snippet.customUrl }}</p>
                 </a>
                 {% endif %}
             </td>
             <td class="align-middle"></td>
             <td class="align-middle">
-                <button type="button" class="btn btn-danger unsubscribe-btn" data-channel-name="{{ subscription.channel.channel_name }}" data-api-endpoint="{{ url_for('api.channel_unsubscribe', channel_id=subscription.channel.channel_id) }}">Unsubscribe</button>
+                <button type="button" class="btn btn-danger unsubscribe-btn" data-channel-name="{{ subscription.channel.name }}" data-api-endpoint="{{ url_for('api.channel_unsubscribe', channel_id=subscription.channel_id) }}">Unsubscribe</button>
                 {% if current_user.admin %}
-                <button class="btn btn-warning renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel.channel_id) }}">Renew</button>
+                <button class="btn btn-warning renew-btn" type="button" data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel_id) }}">Renew</button>
                 {% endif %}
             </td>
             {% if current_user.admin %}
             <td class="align-middle">
-                <span class="badge badge-primary">{{ subscription.channel.latest_status }}</span>
+                <span class="badge badge-primary">{{ subscription.channel.hub_infos.state }}</span>
                 <br>
-                <span class="badge badge-warning">{{ moment(subscription.channel.expire_datetime).fromNow() }}</span>
+                <span class="badge badge-warning">{{ moment(subscription.channel.hub_infos.expiration).fromNow() }}</span>
             </td>
             {% endif %}
         </tr>

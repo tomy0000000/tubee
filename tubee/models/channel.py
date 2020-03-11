@@ -9,61 +9,38 @@ from ..helper.youtube import build_youtube_api
 
 class Channel(db.Model):
     __tablename__ = "channel"
-    channel_id = db.Column(db.String(30), primary_key=True)
-    channel_name = db.Column(db.String(100))
-    thumbnails_url = db.Column(db.String(200))
-    country = db.Column(db.String(5))
-    language = db.Column(db.String(5))
-    custom_url = db.Column(db.String(100))
-    description = db.Column(db.Text)
+    id = db.Column(db.String(32), primary_key=True)
+    name = db.Column(db.String(128))
     active = db.Column(db.Boolean)
-    latest_status = db.Column(db.String(20))
-    expire_datetime = db.Column(db.DateTime)
+    infos = db.Column(db.JSON)
     hub_infos = db.Column(db.JSON)
-    renew_datetime = db.Column(db.DateTime)
-    subscribe_datetime = db.Column(db.DateTime,
-                                   server_default=db.text("CURRENT_TIMESTAMP"))
-    unsubscribe_datetime = db.Column(db.DateTime)
+    subscribe_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    unsubscribe_timestamp = db.Column(db.DateTime)
+    videos = db.relationship("Video", backref="channel", lazy="dynamic")
+    callbacks = db.relationship("Callback", backref="channel", lazy="dynamic")
     subscribers = db.relationship("Subscription",
-                                  back_populates="channel",
+                                  backref=db.backref("channel", lazy="joined"),
                                   lazy="dynamic",
                                   cascade="all, delete-orphan")
-    videos = db.relationship("Video",
-                             back_populates="channel",
-                             lazy="dynamic",
-                             cascade="all, delete-orphan")
-    callbacks = db.relationship("Callback",
-                                back_populates="channel",
-                                lazy="dynamic",
-                                cascade="all, delete-orphan")
 
     def __init__(self, channel_id):
-        self.channel_id = channel_id
+        self.id = channel_id
         # TODO: Validate Channel
-        self.channel_name = build_youtube_api().channels().list(
+        self.name = build_youtube_api().channels().list(
             part="snippet",
             id=channel_id).execute()["items"][0]["snippet"]["title"]
         db.session.add(self)
         db.session.commit()
-        self.renew_info()
-        self.renew_hub()
+        self.update_infos()
+        self.update_hub_infos()
         self.activate()
 
     def __repr__(self):
-        return "<Channel {}(#{})>".format(self.channel_name, self.channel_id)
+        return "<Channel {}(#{})>".format(self.name, self.id)
 
     def activate(self):
         """Activate Subscription"""
-        response = self.renew_subscription()
-
-        # Schedule renew datetime
-        # job_response = scheduler.add_job(
-        #     id="renew_"+channel_id,
-        #     func=renew_subscription,
-        #     trigger="interval",
-        #     args=[new_subscription],
-        #     days=4)
-
+        response = self.subscribe()
         if response:
             self.active = True
             db.session.commit()
@@ -72,36 +49,34 @@ class Channel(db.Model):
     def deactivate(self):
         """Submitting Hub Unsubscription"""
         callback_url = url_for("channel.callback",
-                               channel_id=self.channel_id,
+                               channel_id=self.id,
                                _external=True)
         if current_app.config["HUB_RECEIVE_DOMAIN"]:
             callback_url = callback_url.replace(
                 request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
-        param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
+        param_query = urllib.parse.urlencode({"channel_id": self.id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = unsubscribe(callback_url, topic_url)
         if response.success:
             self.active = False
-            self.unsubscribe_datetime = datetime.now()
+            self.unsubscribe_timestamp = datetime.utcnow()
             db.session.commit()
         return response
 
-    def renew_hub(self, stringify=False):
+    def update_hub_infos(self, stringify=False):
         callback_url = url_for("channel.callback",
-                               channel_id=self.channel_id,
+                               channel_id=self.id,
                                _external=True)
         if current_app.config["HUB_RECEIVE_DOMAIN"]:
             callback_url = callback_url.replace(
                 request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
-        param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
+        param_query = urllib.parse.urlencode({"channel_id": self.id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = details(callback_url, topic_url)
-        self.latest_status = response["state"]
-        self.expire_datetime = response["expiration"]
-        if not stringify:
-            response_copy = response.copy()
         response.pop("requests_url")
         response.pop("response_object")
+        if not stringify:
+            response_copy = response.copy()
         for key, val in response.items():
             if not val:
                 continue
@@ -115,67 +90,46 @@ class Channel(db.Model):
         db.session.commit()
         return response_copy
 
-    def renew_info(self):
-        retrieved_infos = build_youtube_api().channels().list(
-            part="snippet", id=self.channel_id).execute()["items"][0]
-        modification = {
-            "channel_name": True,
-            "description": False,
-            "thumbnails_url": True,
-            "country": False,
-            "defaultLanguage": False,
-            "customUrl": False
-        }
-        self.channel_name = retrieved_infos["snippet"]["title"]
-        self.thumbnails_url = retrieved_infos["snippet"]["thumbnails"]["high"][
-            "url"]
-        if "description" in retrieved_infos["snippet"]:
-            self.description = retrieved_infos["snippet"]["description"]
-            modification["description"] = True
-        if "country" in retrieved_infos["snippet"]:
-            self.country = retrieved_infos["snippet"]["country"]
-            modification["country"] = True
-        if "defaultLanguage" in retrieved_infos["snippet"]:
-            self.language = retrieved_infos["snippet"]["defaultLanguage"]
-            modification["defaultLanguage"] = True
-        if "customUrl" in retrieved_infos["snippet"]:
-            self.custom_url = retrieved_infos["snippet"]["customUrl"]
-            modification["customUrl"] = True
-        db.session.commit()
-        # TODO: Consider adding localized infos(?)
-        return modification
+    def update_infos(self):
+        try:
+            self.infos = build_youtube_api().channels().list(
+                part="snippet", id=self.id).execute()["items"][0]
+            return True
+        # TODO: Parse API Error
+        except Exception as error:
+            return error
 
-    def renew_subscription(self):
+    def subscribe(self):
         """Renew Subscription by submitting new Hub Subscription"""
         callback_url = url_for("channel.callback",
-                               channel_id=self.channel_id,
+                               channel_id=self.id,
                                _external=True,
                                _scheme="https")
         if current_app.config["HUB_RECEIVE_DOMAIN"]:
             callback_url = callback_url.replace(
                 request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
-        param_query = urllib.parse.urlencode({"channel_id": self.channel_id})
+        param_query = urllib.parse.urlencode({"channel_id": self.id})
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
         response = subscribe(callback_url, topic_url)
         current_app.logger.info("Callback URL: {}".format(callback_url))
         current_app.logger.info("Topic URL   : {}".format(topic_url))
-        current_app.logger.info("Channel ID  : {}".format(self.channel_id))
+        current_app.logger.info("Channel ID  : {}".format(self.id))
         current_app.logger.info("Response    : {}".format(
             response.status_code))
         if response.success:
-            self.renew_datetime = datetime.now()
+            self.renew_datetime = datetime.utcnow()
             db.session.commit()
         return response.success
 
     def renew(self, stringify=False):
         """Trigger renew functions"""
-        subscription_response = self.renew_subscription()
-        info_response = self.renew_info()
-        hub_response = self.renew_hub(stringify=stringify)
+        subscription_response = self.subscribe()
+        info_response = self.update_infos()
+        hub_response = self.update_hub_infos(stringify=stringify)
         response = info_response.copy()
         current_app.logger.info("Channel Renewed: {}<{}>".format(
-            self.channel_name, self.channel_id))
+            self.name, self.channel_id))
         current_app.logger.info(response)
-        response.update({"renew_subscription": subscription_response})
+        response.update({"subscribe": subscription_response})
         response.update(hub_response)
         return response

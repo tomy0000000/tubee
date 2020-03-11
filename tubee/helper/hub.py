@@ -20,16 +20,19 @@ DEFAULT_HEADERS = {
 }
 REQUIRED_PARAMETERS = ["hub.callback", "hub.mode", "hub.topic"]
 
+
 class MissingRequiredParameterError(Exception):
     """Raised when a required parameter is missing"""
     def __init__(self, message, parameter):
         super().__init__(message)
         self.parameter = parameter
 
+
 class NonSecureHubSecretError(Exception):
     """Raised when Hub secret is sending with http callback url"""
     def __init__(self):
         super().__init__("Hub Secret is not allowed when using http")
+
 
 def _formal_post_request(endpoint, **data):
     """
@@ -56,14 +59,14 @@ def _formal_post_request(endpoint, **data):
 
     # Sending Requests
     try:
-        response = requests.post(
-            url=urllib.parse.urljoin(HUB_GOOGLE_HUB, endpoint),
-            headers=DEFAULT_HEADERS,
-            data=data
-        )
+        response = requests.post(url=urllib.parse.urljoin(
+            HUB_GOOGLE_HUB, endpoint),
+                                 headers=DEFAULT_HEADERS,
+                                 data=data)
         return response
     except requests.exceptions.RequestException:
         return -1
+
 
 def _formal_get_request(endpoint, **params):
     """
@@ -75,14 +78,14 @@ def _formal_get_request(endpoint, **params):
     hub.secret              Subscriber-provided secret string
     """
     try:
-        response = requests.get(
-            url=urllib.parse.urljoin(HUB_GOOGLE_HUB, endpoint),
-            headers=DEFAULT_HEADERS,
-            params=params
-        )
+        response = requests.get(url=urllib.parse.urljoin(
+            HUB_GOOGLE_HUB, endpoint),
+                                headers=DEFAULT_HEADERS,
+                                params=params)
         return response
     except requests.exceptions.RequestException:
         return -1
+
 
 def _parse_detail(query, fuzzy=False):
     try:
@@ -93,6 +96,7 @@ def _parse_detail(query, fuzzy=False):
         return parsed_datetime
     summary = re.search(r"\((.*)\)", query).groups()[0]
     return (parsed_datetime, summary)
+
 
 def subscribe(callback_url, topic_url, **kwargs):
     """
@@ -112,6 +116,7 @@ def subscribe(callback_url, topic_url, **kwargs):
         response.success = True
     return response
 
+
 def unsubscribe(callback_url, topic_url, **kwargs):
     """
     Optional Parameters:
@@ -129,6 +134,7 @@ def unsubscribe(callback_url, topic_url, **kwargs):
     if response.status_code == 202:
         response.success = True
     return response
+
 
 def details(callback_url, topic_url, **kwargs):
     """
@@ -153,7 +159,9 @@ def details(callback_url, topic_url, **kwargs):
     response_dict["expiration"] = _parse_detail(target[3].string)
     response_dict["last_subscribe"] = _parse_detail(target[4].string)
     response_dict["last_unsubscribe"] = _parse_detail(target[5].string)
-    response_dict["last_challenge_error"] = _parse_detail(target[6].string, fuzzy=True)
-    response_dict["last_notification_error"] = _parse_detail(target[7].string, fuzzy=True)
+    response_dict["last_challenge_error"] = _parse_detail(target[6].string,
+                                                          fuzzy=True)
+    response_dict["last_notification_error"] = _parse_detail(target[7].string,
+                                                             fuzzy=True)
     response_dict["last_notification"] = _parse_detail(target[10].string)
     return response_dict

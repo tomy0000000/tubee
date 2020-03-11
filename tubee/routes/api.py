@@ -1,6 +1,6 @@
 """API for Frontend Access"""
 from datetime import datetime, timedelta
-from flask import abort, Blueprint, current_app, flash, jsonify, request, url_for
+from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 from ..exceptions import UserError
@@ -75,8 +75,8 @@ def channels_renew():
 @api_blueprint.route("/<channel_id>/status")
 def channel_status(channel_id):
     """From Hub fetch Status"""
-    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
-    response = channel.renew_hub(stringify=True)
+    channel = Channel.query.filter_by(id=channel_id).first_or_404()
+    response = channel.update_hub_infos(stringify=True)
     return jsonify(response)
 
 
@@ -107,13 +107,13 @@ def channel_renew(channel_id):
 @login_required
 def action(action_id):
     """Get JSON of subscription action"""
-    action = Action.query.filter_by(action_id=action_id).first_or_404()
+    action = Action.query.filter_by(id=action_id).first_or_404()
     if action.subscription not in current_user.subscriptions:
         abort(403)
     return jsonify(
-        dict(action_id=action.action_id,
-             action_name=action.action_name,
-             action_type=action.action_type.value,
+        dict(action_id=action.id,
+             action_name=action.name,
+             action_type=action.type.value,
              details=action.details))
 
 
@@ -123,7 +123,7 @@ def action_new():
     form = ActionForm()
     if form.validate_on_submit():
         subscription = current_user.subscriptions.filter_by(
-            subscribing_channel_id=form.channel_id.data).first_or_404()
+            channel_id=form.channel_id.data).first_or_404()
         if form.action_type.data == "Notification":
             details = {
                 "service": "Pushover",
@@ -147,20 +147,20 @@ def action_new():
 @login_required
 def action_edit(action_id):
     # TODO
-    action = Action.query.filter_by(action_id=action_id).first_or_404()
+    action = Action.query.filter_by(id=action_id).first_or_404()
     if action.subscription not in current_user.subscriptions:
         abort(403)
     form = ActionForm()
     if form.validate_on_submit():
         subscription = current_user.subscriptions.filter_by(
-            subscribing_channel_id=form.channel_id.data).first_or_404()
+            channel_id=form.channel_id.data).first_or_404()
     return jsonify({})
 
 
 @api_blueprint.route("/<action_id>/remove")
 @login_required
 def action_remove(action_id):
-    action = Action.query.filter_by(action_id=action_id).first_or_404()
+    action = Action.query.filter_by(id=action_id).first_or_404()
     if action.subscription not in current_user.subscriptions:
         abort(403)
     return str(action.subscription.remove_action(action_id))

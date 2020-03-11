@@ -23,8 +23,6 @@ def unhandled_exception(error):
     501: Raised when the endpoint is not implemented yet
     https://werkzeug.palletsprojects.com/en/0.16.x/exceptions/#error-classes
     """
-    if current_app.debug:
-        raise error
     code = error.code if isinstance(error, HTTPException) else 500
     current_app.logger.error(error)
     if request.path.startswith("/api"):

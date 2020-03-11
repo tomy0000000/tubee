@@ -18,9 +18,9 @@ login_manager.login_view = "user.login"
 
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(username):
     """Internal function for user info accessing"""
-    return User.query.get(user_id)
+    return User.query.get(username)
 
 
 class User(UserMixin, db.Model):
@@ -35,20 +35,17 @@ class User(UserMixin, db.Model):
     __tablename__ = "user"
     username = db.Column(db.String(32), primary_key=True)
     _password_hash = db.Column(db.LargeBinary(128), nullable=False)
-    _pushover_key = db.Column(db.String(40))
-    admin = db.Column(db.Boolean, server_default="0")
-    # language = db.Column(db.String(5))
-    youtube_credentials = db.Column(db.JSON)
-    # youtube_subscription = db.Column(db.JSON)
-    line_notify_credentials = db.Column(db.String(50))
-    # preferred_notification_service = db.Column(db.Enum(Service))
-    dropbox_credentials = db.Column(db.JSON)
-    subscriptions = db.relationship("Subscription",
-                                    back_populates="subscriber",
-                                    lazy="dynamic",
-                                    cascade="all, delete-orphan")
+    admin = db.Column(db.Boolean, default=False)
+    _pushover_key = db.Column(db.String(32))
+    _youtube_credentials = db.Column(db.JSON)
+    _line_notify_credentials = db.Column(db.String(64))
+    _dropbox_credentials = db.Column(db.JSON)
+    # locale = db.Column()
     notifications = db.relationship("Notification",
-                                    back_populates="user",
+                                    backref="user",
+                                    lazy="dynamic")
+    subscriptions = db.relationship("Subscription",
+                                    backref=db.backref("user", lazy="joined"),
                                     lazy="dynamic",
                                     cascade="all, delete-orphan")
 
@@ -88,7 +85,8 @@ class User(UserMixin, db.Model):
         if len(password) < 6:
             raise InvalidParameter("Password must be longer than 6 characters")
         if len(password) > 30:
-            raise InvalidParameter("Password must be shorter than 30 characters")
+            raise InvalidParameter(
+                "Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
 
     def check_password(self, password):
@@ -169,9 +167,9 @@ class User(UserMixin, db.Model):
         Raises:
             ServiceNotSet -- Raised when user has not authorized yet.
         """
-        if not self.youtube_credentials:
+        if not self._youtube_credentials:
             raise ServiceNotSet("User has not authorized YouTube access")
-        return youtube.build_youtube_api(self.youtube_credentials)
+        return youtube.build_youtube_api(self._youtube_credentials)
 
     @youtube.setter
     def youtube(self, credentials):
@@ -187,7 +185,7 @@ class User(UserMixin, db.Model):
         """
         if not isinstance(credentials, Credentials) or not credentials.valid:
             raise InvalidParameter("Invalid Credentials")
-        self.youtube_credentials = dict(
+        self._youtube_credentials = dict(
             token=credentials.token,
             refresh_token=credentials.refresh_token,
             token_uri=credentials.token_uri,
@@ -209,15 +207,15 @@ class User(UserMixin, db.Model):
         """
         response = requests.post(
             "https://oauth2.googleapis.com/revoke",
-            params={"token": self.youtube_credentials["token"]},
+            params={"token": self._youtube_credentials["token"]},
             headers={"content-type": "application/x-www-form-urlencoded"})
         if response.status_code == 200:
-            self.youtube_credentials = None
+            self._youtube_credentials = None
             db.session.commit()
             return
         error_description = response.json()["error_description"]
         if error_description == "Token expired or revoked":
-            self.youtube_credentials = None
+            self._youtube_credentials = None
             db.session.commit()
             raise BackendError(error_description, "success")
         raise BackendError(error_description, "danger")
@@ -242,22 +240,22 @@ class User(UserMixin, db.Model):
         Raises:
             ServiceNotSet -- Raised when user has not authorized yet.
         """
-        if not self.dropbox_credentials:
+        if not self._dropbox_credentials:
             raise ServiceNotSet("User has not authorized Dropbox access")
-        return dropbox.Dropbox(self.dropbox_credentials["access_token"])
+        return dropbox.Dropbox(self._dropbox_credentials["access_token"])
 
     @dropbox.setter
     def dropbox(self, credentials):
-        self.dropbox_credentials = dict(access_token=credentials.access_token,
-                                        account_id=credentials.account_id,
-                                        user_id=credentials.user_id,
-                                        url_state=credentials.url_state)
+        self._dropbox_credentials = dict(access_token=credentials.access_token,
+                                         account_id=credentials.account_id,
+                                         user_id=credentials.user_id,
+                                         url_state=credentials.url_state)
         db.session.commit()
 
     @dropbox.deleter
     def dropbox(self):
         self.dropbox.auth_token_revoke()
-        self.dropbox_credentials = None
+        self._dropbox_credentials = None
         db.session.commit()
 
     #     #                          #     #
@@ -270,13 +268,13 @@ class User(UserMixin, db.Model):
 
     @property
     def line_notify(self):
-        if not self.line_notify_credentials:
+        if not self._line_notify_credentials:
             raise ServiceNotSet("User has not authorized Line Notify access")
         return oauth.LineNotify
 
     @line_notify.setter
     def line_notify(self, credentials):
-        self.line_notify_credentials = credentials
+        self._line_notify_credentials = credentials
         db.session.commit()
 
     @line_notify.deleter
@@ -284,7 +282,7 @@ class User(UserMixin, db.Model):
         response = self.line_notify.post("api/revoke")
         if response.status_code != 200 and response.status_code != 401:
             raise BackendError(response.text)
-        self.line_notify_credentials = None
+        self._line_notify_credentials = None
         db.session.commit()
 
     #     #     #                      #     #
@@ -294,7 +292,6 @@ class User(UserMixin, db.Model):
     #     #     #      # #      #####  #     # #   ##   # #  # #
     #     #     # #    # #      #   #  #     # #  #  #  # #   ##
     #      #####   ####  ###### #    # #     # # #    # # #    #
-
     """Flask-Login UserMixin Properties and Methods"""
     """https://flask-login.readthedocs.io/en/latest/#your-user-class"""
 
@@ -338,16 +335,28 @@ class User(UserMixin, db.Model):
     #     #     # # #    # #    #
     #     #     # #  ####   ####
 
+    # Service Test Functions
+    def pushover_configured(self):
+        return bool(self._pushover_key)
+
+    def youtube_configured(self):
+        return bool(self._youtube_credentials)
+
+    def dropbox_configured(self):
+        return bool(self._dropbox_credentials)
+
+    def line_notify_configured(self):
+        return bool(self._line_notify_credentials)
+
     # YouTube Method
     def is_subscribing(self, channel):
         """Check if User is subscribing to a channel"""
         from . import Channel
         if isinstance(channel, Channel):
-            channel_id = channel.channel_id
+            channel_id = channel.id
         else:
             channel_id = channel
-        return self.subscriptions.filter_by(
-            subscribing_channel_id=channel_id).first() is not None
+        return self.subscriptions.filter_by(channel_id=channel_id).first() is not None
 
     def subscribe_to(self, channel_id):
         """Create Subscription Relationship"""
@@ -357,16 +366,14 @@ class User(UserMixin, db.Model):
             raise InvalidParameter("You've' already subscribed this channel")
         if not channel:
             channel = Channel(channel_id)
-        subscription = Subscription(subscriber_username=self.username,
-                                    subscribing_channel_id=channel.channel_id)
+        subscription = Subscription(username=self.username, channel_id=channel.id)
         db.session.add(subscription)
         db.session.commit()
         return True
 
     def unbsubscribe(self, channel_id):
         """Delete Subscription Relationship"""
-        subscription = self.subscriptions.filter_by(
-            subscribing_channel_id=channel_id).first()
+        subscription = self.subscriptions.filter_by(channel_id=channel_id).first()
         if not subscription:
             raise InvalidParameter("User {} hasn't subscribe to {}".format(
                 self.username, channel_id))

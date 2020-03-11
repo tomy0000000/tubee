@@ -1,5 +1,5 @@
 """The Main Routes"""
-from flask import Blueprint, current_app, redirect, render_template, url_for
+from flask import Blueprint, render_template, url_for
 from flask_login import current_user, login_required
 from ..helper import youtube_required
 from ..models import Channel, Subscription
@@ -11,7 +11,7 @@ main_blueprint = Blueprint("main", __name__)
 def dashboard():
     """Showing All Subscribed Channels"""
     subscriptions = current_user.subscriptions.join(
-        Subscription.channel).order_by(Channel.channel_name.asc()).all()
+        Subscription.channel).order_by(Channel.name.asc()).all()
     return render_template("dashboard.html",
                            subscriptions=subscriptions)
 

@@ -1,4 +1,4 @@
-function edit_modal_load(action_id) {
+function load_edit_modal(action_id) {
     $('#edit_save_spinner').hide();
     $('#edit_action_modal').find('#submit').prop("disabled", false);
     let api_endpoint;
@@ -21,6 +21,13 @@ function edit_modal_load(action_id) {
         });
     }
     return api_endpoint;
+}
+
+function load_remove_modal(action_name) {
+    // Appearence
+    $('#remove_spinner').hide();
+    $('#remove_button').prop("disabled", false);
+    $('#remove_action_modal').find('.modal-body').text(`Are you sure you want to remove action ${action_name}?`);
 }
 
 $(document).ready(function() {
@@ -76,7 +83,7 @@ $(document).ready(function() {
     $('#edit_action_modal').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget); // Button that triggered the modal
         let action_id = button.data('action-id'); // Extract info from data-* attributes        
-        let api_endpoint = edit_modal_load(action_id);
+        let api_endpoint = load_edit_modal(action_id);
         $(this).find('#submit').on('click', function(event) {
             // Appearence
             event.preventDefault();
@@ -93,11 +100,11 @@ $(document).ready(function() {
                     location.reload();
                 } else {
                     alert('Save Failed, Try Again');
-                    edit_modal_load();
+                    load_edit_modal(action_id);
                 }
             }).fail(function(responseData) {
                 alert('Save Failed, Try Again');
-                edit_modal_load();
+                load_edit_modal(action_id);
             });
         });
     });
@@ -107,10 +114,7 @@ $(document).ready(function() {
         let button = $(event.relatedTarget);
         let action_id = button.data('action-id');
         let action_name = button.data('action-name');
-        // Appearence
-        $('#remove_spinner').hide();
-        $(this).prop("disabled", false);
-        $(this).find('.modal-body').text(`Are you sure you want to remove action ${action_name}?`);
+        load_remove_modal(action_name);
         $('#remove_button').on('click', function(event) {
             // Appearence
             event.preventDefault();
@@ -125,6 +129,9 @@ $(document).ready(function() {
                 } else {
                     alert('Remove Failed, Try Again');
                 }
+            }).fail(function(responseData) {
+                alert('Remove Failed, Try Again');
+                load_remove_modal(action_name);
             });
         });
     });

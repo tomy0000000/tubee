@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set title = channel.channel_name %}
+{% set title = channel.name %}
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/channel.css') }}">
 {% endblock %}
@@ -53,31 +53,31 @@
 
 <!-- BEGIN Video Infos -->
 <div class="jumbotron media">
-    <img src="{{ channel.thumbnails_url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ channel.channel_name }}">
+    <img src="{{ channel.infos.snippet.thumbnails.high.url }}" class="mr-3 rounded-circle w-25" alt="Thumbnails of {{ channel.name }}">
     <div class="media-body my-auto">
-        <h3 class="mt-0">{{ channel.channel_name }}</h3>
-        {% if channel.custom_url %}
+        <h3 class="mt-0">{{ channel.name }}</h3>
+        {% if channel.infos.snippet.customUrl %}
         <button class="btn btn-sm youtube-btn">
-            <a href="https://www.youtube.com/{{ channel.custom_url }}" target="_blank" class="text-decoration-none">
+            <a href="https://www.youtube.com/{{ channel.infos.snippet.customUrl }}" target="_blank" class="text-decoration-none">
                 <i class="fab fa-youtube"></i>
                 Open In YouTube
             </a>
         </button>
-        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.custom_url }}">
-            <p class="mb-0">#{{ channel.custom_url }}</p>
+        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.infos.snippet.customUrl }}">
+            <p class="mb-0">#{{ channel.infos.snippet.customUrl }}</p>
         </a>
         {% else %}
         <button class="btn btn-sm youtube-btn">
-            <a href="https://www.youtube.com/channel/{{ channel.channel_id }}" target="_blank" class="text-decoration-none">
+            <a href="https://www.youtube.com/channel/{{ channel.id }}" target="_blank" class="text-decoration-none">
                 <i class="fab fa-youtube"></i>
                 Open In YouTube
             </a>
         </button>
         {% endif %}
-        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.channel_id }}">
-            <p class="mb-0">{{ channel.channel_id }}</p>
+        <a href="#" class="text-muted clipboard" data-clipboard-text="{{ channel.id }}">
+            <p class="mb-0">{{ channel.id }}</p>
         </a>
-        <p id="channel-description">{{ channel.description }}</p>
+        <p id="channel-description">{{ channel.infos.snippet.description }}</p>
         {% if current_user.is_subscribing(channel) %}
         <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
         {% else %}
@@ -104,15 +104,15 @@
         <!-- BEGIN Action Row -->
         <tr>
             <th>
-                <p class="mb-0">{{ action.action_name }}</p>
-                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ action.action_id }}">
-                    <p class="mb-0">{{ action.action_id }}</p>
+                <p class="mb-0">{{ action.name }}</p>
+                <a href="#" class="text-muted clipboard" data-clipboard-text="{{ action.id }}">
+                    <p class="mb-0">{{ action.id }}</p>
                 </a>
             </th>
-            <td class="align-middle">{{ action.action_type.value }}</td>
+            <td class="align-middle">{{ action.type.value }}</td>
             <td class="align-middle">
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit_action_modal" data-action-id="{{ action.action_id }}">Edit</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove_action_modal" data-action-id="{{ action.action_id }}" data-action-name="{{ action.action_name }}">Remove</button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit_action_modal" data-action-id="{{ action.id }}">Edit</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove_action_modal" data-action-id="{{ action.id }}" data-action-name="{{ action.name }}">Remove</button>
             </td>
         </tr>
         <!-- END Action Row -->
@@ -142,7 +142,7 @@
                 <!-- BEGIN Action Form -->
                 <form id="action_form" name="action_form" class="needs-validation" method="POST">
                     {{ form.csrf_token }}
-                    {{ form.channel_id(value=channel.channel_id) }}
+                    {{ form.channel_id(value=channel.id) }}
                     <div class="form-group row">
                         {{ form.action_name.label(class="col-4 col-form-label") }}
                         <div class="col-8">
@@ -196,7 +196,7 @@
 
 <!-- BEGIN Hub Infos -->
 {% if current_user.admin %}
-<div class="container mb-3" id="status-grid" data-api-endpoint="{{ url_for('api.channel_status', channel_id=channel.channel_id, _external=True) }}">
+<div class="container mb-3" id="status-grid" data-api-endpoint="{{ url_for('api.channel_status', channel_id=channel.id, _external=True) }}">
     <div class="row">
         <div class="col-12 col-lg-6 px-0">
             <table class="table h-100 mb-0">

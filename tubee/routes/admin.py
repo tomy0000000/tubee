@@ -23,7 +23,7 @@ def notification_dashboard():
     """Show Recent Pushed Notification"""
     # TODO
     notifications = Notification.query.order_by(
-        Notification.sent_datetime.desc()).paginate()
+        Notification.sent_timestamp.desc()).paginate()
     return render_template("notification_dashboard.html",
                            notifications=notifications)
 
@@ -49,5 +49,5 @@ def hub_dashboard():
     """List All Callbacks"""
     # TODO
     callbacks = Callback.query.order_by(
-        Callback.received_datetime.desc()).all()
+        Callback.timestamp.desc()).all()
     return render_template("hub_dashboard.html", callbacks=callbacks)

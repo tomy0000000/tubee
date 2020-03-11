@@ -26,6 +26,7 @@ login_manager = LoginManager()
 moment = Moment()
 oauth = OAuth()
 
+
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
@@ -71,11 +72,11 @@ def create_app(config_name):
     from .routes.user import user_blueprint
     app.register_blueprint(user_blueprint, url_prefix="/user")
 
-    from .handler import handler
-    app.register_blueprint(handler)
-
     if app.debug:
         from .routes.dev import dev_blueprint
         app.register_blueprint(dev_blueprint, url_prefix="/dev")
+    else:
+        from .handler import handler
+        app.register_blueprint(handler)
 
     return app
