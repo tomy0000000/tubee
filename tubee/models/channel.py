@@ -1,6 +1,7 @@
 """Channel Model"""
 import urllib
-from datetime import datetime
+import pyrfc3339
+from datetime import datetime, timedelta
 from flask import current_app, request, url_for
 from .. import db
 from ..helper.hub import subscribe, unsubscribe, details
@@ -40,7 +41,26 @@ class Channel(db.Model):
 
     def activate(self):
         """Activate Subscription"""
+        from .video import Video
         response = self.subscribe()
+        nextPageToken = None
+        videos = []
+        while True:
+            results = build_youtube_api().search().list(
+                part="snippet",
+                channelId=self.id,
+                maxResults=50,
+                pageToken=nextPageToken,
+                publishedAfter=pyrfc3339.generate(datetime.utcnow() - timedelta(days=365), accept_naive=True),
+                type="video"
+            ).execute()
+            videos += results["items"]
+            if "nextPageToken" in results:
+                nextPageToken = results["nextPageToken"]
+            else:
+                break
+        for video in videos:
+            Video(video["id"]["videoId"], self, fetch_infos=False)
         if response:
             self.active = True
             db.session.commit()

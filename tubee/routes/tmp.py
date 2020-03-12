@@ -5,28 +5,7 @@ from dropbox.exceptions import ApiError
 from flask import current_app, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 from ..helper import admin_required, youtube_dl
-from ..models import Subscription
 from .dev import dev_blueprint
-
-
-@dev_blueprint.route("test_current_user")
-@login_required
-def test_current_user():
-    return str(current_user.subscriptions.get("UCLh9M5KxWSlIqh2EC8ja_ug").first())
-
-
-@dev_blueprint.route("/add-pushover-action")
-def add_pushover_action():
-    s = Subscription.query.filter_by(subscribing_channel_id="UCLh9M5KxWSlIqh2EC8ja_ug").first()
-    a = s.add_action("Notification", dict(service="Pushover"))
-    return render_template("empty.html", info=a)
-
-
-@dev_blueprint.route("/add-WL-action")
-def add_WL_action():
-    s = Subscription.query.filter_by(subscribing_channel_id="UCLh9M5KxWSlIqh2EC8ja_ug").first()
-    a = s.add_action("Playlist", dict(playlist_id="WL"))
-    return render_template("empty.html", info=a)
 
 
 @dev_blueprint.route("/post-line-notify")

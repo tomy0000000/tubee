@@ -16,7 +16,8 @@ import sys
 import click
 from flask_migrate import Migrate, upgrade
 from tubee import create_app, db
-from tubee.models import User
+from tubee.models import (Action, Callback, Channel, Notification,
+                          Subscription, SubscriptionTag, Tag, User, Video)
 
 config = os.environ.get("FLASK_ENV")
 if not config:
@@ -32,7 +33,16 @@ with app.app_context():
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User)
+    return dict(db=db,
+                Action=Action,
+                Callback=Callback,
+                Channel=Channel,
+                Notification=Notification,
+                Subscription=Subscription,
+                SubscriptionTag=SubscriptionTag,
+                Tag=Tag,
+                User=User,
+                Video=Video)
 
 
 @app.cli.command()

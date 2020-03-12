@@ -14,7 +14,6 @@ from ..exceptions import (
     InvalidParameter,
     ServiceNotSet,
 )
-login_manager.login_view = "user.login"
 
 
 @login_manager.user_loader

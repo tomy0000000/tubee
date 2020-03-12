@@ -16,8 +16,13 @@ def deploy():
 
     # Verify Key
     server_key = current_app.config["DEPLOY_KEY"]
-    client_key = request.args.to_dict(
-    )["key"] if "key" in request.args.to_dict() else None
+    client_key = request.args.to_dict().get("key")
+    if not server_key:
+        current_app.logger.info("Deploy triggered without server key")
+    if not client_key:
+        current_app.logger.info("Deploy triggered without client key")
+    if server_key != client_key:
+        current_app.logger.info("Deploy triggered but keys don't matched")
     if not server_key or not client_key or server_key != client_key:
         abort(401)
 

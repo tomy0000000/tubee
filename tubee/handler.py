@@ -2,7 +2,6 @@
 import traceback
 from flask import (
     Blueprint,
-    current_app,
     flash,
     jsonify,
     render_template,
@@ -26,10 +25,10 @@ def unhandled_exception(error):
     https://werkzeug.palletsprojects.com/en/0.16.x/exceptions/#error-classes
     """
     code = error.code if isinstance(error, HTTPException) else 500
-    current_app.logger.error(traceback.format_exc())
+    # current_app.logger.error(traceback.format_exc())
     if request.path.startswith("/api"):
         return jsonify({"code": code, "description": str(error)}), code
-    if current_user.admin:
+    if current_user.is_authenticated and current_user.admin:
         flash(traceback.format_exc(), "danger")
     else:
         flash(error, "danger")
