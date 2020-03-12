@@ -1,4 +1,5 @@
 """Error Handlers"""
+import traceback
 from flask import (
     Blueprint,
     current_app,
@@ -7,6 +8,7 @@ from flask import (
     render_template,
     request,
 )
+from flask_login import current_user
 from werkzeug.exceptions import HTTPException
 handler = Blueprint("handler", __name__)
 
@@ -24,8 +26,11 @@ def unhandled_exception(error):
     https://werkzeug.palletsprojects.com/en/0.16.x/exceptions/#error-classes
     """
     code = error.code if isinstance(error, HTTPException) else 500
-    current_app.logger.error(error)
+    current_app.logger.error(traceback.format_exc())
     if request.path.startswith("/api"):
         return jsonify({"code": code, "description": str(error)}), code
-    flash(error, "danger")
+    if current_user.admin:
+        flash(traceback.format_exc(), "danger")
+    else:
+        flash(error, "danger")
     return render_template("error.html"), code

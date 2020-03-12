@@ -77,7 +77,7 @@
             <td class="align-middle">
                 <span class="badge badge-primary">{{ subscription.channel.hub_infos.state }}</span>
                 <br>
-                <span class="badge badge-warning">{{ moment(subscription.channel.hub_infos.expiration).fromNow() }}</span>
+                <span class="badge badge-warning">{{ moment(subscription.channel.hub_infos.expiration | to_datetime).fromNow() }}</span>
             </td>
             {% endif %}
         </tr>

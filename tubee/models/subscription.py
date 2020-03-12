@@ -10,11 +10,9 @@ class Subscription(db.Model):
     __tablename__ = "subscription"
     username = db.Column(db.String(32),
                          db.ForeignKey("user.username"),
-                         unique=True,
                          primary_key=True)
     channel_id = db.Column(db.String(32),
                            db.ForeignKey("channel.id"),
-                           unique=True,
                            primary_key=True)
     subscribe_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     unsubscribe_timestamp = db.Column(db.DateTime)

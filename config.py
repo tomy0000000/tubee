@@ -1,7 +1,7 @@
+import logging
 import os
 import uuid
 from datetime import timedelta
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -43,10 +43,7 @@ class Config:
 
     @staticmethod
     def init_app(app):
-        with app.app_context():
-            app.config["SCHEDULER_JOBSTORES"] = {
-                "default": SQLAlchemyJobStore(engine=app.db.engine)
-            }
+        pass
 
 
 class DevelopmentConfig(Config):
@@ -58,6 +55,7 @@ class DevelopmentConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
+        app.logger.setLevel(logging.DEBUG)
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 
@@ -81,6 +79,7 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
+        app.logger.setLevel(logging.INFO)
 
 
 class UnixConfig(ProductionConfig):
@@ -89,11 +88,19 @@ class UnixConfig(ProductionConfig):
         ProductionConfig.init_app(app)
 
         # log to syslog
-        import logging
         from logging.handlers import SysLogHandler
         syslog_handler = SysLogHandler()
         syslog_handler.setLevel(logging.INFO)
         app.logger.addHandler(syslog_handler)
+
+
+class DockerConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
+        # log to stderr
+        app.logger.info("Docker Config Loaded")
 
 
 class HerokuConfig(ProductionConfig):
@@ -108,11 +115,7 @@ class HerokuConfig(ProductionConfig):
         app.wsgi_app = ProxyFix(app.wsgi_app)
 
         # log to stderr
-        import logging
-        from logging import StreamHandler
-        file_handler = StreamHandler()
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
+        app.logger.info("Heroku Config Loaded")
 
 
 class GoogleCloudAppEngineConfig(ProductionConfig):
@@ -120,11 +123,7 @@ class GoogleCloudAppEngineConfig(ProductionConfig):
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
-        # logs from stderr will be redirected to stackdriver
-        import logging
-        from logging import StreamHandler
-        app.logger.addHandler(StreamHandler())
-        app.logger.setLevel(logging.INFO)
+        # log from stderr will be redirected to stackdriver
         app.logger.info("App Engine Config Loaded")
 
 
@@ -137,6 +136,7 @@ class GoogleCloudComputeEngineConfig(ProductionConfig):
         import google.cloud.logging
         client = google.cloud.logging.Client()
         client.setup_logging()
+        app.logger.info("Compute Engine Config Loaded")
 
 
 config = {
@@ -145,8 +145,8 @@ config = {
     "testing": TestingConfig,
     "production": ProductionConfig,
     "unix": UnixConfig,
+    "docker": DockerConfig,
     "heroku": HerokuConfig,
     "gae": GoogleCloudAppEngineConfig,
     "gce": GoogleCloudComputeEngineConfig,
-    # "docker": DockerConfig,
 }

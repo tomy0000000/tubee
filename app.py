@@ -29,6 +29,7 @@ migrate = Migrate()
 with app.app_context():
     migrate.init_app(app, db, render_as_batch=True)
 
+
 @app.shell_context_processor
 def make_shell_context():
     return dict(db=db, User=User)

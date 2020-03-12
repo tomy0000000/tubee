@@ -16,9 +16,8 @@ class Action(db.Model):
     name = db.Column(db.String(32), nullable=False)
     type = db.Column(db.Enum(ActionType), nullable=False)
     details = db.Column(db.JSON)
-    username = db.Column(db.String(32), db.ForeignKey("subscription.username"))
-    channel_id = db.Column(db.String(32),
-                           db.ForeignKey("subscription.channel_id"))
+    username = db.Column(db.String(32))
+    channel_id = db.Column(db.String(32))
     __table_args__ = (db.ForeignKeyConstraint(
         [username, channel_id],
         ["subscription.username", "subscription.channel_id"]), {})

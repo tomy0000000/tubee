@@ -13,32 +13,25 @@
 
 ## Overview
 
-Tubee is a web application, provides some handful features related to YouTube.
+Tubee is a web application, which runs tasks when your subscribed channel upload new videos.
 
-The core functions is completly working, yet this application is still in development stage right now, please pm or leave issues if you run into any problems😘
+This application is still in beta stage right now, please pm or leave issues if you run into any problems😘
 
 ## Features
 
-* Channel Subscribing
-  * New Video Push Notification (via [Pushover](https://pushover.net/), [LINE Notify](https://notify-bot.line.me))
-  * New Video to Playlist
-  * New Video Download (Save to Dropbox)
+* Push Notification of New Video with
+  * [Pushover](https://pushover.net)
+  * [LINE Notify](https://notify-bot.line.me)
+* Add New Video to Playlist
+* Download New Video to Dropbox
 
 ## Requirement
 
 * Python 3.5+
-* A web server along with a WSGI server / proxy
-  * Nginx + Gunicorn (Recommanded)
-  * Nginx + uWSGI
-  * Apache + mod_wsgi
-  * *Docker (Under Development)*
-  * ...
-* A SQL database supported by [SQLAlchemy](https://docs.sqlalchemy.org/en/13/dialects/)
-  Be aware this appplication implement some modern modal such as Enum and Json, some database and older version of database might not be compatible.
-  * PostgresSQL (Recommanded)
-  * MySQL
-  * SQLite
-  * ...
+* A Web server along with a WSGI server / proxy
+  * see [this guide](./deploy/README.md) for more
+* A SQL database supported by [SQLAlchemy](https://docs.sqlalchemy.org/en/13/dialects/), PostgresSQL is recommanded
+  Be aware this appplication implement some modern modal such as Enum and Json, some database or older version of database might not be compatible.
 * [YouTube Data API](https://developers.google.com/youtube/registering_an_application) authorization credentials in **Both**
   * OAuth 2.0 token: used for accessing user information
   * API Keys: used for querying public metadata
@@ -67,3 +60,4 @@ DROPBOX_APP_SECRET=
 
 * Place your YouTube Data API Client Secret File under `instance`
 
+* Setup cron job which automatically send a request to application every 4 days at `/api/channels/cron-renew` to ensure channel subscribing will be renew

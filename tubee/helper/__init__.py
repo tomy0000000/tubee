@@ -3,11 +3,19 @@
 Some Misc Functions used in this app
 """
 from datetime import datetime
+from dateutil import parser
 from functools import wraps
 from urllib.parse import urlparse, urljoin
 from flask import abort, current_app, request
 from flask_login import current_user
 from ..models.user import User
+
+
+def to_datetime(string):
+    try:
+        return parser.parse(string)
+    except (ValueError, TypeError):
+        return None
 
 
 def admin_required(func):

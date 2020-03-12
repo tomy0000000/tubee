@@ -1,25 +1,10 @@
 #!/usr/bin/python3
-"""Middleware between Flask and Apache"""
-"""Originally Named Tubee.wsgi, place at root"""
-import codecs
-import os
+"""Middleware between Flask and Apache
+
+Originally Named Tubee.wsgi, place at root
+"""
 import sys
 import logging
-from werkzeug.debug import DebuggedApplication
+from Tubee import app as application
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0, "/var/www/")
-# os.environ["WERKZEUG_DEBUG_PIN"] = "off"
-
-from Tubee import app
-app.debug = True
-application = DebuggedApplication(app, evalex=True)
-
-# import sys
-# def application(environ, start_response):
-#     status = '200 OK'
-#     name = repr(environ['mod_wsgi.process_group'])
-#     output = bytes('mod_wsgi.process_group = %s' % name, encoding= 'utf-8')
-#     response_headers = [('Content-type', 'text/plain'),
-#                         ('Content-Length', str(len(output)))]
-#     start_response(status, response_headers)
-#     return [output]
