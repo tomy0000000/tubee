@@ -11,6 +11,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from config import config
 
+__version__ = "dev"
+
 naming_convention = {
     "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -46,6 +48,8 @@ def create_app(config_name):
     login_manager.login_view = "user.login"
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
+    login_manager.needs_refresh_message = "Please reauthenticate to access this page."
+    login_manager.needs_refresh_message_category = "warning"
     oauth.register(name="LineNotify",
                    access_token_url="https://notify-bot.line.me/oauth/token",
                    access_token_params=None,
@@ -54,7 +58,7 @@ def create_app(config_name):
                    api_base_url="https://notify-api.line.me/",
                    client_kwargs=None,
                    fetch_token=lambda: dict(access_token=current_user.
-                                            line_notify_credentials,
+                                            _line_notify_credentials,
                                             token_type="bearer"))
 
     from .helper import to_datetime

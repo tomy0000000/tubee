@@ -10,27 +10,27 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <!-- MESSAGE -->
-    {% if message_float %}
-    <div id="message-wrapper">
+{% if message_float %}
+<div id="message-wrapper">
     {% endif %}
 
     {% for category, message in messages %}
-        {% if category in special_message_type %}
-        <div id="main-alert" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            {{ dismiss_but() }}
-        </div>
-        {% else %}
-        <div id="main-alert" class="alert alert-primary alert-dismissible fade show" role="alert">
-            {{ message }}
-            {{ dismiss_but() }}
-        </div>
-        {% endif %}
+    {% if category in special_message_type %}
+    <div id="main-alert" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        {{ dismiss_but() }}
+    </div>
+    {% else %}
+    <div id="main-alert" class="alert alert-primary alert-dismissible fade show" role="alert">
+        {{ message }}
+        {{ dismiss_but() }}
+    </div>
+    {% endif %}
     {% endfor %}
 
     {% if message_float %}
-    </div>
-    {% endif %}
+</div>
+{% endif %}
 <!-- END MESSAGE -->
 {% endif %}
 {% endwith %}

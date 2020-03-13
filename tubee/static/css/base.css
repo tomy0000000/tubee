@@ -2,7 +2,7 @@ body {
     padding-top: 5rem;
 }
 
-span.line {
+.line {
     display: inline-block;
 }
 
@@ -11,10 +11,19 @@ span.line {
 }
 
 #message-wrapper {
+    height: 0;
     position: sticky;
     top: 100px;
     z-index: 1;
-    height: 0;
+}
+
+#subscribe-input {
+    width: 200px;
+    transition: all .2s ease-in-out;
+}
+
+#subscribe-input:focus {
+    width: 400px;
 }
 
 @media (min-width: 992px) {

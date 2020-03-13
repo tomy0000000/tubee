@@ -15,17 +15,51 @@ handler = Blueprint("handler", __name__)
 @handler.app_errorhandler(Exception)
 def unhandled_exception(error):
     """
-    401: Raised when User didn't logined yet
-    403: Raised when User did login, but didn't had the permission
-    404: Raised when page can not be found
-    405: Raised when endpoint is visited with wrong method
-    406: Raised when response content doesn't fit headers requirement
-    500: Raised when something went wrong unexpectedly
-    501: Raised when the endpoint is not implemented yet
-    https://werkzeug.palletsprojects.com/en/0.16.x/exceptions/#error-classes
+    400 <BadRequest>                    :
+    401 <Unauthorized>                  : Raised when User didn't logined yet
+    403 <Forbidden>                     : Raised when User did login, but didn't had the permission
+    404 <NotFound>                      : Raised when page can not be found
+    405 <MethodNotAllowed>              : Raised when endpoint is visited with wrong method
+    406 <NotAcceptable>                 : Raised when response content doesn't fit headers requirement
+    408 <RequestTimeout>                :
+    409 <Conflict>                      :
+    410 <Gone>                          :
+    411 <LengthRequired>                :
+    412 <PreconditionFailed>            :
+    413 <RequestEntityTooLarge>         :
+    414 <RequestURITooLarge>            :
+    415 <UnsupportedMediaType>          :
+    416 <RequestedRangeNotSatisfiable>  :
+    417 <ExpectationFailed>             :
+    418 <ImATeapot>                     :
+    422 <UnprocessableEntity>           :
+    423 <Locked>                        :
+    424 <FailedDependency>              :
+    428 <PreconditionRequired>          :
+    429 <TooManyRequests>               :
+    431 <RequestHeaderFieldsTooLarge>   :
+    451 <UnavailableForLegalReasons>    :
+    500 <InternalServerError>           : Raised when something went wrong unexpectedly
+    501 <NotImplemented>                : Raised when the endpoint is not implemented yet
+    502 <BadGateway>                    :
+    503 <ServiceUnavailable>            :
+    504 <GatewayTimeout>                :
+    505 <HTTPVersionNotSupported>       :
+    https://werkzeug.palletsprojects.com/en/1.0.x/exceptions/#error-classes
     """
-    code = error.code if isinstance(error, HTTPException) else 500
-    # current_app.logger.error(traceback.format_exc())
+
+    # Log error to traceback if error is not triggered intentionally
+    if isinstance(error, HTTPException):
+        code = error.code
+    else:
+        try:
+            raise error
+        except Exception:
+            pass
+        traceback.print_exc()
+        code = 500
+
+    # Return an error response to user
     if request.path.startswith("/api"):
         return jsonify({"code": code, "description": str(error)}), code
     if current_user.is_authenticated and current_user.admin:

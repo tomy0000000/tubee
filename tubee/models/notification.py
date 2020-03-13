@@ -107,7 +107,7 @@ class Notification(db.Model):
         if self.service is Service.Pushover:
             self.response = self._send_with_pushover()
         if self.service is Service.LineNotify:
-            self.response = self._send_with_line_notify()
+            self.response = self._send_with_line_notify().json()
         self.sent_timestamp = datetime.utcnow()
         db.session.commit()
         return self.response

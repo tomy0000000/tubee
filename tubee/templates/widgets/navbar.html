@@ -56,6 +56,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_admin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_admin">
+                        <a class="dropdown-item" href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
                         <a class="dropdown-item" href="{{ url_for('admin.notification_dashboard') }}">Dashboard: Notification</a>
                         <a class="dropdown-item" href="{{ url_for('admin.hub_dashboard') }}">Dashboard: Hub</a>
                         <a class="dropdown-item" href="{{ url_for('admin.notification_push') }}">Send Test Notification</a>
@@ -66,9 +67,6 @@
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_dev">
                         <a class="dropdown-item" href="{{ url_for('dev.sitemap') }}">Sitemap</a>
-                        <a class="dropdown-item" href="{{ url_for('dev.os_dict') }}">Dict: OS</a>
-                        <a class="dropdown-item" href="{{ url_for('dev.sys_dict') }}">Dict: System</a>
-                        <a class="dropdown-item" href="{{ url_for('dev.flask_dict') }}">Dict: Flask</a>
                         <a class="dropdown-item" href="{{ url_for('dev.user_dict') }}">Dict: User</a>
                     </div>
                 </li>
@@ -119,7 +117,7 @@
                 {% endif %}
             </ul>
             <form class="form-inline mx-2">
-                <input class="form-control mr-sm-2" type="text" placeholder="Channel ID" aria-label="Channel ID">
+                <input id="subscribe-input" class="form-control mr-sm-2" type="text" placeholder="Channel ID" aria-label="Channel ID">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Subscribe</button>
             </form>
         </div>

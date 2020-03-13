@@ -8,15 +8,6 @@ from ..helper import admin_required, youtube_dl
 from .dev import dev_blueprint
 
 
-@dev_blueprint.route("/post-line-notify")
-@login_required
-@admin_required
-def send_line():
-    response = current_user.line_notify.post("api/notify",
-                                             data={"message": "Test message"})
-    return render_template("empty.html", info=response.text)
-
-
 @dev_blueprint.route("/test-dropbox")
 @login_required
 @admin_required

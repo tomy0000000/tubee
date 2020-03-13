@@ -1,5 +1,5 @@
 """The Main Routes"""
-from flask import Blueprint, current_app, render_template, url_for
+from flask import Blueprint, render_template, url_for
 from flask_login import current_user, login_required
 from ..helper import youtube_required
 from ..models import Channel, Subscription
@@ -31,18 +31,3 @@ def youtube_subscription():
         channel["snippet"]["subscribe_endpoint"] = url_for(
             "api.channel_subscribe", channel_id=channel_id)
     return render_template("youtube_subscription.html", response=response)
-
-
-@main_blueprint.route("/raise-error")
-def raise_error():
-    raise RuntimeError("Test RuntimeError")
-
-
-@main_blueprint.route("/write-logs")
-def write_logs():
-    current_app.logger.debug("debug Log")
-    current_app.logger.info("info Log")
-    current_app.logger.warning("warning Log")
-    current_app.logger.error("error Log")
-    current_app.logger.critical("critical Log")
-    return render_template("empty.html")
