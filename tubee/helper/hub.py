@@ -1,6 +1,4 @@
-"""
-Hub Communicate Related Functions
-
+"""PubSubHubbub Communication Package
 
 Build upon PubSubHubbub 0.4 Specification
 https://pubsubhubbub.github.io/PubSubHubbub/pubsubhubbub-core-0.4.html
@@ -8,6 +6,12 @@ https://pubsubhubbub.github.io/PubSubHubbub/pubsubhubbub-core-0.4.html
 Using Google Hub at
 https://pubsubhubbub.appspot.com
 
+Variables:
+    HUB_GOOGLE_HUB {str} -- URL of Google Hub
+    DEFAULT_HEADERS {dict} -- The default header used when sending a request to
+                              hub
+    REQUIRED_PARAMETERS {list} -- A list of required parameters to compsoe
+                                  request to hub
 """
 import re
 import urllib

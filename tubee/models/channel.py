@@ -41,26 +41,8 @@ class Channel(db.Model):
 
     def activate(self):
         """Activate Subscription"""
-        from .video import Video
         response = self.subscribe()
-        nextPageToken = None
-        videos = []
-        while True:
-            results = build_youtube_api().search().list(
-                part="snippet",
-                channelId=self.id,
-                maxResults=50,
-                pageToken=nextPageToken,
-                publishedAfter=pyrfc3339.generate(datetime.utcnow() - timedelta(days=365), accept_naive=True),
-                type="video"
-            ).execute()
-            videos += results["items"]
-            if "nextPageToken" in results:
-                nextPageToken = results["nextPageToken"]
-            else:
-                break
-        for video in videos:
-            Video(video["id"]["videoId"], self, fetch_infos=False)
+        self.fetch_videos()
         if response:
             self.active = True
             db.session.commit()
@@ -118,6 +100,27 @@ class Channel(db.Model):
         # TODO: Parse API Error
         except Exception as error:
             return error
+
+    def fetch_videos(self):
+        from .video import Video
+        nextPageToken = None
+        videos = []
+        while True:
+            results = build_youtube_api().search().list(
+                part="snippet",
+                channelId=self.id,
+                maxResults=50,
+                pageToken=nextPageToken,
+                publishedAfter=pyrfc3339.generate(datetime.utcnow() - timedelta(days=365), accept_naive=True),
+                type="video"
+            ).execute()
+            videos += results["items"]
+            if "nextPageToken" in results:
+                nextPageToken = results["nextPageToken"]
+            else:
+                break
+        for video in videos:
+            Video(video["id"]["videoId"], self, fetch_infos=False)
 
     def subscribe(self):
         """Renew Subscription by submitting new Hub Subscription"""

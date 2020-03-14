@@ -11,7 +11,7 @@ from flask_login import current_user
 from ..models.user import User
 
 
-def to_datetime(string):
+def try_parse_datetime(string):
     try:
         return parser.parse(string)
     except (ValueError, TypeError):

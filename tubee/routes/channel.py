@@ -16,7 +16,7 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..forms import ActionForm
-from ..helper import notify_admin, youtube_dl
+from ..helper import try_parse_datetime, notify_admin, youtube_dl
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel, Subscription, Video
 channel_blueprint = Blueprint("channel", __name__)
@@ -52,7 +52,7 @@ def channel(channel_id):
                 Callback.timestamp.asc()).all()
         video["snippet"]["callback"] = {
             "datetime":
-            callback_search[0].received_datetime
+            callback_search[0].timestamp
             if bool(callback_search) else "",
             "count":
             len(callback_search)
@@ -213,8 +213,8 @@ def callback(channel_id):
                 response[sub.username][action.id] = str(results)
 
         # Auto Renew if expiration is close
-        if channel_item.hub_infos["expiration"] and channel_item.hub_infos[
-                "expiration"] - datetime.now() < timedelta(days=2):
+        expiration = try_parse_datetime(channel_item.hub_infos["expiration"])
+        if expiration and expiration - datetime.now() < timedelta(days=2):
             response["renew"] = channel_item.renew()
             current_app.logger.info("Channel renewed during callback")
             current_app.logger.info(response["renew"])
