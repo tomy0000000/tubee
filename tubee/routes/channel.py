@@ -2,7 +2,6 @@
 import bs4
 import pyrfc3339
 from datetime import datetime, timedelta
-from dateutil import parser
 from flask import (
     Blueprint,
     current_app,
@@ -16,7 +15,7 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..forms import ActionForm
-from ..helper import try_parse_datetime, notify_admin, youtube_dl
+from ..helper import notify_admin, youtube_dl
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel, Subscription, Video
 channel_blueprint = Blueprint("channel", __name__)
@@ -86,32 +85,6 @@ def subscribe():
 
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
-@channel_blueprint.route("/unsubscribe/<channel_id>", methods=["GET", "POST"])
-@login_required
-def unsubscribe(channel_id):
-    """
-    Page To Unsubscribe
-    (1) Request confirmation with GET request
-    (2) Submit the form POST request
-    """
-    subscription = current_user.subscriptions.filter_by(
-        channel_id=channel_id).first()
-    if subscription is None:
-        flash(
-            "You can't unsubscribe to {} since you havn't subscribe to it.".
-            format(channel_id), "warning")
-    if request.method == "GET":
-        return render_template("unsubscribe.html",
-                               channel_name=subscription.channel.channel_name)
-    if request.method == "POST":
-        if current_user.unbsubscribe(channel_id):
-            flash("Unsubscribe Success", "success")
-        else:
-            flash("Oops! Unsubscribe Failed for some reason", "danger")
-    return redirect(url_for("main.dashboard"))
-
-
-# TODO: REBUILD THIS DAMN MESSY ROUTE
 @channel_blueprint.route("/<channel_id>/callback", methods=["GET", "POST"])
 def callback(channel_id):
     """
@@ -137,12 +110,14 @@ def callback(channel_id):
         test_mode = bool("testing" in request.args.to_dict())
         post_datas = request.get_data().decode("utf-8")
         soup = bs4.BeautifulSoup(post_datas, "xml")
-        # TODO
+        # TODO: Inspecting
         try:
             video_id = soup.find("yt:videoId").string
-        except Exception as e:
+        except Exception as error:
             current_app.logger.info(
                 "Video ID not Found for {}".format(callback_item))
+            current_app.logger.info(error)
+            current_app.logger.info(soup)
 
         # Update Database Records
         video_item = Video.query.get(video_id)
@@ -213,7 +188,7 @@ def callback(channel_id):
                 response[sub.username][action.id] = str(results)
 
         # Auto Renew if expiration is close
-        expiration = try_parse_datetime(channel_item.hub_infos["expiration"])
+        expiration = channel_item.expiration
         if expiration and expiration - datetime.now() < timedelta(days=2):
             response["renew"] = channel_item.renew()
             current_app.logger.info("Channel renewed during callback")

@@ -10,8 +10,9 @@ from pushover_complete import PushoverAPI
 from .. import bcrypt, db, login_manager, oauth
 from ..helper import youtube
 from ..exceptions import (
-    BackendError,
+    APIError,
     InvalidParameter,
+    OperationalError,
     ServiceNotSet,
 )
 
@@ -77,14 +78,14 @@ class User(UserMixin, db.Model):
     @property
     def password(self):
         """Password Property"""
-        raise InvalidParameter("Password is not a readable attribute")
+        raise OperationalError("Password is not a readable attribute")
 
     @password.setter
     def password(self, password):
         if len(password) < 6:
-            raise InvalidParameter("Password must be longer than 6 characters")
+            raise OperationalError("Password must be longer than 6 characters")
         if len(password) > 30:
-            raise InvalidParameter(
+            raise OperationalError(
                 "Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
 
@@ -201,7 +202,7 @@ class User(UserMixin, db.Model):
         successfully.
 
         Raises:
-            BackendError -- Raised when revoke encounter issue
+            APIError -- Raised when revoke encounter issue
                                 (not necessarily failed)
         """
         response = requests.post(
@@ -216,8 +217,8 @@ class User(UserMixin, db.Model):
         if error_description == "Token expired or revoked":
             self._youtube_credentials = None
             db.session.commit()
-            raise BackendError(error_description, "success")
-        raise BackendError(error_description, "danger")
+            raise APIError(error_description, "success")
+        raise APIError(error_description, "danger")
 
     #     ######
     #     #     # #####   ####  #####  #####   ####  #    #
@@ -280,7 +281,7 @@ class User(UserMixin, db.Model):
     def line_notify(self):
         response = self.line_notify.post("api/revoke")
         if response.status_code != 200 and response.status_code != 401:
-            raise BackendError(response.text)
+            raise APIError(response.text)
         self._line_notify_credentials = None
         db.session.commit()
 
@@ -403,7 +404,7 @@ class User(UserMixin, db.Model):
                 "Faield to insert {} to {}'s playlist".format(
                     video_id, self.username))
             current_app.logger.error(error_message)
-            raise BackendError(error_message)
+            raise APIError(error_message)
 
     # Pushover, Line Notify Methods
     def send_notification(self, initiator, service, **kwargs):

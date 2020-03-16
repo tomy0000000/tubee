@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from flask import abort, Blueprint, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
-from ..exceptions import UserError
 from ..forms import ActionForm
 from ..helper import notify_admin, app_engine_required
 from ..models import Action, Channel
@@ -49,11 +48,24 @@ def user_info():
     return jsonify(status)
 
 
+@api_blueprint.route("/test")
+def test():
+    channels = [
+        channel for channel in Channel.query.all()
+        if channel.expiration and channel.expiration < datetime.now() +
+        timedelta(days=2)
+    ]
+    return jsonify(str(channels))
+
+
 @api_blueprint.route("/channels/cron-renew")
 @app_engine_required
 def channels_cron_renew():
-    channels = Channel.query.filter(
-        Channel.expire_datetime < datetime.now() + timedelta(days=2)).all()
+    channels = [
+        channel for channel in Channel.query.all()
+        if channel.expiration and channel.expiration < datetime.now() +
+        timedelta(days=2)
+    ]
     response = {}
     for channel in channels:
         response[channel.channel_id] = channel.renew(stringify=True)
@@ -73,7 +85,7 @@ def channels_renew():
     channels = Channel.query.all()
     response = {}
     for channel in channels:
-        response[channel.channel_id] = channel.renew(stringify=True)
+        response[channel.id] = channel.renew(stringify=True)
     return jsonify(response)
 
 
@@ -103,7 +115,7 @@ def channel_unsubscribe(channel_id):
 @login_required
 def channel_renew(channel_id):
     """Renew Subscription Info, Both Hub and Info"""
-    channel = Channel.query.filter_by(channel_id=channel_id).first_or_404()
+    channel = Channel.query.filter_by(id=channel_id).first_or_404()
     response = channel.renew(stringify=True)
     return jsonify(response)
 

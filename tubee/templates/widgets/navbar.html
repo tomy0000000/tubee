@@ -53,15 +53,20 @@
                 </li>
                 {% endif %}
                 {% if current_user.admin %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_admin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown_admin">
-                        <a class="dropdown-item" href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
-                        <a class="dropdown-item" href="{{ url_for('admin.notification_dashboard') }}">Dashboard: Notification</a>
-                        <a class="dropdown-item" href="{{ url_for('admin.hub_dashboard') }}">Dashboard: Hub</a>
-                        <a class="dropdown-item" href="{{ url_for('admin.notification_push') }}">Send Test Notification</a>
-                    </div>
+                {% if title == "Admin Dashboard" %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">
+                        Admin
+                        <span class="sr-only">(current)</span>
+                    </a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">
+                        Admin
+                    </a>
+                </li>
+                {% endif %}
                 {% if config.DEBUG %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>

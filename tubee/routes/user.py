@@ -23,7 +23,7 @@ from dropbox.oauth import (
     ProviderException,
 )
 from .. import oauth
-from ..exceptions import BackendError
+from ..exceptions import APIError
 from ..forms import LoginForm, RegisterForm
 from ..helper import (
     dropbox,
@@ -116,7 +116,7 @@ def setting_youtube_oauth_callback():
 def setting_youtube_revoke():
     try:
         del current_user.youtube
-    except BackendError as error:
+    except APIError as error:
         flash(*error.args)
     else:
         flash("YouTube Access Revoked", "success")

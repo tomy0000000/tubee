@@ -8,12 +8,11 @@ from functools import wraps
 from urllib.parse import urlparse, urljoin
 from flask import abort, current_app, request
 from flask_login import current_user
-from ..models.user import User
 
 
 def try_parse_datetime(string):
     try:
-        return parser.parse(string)
+        return parser.parse(string).replace(tzinfo=None)
     except (ValueError, TypeError):
         return None
 
@@ -120,6 +119,7 @@ def notify_admin(initiator, service, **kwargs):
     Returns:
         dict -- Reponse from notification service
     """
+    from ..models.user import User
     admins = User.query.filter_by(admin=True).all()
     response = {}
     for admin in admins:

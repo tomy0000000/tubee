@@ -19,8 +19,17 @@ class UserError(TubeeError):
     pass
 
 
-class BackendError(TubeeError):
-    """Base Class for errors happening in the background
+class DatabaseError(TubeeError):
+    """Base Class for errors related to database
+
+    Extends:
+        TubeeError
+    """
+    pass
+
+
+class APIError(TubeeError):
+    """Base Class for errors related to APIs
 
     Extends:
         TubeeError
@@ -45,6 +54,13 @@ class ServiceNotSet(UserError):
     """
     pass
 
+
+class OperationalError(DatabaseError):
+    """Raised when attempt to execute operation that is not permitted
+
+    Extends:
+        DatabaseError
+    """
 
 # class SubscriptionNotFound(UserError):
 #     """Raised when user attempt to make interaction with subscription that doesn't exists

@@ -4,6 +4,8 @@ import pyrfc3339
 from datetime import datetime, timedelta
 from flask import current_app, request, url_for
 from .. import db
+from ..exceptions import OperationalError
+from ..helper import try_parse_datetime
 from ..helper.hub import subscribe, unsubscribe, details
 from ..helper.youtube import build_youtube_api
 
@@ -38,6 +40,18 @@ class Channel(db.Model):
 
     def __repr__(self):
         return "<Channel {}(#{})>".format(self.name, self.id)
+
+    @property
+    def expiration(self):
+        return try_parse_datetime(self.hub_infos["expiration"])
+
+    @expiration.setter
+    def expiration(self, expiration):
+        raise OperationalError("expiration can not be set")
+
+    @expiration.deleter
+    def expiration(self, exception):
+        raise OperationalError("expiration can not be delete")
 
     def activate(self):
         """Activate Subscription"""
@@ -106,14 +120,20 @@ class Channel(db.Model):
         nextPageToken = None
         videos = []
         while True:
-            results = build_youtube_api().search().list(
+            results = build_youtube_api().playlistItems().list(
                 part="snippet",
-                channelId=self.id,
                 maxResults=50,
                 pageToken=nextPageToken,
-                publishedAfter=pyrfc3339.generate(datetime.utcnow() - timedelta(days=365), accept_naive=True),
-                type="video"
-            ).execute()
+                playlistId=self.id).execute()
+            # results = build_youtube_api().search().list(
+            #     part="snippet",
+            #     channelId=self.id,
+            #     maxResults=50,
+            #     pageToken=nextPageToken,
+            #     publishedAfter=pyrfc3339.generate(datetime.utcnow() -
+            #                                       timedelta(days=365),
+            #                                       accept_naive=True),
+            #     type="video").execute()
             videos += results["items"]
             if "nextPageToken" in results:
                 nextPageToken = results["nextPageToken"]

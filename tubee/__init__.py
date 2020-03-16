@@ -61,9 +61,6 @@ def create_app(config_name):
                                             _line_notify_credentials,
                                             token_type="bearer"))
 
-    from .helper import try_parse_datetime
-    app.add_template_filter(try_parse_datetime, "try_parse_datetime")
-
     from .routes.main import main_blueprint
     app.register_blueprint(main_blueprint)
 

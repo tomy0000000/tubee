@@ -4,18 +4,11 @@ import platform
 import sys
 import flask
 import werkzeug
-from flask import (
-    Blueprint,
-    current_app,
-    flash,
-    render_template,
-    redirect,
-    request,
-    url_for
-)
+from flask import (Blueprint, current_app, flash, render_template, redirect,
+                   request, url_for)
 from flask_login import current_user, login_required
 from ..helper import admin_required
-from ..models import Callback, Notification, Service
+from ..models import Callback, Channel, Notification, Service
 admin_blueprint = Blueprint("admin", __name__)
 
 
@@ -31,7 +24,13 @@ def admin_dashboard():
         "app_config": current_app.config,
         "os_env": os.environ,
     }
-    return render_template("admin_dashboard.html", infos=infos)
+    callbacks = Callback.query.order_by(Callback.timestamp.desc()).all()
+    notifications = Notification.query.order_by(
+        Notification.sent_timestamp.desc()).paginate()
+    return render_template("admin_dashboard.html",
+                           infos=infos,
+                           callbacks=callbacks,
+                           notifications=notifications)
 
 
 @admin_blueprint.route("/raise-exception")
@@ -54,19 +53,7 @@ def test_logging():
     return redirect(url_for("admin.admin_dashboard"))
 
 
-@admin_blueprint.route("/notification/dashboard")
-@login_required
-@admin_required
-def notification_dashboard():
-    """Show Recent Pushed Notification"""
-    # TODO
-    notifications = Notification.query.order_by(
-        Notification.sent_timestamp.desc()).paginate()
-    return render_template("notification_dashboard.html",
-                           notifications=notifications)
-
-
-@admin_blueprint.route("/notification/push", methods=["GET", "POST"])
+@admin_blueprint.route("/notification/push", methods=["POST"])
 @login_required
 @admin_required
 def notification_push():
@@ -77,15 +64,13 @@ def notification_push():
             Service(request.form.get("service", "Pushover")),
             message=request.form["message"])
         flash(response, "success")
-    return render_template("test_notification.html")
+        return redirect(url_for("admin.admin_dashboard"))
 
 
-@admin_blueprint.route("/hub/dashboard")
+@admin_blueprint.route("/<channel_id>/fetch-channel-videos")
 @login_required
 @admin_required
-def hub_dashboard():
-    """List All Callbacks"""
-    # TODO
-    callbacks = Callback.query.order_by(
-        Callback.timestamp.desc()).all()
-    return render_template("hub_dashboard.html", callbacks=callbacks)
+def fetch_channel_videos(channel_id):
+    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
+    channel_item.fetch_channel_videos()
+    return redirect(url_for("admin.admin_dashboard"))
