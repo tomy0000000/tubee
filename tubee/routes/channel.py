@@ -116,8 +116,9 @@ def callback(channel_id):
         except Exception as error:
             current_app.logger.info(
                 "Video ID not Found for {}".format(callback_item))
-            current_app.logger.info(error)
-            current_app.logger.info(soup)
+            infos["data"] = post_datas
+            callback_item.infos = infos
+            db.session.commit()
 
         # Update Database Records
         video_item = Video.query.get(video_id)

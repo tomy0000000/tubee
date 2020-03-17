@@ -72,5 +72,5 @@ def notification_push():
 @admin_required
 def fetch_channel_videos(channel_id):
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    channel_item.fetch_channel_videos()
+    channel_item.fetch_videos()
     return redirect(url_for("admin.admin_dashboard"))

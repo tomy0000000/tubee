@@ -119,12 +119,14 @@ class Channel(db.Model):
         from .video import Video
         nextPageToken = None
         videos = []
+        # QuickConvert, not guaranteed
+        uploaded_video_playlist_id = "UU{}".format(self.id[2:])
         while True:
             results = build_youtube_api().playlistItems().list(
                 part="snippet",
                 maxResults=50,
                 pageToken=nextPageToken,
-                playlistId=self.id).execute()
+                playlistId=uploaded_video_playlist_id).execute()
             # results = build_youtube_api().search().list(
             #     part="snippet",
             #     channelId=self.id,
@@ -140,7 +142,9 @@ class Channel(db.Model):
             else:
                 break
         for video in videos:
-            Video(video["id"]["videoId"], self, fetch_infos=False)
+            video_id = video["snippet"]["resourceId"]["videoId"]
+            if not Video.query.get(video_id):
+                Video(video_id, self, fetch_infos=False)
 
     def subscribe(self):
         """Renew Subscription by submitting new Hub Subscription"""
@@ -166,13 +170,10 @@ class Channel(db.Model):
 
     def renew(self, stringify=False):
         """Trigger renew functions"""
-        subscription_response = self.subscribe()
-        info_response = self.update_infos()
-        hub_response = self.update_hub_infos(stringify=stringify)
-        response = info_response.copy()
-        current_app.logger.info("Channel Renewed: {}<{}>".format(
-            self.name, self.channel_id))
-        current_app.logger.info(response)
-        response.update({"subscribe": subscription_response})
-        response.update(hub_response)
+        response = {
+            "subscription_response": self.subscribe(),
+            "info_response": self.update_infos(),
+            "hub_response": self.update_hub_infos(stringify=stringify),
+        }
+        current_app.logger.info("Channel Renewed: {}<{}>".format(self.name, self.id))
         return response

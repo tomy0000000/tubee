@@ -1,6 +1,5 @@
 """Callback Model"""
 from datetime import datetime
-from uuid import uuid4
 from .. import db
 
 
@@ -25,10 +24,9 @@ class Callback(db.Model):
                          db.ForeignKey("video.id"))
 
     def __init__(self, channel):
-        self.callback_id = str(uuid4())
         self.channel = channel
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
-        return "<{}'s Callback {}>".format(self.channel_id, self.callback_id)
+        return "<{}'s Callback {}>".format(self.channel_id, self.id)
