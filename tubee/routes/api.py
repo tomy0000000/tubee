@@ -63,12 +63,12 @@ def test():
 def channels_cron_renew():
     channels = [
         channel for channel in Channel.query.all()
-        if channel.expiration and channel.expiration < datetime.now() +
-        timedelta(days=2)
+        if channel.hub_infos["state"] != "verified"
+        # if channel.expiration and channel.expiration < datetime.now() + timedelta(days=2)
     ]
     response = {}
     for channel in channels:
-        response[channel.channel_id] = channel.renew(stringify=True)
+        response[channel.id] = channel.renew(stringify=True)
     current_app.logger.info("Cron Renew Triggered")
     current_app.logger.info(response)
     notify_admin("Cron Renew",

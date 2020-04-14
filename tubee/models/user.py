@@ -362,10 +362,10 @@ class User(UserMixin, db.Model):
         """Create Subscription Relationship"""
         from . import Channel, Subscription
         channel = Channel.query.get(channel_id)
-        if self.is_subscribing(channel):
-            raise InvalidParameter("You've' already subscribed this channel")
         if not channel:
             channel = Channel(channel_id)
+        if self.is_subscribing(channel):
+            raise InvalidParameter("You've already subscribed this channel")
         subscription = Subscription(username=self.username, channel_id=channel.id)
         db.session.add(subscription)
         db.session.commit()

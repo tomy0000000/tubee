@@ -36,6 +36,7 @@ class Channel(db.Model):
         db.session.commit()
         self.update_infos()
         self.update_hub_infos()
+        self.fetch_videos()
         self.activate()
 
     def __repr__(self):
