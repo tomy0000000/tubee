@@ -1,5 +1,4 @@
 """Dropbox Related Functions"""
-# import os.path
 import dropbox
 from flask import current_app, url_for
 
@@ -8,8 +7,10 @@ def build_flow(session):
     return dropbox.DropboxOAuth2Flow(
         current_app.config["DROPBOX_APP_KEY"],
         current_app.config["DROPBOX_APP_SECRET"],
-        url_for("user.setting_dropbox_oauth_callback",
-                _external=True), session, current_app.config["SECRET_KEY"])
+        url_for("user.setting_dropbox_oauth_callback", _external=True),
+        session,
+        current_app.config["SECRET_KEY"],
+    )
 
 
 # def save_file_to_dropbox(user, file_path):

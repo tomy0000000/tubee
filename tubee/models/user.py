@@ -1,20 +1,18 @@
 """User Model"""
 import json
-import requests
+import logging
+
 import dropbox
+import requests
 from apiclient.errors import HttpError
 from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
 from pushover_complete import PushoverAPI
+
 from .. import bcrypt, db, login_manager, oauth
+from ..exceptions import APIError, InvalidParameter, OperationalError, ServiceNotSet
 from ..helper import youtube
-from ..exceptions import (
-    APIError,
-    InvalidParameter,
-    OperationalError,
-    ServiceNotSet,
-)
 
 
 @login_manager.user_loader
@@ -32,6 +30,7 @@ class User(UserMixin, db.Model):
     youtube_credentials     access credentials to YouTube Service
     subscriptions           User's Subscription to YouTube Channels
     """
+
     __tablename__ = "user"
     username = db.Column(db.String(32), primary_key=True)
     _password_hash = db.Column(db.LargeBinary(128), nullable=False)
@@ -41,13 +40,13 @@ class User(UserMixin, db.Model):
     _line_notify_credentials = db.Column(db.String(64))
     _dropbox_credentials = db.Column(db.JSON)
     # locale = db.Column()
-    notifications = db.relationship("Notification",
-                                    backref="user",
-                                    lazy="dynamic")
-    subscriptions = db.relationship("Subscription",
-                                    backref=db.backref("user", lazy="joined"),
-                                    lazy="dynamic",
-                                    cascade="all, delete-orphan")
+    notifications = db.relationship("Notification", backref="user", lazy="dynamic")
+    subscriptions = db.relationship(
+        "Subscription",
+        backref=db.backref("user", lazy="joined"),
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
 
     #      #####
     #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
@@ -85,8 +84,7 @@ class User(UserMixin, db.Model):
         if len(password) < 6:
             raise OperationalError("Password must be longer than 6 characters")
         if len(password) > 30:
-            raise OperationalError(
-                "Password must be shorter than 30 characters")
+            raise OperationalError("Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
 
     def check_password(self, password):
@@ -191,7 +189,8 @@ class User(UserMixin, db.Model):
             token_uri=credentials.token_uri,
             client_id=credentials.client_id,
             client_secret=credentials.client_secret,
-            scopes=credentials.scopes)
+            scopes=credentials.scopes,
+        )
         db.session.commit()
 
     @youtube.deleter
@@ -208,7 +207,8 @@ class User(UserMixin, db.Model):
         response = requests.post(
             "https://oauth2.googleapis.com/revoke",
             params={"token": self._youtube_credentials["token"]},
-            headers={"content-type": "application/x-www-form-urlencoded"})
+            headers={"content-type": "application/x-www-form-urlencoded"},
+        )
         if response.status_code == 200:
             self._youtube_credentials = None
             db.session.commit()
@@ -246,10 +246,12 @@ class User(UserMixin, db.Model):
 
     @dropbox.setter
     def dropbox(self, credentials):
-        self._dropbox_credentials = dict(access_token=credentials.access_token,
-                                         account_id=credentials.account_id,
-                                         user_id=credentials.user_id,
-                                         url_state=credentials.url_state)
+        self._dropbox_credentials = dict(
+            access_token=credentials.access_token,
+            account_id=credentials.account_id,
+            user_id=credentials.user_id,
+            url_state=credentials.url_state,
+        )
         db.session.commit()
 
     @dropbox.deleter
@@ -352,6 +354,7 @@ class User(UserMixin, db.Model):
     def is_subscribing(self, channel):
         """Check if User is subscribing to a channel"""
         from . import Channel
+
         if isinstance(channel, Channel):
             channel_id = channel.id
         else:
@@ -361,6 +364,7 @@ class User(UserMixin, db.Model):
     def subscribe_to(self, channel_id):
         """Create Subscription Relationship"""
         from . import Channel, Subscription
+
         channel = Channel.query.get(channel_id)
         if not channel:
             channel = Channel(channel_id)
@@ -375,35 +379,33 @@ class User(UserMixin, db.Model):
         """Delete Subscription Relationship"""
         subscription = self.subscriptions.filter_by(channel_id=channel_id).first()
         if not subscription:
-            raise InvalidParameter("User {} hasn't subscribe to {}".format(
-                self.username, channel_id))
+            raise InvalidParameter(
+                "User {} hasn't subscribe to {}".format(self.username, channel_id)
+            )
         db.session.delete(subscription)
         db.session.commit()
         return True
 
-    def insert_video_to_playlist(self,
-                                 video_id,
-                                 playlist_id="WL",
-                                 position=None):
+    def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
         resource = {
             "snippet": {
                 "playlistId": playlist_id,
-                "resourceId": {
-                    "kind": "youtube#video",
-                    "videoId": video_id
-                },
-                "position": position
+                "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                "position": position,
             }
         }
         try:
-            return self.youtube.playlistItems().insert(
-                part="snippet", body=resource).execute()
+            return (
+                self.youtube.playlistItems()
+                .insert(part="snippet", body=resource)
+                .execute()
+            )
         except HttpError as error:
             error_message = json.loads(error.content)["error"]["message"]
-            current_app.logger.error(
-                "Faield to insert {} to {}'s playlist".format(
-                    video_id, self.username))
-            current_app.logger.error(error_message)
+            logging.error(
+                "Faield to insert {} to {}'s playlist".format(video_id, self.username)
+            )
+            logging.error(error_message)
             raise APIError(error_message)
 
     # Pushover, Line Notify Methods
@@ -419,5 +421,6 @@ class User(UserMixin, db.Model):
             dict -- Reponse from notification service
         """
         from . import Notification
+
         ntf = Notification(initiator, self, service, **kwargs)
         return ntf.response

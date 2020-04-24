@@ -5,6 +5,8 @@ verify_ssl = true
 
 [dev-packages]
 codecov = "*"
+watchdog = "*"
+rope = "*"
 
 [packages]
 alembic = "*"
@@ -63,6 +65,8 @@ WTForms = "*"
 python-dotenv = "*"
 youtube-dl = "*"
 psycopg2 = "*"
+celery = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"

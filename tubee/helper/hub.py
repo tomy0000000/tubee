@@ -18,6 +18,7 @@ import urllib
 import bs4
 import requests
 from dateutil import parser
+
 HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
 DEFAULT_HEADERS = {
     "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
@@ -27,6 +28,7 @@ REQUIRED_PARAMETERS = ["hub.callback", "hub.mode", "hub.topic"]
 
 class MissingRequiredParameterError(Exception):
     """Raised when a required parameter is missing"""
+
     def __init__(self, message, parameter):
         super().__init__(message)
         self.parameter = parameter
@@ -34,6 +36,7 @@ class MissingRequiredParameterError(Exception):
 
 class NonSecureHubSecretError(Exception):
     """Raised when Hub secret is sending with http callback url"""
+
     def __init__(self):
         super().__init__("Hub Secret is not allowed when using http")
 
@@ -63,10 +66,11 @@ def _formal_post_request(endpoint, **data):
 
     # Sending Requests
     try:
-        response = requests.post(url=urllib.parse.urljoin(
-            HUB_GOOGLE_HUB, endpoint),
-                                 headers=DEFAULT_HEADERS,
-                                 data=data)
+        response = requests.post(
+            url=urllib.parse.urljoin(HUB_GOOGLE_HUB, endpoint),
+            headers=DEFAULT_HEADERS,
+            data=data,
+        )
         return response
     except requests.exceptions.RequestException:
         return -1
@@ -82,10 +86,11 @@ def _formal_get_request(endpoint, **params):
     hub.secret              Subscriber-provided secret string
     """
     try:
-        response = requests.get(url=urllib.parse.urljoin(
-            HUB_GOOGLE_HUB, endpoint),
-                                headers=DEFAULT_HEADERS,
-                                params=params)
+        response = requests.get(
+            url=urllib.parse.urljoin(HUB_GOOGLE_HUB, endpoint),
+            headers=DEFAULT_HEADERS,
+            params=params,
+        )
         return response
     except requests.exceptions.RequestException:
         return -1
@@ -113,7 +118,7 @@ def subscribe(callback_url, topic_url, **kwargs):
         "hub.mode": "subscribe",
         "hub.topic": topic_url,
         "hub.lease_seconds": kwargs.pop("lease_seconds", None),
-        "hub.secret": kwargs.pop("secret", None)
+        "hub.secret": kwargs.pop("secret", None),
     }
     response = _formal_post_request("subscribe", **data)
     if response.status_code == 202:
@@ -132,7 +137,7 @@ def unsubscribe(callback_url, topic_url, **kwargs):
         "hub.mode": "unsubscribe",
         "hub.topic": topic_url,
         "hub.lease_seconds": kwargs.pop("lease_seconds", None),
-        "hub.secret": kwargs.pop("secret", None)
+        "hub.secret": kwargs.pop("secret", None),
     }
     response = _formal_post_request("subscribe", **data)
     if response.status_code == 202:
@@ -148,7 +153,7 @@ def details(callback_url, topic_url, **kwargs):
     params = {
         "hub.callback": callback_url,
         "hub.topic": topic_url,
-        "hub.secret": kwargs.pop("secret", None)
+        "hub.secret": kwargs.pop("secret", None),
     }
     response_object = _formal_get_request("subscription-details", **params)
     response_soup = bs4.BeautifulSoup(response_object.text, "lxml")
@@ -157,15 +162,15 @@ def details(callback_url, topic_url, **kwargs):
         "requests_url": response_object.url,
         "response_object": response_object,
         "state": target[1].string,
-        "stat": target[8].string.strip("\n ")
+        "stat": target[8].string.strip("\n "),
     }
     response_dict["last_challenge"] = _parse_detail(target[2].string)
     response_dict["expiration"] = _parse_detail(target[3].string)
     response_dict["last_subscribe"] = _parse_detail(target[4].string)
     response_dict["last_unsubscribe"] = _parse_detail(target[5].string)
-    response_dict["last_challenge_error"] = _parse_detail(target[6].string,
-                                                          fuzzy=True)
-    response_dict["last_notification_error"] = _parse_detail(target[7].string,
-                                                             fuzzy=True)
+    response_dict["last_challenge_error"] = _parse_detail(target[6].string, fuzzy=True)
+    response_dict["last_notification_error"] = _parse_detail(
+        target[7].string, fuzzy=True
+    )
     response_dict["last_notification"] = _parse_detail(target[10].string)
     return response_dict

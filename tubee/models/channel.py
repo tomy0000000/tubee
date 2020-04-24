@@ -1,14 +1,14 @@
 """Channel Model"""
-import urllib
-import pyrfc3339
-from datetime import datetime, timedelta
-from flask import current_app, request, url_for
+import logging
+from datetime import datetime
+
 from .. import db
 from ..exceptions import OperationalError
-from ..helper import try_parse_datetime
-from ..helper.hub import subscribe, unsubscribe, details
+from ..helper import build_callback_url, build_topic_url, try_parse_datetime
+from ..helper.hub import details, subscribe, unsubscribe
 from ..helper.youtube import build_youtube_api
 
+from googleapiclient.errors import Error
 
 class Channel(db.Model):
     __tablename__ = "channel"
@@ -21,22 +21,25 @@ class Channel(db.Model):
     unsubscribe_timestamp = db.Column(db.DateTime)
     videos = db.relationship("Video", backref="channel", lazy="dynamic")
     callbacks = db.relationship("Callback", backref="channel", lazy="dynamic")
-    subscribers = db.relationship("Subscription",
-                                  backref=db.backref("channel", lazy="joined"),
-                                  lazy="dynamic",
-                                  cascade="all, delete-orphan")
+    subscribers = db.relationship(
+        "Subscription",
+        backref=db.backref("channel", lazy="joined"),
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
 
     def __init__(self, channel_id):
+        from ..tasks import channels_update_hub_infos, channels_fetch_videos
+
         self.id = channel_id
         # TODO: Validate Channel
-        self.name = build_youtube_api().channels().list(
-            part="snippet",
-            id=channel_id).execute()["items"][0]["snippet"]["title"]
         db.session.add(self)
         db.session.commit()
         self.update_infos()
-        self.update_hub_infos()
-        self.fetch_videos()
+        channels_update_hub_infos.apply_async(
+            args=[(self.id, build_callback_url(self.id), build_topic_url(self.id),)]
+        )
+        channels_fetch_videos.apply_async(args=[[self.id]])
         self.activate()
 
     def __repr__(self):
@@ -57,22 +60,17 @@ class Channel(db.Model):
     def activate(self):
         """Activate Subscription"""
         response = self.subscribe()
-        self.fetch_videos()
         if response:
             self.active = True
             db.session.commit()
         return response
 
-    def deactivate(self):
+    def deactivate(self, callback_url=None, topic_url=None):
         """Submitting Hub Unsubscription"""
-        callback_url = url_for("channel.callback",
-                               channel_id=self.id,
-                               _external=True)
-        if current_app.config["HUB_RECEIVE_DOMAIN"]:
-            callback_url = callback_url.replace(
-                request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
-        param_query = urllib.parse.urlencode({"channel_id": self.id})
-        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
+        if not callback_url:
+            callback_url = build_callback_url(self.id)
+        if not topic_url:
+            topic_url = build_topic_url(self.id)
         response = unsubscribe(callback_url, topic_url)
         if response.success:
             self.active = False
@@ -80,15 +78,11 @@ class Channel(db.Model):
             db.session.commit()
         return response
 
-    def update_hub_infos(self, stringify=False):
-        callback_url = url_for("channel.callback",
-                               channel_id=self.id,
-                               _external=True)
-        if current_app.config["HUB_RECEIVE_DOMAIN"]:
-            callback_url = callback_url.replace(
-                request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
-        param_query = urllib.parse.urlencode({"channel_id": self.id})
-        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
+    def update_hub_infos(self, stringify=False, callback_url=None, topic_url=None):
+        if not callback_url:
+            callback_url = build_callback_url(self.id)
+        if not topic_url:
+            topic_url = build_topic_url(self.id)
         response = details(callback_url, topic_url)
         response.pop("requests_url")
         response.pop("response_object")
@@ -109,25 +103,39 @@ class Channel(db.Model):
 
     def update_infos(self):
         try:
-            self.infos = build_youtube_api().channels().list(
-                part="snippet", id=self.id).execute()["items"][0]
+            self.infos = (
+                build_youtube_api()
+                .channels()
+                .list(part="snippet", id=self.id)
+                .execute()["items"][0]
+            )
+            self.name = self.infos["snippet"]["title"]
+            db.session.commit()
             return True
         # TODO: Parse API Error
-        except Exception as error:
-            return error
+        except Error as error:
+            logging.error("(API) {}: {}".format(error.__class__.__name__))
+            return str(error.args)
 
     def fetch_videos(self):
         from .video import Video
+
         nextPageToken = None
         videos = []
         # QuickConvert, not guaranteed
         uploaded_video_playlist_id = "UU{}".format(self.id[2:])
         while True:
-            results = build_youtube_api().playlistItems().list(
-                part="snippet",
-                maxResults=50,
-                pageToken=nextPageToken,
-                playlistId=uploaded_video_playlist_id).execute()
+            results = (
+                build_youtube_api()
+                .playlistItems()
+                .list(
+                    part="snippet",
+                    maxResults=50,
+                    pageToken=nextPageToken,
+                    playlistId=uploaded_video_playlist_id,
+                )
+                .execute()
+            )
             # results = build_youtube_api().search().list(
             #     part="snippet",
             #     channelId=self.id,
@@ -147,34 +155,32 @@ class Channel(db.Model):
             if not Video.query.get(video_id):
                 Video(video_id, self, fetch_infos=False)
 
-    def subscribe(self):
+    def subscribe(self, callback_url=None, topic_url=None):
         """Renew Subscription by submitting new Hub Subscription"""
-        callback_url = url_for("channel.callback",
-                               channel_id=self.id,
-                               _external=True,
-                               _scheme="https")
-        if current_app.config["HUB_RECEIVE_DOMAIN"]:
-            callback_url = callback_url.replace(
-                request.host, current_app.config["HUB_RECEIVE_DOMAIN"])
-        param_query = urllib.parse.urlencode({"channel_id": self.id})
-        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
+        if not callback_url:
+            callback_url = build_callback_url(self.id)
+        if not topic_url:
+            topic_url = build_topic_url(self.id)
         response = subscribe(callback_url, topic_url)
-        current_app.logger.info("Callback URL: {}".format(callback_url))
-        current_app.logger.info("Topic URL   : {}".format(topic_url))
-        current_app.logger.info("Channel ID  : {}".format(self.id))
-        current_app.logger.info("Response    : {}".format(
-            response.status_code))
+        logging.info("Callback URL: {}".format(callback_url))
+        logging.info("Topic URL   : {}".format(topic_url))
+        logging.info("Channel ID  : {}".format(self.id))
+        logging.info("Response    : {}".format(response.status_code))
         if response.success:
             self.renew_datetime = datetime.utcnow()
             db.session.commit()
         return response.success
 
-    def renew(self, stringify=False):
+    # TODO: DEPRECATE THIS
+    def renew(self, stringify=False, callback_url=None, topic_url=None):
         """Trigger renew functions"""
+        from ..tasks import channels_update_hub_infos
+
         response = {
-            "subscription_response": self.subscribe(),
+            "subscription_response": self.subscribe(callback_url, topic_url),
             "info_response": self.update_infos(),
-            "hub_response": self.update_hub_infos(stringify=stringify),
+            # "hub_response": self.update_hub_infos(stringify=stringify, callback_url, topic_url),
         }
-        current_app.logger.info("Channel Renewed: {}<{}>".format(self.name, self.id))
+        # update_channel_hub_infos.apply_async(self.id, callback_url, topic_url)
+        logging.info("Channel Renewed: {}<{}>".format(self.name, self.id))
         return response

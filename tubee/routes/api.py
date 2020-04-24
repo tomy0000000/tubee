@@ -1,11 +1,21 @@
 """API for Frontend Access"""
+import logging
 from datetime import datetime, timedelta
-from flask import abort, Blueprint, current_app, jsonify, request, url_for
+
+from flask import Blueprint, abort, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
+
 from ..forms import ActionForm
-from ..helper import notify_admin, app_engine_required
+from ..helper import (
+    app_engine_required,
+    notify_admin,
+    build_callback_url,
+    build_topic_url,
+)
 from ..models import Action, Channel
+from ..tasks import renew_channels
+
 api_blueprint = Blueprint("api", __name__)
 
 
@@ -17,11 +27,11 @@ def deploy():
     server_key = current_app.config["DEPLOY_KEY"]
     client_key = request.args.to_dict().get("key")
     if not server_key:
-        current_app.logger.info("Deploy triggered without server key")
+        logging.info("Deploy triggered without server key")
     if not client_key:
-        current_app.logger.info("Deploy triggered without client key")
+        logging.info("Deploy triggered without client key")
     if server_key != client_key:
-        current_app.logger.info("Deploy triggered but keys don't matched")
+        logging.info("Deploy triggered but keys don't matched")
     if not server_key or not client_key or server_key != client_key:
         abort(401)
 
@@ -32,10 +42,25 @@ def deploy():
         upgrade()
         response = "Deployment Task Completed"
     except Exception as error:
-        response = notify_admin("Deployment",
-                                "Pushover",
-                                message=error,
-                                title="Deployment Error")
+        response = notify_admin(
+            "Deployment", "Pushover", message=error, title="Deployment Error"
+        )
+    return jsonify(response)
+
+
+@api_blueprint.route("/<task_id>/status")
+@login_required
+def task_status(task_id):
+    task = renew_channels.AsyncResult(task_id)
+    response = {
+        "id": task.id,
+        "status": task.status.title(),
+        "current": task.result.get("current", 1),
+        "total": task.result.get("total", 1),
+        "channel_id": task.result.get("channel_id", None),
+        "result": task.result,
+        "traceback": task.traceback,
+    }
     return jsonify(response)
 
 
@@ -48,44 +73,41 @@ def user_info():
     return jsonify(status)
 
 
-@api_blueprint.route("/test")
-def test():
-    channels = [
-        channel for channel in Channel.query.all()
-        if channel.expiration and channel.expiration < datetime.now() +
-        timedelta(days=2)
-    ]
-    return jsonify(str(channels))
-
-
 @api_blueprint.route("/channels/cron-renew")
 @app_engine_required
 def channels_cron_renew():
-    channels = [
-        channel for channel in Channel.query.all()
-        if channel.hub_infos["state"] != "verified"
-        # if channel.expiration and channel.expiration < datetime.now() + timedelta(days=2)
-    ]
-    response = {}
-    for channel in channels:
-        response[channel.id] = channel.renew(stringify=True)
-    current_app.logger.info("Cron Renew Triggered")
-    current_app.logger.info(response)
-    notify_admin("Cron Renew",
-                 "Pushover",
-                 message=str(response),
-                 title="Cron Renew Triggered")
-    return jsonify(response)
+    channels = []
+    for channel in Channel.query.all():
+        if channel.hub_infos["state"] != "verified" or (
+            channel.expiration
+            and channel.expiration < datetime.now() + timedelta(days=2)
+        ):
+            channels.append(
+                (
+                    channel.id,
+                    build_callback_url(channel.id),
+                    build_topic_url(channel.id),
+                )
+            )
+    task = renew_channels.apply_async(args=[channels])
+    logging.info("Cron Renew Triggered: {task.id}")
+    notify_admin(
+        "Cron Renew", "Pushover", message=task.id, title="Cron Renew Triggered"
+    )
+    return jsonify(task.id)
 
 
 @api_blueprint.route("/channels/renew")
 @login_required
 def channels_renew():
     """Renew Subscription Info, Both Hub and Info"""
-    channels = Channel.query.all()
-    response = {}
-    for channel in channels:
-        response[channel.id] = channel.renew(stringify=True)
+    channels = []
+    for channel in Channel.query.all():
+        channels.append(
+            (channel.id, build_callback_url(channel.id), build_topic_url(channel.id),)
+        )
+    task = renew_channels.apply_async(args=[channels])
+    response = {"id": task.id, "status": url_for("api.task_status", task_id=task.id)}
     return jsonify(response)
 
 
@@ -120,6 +142,15 @@ def channel_renew(channel_id):
     return jsonify(response)
 
 
+@api_blueprint.route("/<channel_id>/fetch-videos")
+@login_required
+def fetch_videos(channel_id):
+    """Renew Subscription Info, Both Hub and Info"""
+    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
+    channel_item.fetch_videos()
+    return True
+
+
 @api_blueprint.route("/<action_id>")
 @login_required
 def action(action_id):
@@ -128,10 +159,13 @@ def action(action_id):
     if action.subscription not in current_user.subscriptions:
         abort(403)
     return jsonify(
-        dict(action_id=action.id,
-             action_name=action.name,
-             action_type=action.type.value,
-             details=action.details))
+        dict(
+            action_id=action.id,
+            action_name=action.name,
+            action_type=action.type.value,
+            details=action.details,
+        )
+    )
 
 
 @api_blueprint.route("/action/new", methods=["POST"])
@@ -140,7 +174,8 @@ def action_new():
     form = ActionForm()
     if form.validate_on_submit():
         subscription = current_user.subscriptions.filter_by(
-            channel_id=form.channel_id.data).first_or_404()
+            channel_id=form.channel_id.data
+        ).first_or_404()
         if form.action_type.data == "Notification":
             details = {
                 "service": "Pushover",
@@ -154,8 +189,9 @@ def action_new():
             details = {"playlist_id": "WL"}
         elif form.action_type.data == "Download":
             details = {"file_path": "/{video_title}.mp4"}
-        response = subscription.add_action(form.action_name.data,
-                                           form.action_type.data, details)
+        response = subscription.add_action(
+            form.action_name.data, form.action_type.data, details
+        )
         return jsonify(str(response))
     abort(403)
 
@@ -170,7 +206,8 @@ def action_edit(action_id):
     form = ActionForm()
     if form.validate_on_submit():
         subscription = current_user.subscriptions.filter_by(
-            channel_id=form.channel_id.data).first_or_404()
+            channel_id=form.channel_id.data
+        ).first_or_404()
     return jsonify({})
 
 
@@ -192,16 +229,21 @@ def youtube_subscription():
         page_token = get_params.pop("page_token")
     except KeyError:
         abort(404)
-    response = current_user.youtube.subscriptions().list(
-        part="snippet",
-        maxResults=50,
-        mine=True,
-        order="alphabetical",
-        pageToken=page_token).execute()
+    response = (
+        current_user.youtube.subscriptions()
+        .list(
+            part="snippet",
+            maxResults=50,
+            mine=True,
+            order="alphabetical",
+            pageToken=page_token,
+        )
+        .execute()
+    )
     for channel in response["items"]:
         channel_id = channel["snippet"]["resourceId"]["channelId"]
-        channel["snippet"]["subscribed"] = current_user.is_subscribing(
-            channel_id)
+        channel["snippet"]["subscribed"] = current_user.is_subscribing(channel_id)
         channel["snippet"]["subscribe_endpoint"] = url_for(
-            "api.channel_subscribe", channel_id=channel_id)
+            "api.channel_subscribe", channel_id=channel_id
+        )
     return jsonify(response)

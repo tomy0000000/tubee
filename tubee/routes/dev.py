@@ -1,22 +1,10 @@
 """Routes for Developing/Testing"""
 import pprint
-from flask import abort, Blueprint, current_app, render_template, request, url_for
+from flask import abort, Blueprint, render_template, request
 from flask_login import current_user, login_required
 from ..helper import admin_required
+
 dev_blueprint = Blueprint("dev", __name__)
-
-
-@dev_blueprint.route("/sitemap")
-@login_required
-@admin_required
-def sitemap():
-    links = []
-    for rule in current_app.url_map.iter_rules():
-        query = {arg: "[{0}]".format(arg) for arg in rule.arguments}
-        url = url_for(rule.endpoint, **query)
-        links.append((url, rule.endpoint))
-    links.sort(key=lambda x: x[1])
-    return render_template("sitemap.html", links=links)
 
 
 @dev_blueprint.route("/request")

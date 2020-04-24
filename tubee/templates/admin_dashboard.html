@@ -1,239 +1,442 @@
-{% extends "base.html" %}
-{% set title = "Admin Dashboard" %}
-
-{% block style %}
+{% extends "base.html" %} {% set title = "Admin Dashboard" %} {% block style %}
 <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/<filename>') }}"> -->
-{% endblock %}
-{% block script %}
-<!-- <script src="{{ url_for('static', filename='js/<filename>') }}"></script> -->
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block script %}
+<script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+{% endblock %} {% block content %}
 
 <div class="btn-group p-3" role="group" aria-label="Admin Actions">
-    <a class="btn btn-secondary" href="{{ url_for('admin.raise_exception') }}" role="button">Raise Exception</a>
-    <a class="btn btn-secondary" href="{{ url_for('admin.test_logging') }}" role="button">Test Logging</a>
+  <a
+    class="btn btn-secondary"
+    href="{{ url_for('admin.raise_exception') }}"
+    role="button"
+    >Raise Exception</a
+  >
+  <a
+    class="btn btn-secondary"
+    href="{{ url_for('admin.test_logging') }}"
+    role="button"
+    >Test Logging</a
+  >
 </div>
 
-<br>
+<br />
 
 <!-- BEGIN TABS -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="sys-runtime-tab" data-toggle="tab" href="#sys-runtime" role="tab" aria-controls="sys-runtime" aria-selected="true">System Runtime</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="app-config-tab" data-toggle="tab" href="#app-config" role="tab" aria-controls="app-config" aria-selected="false">Application Config</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="envs-tab" data-toggle="tab" href="#envs" role="tab" aria-controls="envs" aria-selected="false">Environment Variables</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="callbacks-tab" data-toggle="tab" href="#callbacks" role="tab" aria-controls="callbacks" aria-selected="false">Callbacks</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications" role="tab" aria-controls="notifications" aria-selected="false">Notifications</a>
-    </li>
+  <li class="nav-item">
+    <a
+      class="nav-link active"
+      id="sys-runtime-tab"
+      data-toggle="tab"
+      href="#sys-runtime"
+      role="tab"
+      aria-controls="sys-runtime"
+      aria-selected="true"
+      >System Runtime</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      id="app-config-tab"
+      data-toggle="tab"
+      href="#app-config"
+      role="tab"
+      aria-controls="app-config"
+      aria-selected="false"
+      >Application Config</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      id="envs-tab"
+      data-toggle="tab"
+      href="#envs"
+      role="tab"
+      aria-controls="envs"
+      aria-selected="false"
+      >Environment Variables</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      id="callbacks-tab"
+      data-toggle="tab"
+      href="#callbacks"
+      role="tab"
+      aria-controls="callbacks"
+      aria-selected="false"
+      >Callbacks</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      id="notifications-tab"
+      data-toggle="tab"
+      href="#notifications"
+      role="tab"
+      aria-controls="notifications"
+      aria-selected="false"
+      >Notifications</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      id="sitemap-tab"
+      data-toggle="tab"
+      href="#sitemap"
+      role="tab"
+      aria-controls="sitemap"
+      aria-selected="false"
+      >Sitemap</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      id="channel-renew-tab"
+      data-toggle="tab"
+      href="#channel-renew"
+      role="tab"
+      aria-controls="channel-renew"
+      aria-selected="false"
+      >Channel Renew</a
+    >
+  </li>
 </ul>
 <!-- END TABS -->
 
 <!-- BEGIN TAB PAGES -->
 <div class="tab-content" id="admin-dashbaord-tab-content">
-    <!-- BEGIN SYS RUNTIME -->
-    <div class="tab-pane fade show active" id="sys-runtime" role="tabpanel" aria-labelledby="sys-runtime-tab">
-        <h1>System Runtime</h1>
-        <table class="table table-striped table-hover table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col" class="align-middle">Key</th>
-                    <th scope="col" class="align-middle">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row" class="align-middle">OS Verion</th>
-                    <td class="align-middle">{{ infos.os_version }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="align-middle">Python Verion</th>
-                    <td class="align-middle">{{ infos.python_version }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="align-middle">Flask Verion</th>
-                    <td class="align-middle">{{ infos.flask_version }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="align-middle">Werkzeug Verion</th>
-                    <td class="align-middle">{{ infos.werkzeug_version }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="align-middle">Tubee Verion</th>
-                    <td class="align-middle"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- END SYS RUNTIME -->
+  <!-- BEGIN SYS RUNTIME -->
+  <div
+    class="tab-pane fade show active"
+    id="sys-runtime"
+    role="tabpanel"
+    aria-labelledby="sys-runtime-tab"
+  >
+    <h1>System Runtime</h1>
+    <table class="table table-striped table-hover table-responsive">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" class="align-middle">Key</th>
+          <th scope="col" class="align-middle">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" class="align-middle">OS Verion</th>
+          <td class="align-middle">{{ infos.os_version }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">Python Verion</th>
+          <td class="align-middle">{{ infos.python_version }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">Flask Verion</th>
+          <td class="align-middle">{{ infos.flask_version }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">Werkzeug Verion</th>
+          <td class="align-middle">{{ infos.werkzeug_version }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">Tubee Verion</th>
+          <td class="align-middle"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- END SYS RUNTIME -->
 
-    <!-- BEGIN APP CONFIG -->
-    <div class="tab-pane fade" id="app-config" role="tabpanel" aria-labelledby="app-config-tab">
-        <h1>Application Config</h1>
-        <table class="table table-striped table-hover table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col" class="align-middle">Key</th>
-                    <th scope="col" class="align-middle">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for key, val in infos.app_config.items() %}
-                <tr>
-                    <th scope="row" class="align-middle">{{ key }}</th>
-                    <td class="align-middle">{{ val }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <!-- END APP CONFIG -->
+  <!-- BEGIN APP CONFIG -->
+  <div
+    class="tab-pane fade"
+    id="app-config"
+    role="tabpanel"
+    aria-labelledby="app-config-tab"
+  >
+    <h1>Application Config</h1>
+    <table class="table table-striped table-hover table-responsive">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" class="align-middle">Key</th>
+          <th scope="col" class="align-middle">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key, val in infos.app_config.items() %}
+        <tr>
+          <th scope="row" class="align-middle">{{ key }}</th>
+          <td class="align-middle">{{ val }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- END APP CONFIG -->
 
-    <!-- BEGIN OS ENVS -->
-    <div class="tab-pane fade" id="envs" role="tabpanel" aria-labelledby="envs-tab">
-        <h1>Environment Variables</h1>
-        <table class="table table-striped table-hover table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col" class="align-middle">Key</th>
-                    <th scope="col" class="align-middle">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for key, val in infos.os_env.items() %}
-                <tr>
-                    <th scope="row" class="align-middle">{{ key }}</th>
-                    <td class="align-middle">{{ val }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <!-- END OS ENVS -->
+  <!-- BEGIN OS ENVS -->
+  <div
+    class="tab-pane fade"
+    id="envs"
+    role="tabpanel"
+    aria-labelledby="envs-tab"
+  >
+    <h1>Environment Variables</h1>
+    <table class="table table-striped table-hover table-responsive">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" class="align-middle">Key</th>
+          <th scope="col" class="align-middle">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key, val in infos.os_env.items() %}
+        <tr>
+          <th scope="row" class="align-middle">{{ key }}</th>
+          <td class="align-middle">{{ val }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- END OS ENVS -->
 
-    <!-- BEGIN CALLBACKS -->
-    <div class="tab-pane fade" id="callbacks" role="tabpanel" aria-labelledby="callbacks-tab">
-        <h1>Callbacks</h1>
-        <table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Received Datetime</th>
-                    <th scope="col">Channel ID</th>
-                    <th scope="col">Action Type</th>
-                    <th scope="col">Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for callback in callbacks %}
-                <tr>
-                    <th scope="row">{{ moment(callback.timestamp).format('lll') }}</th>
-                    <td>{{ callback.channel_id }}</td>
-                    <td>
-                        {% if callback.type == "Hub Challenge" %}
-                        <span class="badge badge-warning">{{ callback.type }}</span>
-                        {% elif callback.type == "Hub Notification" %}
-                        <span class="badge badge-success">{{ callback.type }}</span>
-                        {% else %}
-                        <span class="badge badge-danger">{{ callback.type }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ callback.infos }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <!-- END CALLBACKS -->
+  <!-- BEGIN CALLBACKS -->
+  <div
+    class="tab-pane fade"
+    id="callbacks"
+    role="tabpanel"
+    aria-labelledby="callbacks-tab"
+  >
+    <h1>Callbacks</h1>
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Received Datetime</th>
+          <th scope="col">Channel ID</th>
+          <th scope="col">Action Type</th>
+          <th scope="col">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for callback in callbacks %}
+        <tr>
+          <th scope="row">{{ moment(callback.timestamp).format('lll') }}</th>
+          <td>{{ callback.channel_id }}</td>
+          <td>
+            {% if callback.type == "Hub Challenge" %}
+            <span class="badge badge-warning">{{ callback.type }}</span>
+            {% elif callback.type == "Hub Notification" %}
+            <span class="badge badge-success">{{ callback.type }}</span>
+            {% else %}
+            <span class="badge badge-danger">{{ callback.type }}</span>
+            {% endif %}
+          </td>
+          <td>{{ callback.infos }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- END CALLBACKS -->
 
-    <!-- BEGIN NOTIFICATIONS -->
-    <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
-        <h1>Notifications</h1>
-        <!-- BEGIN SEND SECTION -->
-        <div>
-            <form method="POST" action="{{ url_for('admin.notification_push') }}">
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <input type="text" name="message" class="form-control" value="Test Message Body">
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="service" id="service_pushover" value="Pushover">
-                    <label class="form-check-label" for="service_pushover">Pushover</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="service" id="service_line_notify" value="LineNotify">
-                    <label class="form-check-label" for="service_line_notify">Line Notify</label>
-                </div>
-                <input class="btn btn-primary btn-lg m-2" id="submit" name="submit" type="submit" value="Send">
-            </form>
+  <!-- BEGIN NOTIFICATIONS -->
+  <div
+    class="tab-pane fade"
+    id="notifications"
+    role="tabpanel"
+    aria-labelledby="notifications-tab"
+  >
+    <h1>Notifications</h1>
+    <!-- BEGIN SEND SECTION -->
+    <div>
+      <form method="POST" action="{{ url_for('admin.notification_push') }}">
+        <div class="form-group">
+          <label for="message">Message</label>
+          <input
+            type="text"
+            name="message"
+            class="form-control"
+            value="Test Message Body"
+          />
         </div>
-        <!-- END SEND SECTION -->
-        <!-- BGEIN NOTIFICATION TABLE -->
-        <table class="table table-striped table-hover table-responsive-lg">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Sent Datetime</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">URL</th>
-                    <th scope="col">Response</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for notification in notifications.items %}
-                <tr>
-                    <th scope="row" class="align-middle" rowspan="2">
-                        {% if notification.kwargs.image %}
-                        <img src="{{ notification.kwargs.image }}" class="rounded" width="200">
-                        {% endif %}
-                    </th>
-                    <td class="align-middle">{{ notification.sent_datetime }}</td>
-                    <td class="align-middle">{{ notification.kwargs.title }}</td>
-                    <td class="align-middle">
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#message_body{{ notification.id }}" aria-expanded="false" aria-controls="message_body{{ notification.id }}">
-                            Show Message
-                        </button>
-
-                    </td>
-                    <td class="align-middle">
-                        <a href="{{ notification.kwargs.url }}">{{ notification.kwargs.url_title }}</a>
-                    </td>
-                    <td class="align-middle">
-                        {% if notification.response.status == 1 %}
-                        <button type="button" class="btn btn-success response-btn" data-container="body" data-toggle="popover" data-placement="right" data-content="{{ notification.response.request }}">
-                            OK
-                            <span class="badge badge-light">1</span>
-                        </button>
-                        {% else %}
-                        <button type="button" class="btn btn-danger response-btn" data-container="body" data-toggle="popover" data-placement="right" data-content="{{ notification.response.request }}">
-                            Error
-                            <span class="badge badge-light">{{ notification.response.status }}</span>
-                        </button>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="p-0">
-                        <div class="collapse message_bodies" id="message_body{{ notification.id }}">
-                            <pre>{{ notification.message }}</pre>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <!-- END NOTIFICATION TABLE -->
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="service"
+            id="service_pushover"
+            value="Pushover"
+          />
+          <label class="form-check-label" for="service_pushover"
+            >Pushover</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="service"
+            id="service_line_notify"
+            value="LineNotify"
+          />
+          <label class="form-check-label" for="service_line_notify"
+            >Line Notify</label
+          >
+        </div>
+        <input
+          class="btn btn-primary btn-lg m-2"
+          id="submit"
+          name="submit"
+          type="submit"
+          value="Send"
+        />
+      </form>
     </div>
-    <!-- END NOTIFICATIONS -->
+    <!-- END SEND SECTION -->
+    <!-- BGEIN NOTIFICATION TABLE -->
+    <table class="table table-striped table-hover table-responsive-lg">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Sent Datetime</th>
+          <th scope="col">Title</th>
+          <th scope="col">Message</th>
+          <th scope="col">URL</th>
+          <th scope="col">Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for notification in notifications.items %}
+        <tr>
+          <th scope="row" class="align-middle" rowspan="2">
+            {% if notification.kwargs.image %}
+            <img
+              src="{{ notification.kwargs.image }}"
+              class="rounded"
+              width="200"
+            />
+            {% endif %}
+          </th>
+          <td class="align-middle">{{ notification.sent_datetime }}</td>
+          <td class="align-middle">{{ notification.kwargs.title }}</td>
+          <td class="align-middle">
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-toggle="collapse"
+              data-target="#message_body{{ notification.id }}"
+              aria-expanded="false"
+              aria-controls="message_body{{ notification.id }}"
+            >
+              Show Message
+            </button>
+          </td>
+          <td class="align-middle">
+            <a href="{{ notification.kwargs.url }}"
+              >{{ notification.kwargs.url_title }}</a
+            >
+          </td>
+          <td class="align-middle">
+            {% if notification.response.status == 1 %}
+            <button
+              type="button"
+              class="btn btn-success response-btn"
+              data-container="body"
+              data-toggle="popover"
+              data-placement="right"
+              data-content="{{ notification.response.request }}"
+            >
+              OK
+              <span class="badge badge-light">1</span>
+            </button>
+            {% else %}
+            <button
+              type="button"
+              class="btn btn-danger response-btn"
+              data-container="body"
+              data-toggle="popover"
+              data-placement="right"
+              data-content="{{ notification.response.request }}"
+            >
+              Error
+              <span class="badge badge-light"
+                >{{ notification.response.status }}</span
+              >
+            </button>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5" class="p-0">
+            <div
+              class="collapse message_bodies"
+              id="message_body{{ notification.id }}"
+            >
+              <pre>{{ notification.message }}</pre>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- END NOTIFICATION TABLE -->
+  </div>
+  <!-- END NOTIFICATIONS -->
 
+  <!-- BEGIN SITE MAP -->
+  <div
+    class="tab-pane fade"
+    id="sitemap"
+    role="tabpanel"
+    aria-labelledby="sitemap-tab"
+  >
+    <h1>Sitemap</h1>
+    <!-- BGEIN SITE MAP TABLES -->
+    {% for blueprint, rules in links.items() %}
+    <h2>{{ blueprint }}</h2>
+    <table class="table table-striped table-hover table-responsive-lg">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" class="align-middle">Func</th>
+          <th scope="col" class="align-middle">Path</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for url, endpoint in rules %}
+        <tr>
+          <th scope="row" class="align-middle">
+            <a href="{{ url }}">{{ endpoint }}</a>
+          </th>
+          <td class="align-middle">
+            {{ url }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+    <!-- END SITE MAP TABLES -->
+  </div>
+  <!-- END SITE MAP -->
+
+  <!-- BEGIN CHANNEL RENEW -->
+  <div
+    class="tab-pane fade"
+    id="channel-renew"
+    role="tabpanel"
+    aria-labelledby="channel-renew-tab"
+  >
+    <h1>Channel Renew</h1>
+    <button type="button" id="start-renew-btn" class="btn btn-success" data-api-endpoint="{{ url_for('api.channels_renew') }}">Start Renewing</button>
+  </div>
+  <!-- END CHANNEL RENEW -->
 </div>
 <!-- END TAB PAGES -->
 

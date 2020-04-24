@@ -1,5 +1,6 @@
 """Callback Model"""
 from datetime import datetime
+
 from .. import db
 
 
@@ -13,15 +14,14 @@ class Callback(db.Model):
     data                 POST reqests body
     user_agent           Sender's Identity
     """
+
     __tablename__ = "callback"
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(32))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     infos = db.Column(db.JSON)
-    channel_id = db.Column(db.String(32),
-                           db.ForeignKey("channel.id"))
-    video_id = db.Column(db.String(32),
-                         db.ForeignKey("video.id"))
+    channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
+    video_id = db.Column(db.String(32), db.ForeignKey("video.id"))
 
     def __init__(self, channel):
         self.channel = channel

@@ -2,11 +2,13 @@ import logging
 import os
 import uuid
 from datetime import timedelta
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
     """Universal Config"""
+
     DEBUG = False
     TESTING = False
     PREFERRED_URL_SCHEME = "https"
@@ -18,12 +20,14 @@ class Config:
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
     REMEMBER_COOKIE_SECURE = True
 
+    CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
+    CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
+
     YOUTUBE_API_DEVELOPER_KEY = os.environ.get("YOUTUBE_API_DEVELOPER_KEY")
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 
     # YouTube Data API
-    YOUTUBE_API_CLIENT_SECRET_FILE = os.environ.get(
-        "YOUTUBE_API_CLIENT_SECRET_FILE")
+    YOUTUBE_API_CLIENT_SECRET_FILE = os.environ.get("YOUTUBE_API_CLIENT_SECRET_FILE")
     YOUTUBE_READ_WRITE_SSL_SCOPE = ["https://www.googleapis.com/auth/youtube.force-ssl"]
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
@@ -48,9 +52,11 @@ class Config:
 
 class DevelopmentConfig(Config):
     """Config for local Development"""
+
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DEV_DATABASE_URL") or \
-        "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "DEV_DATABASE_URL"
+    ) or "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
 
     @classmethod
     def init_app(cls, app):
@@ -61,9 +67,9 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     """Config for Testing, Travis CI"""
+
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL") or \
-        "sqlite://"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL") or "sqlite://"
     WTF_CSRF_ENABLED = False
 
     @classmethod
@@ -72,8 +78,9 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
-        "sqlite:///" + os.path.join(basedir, "data.sqlite")
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "DATABASE_URL"
+    ) or "sqlite:///" + os.path.join(basedir, "data.sqlite")
     DEPLOY_KEY = os.environ.get("DEPLOY_KEY")
 
     @classmethod
@@ -89,6 +96,7 @@ class UnixConfig(ProductionConfig):
 
         # log to syslog
         from logging.handlers import SysLogHandler
+
         syslog_handler = SysLogHandler()
         syslog_handler.setLevel(logging.INFO)
         app.logger.addHandler(syslog_handler)
@@ -112,6 +120,7 @@ class HerokuConfig(ProductionConfig):
 
         # handle reverse proxy server headers
         from werkzeug.contrib.fixers import ProxyFix
+
         app.wsgi_app = ProxyFix(app.wsgi_app)
 
         # log to stderr
@@ -134,6 +143,7 @@ class GoogleCloudComputeEngineConfig(ProductionConfig):
 
         # log to stackdriver
         import google.cloud.logging
+
         client = google.cloud.logging.Client()
         client.setup_logging()
         app.logger.info("Compute Engine Config Loaded")

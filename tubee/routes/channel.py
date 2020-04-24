@@ -1,10 +1,10 @@
 """Channel Related Routes"""
 import bs4
+import logging
 import pyrfc3339
 from datetime import datetime, timedelta
 from flask import (
     Blueprint,
-    current_app,
     flash,
     jsonify,
     render_template,
@@ -18,52 +18,64 @@ from ..forms import ActionForm
 from ..helper import notify_admin, youtube_dl
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel, Subscription, Video
+
 channel_blueprint = Blueprint("channel", __name__)
 
 
 @channel_blueprint.route("/<channel_id>")
 def channel(channel_id):
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    videos = build_youtube_api().search().list(part="snippet",
-                                               channelId=channel_id,
-                                               maxResults=50,
-                                               order="date",
-                                               type="video").execute()["items"]
+    videos = (
+        build_youtube_api()
+        .search()
+        .list(
+            part="snippet",
+            channelId=channel_id,
+            maxResults=50,
+            order="date",
+            type="video",
+        )
+        .execute()["items"]
+    )
     for video in videos:
         video["snippet"]["publishedAt"] = pyrfc3339.parse(
-            video["snippet"]["publishedAt"])
+            video["snippet"]["publishedAt"]
+        )
         base_thumbnails_url = "/".join(
-            video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1])
+            video["snippet"]["thumbnails"]["high"]["url"].split("/")[:-1]
+        )
         video["snippet"]["thumbnails"]["standard"] = {
             "url": base_thumbnails_url + "/sddefault.jpg",
             "width": 640,
-            "height": 480
+            "height": 480,
         }
         video["snippet"]["thumbnails"]["maxres"] = {
             "url": base_thumbnails_url + "/maxresdefault.jpg",
             "width": 1280,
-            "height": 720
+            "height": 720,
         }
-        callback_search = Callback.query.filter_by(
-            channel_id=channel_id,
-            type="Hub Notification",
-            video_id=video["id"]["videoId"]).order_by(
-                Callback.timestamp.asc()).all()
+        callback_search = (
+            Callback.query.filter_by(
+                channel_id=channel_id,
+                type="Hub Notification",
+                video_id=video["id"]["videoId"],
+            )
+            .order_by(Callback.timestamp.asc())
+            .all()
+        )
         video["snippet"]["callback"] = {
-            "datetime":
-            callback_search[0].timestamp
-            if bool(callback_search) else "",
-            "count":
-            len(callback_search)
+            "datetime": callback_search[0].timestamp if bool(callback_search) else "",
+            "count": len(callback_search),
         }
-    actions = current_user.subscriptions.filter_by(
-        channel_id=channel_id).first().actions.all()
+    actions = (
+        current_user.subscriptions.filter_by(channel_id=channel_id)
+        .first()
+        .actions.all()
+    )
     form = ActionForm()
-    return render_template("channel.html",
-                           channel=channel_item,
-                           videos=videos,
-                           actions=actions,
-                           form=form)
+    return render_template(
+        "channel.html", channel=channel_item, videos=videos, actions=actions, form=form
+    )
 
 
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])
@@ -114,8 +126,7 @@ def callback(channel_id):
         try:
             video_id = soup.find("yt:videoId").string
         except Exception as error:
-            current_app.logger.info(
-                "Video ID not Found for {}".format(callback_item))
+            logging.info("Video ID not Found for {}".format(callback_item))
             infos["data"] = post_datas
             callback_item.infos = infos
             db.session.commit()
@@ -151,18 +162,18 @@ def callback(channel_id):
         for sub in Subscription.query.filter_by(channel_id=channel_id).all():
             # old_video_update = bool(
             #     video_datetime < sub.subscribe_timestamp)
-            # current_app.logger.info(
+            # logging.info(
             #     "New Video Update: {}".format(new_video_update))
-            # current_app.logger.info(
+            # logging.info(
             #     "Old Video Update: {}".format(old_video_update))
-            # current_app.logger.info(
+            # logging.info(
             #     "Action as Test Mode: {}".format(test_mode))
-            # current_app.logger.info("Subscriber is Admin: {}".format(
+            # logging.info("Subscriber is Admin: {}".format(
             #     sub.user.admin))
 
             # Decide to Run or Not
             if test_mode and sub.user.admin:
-                current_app.logger.info("Test Callback Pass")
+                logging.info("Test Callback Pass")
                 pass
             elif not new_video:
                 continue
@@ -176,29 +187,30 @@ def callback(channel_id):
                     results = action.execute(
                         video_id=video_id,
                         video_title=video_item.name,
-                        video_description=video_item.details["snippet"]
-                        ["description"],
-                        video_thumbnails=video_item.details["snippet"]
-                        ["thumbnails"]["medium"]["url"],
+                        video_description=video_item.details["snippet"]["description"],
+                        video_thumbnails=video_item.details["snippet"]["thumbnails"][
+                            "medium"
+                        ]["url"],
                         video_file_url=video_file_url,
-                        channel_name=channel_item.name)
+                        channel_name=channel_item.name,
+                    )
                 except Exception as error:
                     results = error
-                current_app.logger.info("{}-{}: {}".format(
-                    sub.username, action.id, results))
+                logging.info("{}-{}: {}".format(sub.username, action.id, results))
                 response[sub.username][action.id] = str(results)
 
         # Auto Renew if expiration is close
         expiration = channel_item.expiration
         if expiration and expiration - datetime.now() < timedelta(days=2):
             response["renew"] = channel_item.renew()
-            current_app.logger.info("Channel renewed during callback")
-            current_app.logger.info(response["renew"])
-            notify_admin("Deployment",
-                         "Pushover",
-                         message="{} <{}>".format(channel_item.name,
-                                                  channel_item.id),
-                         title="Channel renewed during callback")
+            logging.info("Channel renewed during callback")
+            logging.info(response["renew"])
+            notify_admin(
+                "Deployment",
+                "Pushover",
+                message="{} <{}>".format(channel_item.name, channel_item.id),
+                title="Channel renewed during callback",
+            )
         response = jsonify(response)
     callback_item.infos = infos
     db.session.commit()

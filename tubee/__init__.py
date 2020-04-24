@@ -2,14 +2,17 @@
 import json
 import logging.config
 import os
+
 from authlib.integrations.flask_client import OAuth
+from celery import Celery
 from flask import Flask
 from flask_bcrypt import Bcrypt
-from flask_login import current_user, LoginManager
+from flask_login import LoginManager, current_user
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-from config import config
+
+from config import Config, config
 
 __version__ = "dev"
 
@@ -18,8 +21,9 @@ naming_convention = {
     "uq": "uq_%(table_name)s_%(column_0_name)s",
     "ck": "ck_%(table_name)s_%(column_0_name)s",
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
+    "pk": "pk_%(table_name)s",
 }
+
 
 metadata = MetaData(naming_convention=naming_convention)
 db = SQLAlchemy(metadata=metadata)
@@ -27,6 +31,7 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 moment = Moment()
 oauth = OAuth()
+celery = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
 
 def create_app(config_name):
@@ -35,7 +40,7 @@ def create_app(config_name):
     if os.path.isfile(os.path.join(app.instance_path, "logging.cfg")):
         with app.open_instance_resource("logging.cfg", "r") as json_file:
             logging.config.dictConfig(json.load(json_file))
-            app.logger.info("External logging.cfg Loaded")
+            logging.info("External logging.cfg Loaded")
 
     db.init_app(app)
     app.db = db
@@ -44,43 +49,42 @@ def create_app(config_name):
     login_manager.init_app(app)
     moment.init_app(app)
     oauth.init_app(app)
+    celery.conf.update(app.config)
 
     login_manager.login_view = "user.login"
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
     login_manager.needs_refresh_message = "Please reauthenticate to access this page."
     login_manager.needs_refresh_message_category = "warning"
-    oauth.register(name="LineNotify",
-                   access_token_url="https://notify-bot.line.me/oauth/token",
-                   access_token_params=None,
-                   authorize_url="https://notify-bot.line.me/oauth/authorize",
-                   authorize_params=dict(response_type="code", scope="notify"),
-                   api_base_url="https://notify-api.line.me/",
-                   client_kwargs=None,
-                   fetch_token=lambda: dict(access_token=current_user.
-                                            _line_notify_credentials,
-                                            token_type="bearer"))
-
-    from .routes.main import main_blueprint
-    app.register_blueprint(main_blueprint)
+    oauth.register(
+        name="LineNotify",
+        access_token_url="https://notify-bot.line.me/oauth/token",
+        access_token_params=None,
+        authorize_url="https://notify-bot.line.me/oauth/authorize",
+        authorize_params=dict(response_type="code", scope="notify"),
+        api_base_url="https://notify-api.line.me/",
+        client_kwargs=None,
+        fetch_token=lambda: dict(
+            access_token=current_user._line_notify_credentials, token_type="bearer"
+        ),
+    )
 
     from .routes.admin import admin_blueprint
-    app.register_blueprint(admin_blueprint, url_prefix="/admin")
-
     from .routes.api import api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix="/api")
-
     from .routes.channel import channel_blueprint
-    app.register_blueprint(channel_blueprint, url_prefix="/channel")
-
+    from .routes.dev import dev_blueprint
+    from .routes.main import main_blueprint
     from .routes.user import user_blueprint
-    app.register_blueprint(user_blueprint, url_prefix="/user")
+    from .handler import handler
 
+    app.register_blueprint(main_blueprint)
+    app.register_blueprint(admin_blueprint, url_prefix="/admin")
+    app.register_blueprint(api_blueprint, url_prefix="/api")
+    app.register_blueprint(channel_blueprint, url_prefix="/channel")
+    app.register_blueprint(user_blueprint, url_prefix="/user")
     if app.debug:
-        from .routes.dev import dev_blueprint
         app.register_blueprint(dev_blueprint, url_prefix="/dev")
     else:
-        from .handler import handler
         app.register_blueprint(handler)
 
     return app

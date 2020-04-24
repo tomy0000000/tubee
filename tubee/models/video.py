@@ -1,11 +1,13 @@
 """Video Model"""
 from dateutil import parser
+
 from .. import db
 from ..helper.youtube import build_youtube_api
 
 
 class Video(db.Model):
     """Videos of Subscribed Channel"""
+
     __tablename__ = "video"
     id = db.Column(db.String(16), primary_key=True)
     name = db.Column(db.String(128))
@@ -24,13 +26,16 @@ class Video(db.Model):
 
     def _process_details(self):
         self.name = self.details["snippet"]["title"]
-        self.uploaded_timestamp = parser.parse(
-            self.details["snippet"]["publishedAt"])
+        self.uploaded_timestamp = parser.parse(self.details["snippet"]["publishedAt"])
 
     def update_infos(self):
         try:
-            self.details = build_youtube_api().videos().list(
-                part="snippet", id=self.id).execute()["items"][0]
+            self.details = (
+                build_youtube_api()
+                .videos()
+                .list(part="snippet", id=self.id)
+                .execute()["items"][0]
+            )
             self._process_details()
             return True
         # TODO: Parse API Error

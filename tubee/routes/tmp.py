@@ -1,9 +1,12 @@
 """Beta views"""
+import logging
 from os.path import basename
-from dropbox.files import WriteMode
+
 from dropbox.exceptions import ApiError
-from flask import current_app, flash, redirect, render_template, url_for
+from dropbox.files import WriteMode
+from flask import flash, redirect, url_for
 from flask_login import current_user, login_required
+
 from ..helper import admin_required, youtube_dl
 from .dev import dev_blueprint
 
@@ -17,9 +20,8 @@ def test_dropbox():
     with open(file_path, "rb") as file:
         try:
             response = current_user.dropbox.files_upload(
-                file.read(),
-                "/{}".format(filename),
-                mode=WriteMode("overwrite"))
+                file.read(), "/{}".format(filename), mode=WriteMode("overwrite")
+            )
         except ApiError as error:
             flash(str(error), "danger")
         else:
@@ -32,8 +34,9 @@ def test_dropbox():
 @admin_required
 def test_download_to_dropbox(video_id):
     metadata = youtube_dl.fetch_video_metadata(video_id)
-    current_app.logger.info(metadata)
+    logging.info(metadata)
     response = current_user.dropbox.files_save_url(
-        "/{}".format("{}.mp4".format(metadata["title"])), metadata["url"])
+        "/{}".format("{}.mp4".format(metadata["title"])), metadata["url"]
+    )
     flash(str(response), "success")
     return redirect(url_for("main.dashboard"))

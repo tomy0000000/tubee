@@ -1,12 +1,14 @@
 """Notification Model"""
-import requests
-from enum import Enum
+import logging
 from datetime import datetime
+from enum import Enum
+from uuid import uuid4
+
+import requests
 from flask import current_app
 from pushover_complete import PushoverAPI
-from uuid import uuid4
+
 from .. import db
-from ..exceptions import ServiceNotSet
 
 
 class Service(Enum):
@@ -16,11 +18,25 @@ class Service(Enum):
 
 VALID_ARGS = {
     Service.Pushover: [
-        "device", "title", "url", "url_title", "image_url", "priority",
-        "retry", "expire", "callback_url", "timestamp", "sound", "html"
+        "device",
+        "title",
+        "url",
+        "url_title",
+        "image_url",
+        "priority",
+        "retry",
+        "expire",
+        "callback_url",
+        "timestamp",
+        "sound",
+        "html",
     ],
-    Service.LineNotify:
-    ["image_url", "stickerPackageId", "stickerId", "notificationDisabled"]
+    Service.LineNotify: [
+        "image_url",
+        "stickerPackageId",
+        "stickerId",
+        "notificationDisabled",
+    ],
 }
 
 
@@ -38,6 +54,7 @@ class Notification(db.Model):
         sent_datetime {datetime.datetime} -- datetime when this object is created
         response {dict} -- server response when notification is sent
     """
+
     __tablename__ = "notification"
     id = db.Column(db.Integer, primary_key=True)
     initiator = db.Column(db.String(16), nullable=False)
@@ -74,18 +91,20 @@ class Notification(db.Model):
 
     def __repr__(self):
         return "<Notification: {}'s notification send with {}>".format(
-            self.user.username, self.initiator)
+            self.user.username, self.initiator
+        )
 
     @staticmethod
     def _clean_up_kwargs(kwargs, service):
         invalid_args = {
-            key: val
-            for key, val in kwargs.items() if key not in VALID_ARGS[service]
+            key: val for key, val in kwargs.items() if key not in VALID_ARGS[service]
         }
         for key, val in invalid_args.items():
-            current_app.logger.warning(
+            logging.warning(
                 "Invalid {} Notification Arguments ({}, {}) is ommited".format(
-                    service.value, key, val))
+                    service.value, key, val
+                )
+            )
             kwargs.pop(key)
         return kwargs
 
@@ -118,8 +137,7 @@ class Notification(db.Model):
         Returns:
             dict -- Response from service
         """
-        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(),
-                                               self.service)
+        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(), self.service)
         image_url = kwargs.pop("image_url", None)
         if image_url:
             kwargs["image"] = requests.get(image_url, stream=True).content
@@ -132,9 +150,8 @@ class Notification(db.Model):
         Returns:
             dict -- Response from service
         """
-        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(),
-                                               self.service)
+        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(), self.service)
         kwargs["imageFullsize"] = kwargs.pop("image_url", None)
-        return self.user.line_notify.post("api/notify",
-                                          data=dict(message=self.message,
-                                                    **kwargs))
+        return self.user.line_notify.post(
+            "api/notify", data=dict(message=self.message, **kwargs)
+        )

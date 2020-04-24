@@ -2,11 +2,13 @@
 
 Some Misc Functions used in this app
 """
+import logging
 from datetime import datetime
-from dateutil import parser
 from functools import wraps
-from urllib.parse import urlparse, urljoin
-from flask import abort, current_app, request
+from urllib.parse import urlencode, urljoin, urlparse
+
+from dateutil import parser
+from flask import abort, current_app, request, url_for
 from flask_login import current_user
 
 
@@ -26,6 +28,7 @@ def admin_required(func):
     Returns:
         view function -- The restricted function
     """
+
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if not current_user.admin:
@@ -44,11 +47,11 @@ def app_engine_required(func):
     Returns:
         view function -- The restricted function
     """
+
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if not request.headers.get("X-Appengine-Cron"):
-            current_app.logger.info("Forbidden Triggered at {}".format(
-                datetime.now()))
+            logging.info("Forbidden Triggered at {}".format(datetime.now()))
             abort(401)
         return func(*args, **kwargs)
 
@@ -64,6 +67,7 @@ def pushover_required(func):
     Returns:
         view function -- The restricted function
     """
+
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if not current_user.pushover:
@@ -82,6 +86,7 @@ def youtube_required(func):
     Returns:
         view function -- The restricted function
     """
+
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if not current_user.youtube:
@@ -102,8 +107,7 @@ def is_safe_url(target):
     """
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ("http",
-                               "https") and ref_url.netloc == test_url.netloc
+    return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
 
 
 def notify_admin(initiator, service, **kwargs):
@@ -120,10 +124,28 @@ def notify_admin(initiator, service, **kwargs):
         dict -- Reponse from notification service
     """
     from ..models.user import User
+
     admins = User.query.filter_by(admin=True).all()
     response = {}
     for admin in admins:
         if admin.pushover:
             response[admin.username] = admin.send_notification(
-                initiator, service, **kwargs)
+                initiator, service, **kwargs
+            )
     return response
+
+
+def build_callback_url(channel_id):
+    callback_url = url_for(
+        "channel.callback", channel_id=channel_id, _external=True, _scheme="https"
+    )
+    if current_app.config["HUB_RECEIVE_DOMAIN"]:
+        callback_url = callback_url.replace(
+            request.host, current_app.config["HUB_RECEIVE_DOMAIN"]
+        )
+    return callback_url
+
+
+def build_topic_url(channel_id):
+    param_query = urlencode({"channel_id": channel_id})
+    return current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
