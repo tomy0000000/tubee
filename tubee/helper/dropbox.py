@@ -6,10 +6,10 @@ from flask import current_app, url_for
 def build_flow(session):
     return dropbox.DropboxOAuth2Flow(
         current_app.config["DROPBOX_APP_KEY"],
-        current_app.config["DROPBOX_APP_SECRET"],
         url_for("user.setting_dropbox_oauth_callback", _external=True),
         session,
         current_app.config["SECRET_KEY"],
+        consumer_secret=current_app.config["DROPBOX_APP_SECRET"],
     )
 
 

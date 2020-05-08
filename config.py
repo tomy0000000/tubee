@@ -113,6 +113,8 @@ class DockerConfig(ProductionConfig):
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = bool(os.environ.get("DYNO"))
+    CELERY_BROKER_URL = os.environ.get("REDIS_URL", None)
+    CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", None)
 
     @classmethod
     def init_app(cls, app):
