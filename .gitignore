@@ -3,7 +3,6 @@ deploy_files.tar.gz
 gcloud-app-engine-key.json
 client_secret.json
 app.yaml
-.env-tmp
 .gcloudignore
 
 # Byte-compiled / optimized / DLL files
