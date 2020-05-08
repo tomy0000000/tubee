@@ -15,8 +15,8 @@ WORKERS_DICT = {
 
 port = os.environ.get("PORT", 8080)
 if os.environ.get("GAE_ENV") == "standard":
-    instance_class = os.environ.get("INSTANCE_CLASS") or "F1"
+    instance_class = os.environ.get("INSTANCE_CLASS", "F1")
     workers = WORKERS_DICT[instance_class]
-else: # flexible environment
+else:  # flexible environment
     import multiprocessing
     workers = multiprocessing.cpu_count() * 2 + 1

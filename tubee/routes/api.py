@@ -2,6 +2,8 @@
 import logging
 from datetime import datetime, timedelta
 
+from celery.result import AsyncResult
+from google.cloud.tasks_v2.types import Task as GoogleCloudTask
 from flask import Blueprint, abort, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
@@ -10,11 +12,9 @@ from ..forms import ActionForm
 from ..helper import (
     app_engine_required,
     notify_admin,
-    build_callback_url,
-    build_topic_url,
 )
 from ..models import Action, Channel
-from ..tasks import renew_channels
+from ..tasks import renew_channels, schedule_channels_renew
 
 api_blueprint = Blueprint("api", __name__)
 
@@ -48,7 +48,7 @@ def deploy():
     return jsonify(response)
 
 
-@api_blueprint.route("/<task_id>/status")
+@api_blueprint.route("/task/<task_id>/status")
 @login_required
 def task_status(task_id):
     task = renew_channels.AsyncResult(task_id)
@@ -82,14 +82,8 @@ def channels_cron_renew():
             channel.expiration
             and channel.expiration < datetime.now() + timedelta(days=2)
         ):
-            channels.append(
-                (
-                    channel.id,
-                    build_callback_url(channel.id),
-                    build_topic_url(channel.id),
-                )
-            )
-    task = renew_channels.apply_async(args=[channels])
+            channels.append(channel)
+    task = schedule_channels_renew(channels)
     logging.info("Cron Renew Triggered: {task.id}")
     notify_admin(
         "Cron Renew", "Pushover", message=task.id, title="Cron Renew Triggered"
@@ -101,13 +95,15 @@ def channels_cron_renew():
 @login_required
 def channels_renew():
     """Renew Subscription Info, Both Hub and Info"""
-    channels = []
-    for channel in Channel.query.all():
-        channels.append(
-            (channel.id, build_callback_url(channel.id), build_topic_url(channel.id),)
-        )
-    task = renew_channels.apply_async(args=[channels])
-    response = {"id": task.id, "status": url_for("api.task_status", task_id=task.id)}
+    task = schedule_channels_renew(Channel.query.all())
+    response = None
+    if isinstance(task, GoogleCloudTask):
+        response = {"name": task.name}
+    if isinstance(task, AsyncResult):
+        response = {
+            "id": task.id,
+            "status": url_for("api.task_status", task_id=task.id),
+        }
     return jsonify(response)
 
 

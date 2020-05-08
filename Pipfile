@@ -67,6 +67,8 @@ youtube-dl = "*"
 psycopg2 = "*"
 celery = "*"
 redis = "*"
+google-cloud-tasks = "*"
+apscheduler = "*"
 
 [requires]
 python_version = "3.7"

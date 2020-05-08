@@ -10,6 +10,7 @@ from ..helper.youtube import build_youtube_api
 
 from googleapiclient.errors import Error
 
+
 class Channel(db.Model):
     __tablename__ = "channel"
     id = db.Column(db.String(32), primary_key=True)
@@ -29,17 +30,18 @@ class Channel(db.Model):
     )
 
     def __init__(self, channel_id):
-        from ..tasks import channels_update_hub_infos, channels_fetch_videos
+        from ..tasks import (
+            schedule_channels_update_hub_infos,
+            schedule_channels_fetch_videos,
+        )
 
         self.id = channel_id
         # TODO: Validate Channel
         db.session.add(self)
         db.session.commit()
         self.update_infos()
-        channels_update_hub_infos.apply_async(
-            args=[(self.id, build_callback_url(self.id), build_topic_url(self.id),)]
-        )
-        channels_fetch_videos.apply_async(args=[[self.id]])
+        schedule_channels_update_hub_infos([channel_id], countdown=60)
+        schedule_channels_fetch_videos([channel_id])
         self.activate()
 
     def __repr__(self):
@@ -47,7 +49,10 @@ class Channel(db.Model):
 
     @property
     def expiration(self):
-        return try_parse_datetime(self.hub_infos["expiration"])
+        try:
+            return try_parse_datetime(self.hub_infos["expiration"])
+        except TypeError:
+            return None
 
     @expiration.setter
     def expiration(self, expiration):
@@ -114,7 +119,9 @@ class Channel(db.Model):
             return True
         # TODO: Parse API Error
         except Error as error:
-            logging.error("(API) {}: {}".format(error.__class__.__name__))
+            logging.error(
+                "(API) {}: {}".format(error.__class__.__name__, str(error.args))
+            )
             return str(error.args)
 
     def fetch_videos(self):
@@ -174,7 +181,6 @@ class Channel(db.Model):
     # TODO: DEPRECATE THIS
     def renew(self, stringify=False, callback_url=None, topic_url=None):
         """Trigger renew functions"""
-        from ..tasks import channels_update_hub_infos
 
         response = {
             "subscription_response": self.subscribe(callback_url, topic_url),

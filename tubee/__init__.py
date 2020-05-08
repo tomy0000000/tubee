@@ -69,6 +69,7 @@ def create_app(config_name):
         ),
     )
 
+    # from .routes.app_engine import app_engine_blueprint
     from .routes.admin import admin_blueprint
     from .routes.api import api_blueprint
     from .routes.channel import channel_blueprint
@@ -82,9 +83,11 @@ def create_app(config_name):
     app.register_blueprint(api_blueprint, url_prefix="/api")
     app.register_blueprint(channel_blueprint, url_prefix="/channel")
     app.register_blueprint(user_blueprint, url_prefix="/user")
+    # if app.config["GOOGLE_CLOUD_PROJECT_ID"]:
+    #     app.register_blueprint(app_engine_blueprint, url_prefix="/app_engine")
     if app.debug:
         app.register_blueprint(dev_blueprint, url_prefix="/dev")
-    else:
+        # else:
         app.register_blueprint(handler)
 
     return app

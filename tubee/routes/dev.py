@@ -7,6 +7,13 @@ from ..helper import admin_required
 dev_blueprint = Blueprint("dev", __name__)
 
 
+@dev_blueprint.route("/test_schedule_job")
+@login_required
+@admin_required
+def test_schedule_job():
+    return render_template("empty.html")
+
+
 @dev_blueprint.route("/request")
 @login_required
 @admin_required

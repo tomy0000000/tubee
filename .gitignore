@@ -50,6 +50,9 @@ log/
 # pyenv
 .python-version
 
+# celery beat schedule file
+celerybeat-schedule
+
 # Environments
 .env*
 .venv

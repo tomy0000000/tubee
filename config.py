@@ -69,7 +69,7 @@ class TestingConfig(Config):
     """Config for Testing, Travis CI"""
 
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL") or "sqlite://"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL", "sqlite://")
     WTF_CSRF_ENABLED = False
 
     @classmethod
@@ -99,7 +99,7 @@ class UnixConfig(ProductionConfig):
 
         syslog_handler = SysLogHandler()
         syslog_handler.setLevel(logging.INFO)
-        app.logger.addHandler(syslog_handler)
+        logging.addHandler(syslog_handler)
 
 
 class DockerConfig(ProductionConfig):
@@ -108,7 +108,7 @@ class DockerConfig(ProductionConfig):
         ProductionConfig.init_app(app)
 
         # log to stderr
-        app.logger.info("Docker Config Loaded")
+        logging.info("Docker Config Loaded")
 
 
 class HerokuConfig(ProductionConfig):
@@ -124,16 +124,25 @@ class HerokuConfig(ProductionConfig):
         app.wsgi_app = ProxyFix(app.wsgi_app)
 
         # log to stderr
-        app.logger.info("Heroku Config Loaded")
+        logging.info("Heroku Config Loaded")
 
 
 class GoogleCloudAppEngineConfig(ProductionConfig):
+
+    GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT_ID")
+    GOOGLE_CLOUD_LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION")
+    GOOGLE_CLOUD_TASK_QUEUE = os.environ.get("GOOGLE_CLOUD_TASK_QUEUE")
+
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
         # log from stderr will be redirected to stackdriver
-        app.logger.info("App Engine Config Loaded")
+        import google.cloud.logging
+
+        client = google.cloud.logging.Client()
+        client.setup_logging()
+        logging.info("App Engine Config Loaded")
 
 
 class GoogleCloudComputeEngineConfig(ProductionConfig):
@@ -146,7 +155,7 @@ class GoogleCloudComputeEngineConfig(ProductionConfig):
 
         client = google.cloud.logging.Client()
         client.setup_logging()
-        app.logger.info("Compute Engine Config Loaded")
+        logging.info("Compute Engine Config Loaded")
 
 
 config = {

@@ -10,6 +10,7 @@ from urllib.parse import urlencode, urljoin, urlparse
 from dateutil import parser
 from flask import abort, current_app, request, url_for
 from flask_login import current_user
+from google.cloud import tasks_v2
 
 
 def try_parse_datetime(string):
@@ -149,3 +150,13 @@ def build_callback_url(channel_id):
 def build_topic_url(channel_id):
     param_query = urlencode({"channel_id": channel_id})
     return current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
+
+
+def build_cloud_task_service():
+    client = tasks_v2.CloudTasksClient()
+    parent = client.queue_path(
+        current_app.config["GOOGLE_CLOUD_PROJECT_ID"],
+        current_app.config["GOOGLE_CLOUD_LOCATION"],
+        current_app.config["GOOGLE_CLOUD_TASK_QUEUE"],
+    )
+    return client, parent
