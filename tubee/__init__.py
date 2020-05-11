@@ -31,7 +31,7 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 moment = Moment()
 oauth = OAuth()
-celery = Celery(__name__, broker=Config.CELERY_BROKER_URL)
+celery = Celery(__name__)
 
 
 def create_app(config_name):

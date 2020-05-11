@@ -12,22 +12,6 @@ from werkzeug.exceptions import HTTPException
 
 handler = Blueprint("handler", __name__)
 
-from apscheduler.schedulers.background import BackgroundScheduler
-import time
-
-
-def test_scheduler():
-    print("TEST")
-    print(time.time())
-
-
-@handler.before_app_first_request
-def init_scheduler():
-    print("before_app_first_request called")
-    sched = BackgroundScheduler()
-    sched.add_job(test_scheduler, trigger="interval", seconds=5)
-    sched.start()
-
 
 @handler.app_errorhandler(Exception)
 def unhandled_exception(error):

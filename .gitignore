@@ -53,6 +53,7 @@ log/
 celerybeat-schedule
 
 # Environments
+*.env
 .env*
 .venv
 env/

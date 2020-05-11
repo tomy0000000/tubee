@@ -111,6 +111,12 @@ class DockerConfig(ProductionConfig):
         logging.info("Docker Config Loaded")
 
 
+class DockerDevelopmentConfig(DevelopmentConfig):
+    @classmethod
+    def init_app(cls, app):
+        DevelopmentConfig.init_app(app)
+
+
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = bool(os.environ.get("DYNO"))
     CELERY_BROKER_URL = os.environ.get("REDIS_URL", None)
@@ -167,6 +173,7 @@ config = {
     "production": ProductionConfig,
     "unix": UnixConfig,
     "docker": DockerConfig,
+    "docker-dev": DockerDevelopmentConfig,
     "heroku": HerokuConfig,
     "gae": GoogleCloudAppEngineConfig,
     "gce": GoogleCloudComputeEngineConfig,
