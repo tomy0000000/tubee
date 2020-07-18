@@ -15,7 +15,7 @@
 
 Tubee is a web application, which runs tasks when your subscribed channel upload new videos.
 
-This application is still in beta stage right now, please pm or leave issues if you run into any problems😘
+This application is still in development stage right now, use at your own risk.
 
 ## Features
 
