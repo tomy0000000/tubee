@@ -7,6 +7,8 @@ verify_ssl = true
 codecov = "*"
 watchdog = "*"
 rope = "*"
+pyyaml = "*"
+argh = "*"
 
 [packages]
 alembic = "*"

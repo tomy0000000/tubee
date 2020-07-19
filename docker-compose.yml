@@ -1,56 +1,25 @@
-version: "3.7"
+version: "3.8"
 
 services:
-  web:
-    build: .
-    command: flask run -h 0.0.0.0
-    volumes:
-      - .:/usr/src/tubee/
-    ports:
-      - 0.0.0.0:5000:5000
-    env_file:
-      - docker.dev.env
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379
-      - CELERY_RESULT_BACKEND=redis://redis:6379
+  tubee:
     depends_on:
-      - celery
-      - redis
-      # - db
+      - "celery"
+      - "redis"
+      - "postgres"
+    image: "tomy0000000/tubee"
   celery:
-    build: .
-    command: celery worker --app=celery_worker.celery --loglevel=info
-    # command: celery worker --app=celery_worker.celery --loglevel=info -E
-    volumes:
-      - .:/usr/src/tubee/
-    env_file:
-      - docker.dev.env
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379
-      - CELERY_RESULT_BACKEND=redis://redis:6379
     depends_on:
-      - redis
+      - "redis"
+    image: "tomy0000000/tubee"
   redis:
-    image: redis:6.0
-    # build:
-    #   context: ./deploy
-    #   dockerfile: redis.Dockerfile
-    command: redis-server --appendonly yes --bind 0.0.0.0
-    expose:
-      - 6379
+    command: "redis-server --bind 0.0.0.0"
+    image: "redis:6.0"
     sysctls:
-      - net.core.somaxconn=511
+      - "net.core.somaxconn=511"
+  postgres:
+    image: "postgres:12-alpine"
     volumes:
-      - redis_data:/data
-  # db:
-  #   image: postgres:12-alpine
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data/
-  #   environment:
-  #     - POSTGRES_USER=hello_flask
-  #     - POSTGRES_PASSWORD=hello_flask
-  #     - POSTGRES_DB=hello_flask_dev
+      - "postgres_data:/var/lib/postgresql/data/"
 
 volumes:
-  redis_data:
-  # postgres_data:
+  postgres_data:

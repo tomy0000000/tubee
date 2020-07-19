@@ -1,10 +1,17 @@
-# pull official base image
 FROM python:3.7
 
-# set work directory & copy files
-WORKDIR /usr/src/tubee
-COPY . /usr/src/tubee/
+LABEL tech.tomy.docker.tubee=""
+LABEL maintainer="Tomy Hsieh @tomy0000000"
+LABEL version="1.0"
 
-# install dependencies
+WORKDIR /usr/src/tubee
+ARG INSTALL_DEV
+
+# Copy Application
+COPY . .
+
+# Install pip and pipenv
 RUN pip install --upgrade pip pipenv
-RUN pipenv install --system
+
+# Install Dependencies
+RUN pipenv install --system --deploy --ignore-pipfile $(test "$INSTALL_DEV" = false || echo "--dev")

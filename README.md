@@ -15,7 +15,7 @@
 
 Tubee is a web application, which runs tasks when your subscribed channel upload new videos.
 
-This application is still in development stage right now, use at your own risk.
+This application is still in development stage, use at your own risk.
 
 ## Features
 
@@ -25,13 +25,9 @@ This application is still in development stage right now, use at your own risk.
 * Add New Video to Playlist
 * Download New Video to Dropbox
 
-## Requirement
+## Requirements
 
 * Python 3.5+
-* A Web server along with a WSGI server / proxy
-  * see [this guide](./deploy/README.md) for more
-* A SQL database supported by [SQLAlchemy](https://docs.sqlalchemy.org/en/13/dialects/), PostgresSQL is recommanded
-  Be aware this appplication implement some modern modal such as Enum and Json, some database or older version of database might not be compatible.
 * [YouTube Data API](https://developers.google.com/youtube/registering_an_application) authorization credentials in **Both**
   * OAuth 2.0 token: used for accessing user information
   * API Keys: used for querying public metadata
@@ -42,22 +38,85 @@ For additional operation, you might also need
 * [Line Notify](https://notify-bot.line.me/zh_TW/) Client ID / Client Secret
 * [Dropbox](https://www.dropbox.com/developers/apps) App Key / App Secret
 
-## Installation
+## Development Guide
 
-* Create a `.env` Environment Variables sheet in the following format
+### Setup
 
-```python
-SECRET_KEY=  # Can be generate by running 'import uuid; print(str(uuid.uuid4()))'
-DATABASE_URL=
-YOUTUBE_API_CLIENT_SECRET_FILE=  # Filename without path
-YOUTUBE_API_DEVELOPER_KEY=
-PUSHOVER_TOKEN=
-LINENOTIFY_CLIENT_ID=
-LINENOTIFY_CLIENT_SECRET=
-DROPBOX_APP_KEY=
-DROPBOX_APP_SECRET=
+* Start Containers
+
+```bash
+docker-compose \
+	--file docker-compose.yml \
+	--file docker-compose.dev.yml \
+	up --detach --build
 ```
 
-* Place your YouTube Data API Client Secret File under `instance`
+* Run Migration
 
-* Setup cron job which automatically send a request to application every 4 days at `/api/channels/cron-renew` to ensure channel subscribing will be renew
+```bash
+docker-compose \
+	--file docker-compose.yml \
+  --file docker-compose.dev.yml \
+  exec tubee flask deploy
+```
+
+### Accessing
+
+| Service  | Endpoint                                    |
+| -------- | ------------------------------------------- |
+| Postgres | postgres://tubee:tubee@localhost:5432/tubee |
+| Redis    | redis://localhost:6379                      |
+| Flask    | http://localhost:5000                       |
+
+## Deployment Guide
+
+* Start Containers
+
+```bash
+docker-compose \
+	--file docker-compose.yml \
+  --file docker-compose.prod.yml \
+  up --detach
+```
+
+* Run Migration
+
+```bash
+docker-compose \
+	--file docker-compose.yml \
+  --file docker-compose.prod.yml \
+  exec tubee flask deploy
+```
+
+### Accessing
+
+| Service | Endpoint            |
+| ------- | ------------------- |
+| Nginx   | http://localhost:80 |
+
+## Additional Guide
+
+### Restart Nginx
+
+```bash
+docker-compose \
+	--file docker-compose.yml \
+  --file docker-compose.prod.yml \
+  kill -s HUP nginx
+```
+
+### Remove Postgres Data
+
+```bash
+docker volume rm tubee_postgres_data
+```
+
+### Apply Upgrade
+
+```bash
+docker build --tag tomy0000000/tubee .
+docker-compose \
+	--file docker-compose.yml \
+  --file docker-compose.prod.yml \
+  up --detach --no-deps tubee
+```
