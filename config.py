@@ -11,7 +11,7 @@ class Config:
 
     DEBUG = False
     TESTING = False
-    PREFERRED_URL_SCHEME = "https"
+    PREFERRED_URL_SCHEME = os.environ.get("PREFERRED_URL_SCHEME", "https")
     SERVER_NAME = os.environ.get("SERVER_NAME")
     APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT", "/")
     SECRET_KEY = os.environ.get("SECRET_KEY", str(uuid.uuid4()))
@@ -48,7 +48,7 @@ class Config:
     # PubSubHubBub
     HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
     HUB_YOUTUBE_TOPIC = "https://www.youtube.com/xml/feeds/videos.xml?"
-    HUB_RECEIVE_DOMAIN = os.environ.get("HUB_RECEIVE_DOMAIN", SERVER_NAME)
+    # HUB_RECEIVE_DOMAIN = os.environ.get("HUB_RECEIVE_DOMAIN", SERVER_NAME)
 
     @staticmethod
     def init_app(app):

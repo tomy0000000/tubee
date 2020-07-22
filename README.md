@@ -56,8 +56,8 @@ docker-compose \
 ```bash
 docker-compose \
 	--file docker-compose.yml \
-  --file docker-compose.dev.yml \
-  exec tubee flask deploy
+	--file docker-compose.dev.yml \
+	exec tubee flask deploy
 ```
 
 ### Accessing
@@ -75,8 +75,8 @@ docker-compose \
 ```bash
 docker-compose \
 	--file docker-compose.yml \
-  --file docker-compose.prod.yml \
-  up --detach
+	--file docker-compose.prod.yml \
+	up --detach
 ```
 
 * Run Migration
@@ -84,8 +84,8 @@ docker-compose \
 ```bash
 docker-compose \
 	--file docker-compose.yml \
-  --file docker-compose.prod.yml \
-  exec tubee flask deploy
+	--file docker-compose.prod.yml \
+	exec tubee flask deploy
 ```
 
 ### Accessing
@@ -101,8 +101,8 @@ docker-compose \
 ```bash
 docker-compose \
 	--file docker-compose.yml \
-  --file docker-compose.prod.yml \
-  kill -s HUP nginx
+	--file docker-compose.prod.yml \
+	kill -s HUP nginx
 ```
 
 ### Remove Postgres Data
@@ -117,6 +117,6 @@ docker volume rm tubee_postgres_data
 docker build --tag tomy0000000/tubee .
 docker-compose \
 	--file docker-compose.yml \
-  --file docker-compose.prod.yml \
-  up --detach --no-deps tubee
+	--file docker-compose.prod.yml \
+	up --detach --no-deps tubee
 ```

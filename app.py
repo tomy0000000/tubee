@@ -9,6 +9,7 @@ if os.path.exists(dotenv_path):
 COV = None
 if os.environ.get("FLASK_COVERAGE"):
     import coverage
+
     COV = coverage.coverage(branch=True, include="tubee/*")
     COV.start()
 
@@ -16,8 +17,17 @@ import sys
 import click
 from flask_migrate import Migrate, upgrade
 from tubee import create_app, db
-from tubee.models import (Action, Callback, Channel, Notification,
-                          Subscription, SubscriptionTag, Tag, User, Video)
+from tubee.models import (
+    Action,
+    Callback,
+    Channel,
+    Notification,
+    Subscription,
+    SubscriptionTag,
+    Tag,
+    User,
+    Video,
+)
 
 config = os.environ.get("FLASK_ENV")
 if not config:
@@ -33,30 +43,34 @@ with app.app_context():
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db,
-                Action=Action,
-                Callback=Callback,
-                Channel=Channel,
-                Notification=Notification,
-                Subscription=Subscription,
-                SubscriptionTag=SubscriptionTag,
-                Tag=Tag,
-                User=User,
-                Video=Video)
+    return dict(
+        db=db,
+        Action=Action,
+        Callback=Callback,
+        Channel=Channel,
+        Notification=Notification,
+        Subscription=Subscription,
+        SubscriptionTag=SubscriptionTag,
+        Tag=Tag,
+        User=User,
+        Video=Video,
+    )
 
 
 @app.cli.command()
-@click.option("--coverage/--no-coverage",
-              default=False,
-              help="Run tests under code coverage.")
+@click.option(
+    "--coverage/--no-coverage", default=False, help="Run tests under code coverage."
+)
 def test(coverage):
     """Run the unit tests."""
     if coverage and not os.environ.get("FLASK_COVERAGE"):
         import subprocess
+
         os.environ["FLASK_COVERAGE"] = "1"
         sys.exit(subprocess.call(sys.argv))
 
     import unittest
+
     tests = unittest.TestLoader().discover("tests")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
     if COV:
