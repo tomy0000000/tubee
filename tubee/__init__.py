@@ -3,30 +3,32 @@ import json
 import logging.config
 import os
 
+from flask import Flask
+
 from authlib.integrations.flask_client import OAuth
 from celery import Celery
-from flask import Flask
+from config import config
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
 
-from config import Config, config
+# from sqlalchemy import MetaData
 
 __version__ = "dev"
 
-naming_convention = {
-    "ix": "ix_%(column_0_label)s",
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(column_0_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s",
-}
+# naming_convention = {
+#     "ix": "ix_%(column_0_label)s",
+#     "uq": "uq_%(table_name)s_%(column_0_name)s",
+#     "ck": "ck_%(table_name)s_%(column_0_name)s",
+#     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+#     "pk": "pk_%(table_name)s",
+# }
 
 
-metadata = MetaData(naming_convention=naming_convention)
-db = SQLAlchemy(metadata=metadata)
+# metadata = MetaData(naming_convention=naming_convention)
+# db = SQLAlchemy(metadata=metadata)
+db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 moment = Moment()
@@ -38,7 +40,7 @@ def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
     if os.path.isfile(os.path.join(app.instance_path, "logging.cfg")):
-        with app.open_instance_resource("logging.cfg", "r") as json_file:
+        with app.open_instance_resource("logging.cfg") as json_file:
             logging.config.dictConfig(json.load(json_file))
             logging.info("External logging.cfg Loaded")
 
@@ -69,7 +71,6 @@ def create_app(config_name):
         ),
     )
 
-    # from .routes.app_engine import app_engine_blueprint
     from .routes.admin import admin_blueprint
     from .routes.api import api_blueprint
     from .routes.channel import channel_blueprint
@@ -87,7 +88,7 @@ def create_app(config_name):
     #     app.register_blueprint(app_engine_blueprint, url_prefix="/app_engine")
     if app.debug:
         app.register_blueprint(dev_blueprint, url_prefix="/dev")
-        # else:
+    else:
         app.register_blueprint(handler)
 
     return app
