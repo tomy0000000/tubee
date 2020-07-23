@@ -1,14 +1,18 @@
 os: linux
-dist: xenial
+dist: bionic
 language: python
 python:
   - 3.5
   - 3.6
   - 3.7
+  - 3.8
 install:
-  - pip install -r requirements.txt
-  - pip install -r dev-requirements.txt
-script: flask test --coverage
+  # - pip install -r requirements.txt
+  # - pip install -r dev-requirements.txt
+  - pip install pipenv
+  - pipenv install --dev
+script:
+  - flask test --coverage
 after_script: codecov
 # jobs:
 #   include:
