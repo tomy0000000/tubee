@@ -7,19 +7,18 @@ Using Google Hub at
 https://pubsubhubbub.appspot.com
 
 Variables:
-    HUB_GOOGLE_HUB {str} -- URL of Google Hub
     DEFAULT_HEADERS {dict} -- The default header used when sending a request to
                               hub
     REQUIRED_PARAMETERS {list} -- A list of required parameters to compsoe
                                   request to hub
 """
 import re
-import urllib
+from urllib.parse import urljoin, urlparse
+
 import bs4
 import requests
-from dateutil import parser
+from dateutil.parser import parse
 
-HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
 DEFAULT_HEADERS = {
     "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
 }
@@ -41,7 +40,7 @@ class NonSecureHubSecretError(Exception):
         super().__init__("Hub Secret is not allowed when using http")
 
 
-def _formal_post_request(endpoint, **data):
+def _formal_post_request(hub, endpoint, **data):
     """
     Required Parameters:
     hub.callback            Subscribers Endpoint
@@ -60,23 +59,19 @@ def _formal_post_request(endpoint, **data):
             raise MissingRequiredParameterError(message, param)
 
     # Check hub.secret Validity
-    callback_scheme = urllib.parse.urlparse(data["hub.callback"]).scheme
+    callback_scheme = urlparse(data["hub.callback"]).scheme
     if callback_scheme == "http" and data["hub.secret"]:
         raise NonSecureHubSecretError()
 
     # Sending Requests
-    try:
-        response = requests.post(
-            url=urllib.parse.urljoin(HUB_GOOGLE_HUB, endpoint),
-            headers=DEFAULT_HEADERS,
-            data=data,
-        )
-        return response
-    except requests.exceptions.RequestException:
-        return -1
+    response = requests.post(
+        url=urljoin(hub, endpoint), headers=DEFAULT_HEADERS, data=data,
+    )
+    response.raise_for_status()
+    return response
 
 
-def _formal_get_request(endpoint, **params):
+def _formal_get_request(hub, endpoint, **params):
     """
     Required Parameters:
     hub.callback            Subscribers Endpoint
@@ -85,20 +80,16 @@ def _formal_get_request(endpoint, **params):
     Optional Parameters:
     hub.secret              Subscriber-provided secret string
     """
-    try:
-        response = requests.get(
-            url=urllib.parse.urljoin(HUB_GOOGLE_HUB, endpoint),
-            headers=DEFAULT_HEADERS,
-            params=params,
-        )
-        return response
-    except requests.exceptions.RequestException:
-        return -1
+    response = requests.get(
+        url=urljoin(hub, endpoint), headers=DEFAULT_HEADERS, params=params,
+    )
+    response.raise_for_status()
+    return response
 
 
 def _parse_detail(query, fuzzy=False):
     try:
-        parsed_datetime = parser.parse(query, fuzzy=fuzzy)
+        parsed_datetime = parse(query, fuzzy=fuzzy)
     except ValueError:
         parsed_datetime = None
     if not fuzzy or not parsed_datetime:
@@ -107,7 +98,7 @@ def _parse_detail(query, fuzzy=False):
     return (parsed_datetime, summary)
 
 
-def subscribe(callback_url, topic_url, **kwargs):
+def subscribe(hub_url, callback_url, topic_url, **kwargs):
     """
     Optional Parameters:
     lease_seconds       Duration of the subscription in seconds
@@ -117,16 +108,15 @@ def subscribe(callback_url, topic_url, **kwargs):
         "hub.callback": callback_url,
         "hub.mode": "subscribe",
         "hub.topic": topic_url,
-        "hub.lease_seconds": kwargs.pop("lease_seconds", None),
-        "hub.secret": kwargs.pop("secret", None),
+        "hub.lease_seconds": kwargs.get("lease_seconds"),
+        "hub.secret": kwargs.get("secret"),
     }
-    response = _formal_post_request("subscribe", **data)
-    if response.status_code == 202:
-        response.success = True
+    response = _formal_post_request(hub_url, "subscribe", **data)
+    response.success = bool(response.status_code == 202)
     return response
 
 
-def unsubscribe(callback_url, topic_url, **kwargs):
+def unsubscribe(hub_url, callback_url, topic_url, **kwargs):
     """
     Optional Parameters:
     lease_seconds       Duration of the subscription in seconds
@@ -136,16 +126,15 @@ def unsubscribe(callback_url, topic_url, **kwargs):
         "hub.callback": callback_url,
         "hub.mode": "unsubscribe",
         "hub.topic": topic_url,
-        "hub.lease_seconds": kwargs.pop("lease_seconds", None),
-        "hub.secret": kwargs.pop("secret", None),
+        "hub.lease_seconds": kwargs.get("lease_seconds"),
+        "hub.secret": kwargs.get("secret"),
     }
-    response = _formal_post_request("subscribe", **data)
-    if response.status_code == 202:
-        response.success = True
+    response = _formal_post_request(hub_url, "subscribe", **data)
+    response.success = bool(response.status_code == 202)
     return response
 
 
-def details(callback_url, topic_url, **kwargs):
+def details(hub_url, callback_url, topic_url, **kwargs):
     """
     Optional Parameters:
     secret              Subscriber-provided secret string
@@ -153,24 +142,26 @@ def details(callback_url, topic_url, **kwargs):
     params = {
         "hub.callback": callback_url,
         "hub.topic": topic_url,
-        "hub.secret": kwargs.pop("secret", None),
+        "hub.secret": kwargs.get("secret"),
     }
-    response_object = _formal_get_request("subscription-details", **params)
-    response_soup = bs4.BeautifulSoup(response_object.text, "lxml")
-    target = response_soup.find_all("dd")
-    response_dict = {
-        "requests_url": response_object.url,
-        "response_object": response_object,
-        "state": target[1].string,
-        "stat": target[8].string.strip("\n "),
+    response = _formal_get_request(hub_url, "subscription-details", **params)
+    parsed = bs4.BeautifulSoup(response.text, "lxml").find_all("dd")
+    results = {
+        "requests_url": response.url,
+        "response_object": response,
+        "state": parsed[1].string,
+        "stat": parsed[8].string.strip("\n "),
     }
-    response_dict["last_challenge"] = _parse_detail(target[2].string)
-    response_dict["expiration"] = _parse_detail(target[3].string)
-    response_dict["last_subscribe"] = _parse_detail(target[4].string)
-    response_dict["last_unsubscribe"] = _parse_detail(target[5].string)
-    response_dict["last_challenge_error"] = _parse_detail(target[6].string, fuzzy=True)
-    response_dict["last_notification_error"] = _parse_detail(
-        target[7].string, fuzzy=True
-    )
-    response_dict["last_notification"] = _parse_detail(target[10].string)
-    return response_dict
+    FIELDS = [
+        "last_challenge",
+        "expiration",
+        "last_subscribe",
+        "last_unsubscribe",
+        "last_challenge_error",
+        "last_notification_error",
+        "last_notification",
+    ]
+    for key, index in zip(FIELDS, list(range(2, 10)) + [10]):
+        fuzzy = bool(index == 6 or index == 7)
+        results[key] = _parse_detail(parsed[index].string, fuzzy=fuzzy)
+    return results

@@ -2,29 +2,22 @@
 
 
 class TubeeError(Exception):
-    """Base Class used to declare other errors for Tubee
+    """Base class for exception related to Tubee
 
     Extends:
         Exception
     """
+
     pass
 
 
 class UserError(TubeeError):
-    """Base Class for errors related to user
+    """Base class for exception raised by user's invalid action or input
 
     Extends:
         TubeeError
     """
-    pass
 
-
-class DatabaseError(TubeeError):
-    """Base Class for errors related to database
-
-    Extends:
-        TubeeError
-    """
     pass
 
 
@@ -34,38 +27,28 @@ class APIError(TubeeError):
     Extends:
         TubeeError
     """
-    pass
+
+    def __init__(self, service, message, *args, error_type: str = None):
+        error_type += " "
+        super().__init__(f"Error {error_type}from {service}: {message}")
 
 
-class InvalidParameter(UserError):
+class InvalidAction(UserError, ValueError):
     """Raised when user filled in invalid parameter
 
     Extends:
         UserError
     """
+
     pass
 
 
-class ServiceNotSet(UserError):
+class ServiceNotAuth(UserError):
     """Raised when user attempt to do something that require service to be setup first
 
     Extends:
         UserError
     """
-    pass
 
-
-class OperationalError(DatabaseError):
-    """Raised when attempt to execute operation that is not permitted
-
-    Extends:
-        DatabaseError
-    """
-
-# class SubscriptionNotFound(UserError):
-#     """Raised when user attempt to make interaction with subscription that doesn't exists
-
-#     Extends:
-#         UserError
-#     """
-#     pass
+    def __init__(self, service, *args):
+        super().__init__(f"{service} has not authenticated yet.")

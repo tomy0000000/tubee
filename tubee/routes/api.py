@@ -2,19 +2,22 @@
 import logging
 from datetime import datetime, timedelta
 
-from celery.result import AsyncResult
-from google.cloud.tasks_v2.types import Task as GoogleCloudTask
+# from celery.result import AsyncResult
 from flask import Blueprint, abort, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 
+# from google.cloud.tasks_v2.types import Task as GoogleCloudTask
+
 from ..forms import ActionForm
 from ..helper import (
     app_engine_required,
+    build_callback_url,
+    build_topic_url,
     notify_admin,
 )
 from ..models import Action, Channel
-from ..tasks import renew_channels, schedule_channels_renew
+from ..tasks import renew_channels
 
 api_blueprint = Blueprint("api", __name__)
 
@@ -76,14 +79,21 @@ def user_info():
 @api_blueprint.route("/channels/cron-renew")
 @app_engine_required
 def channels_cron_renew():
-    channels = []
+    channel_ids_with_url = []
     for channel in Channel.query.all():
         if channel.hub_infos["state"] != "verified" or (
             channel.expiration
             and channel.expiration < datetime.now() + timedelta(days=2)
         ):
-            channels.append(channel)
-    task = schedule_channels_renew(channels)
+            channel_ids_with_url.append(
+                (
+                    channel.id,
+                    build_callback_url(channel.id),
+                    build_topic_url(channel.id),
+                )
+            )
+    # task = schedule_channels_renew(channels)
+    task = renew_channels.apply_async(args=[channel_ids_with_url])
     logging.info("Cron Renew Triggered: {task.id}")
     notify_admin(
         "Cron Renew", "Pushover", message=task.id, title="Cron Renew Triggered"
@@ -95,15 +105,20 @@ def channels_cron_renew():
 @login_required
 def channels_renew():
     """Renew Subscription Info, Both Hub and Info"""
-    task = schedule_channels_renew(Channel.query.all())
+    channel_ids_with_url = [
+        (channel.id, build_callback_url(channel.id), build_topic_url(channel.id),)
+        for channel in Channel.query.all()
+    ]
+    # task = schedule_channels_renew(Channel.query.all())
+    task = renew_channels.apply_async(args=[channel_ids_with_url])
     response = None
-    if isinstance(task, GoogleCloudTask):
-        response = {"name": task.name}
-    if isinstance(task, AsyncResult):
-        response = {
-            "id": task.id,
-            "status": url_for("api.task_status", task_id=task.id),
-        }
+    # if isinstance(task, GoogleCloudTask):
+    #     response = {"name": task.name}
+    # if isinstance(task, AsyncResult):
+    response = {
+        "id": task.id,
+        "status": url_for("api.task_status", task_id=task.id),
+    }
     return jsonify(response)
 
 
@@ -220,11 +235,7 @@ def action_remove(action_id):
 @login_required
 def youtube_subscription():
     """For Dynamically Loading User's YouTube Subscription"""
-    get_params = request.args.to_dict()
-    try:
-        page_token = get_params.pop("page_token")
-    except KeyError:
-        abort(404)
+    page_token = request.args.get("page_token")
     response = (
         current_user.youtube.subscriptions()
         .list(

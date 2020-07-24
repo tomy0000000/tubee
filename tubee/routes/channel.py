@@ -81,11 +81,7 @@ def channel(channel_id):
 @channel_blueprint.route("/subscribe", methods=["GET", "POST"])
 @login_required
 def subscribe():
-    """
-    Page To Add Subscription
-    (1) Request form with GET request
-    (2) Submit the form POST request
-    """
+    """Page To Add Subscription"""
     if request.method == "GET":
         return render_template("subscribe.html")
     if request.method == "POST":

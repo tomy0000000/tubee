@@ -3,12 +3,13 @@ import logging
 from datetime import datetime
 
 from .. import db
-from ..exceptions import OperationalError
 from ..helper import build_callback_url, build_topic_url, try_parse_datetime
 from ..helper.hub import details, subscribe, unsubscribe
 from ..helper.youtube import build_youtube_api
+from ..exceptions import InvalidAction, APIError
 
-from googleapiclient.errors import Error
+from googleapiclient.errors import Error as YouTubeAPIError
+from flask import current_app
 
 
 class Channel(db.Model):
@@ -31,21 +32,41 @@ class Channel(db.Model):
 
     def __init__(self, channel_id):
         from ..tasks import (
-            schedule_channels_update_hub_infos,
-            schedule_channels_fetch_videos,
+            # schedule_channels_update_hub_infos,
+            # schedule_channels_fetch_videos,
+            channels_update_hub_infos,
+            channels_fetch_videos,
         )
 
         self.id = channel_id
-        # TODO: Validate Channel
         db.session.add(self)
         db.session.commit()
-        self.update_infos()
-        schedule_channels_update_hub_infos([channel_id], countdown=60)
-        schedule_channels_fetch_videos([channel_id])
+        try:
+            self.update_youtube_infos()
+        except (APIError, InvalidAction) as error:
+            db.session.delete(self)
+            db.session.commit()
+            raise error
+
+        # schedule_channels_update_hub_infos([channel_id], countdown=60)
+        # schedule_channels_fetch_videos([channel_id])
+        channels_update_hub_infos.apply_async(
+            args=[
+                [
+                    (
+                        channel_id,
+                        build_callback_url(channel_id),
+                        build_topic_url(channel_id),
+                    )
+                ]
+            ],
+            countdown=60,
+        )
+        channels_fetch_videos.apply_async(args=[[channel_id]])
         self.activate()
 
     def __repr__(self):
-        return "<Channel {}(#{})>".format(self.name, self.id)
+        return "<Channel {} (#{})>".format(self.name, self.id)
 
     @property
     def expiration(self):
@@ -56,27 +77,33 @@ class Channel(db.Model):
 
     @expiration.setter
     def expiration(self, expiration):
-        raise OperationalError("expiration can not be set")
+        raise ValueError("expiration can not be set")
 
     @expiration.deleter
     def expiration(self, exception):
-        raise OperationalError("expiration can not be delete")
+        raise ValueError("expiration can not be delete")
 
     def activate(self):
-        """Activate Subscription"""
-        response = self.subscribe()
-        if response:
+        """Submitting hub Subscription, called when first user subscribe"""
+        if self.active:
+            raise AttributeError("Channel is already active")
+        results = self.subscribe()
+        if results:
             self.active = True
             db.session.commit()
-        return response
+        return results
 
     def deactivate(self, callback_url=None, topic_url=None):
-        """Submitting Hub Unsubscription"""
+        """Submitting hub unsubscription, called when last user unsubscribe"""
+        if not self.active:
+            raise AttributeError("Channel is already deactive")
         if not callback_url:
             callback_url = build_callback_url(self.id)
         if not topic_url:
             topic_url = build_topic_url(self.id)
-        response = unsubscribe(callback_url, topic_url)
+        response = unsubscribe(
+            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
+        )
         if response.success:
             self.active = False
             self.unsubscribe_timestamp = datetime.utcnow()
@@ -84,11 +111,14 @@ class Channel(db.Model):
         return response
 
     def update_hub_infos(self, stringify=False, callback_url=None, topic_url=None):
+        """Update hub subscription details, called by task or app"""
         if not callback_url:
             callback_url = build_callback_url(self.id)
         if not topic_url:
             topic_url = build_topic_url(self.id)
-        response = details(callback_url, topic_url)
+        response = details(
+            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
+        )
         response.pop("requests_url")
         response.pop("response_object")
         if not stringify:
@@ -106,25 +136,32 @@ class Channel(db.Model):
         db.session.commit()
         return response_copy
 
-    def update_infos(self):
-        try:
-            self.infos = (
-                build_youtube_api()
-                .channels()
-                .list(part="snippet", id=self.id)
-                .execute()["items"][0]
+    def update_youtube_infos(self):
+        """Update YouTube metadata, called by task"""
+        api_result = (
+            build_youtube_api().channels().list(part="snippet", id=self.id).execute()
+        )
+        if api_result["pageInfo"]["totalResults"] == 0:
+            if self.name is None:
+                raise InvalidAction(f"Channel {self.id} doesn't exists")
+            raise APIError(
+                service="YouTube", message=f"Unable to update channel <{self.id}> info",
             )
+        try:
+            self.infos = api_result["items"][0]
             self.name = self.infos["snippet"]["title"]
             db.session.commit()
-            return True
-        # TODO: Parse API Error
-        except Error as error:
-            logging.error(
-                "(API) {}: {}".format(error.__class__.__name__, str(error.args))
+            return self.infos
+        except YouTubeAPIError as error:
+            # TODO: Parse API Error
+            raise APIError(
+                service="YouTube",
+                message=str(error.args),
+                error_type=error.__class__.__name__,
             )
-            return str(error.args)
 
     def fetch_videos(self):
+        """Update videos, Called by task"""
         from .video import Video
 
         nextPageToken = None
@@ -163,12 +200,14 @@ class Channel(db.Model):
                 Video(video_id, self, fetch_infos=False)
 
     def subscribe(self, callback_url=None, topic_url=None):
-        """Renew Subscription by submitting new Hub Subscription"""
+        """Submitting hub Subscription, called by task or app"""
         if not callback_url:
             callback_url = build_callback_url(self.id)
         if not topic_url:
             topic_url = build_topic_url(self.id)
-        response = subscribe(callback_url, topic_url)
+        response = subscribe(
+            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
+        )
         logging.info("Callback URL: {}".format(callback_url))
         logging.info("Topic URL   : {}".format(topic_url))
         logging.info("Channel ID  : {}".format(self.id))
@@ -184,7 +223,7 @@ class Channel(db.Model):
 
         response = {
             "subscription_response": self.subscribe(callback_url, topic_url),
-            "info_response": self.update_infos(),
+            "info_response": self.update_youtube_infos(),
             # "hub_response": self.update_hub_infos(stringify=stringify, callback_url, topic_url),
         }
         # update_channel_hub_infos.apply_async(self.id, callback_url, topic_url)

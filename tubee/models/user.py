@@ -4,14 +4,14 @@ import logging
 
 import dropbox
 import requests
-from apiclient.errors import HttpError
 from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
+from googleapiclient.errors import HttpError
 from pushover_complete import PushoverAPI
 
 from .. import bcrypt, db, login_manager, oauth
-from ..exceptions import APIError, InvalidParameter, OperationalError, ServiceNotSet
+from ..exceptions import APIError, InvalidAction, ServiceNotAuth
 from ..helper import youtube
 
 
@@ -39,7 +39,6 @@ class User(UserMixin, db.Model):
     _youtube_credentials = db.Column(db.JSON)
     _line_notify_credentials = db.Column(db.String(64))
     _dropbox_credentials = db.Column(db.JSON)
-    # locale = db.Column()
     notifications = db.relationship("Notification", backref="user", lazy="dynamic")
     subscriptions = db.relationship(
         "Subscription",
@@ -77,14 +76,14 @@ class User(UserMixin, db.Model):
     @property
     def password(self):
         """Password Property"""
-        raise OperationalError("Password is not a readable attribute")
+        raise AttributeError("Password is not a readable attribute")
 
     @password.setter
     def password(self, password):
         if len(password) < 6:
-            raise OperationalError("Password must be longer than 6 characters")
+            raise ValueError("Password must be longer than 6 characters")
         if len(password) > 30:
-            raise OperationalError("Password must be shorter than 30 characters")
+            raise ValueError("Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
 
     def check_password(self, password):
@@ -107,10 +106,10 @@ class User(UserMixin, db.Model):
             str -- User's Pushover Key
 
         Raises:
-            ServiceNotSet -- Raised when user has not setup Pushover key yet.
+            ServiceNotAuth -- Raised when user has not setup Pushover key yet.
         """
         if not self._pushover_key:
-            raise ServiceNotSet("User has not setup Pushover key")
+            raise ServiceNotAuth("Pushover")
         return self._pushover_key
 
     @pushover.setter
@@ -126,12 +125,12 @@ class User(UserMixin, db.Model):
             key {str} -- User's pushover key obtain from https://pushover.net
 
         Raises:
-            InvalidParameter -- Raised when user gave an invalid user key
+            InvalidAction -- Raised when user gave an invalid user key
         """
         pusher = PushoverAPI(current_app.config["PUSHOVER_TOKEN"])
         response = pusher.validate(key)
         if response["status"] != 1:
-            raise InvalidParameter("Invalid Pushover User Key")
+            raise InvalidAction("Invalid Pushover User Key")
         self._pushover_key = key
         db.session.commit()
 
@@ -163,10 +162,10 @@ class User(UserMixin, db.Model):
                                                   Service
 
         Raises:
-            ServiceNotSet -- Raised when user has not authorized yet.
+            ServiceNotAuth -- Raised when user has not authorized yet.
         """
         if not self._youtube_credentials:
-            raise ServiceNotSet("User has not authorized YouTube access")
+            raise ServiceNotAuth("YouTube")
         return youtube.build_youtube_api(self._youtube_credentials)
 
     @youtube.setter
@@ -179,10 +178,10 @@ class User(UserMixin, db.Model):
             credentials {google.oauth2.credentials.Credentials} -- User's YouTube Credentials
 
         Raises:
-            InvalidParameter -- Raised when provided credentials is not valid
+            InvalidAction -- Raised when provided credentials is not valid
         """
         if not isinstance(credentials, Credentials) or not credentials.valid:
-            raise InvalidParameter("Invalid Credentials")
+            raise InvalidAction("Invalid Credentials")
         self._youtube_credentials = dict(
             token=credentials.token,
             refresh_token=credentials.refresh_token,
@@ -238,10 +237,10 @@ class User(UserMixin, db.Model):
             [type] -- [description]
 
         Raises:
-            ServiceNotSet -- Raised when user has not authorized yet.
+            ServiceNotAuth -- Raised when user has not authorized yet.
         """
         if not self._dropbox_credentials:
-            raise ServiceNotSet("User has not authorized Dropbox access")
+            raise ServiceNotAuth("Dropbox")
         return dropbox.Dropbox(self._dropbox_credentials["access_token"])
 
     @dropbox.setter
@@ -271,7 +270,7 @@ class User(UserMixin, db.Model):
     @property
     def line_notify(self):
         if not self._line_notify_credentials:
-            raise ServiceNotSet("User has not authorized Line Notify access")
+            raise ServiceNotAuth("Line Notify")
         return oauth.LineNotify
 
     @line_notify.setter
@@ -369,7 +368,7 @@ class User(UserMixin, db.Model):
         if not channel:
             channel = Channel(channel_id)
         if self.is_subscribing(channel):
-            raise InvalidParameter("You've already subscribed this channel")
+            raise InvalidAction("You've already subscribed this channel")
         subscription = Subscription(username=self.username, channel_id=channel.id)
         db.session.add(subscription)
         db.session.commit()
@@ -379,7 +378,7 @@ class User(UserMixin, db.Model):
         """Delete Subscription Relationship"""
         subscription = self.subscriptions.filter_by(channel_id=channel_id).first()
         if not subscription:
-            raise InvalidParameter(
+            raise InvalidAction(
                 "User {} hasn't subscribe to {}".format(self.username, channel_id)
             )
         db.session.delete(subscription)
