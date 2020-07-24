@@ -84,12 +84,13 @@ def subscribe():
     """Page To Add Subscription"""
     if request.method == "GET":
         return render_template("subscribe.html")
-    if request.method == "POST":
-        if current_user.subscribe_to(request.form["channel_id"]):
-            flash("Subscribe Success", "success")
-        else:
-            flash("Oops! Subscribe Failed for some reason", "danger")
-        return redirect(url_for("main.dashboard"))
+    if request.method == "POST" and current_user.subscribe_to(
+        request.form["channel_id"]
+    ):
+        flash("Subscribe Success", "success")
+    else:
+        flash("Oops! Subscribe Failed for some reason", "danger")
+    return redirect(url_for("main.dashboard"))
 
 
 # TODO: REBUILD THIS DAMN MESSY ROUTE
@@ -150,7 +151,7 @@ def callback(channel_id):
         # new_video_update = bool(previous_callback)
         try:  # TODO
             video_file_url = youtube_dl.fetch_video_metadata(video_id)["url"]
-        except Exception as e:
+        except Exception as error:
             video_file_url = None
 
         # List users

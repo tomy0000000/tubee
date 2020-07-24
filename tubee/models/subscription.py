@@ -31,6 +31,12 @@ class Subscription(db.Model):
         cascade="all, delete-orphan",
     )
 
+    def __init__(self, username, channel_id):
+        self.username = username
+        self.channel_id = channel_id
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return "<Subscription: {} subscribe to {}>".format(
             self.username, self.channel_id

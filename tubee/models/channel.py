@@ -110,31 +110,26 @@ class Channel(db.Model):
             db.session.commit()
         return response
 
-    def update_hub_infos(self, stringify=False, callback_url=None, topic_url=None):
+    def update_hub_infos(self, callback_url=None, topic_url=None):
         """Update hub subscription details, called by task or app"""
         if not callback_url:
             callback_url = build_callback_url(self.id)
         if not topic_url:
             topic_url = build_topic_url(self.id)
-        response = details(
-            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
-        )
-        response.pop("requests_url")
-        response.pop("response_object")
-        if not stringify:
-            response_copy = response.copy()
-        for key, val in response.items():
+        results = details(current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url)
+        results.pop("requests_url")
+        results.pop("response_object")
+        response = results.copy()
+        for key, val in results.items():
             if not val:
                 continue
             if isinstance(val, datetime):
-                response[key] = str(val)
+                results[key] = str(val)
             elif isinstance(val[0], datetime):
-                response[key] = (str(val[0]), val[1])
-        if stringify:
-            response_copy = response.copy()
-        self.hub_infos = response
+                results[key] = (str(val[0]), val[1])
+        self.hub_infos = results
         db.session.commit()
-        return response_copy
+        return response
 
     def update_youtube_infos(self):
         """Update YouTube metadata, called by task"""

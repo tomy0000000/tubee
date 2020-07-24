@@ -29,7 +29,7 @@ admin_blueprint = Blueprint("admin", __name__)
 def admin_dashboard():
     links = {}
     for rule in current_app.url_map.iter_rules():
-        query = {arg: "[{0}]".format(arg) for arg in rule.arguments}
+        query = {arg: f"[{arg}]" for arg in rule.arguments}
         url = url_for(rule.endpoint, **query)
         try:
             blueprint, endpoint = rule.endpoint.split(".")

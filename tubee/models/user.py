@@ -56,7 +56,6 @@ class User(UserMixin, db.Model):
     #      #####  ###### #    #  ####   ####  #    # ######   #   #    #  ####  #####
 
     def __init__(self, username, password, **kwargs):
-        super(User, self).__init__(**kwargs)
         self.username = username
         self.password = password
         db.session.add(self)
@@ -286,39 +285,13 @@ class User(UserMixin, db.Model):
         self._line_notify_credentials = None
         db.session.commit()
 
-    #     #     #                      #     #
-    #     #     #  ####  ###### #####  ##   ## # #    # # #    #
-    #     #     # #      #      #    # # # # # #  #  #  # ##   #
-    #     #     #  ####  #####  #    # #  #  # #   ##   # # #  #
-    #     #     #      # #      #####  #     # #   ##   # #  # #
-    #     #     # #    # #      #   #  #     # #  #  #  # #   ##
-    #      #####   ####  ###### #    # #     # # #    # # #    #
-    """Flask-Login UserMixin Properties and Methods"""
-    """https://flask-login.readthedocs.io/en/latest/#your-user-class"""
-
-    @property
-    def is_authenticated(self):
-        """Used to authenticate access to @login_required views.
-
-        Returns:
-            bool -- Whether user is authenticated or not.
-        """
-        return True
-
-    @property
-    def is_active(self):
-        """Whether this account is activated, not been suspended, or any
-        condition that caused this account being rejected or not.
-        (This function is required but not in use)
-
-        Returns:
-            bool -- Whether account is active or not.
-        """
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
+    #     #     #
+    #     ##   ## #  ####   ####
+    #     # # # # # #      #    #
+    #     #  #  # #  ####  #
+    #     #     # #      # #
+    #     #     # # #    # #    #
+    #     #     # #  ####   ####
 
     def get_id(self):
         """Get user's ID
@@ -327,14 +300,6 @@ class User(UserMixin, db.Model):
             unicode -- ID that uniquely identifies this user
         """
         return self.username
-
-    #     #     #
-    #     ##   ## #  ####   ####
-    #     # # # # # #      #    #
-    #     #  #  # #  ####  #
-    #     #     # #      # #
-    #     #     # # #    # #    #
-    #     #     # #  ####   ####
 
     # Service Test Functions
     def pushover_configured(self):
@@ -369,9 +334,7 @@ class User(UserMixin, db.Model):
             channel = Channel(channel_id)
         if self.is_subscribing(channel):
             raise InvalidAction("You've already subscribed this channel")
-        subscription = Subscription(username=self.username, channel_id=channel.id)
-        db.session.add(subscription)
-        db.session.commit()
+        Subscription(self.username, channel.id)
         return True
 
     def unbsubscribe(self, channel_id):
