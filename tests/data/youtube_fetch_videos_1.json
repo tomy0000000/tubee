@@ -1,0 +1,2256 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "-7TgkoHOdivDZGUYlj_NlXvBCmA",
+  "nextPageToken": "CDIQAA",
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "pfEF4RTex9bj-GvRqSkLn5Qs_zQ",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjZWLUVtUlNRX3Bj",
+      "snippet": {
+        "publishedAt": "2020-07-21T16:00:01Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Do it for them. Do it for you.",
+        "description": "Wear a #!@*% mask. Why? Wearing a face mask reduces the chance of transmitting COVID-19 by 80%.* It’s one simple thing you can do to help protect those around you -- and yourself. So do it for them. Do it for you. Do it for all of us.\n\nFor more information on face coverings, visit:\nhttps://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/cloth-face-cover-guidance.html\n\n* The Lancet medical journal (6/1/2020):\nhttps://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31142-9/fulltext\n\n\nYouTube Creators featured in this video:\n- FaZe Rug: https://www.youtube.com/rug\n- The Fitness Marshall: https://www.youtube.com/TheFitnessMarshall\n- Daisy Marquez: https://www.youtube.com/daisymarquez13\n- Tae AND Lou: https://www.youtube.com/taeandlou\n- Alex Costa: https://www.youtube.com/user/xMadeInBrazil",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/6V-EmRSQ_pc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/6V-EmRSQ_pc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/6V-EmRSQ_pc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/6V-EmRSQ_pc/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/6V-EmRSQ_pc/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "6V-EmRSQ_pc"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "W9vhZbiwFrsdwf6GLDg_WzgjiiU",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnZ3blhxbWdOQkV3",
+      "snippet": {
+        "publishedAt": "2020-06-19T04:00:12Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Lift Every Voice | Juneteenth",
+        "description": "Juneteenth commemorates the true end of slavery in the U.S. On June 19, 1865, Union soldiers brought news to Galveston, Texas, that enslaved people had been liberated -  over two years after the Emancipation Proclamation.\n\nToday, we lift every voice and sing. Listen. Learn. Celebrate.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/vwnXqmgNBEw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/vwnXqmgNBEw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/vwnXqmgNBEw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/vwnXqmgNBEw/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/vwnXqmgNBEw/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 1,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "vwnXqmgNBEw"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "BQq3HHmJ4plfkoWOlJpRfWIV3-w",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmJnX3kxa3UtT0VZ",
+      "snippet": {
+        "publishedAt": "2020-06-19T04:00:09Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "155th Anniversary of Juneteenth Google Doodle",
+        "description": "Today’s video Google Doodle, illustrated by Los Angeles-based guest artist Loveis Wise and narrated by actor and activist LeVar Burton, honors the 155th anniversary of Juneteenth. Short for “June Nineteenth,” Juneteenth marks the true end of chattel slavery across the United States — which didn’t actually occur until 1865, two and a half years after the Emancipation Proclamation. Specifically, it marks the day when enslaved Black people in Galveston, Texas (one of the westernmost points in the Confederate South) finally received news of their liberation. \n\nGo behind-the-scenes of the Doodle: https://youtu.be/ipodBEnW9Hk\n \nLearn more: http://www.google.com/doodles/155th-a...\n\nTo follow Google Doodles on YouTube, subscribe to: https://www.youtube.com/channel/UCdq61m8s_48EhJ5OM_MCeGw?\nFollow Google Doodles on Twitter at: https://twitter.com/GoogleDoodles\n\n#Juneteenth #GoogleDoodle",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bg_y1ku-OEY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bg_y1ku-OEY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bg_y1ku-OEY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/bg_y1ku-OEY/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/bg_y1ku-OEY/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 2,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "bg_y1ku-OEY"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "bas0kIgEWqikkV70IuwHdYXEQvo",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjM3Z2pUUzVkdkZB",
+      "snippet": {
+        "publishedAt": "2020-06-12T00:28:38Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Bear Witness, Take Action | June 13",
+        "description": "Join us on June 13 for a special live event bringing together creators, activists, educators and artists for a conversation about race in America in support of the Equal Justice Initiative.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/37gjTS5dvFA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/37gjTS5dvFA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/37gjTS5dvFA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/37gjTS5dvFA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/37gjTS5dvFA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 3,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "37gjTS5dvFA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "6VYLv4NA20ARZOtkLH2GsHl1Jp8",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLndjSFVrNXhYeEVB",
+      "snippet": {
+        "publishedAt": "2020-05-31T13:03:32Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Stand Against Racial Injustice",
+        "description": "We stand in solidarity against racism and injustice and are pledging $1M in support of efforts to stop it. Join YouTube and donate to the Center for Policing Equity: https://policingequity.org/donate or visit https://policingequity.org/ to learn more.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wcHUk5xXxEA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wcHUk5xXxEA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wcHUk5xXxEA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/wcHUk5xXxEA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/wcHUk5xXxEA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 4,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "wcHUk5xXxEA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "E6qNH2C9KSyReIWb2ia4tlmWc0I",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkd1T0FQVkJZVUNB",
+      "snippet": {
+        "publishedAt": "2020-05-27T17:10:53Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Build a Garden | #WithMe",
+        "description": "We’ve got a new appreciation for our outdoor spaces. Whether it's a backyard, balcony, or windowsill, we are getting our daily dose of vitamin D and enjoying nature at home by starting gardens of all shapes and sizes! There have been over 14 million \"Container Gardening\" views since March 1. Let's get our hands dirty and grow, together.\n\nBuild a Garden At Home #WithMe",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GuOAPVBYUCA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GuOAPVBYUCA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GuOAPVBYUCA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/GuOAPVBYUCA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/GuOAPVBYUCA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 5,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "GuOAPVBYUCA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "REAc7vuX2IPuVlz4FzQH3QstKqA",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLi1TTkVLWXh1NlNj",
+      "snippet": {
+        "publishedAt": "2020-05-27T16:00:01Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Celebrating the Class of 2020 | Graduate #WithMe",
+        "description": "The Class of 2020 has had an experience like no other. \nThey’ve earned a place in history and in our hearts. \nThis is for them. \n\nJoin us for “Dear Class of 2020,” A Virtual Graduation Event\nJune 6 • 12PM PT • https://www.YouTube.com/dearclass\n\nFeaturing:\nPresident Obama\nMichelle Obama\nBeyonce Knowles-Carter\nBTS\nSundar Pichai\nCNCO\nChloe X Halle\nLady Gaga \nSec. Robert M. Gates\nMaluma\nSec. Condoleezza Rice \nMegan Thee Stallion\nAnd Many More!\n\nGraduate #WithMe",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-SNEKYxu6Sc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-SNEKYxu6Sc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-SNEKYxu6Sc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/-SNEKYxu6Sc/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/-SNEKYxu6Sc/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 6,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "-SNEKYxu6Sc"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "oevor-2lFOThP7QRdSVpE_PbZyI",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmhfUHdZaEZiRWhN",
+      "snippet": {
+        "publishedAt": "2020-05-21T21:40:06Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Meditate | #WithMe",
+        "description": "There’s no one way to take care of yourself during this time—but meditation is one great place to start. There have been over 90 million \"guided meditation\" views since March 1. Tune out distractions, relieve stress, and center yourself with the help and support of others.\n\nMeditate #WithMe",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/h_PwYhFbEhM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/h_PwYhFbEhM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/h_PwYhFbEhM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/h_PwYhFbEhM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/h_PwYhFbEhM/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 7,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "h_PwYhFbEhM"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "NurmYnYxvMC09SfDF-7pJ8ehPxg",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlhkc2dfMGZoVDVZ",
+      "snippet": {
+        "publishedAt": "2020-05-20T14:01:13Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Tim & Cree’s Story: Farming for a Brighter Tomorrow",
+        "description": "Tim and Cree are passionate about helping their community and our planet through their self-built regenerative farm. Not only are they giving back to the land they work, but they’re passing on sustainable practices through their climate aware cooking school. They say YouTube helped them every step of the way.\n\nFind something new to learn at youtube.com/learning\n\nFeatured Content:\n\nFrom the Ground Up – Regenerative Agriculture https://www.youtube.com/watch?v=6vQW8Tl_KLc \n\nForager|Chef - Cleaning slippery jacks, suillus luteus https://www.youtube.com/watch?v=qCuCpDo2v2g\n\n#WithMe #YouTubeStories #YouTubeTaughtMe #sustainability #regenerativefarming #farming #Australia #WesternAustralia #OneTableFarm #sustainablecommunity #farmtube #learning #education #paddocktoplate",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Xdsg_0fhT5Y/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Xdsg_0fhT5Y/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Xdsg_0fhT5Y/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Xdsg_0fhT5Y/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/Xdsg_0fhT5Y/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 8,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "Xdsg_0fhT5Y"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "4YaSvKoHXYQMoLFE_JKyzpmaMa8",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlBDYk5MSWR4LVBn",
+      "snippet": {
+        "publishedAt": "2020-05-11T16:56:16Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Cut Hair | #WithMe",
+        "description": "Whether it’s a buzz cut, bang trim, or full chop, it’s something we typically don't do ourselves. That’s why there have been over 110 million \"DIY haircut\" views since March 1. While we appreciate our hairdressers now more than ever,  we are not alone in learning and making mistakes (the kind that will eventually grow back), together.\n\nCut Hair At Home #WithMe",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/PCbNLIdx-Pg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/PCbNLIdx-Pg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/PCbNLIdx-Pg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/PCbNLIdx-Pg/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/PCbNLIdx-Pg/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 9,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "PCbNLIdx-Pg"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "Uqejbq0BQI3-OM2VGCye1i2721o",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk90VFJVT0hlM2JB",
+      "snippet": {
+        "publishedAt": "2020-04-30T21:39:52Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Farm | #WithMe",
+        "description": "There have been over 2 million “Raising Chicken” views since March 1. Our desire to learn, be self-sufficient, and provide has only grown during this time. So, we’re raising chickens, growing vegetables, and farming in our backyards, together.\n\nFarm #WithMe",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/OtTRUOHe3bA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/OtTRUOHe3bA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/OtTRUOHe3bA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/OtTRUOHe3bA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/OtTRUOHe3bA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 10,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "OtTRUOHe3bA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "L5zST5Isr2u7pqSwIeJut-LOEbc",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmVlaXVuQ01jdFFn",
+      "snippet": {
+        "publishedAt": "2020-04-23T17:00:37Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Make a Face Mask | #WithMe",
+        "description": "Since March 1, there have been over 200 million views of “DIY Face Mask” videos on YouTube. A shortage of masks and a desire to help others has shown us how crafty and resourceful we can be when we figure things out, together.\n\nLearn how to make a face mask At Home #WithMe.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/eeiunCMctQg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/eeiunCMctQg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/eeiunCMctQg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/eeiunCMctQg/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/eeiunCMctQg/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 11,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "eeiunCMctQg"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "i7wxcgk-uQUN5VWnuOw-c9rb1Y8",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmd6bnVxTXBGSjdF",
+      "snippet": {
+        "publishedAt": "2020-04-19T12:01:23Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Get by together | #WithMe",
+        "description": "From teaching kids and cutting our own hair to growing food and making our own face masks, we’re all trying new things as we navigate Covid-19.  These days, just doing the ordinary feels extraordinary. We’re all just figuring it out, together. Get by #WithMe.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/gznuqMpFJ7E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/gznuqMpFJ7E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/gznuqMpFJ7E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/gznuqMpFJ7E/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/gznuqMpFJ7E/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 12,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "gznuqMpFJ7E"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "HWlL88_e-vSK_VAxpRKtp0lXm0M",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkxlS3p2YkJiNVFR",
+      "snippet": {
+        "publishedAt": "2020-04-03T20:54:42Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "#StayHome and help those who can’t",
+        "description": "By staying home, we can all help support those who aren’t able to stay at home themselves. Because being at home right now isn’t just about keeping your friends and family safe, it can help save the lives of others. Please #StayHome and help save lives. Let’s do this together. www.YouTube.com/StayHome\n\n#StayHome \n\nStarring:\nFGTeeV  \nFirst We Feast \nCaroline Manning \nGrav3yardgirl \nVlogbrothers \nAnwar Jibawi \nHeyitsfeiiii \nThe Holderness Family \nAlonzo Leron\nDemi Lovato\nPatrickStarrr \nCamila Cabello \nSam Smith \nHailee Steinfeld \nDolan Twins\nLiving Luxuriously for Less \nLele Pons\nJ Balvin",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LeKzvbBb5QQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LeKzvbBb5QQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LeKzvbBb5QQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/LeKzvbBb5QQ/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/LeKzvbBb5QQ/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 13,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "LeKzvbBb5QQ"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "eMNJsXhy3mS7NjHVSD6dOX210ok",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjZlZ1FrRng3VWtN",
+      "snippet": {
+        "publishedAt": "2020-03-27T22:00:03Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "#StayHome and help save lives #WithMe",
+        "description": "Staying home right now isn’t just about keeping you and your family safe—it’s about helping to save the lives of others. But, just because we’re apart, doesn’t mean we can’t do things together. Please #StayHome and help save lives #WithMe. Let’s do this together. www.YouTube.com/StayHome \n\n#StayHome #WithMe\n\nStarring:\nLooking Glass Universe\nCasey Neistat\nTheShow\nAlonzo Lerone\nEmma Chamberlain\nKati Morton\nJordyn Taylor\nVlogbrothers\nMinnie Small\nLavendaire\nJaclyn Hill\nDepression to Expression\nHelen Ibe Music\nYoga With Adriene\nBeleaf in Fatherhood\nThe Body Coach TV\nLollalane\nSaraBeautyCorner\nElloitsangela\nYUNGBLUD\nTyrone Magnus\nCooking with Shotgun Red\nKorea Reomit\nStoriesinthedust\nWithwendy\nMarkiplier\nRudy Mancuso\nAlex \"French Guy Cooking\"\nHannah Ashton\nChella Man\nLearn How To Dance\nHoneysuckle\nConnorFranta",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/6egQkFx7UkM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/6egQkFx7UkM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/6egQkFx7UkM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/6egQkFx7UkM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/6egQkFx7UkM/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 14,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "6egQkFx7UkM"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "5LEiqtpF0vFFEoZKFi1kLdMEbJU",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjJsQWUxY3FDT1hv",
+      "snippet": {
+        "publishedAt": "2019-12-05T18:00:14Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "YouTube Rewind 2019: For the Record | #YouTubeRewind",
+        "description": "In 2018, we made something you didn’t like. For Rewind 2019, let’s see what you DID like.\n\nCelebrating the creators, music and moments that mattered most to you in 2019. \n\nTo learn how the top lists in Rewind were generated: https://rewind.youtube/about\n\nTop lists featured the following channels:\n\n@1MILLION Dance Studio \n@A4 \n@Anaysa \n@Andymation \n@Ariana Grande \n@Awez Darbar \n@AzzyLand \n@Billie Eilish \n@Black Gryph0n \n@BLACKPINK \n@ChapkisDanceUSA \n@Daddy Yankee \n@David Dobrik \n@Dude Perfect \n@Felipe Neto \n@Fischer's-フィッシャーズ- \n@Galen Hooks \n@ibighit \n@James Charles \n@jeffreestar \n@Jelly \n@Kylie Jenner \n@LazarBeam \n@Lil Dicky \n@Lil Nas X \n@LOUD \n@LOUD Babi \n@LOUD Coringa \n@Magnet World \n@MrBeast \n@Nilson Izaias Papinho Oficial \n@Noah Schnapp\n@백종원의 요리비책 Paik's Cuisine \n@Pencilmation \n@PewDiePie \n@SethEverman \n@shane \n@Shawn Mendes \n@Team Naach \n@whinderssonnunes \n@워크맨-Workman \n@하루한끼 one meal a day \n\nTo see the full list of featured channels in Rewind 2019, visit: https://rewind.youtube/about",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/2lAe1cqCOXo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/2lAe1cqCOXo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/2lAe1cqCOXo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/2lAe1cqCOXo/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/2lAe1cqCOXo/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 15,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "2lAe1cqCOXo"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "Iv-BSEre9cthpNzen0-cu4Kthog",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkRSaF80aS1HS1Br",
+      "snippet": {
+        "publishedAt": "2019-11-14T16:57:14Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "On The Clock | #YouTubeBlack 2019",
+        "description": "What would you say with 15 seconds on the clock? #YouTubeBlack creators in Atlanta only got 15 seconds to give their hottest takes on the most pressing topics from black and creator culture, from self-care to Minecraft and more.\n\nJarvis Johnson: https://www.youtube.com/user/VSympathyV\n\nAlonzo Lerone: https://www.youtube.com/user/alonzolerone\n\nShahd Batal: https://www.youtube.com/channel/UC-8xdGqE5wBME-VU5eOMyaQ\n\nNyma Tang: https://www.youtube.com/channel/UCroDJPcFCf6DBmHns6Xeb8g\n\nAmbers Closet: https://www.youtube.com/user/AmbersCloset33\n\nMacDoesIt: https://www.youtube.com/results?search_query=macdoesit\n\nJADE FOX: https://www.youtube.com/user/foxyhotmess\n\nDenzel Dion: https://www.youtube.com/user/denzellltv\n\nTarek Ali: https://www.youtube.com/channel/UCGJMWVRE5ypcQzjiBC2jcWQ\n\nJonesGotGame: https://www.youtube.com/channel/UCPGhzlxltApd7GEngwgdPig\n\nTutweezy: https://www.youtube.com/user/tutweezy\n\n#YouTubeBlack\n\nChapters:\n0:00 Rolling\n0:08 Atlanta\n0:26 ASMR\n0:45 Mukbangs\n1:03 Minecraft\n1:21 Viral YouTube Trends\n1:39 Meme Culture\n1:57 Being a Black Creator in 2019\n2:15 Creator Burnout\n2:33 Self-Care\n2:51 Hair Routines\n3:09 This Year in Fashion\n3:28 Top 10 Female Rappers\n3:45 Beyoncé\n4:03 Lil Nas X\n4:21 The Next Generation of Creators",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DRh_4i-GKPk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DRh_4i-GKPk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/DRh_4i-GKPk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/DRh_4i-GKPk/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/DRh_4i-GKPk/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 16,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "DRh_4i-GKPk"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "ZEMZwPHQYgSbXYK6eGEYW_wpySY",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmR5NkhqMEtrLUNB",
+      "snippet": {
+        "publishedAt": "2019-11-07T21:01:59Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Meredith Bell’s Story: From City Girl to Farmer",
+        "description": "Meredith Bell left the corporate world behind to follow her dream of becoming a farmer in Kern County, CA. She turned to YouTube to learn how to farm, and turn that dream into a reality.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dy6Hj0Kk-CA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dy6Hj0Kk-CA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dy6Hj0Kk-CA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/dy6Hj0Kk-CA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/dy6Hj0Kk-CA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 17,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "dy6Hj0Kk-CA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "Kkwul_GfMT3ova1Mtq8OE0sPw6c",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm9qUVpRUDI5X0Rj",
+      "snippet": {
+        "publishedAt": "2019-11-13T20:55:38Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Matt & Alex Parody Vance Joy's 'Riptide'",
+        "description": "YouTube Music are reuniting comedy duo Matt Okine and Alex Dyson for a loving tribute to Vance Joy's 'Riptide'. Catch the pair presenting the award for Best Video at the 2019 ARIA Awards.\n\n#MattOkine #AlexDyson #ARIAs",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ojQZQP29_Dc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ojQZQP29_Dc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ojQZQP29_Dc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ojQZQP29_Dc/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ojQZQP29_Dc/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 18,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "ojQZQP29_Dc"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "dHhi1GST49au4cvHZqmau0_xe3U",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlRTLWtwb1ZXdmh3",
+      "snippet": {
+        "publishedAt": "2019-11-06T21:00:02Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Matt & Alex Reunite For The ARIA Awards",
+        "description": "When radio hosts Matt Okine and Alex Dyson went their separate ways in 2016, the airwaves (and the ARIA red carpet) were never the same. But thanks to YouTube Music, the pair are reuniting for something very special in 2019.\n\n#MattOkine #AlexDyson #ARIAs",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TS-kpoVWvhw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TS-kpoVWvhw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TS-kpoVWvhw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/TS-kpoVWvhw/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/TS-kpoVWvhw/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 19,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "TS-kpoVWvhw"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "dlmNUmc5vsKi7HyvrRbmO6x9UfM",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkIzTURKc2dnZkRn",
+      "snippet": {
+        "publishedAt": "2019-11-04T19:42:12Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Nate Boyer's Story: From Green Beret to Starting Lineup",
+        "description": "Nate Boyer had an unfulfilled dream before he enlisted in the U.S. Army Special Forces: to play professional football. With the help of YouTube videos, Nate chased his dream and learned how to become a starting long snapper, eventually becoming the oldest rookie in the NFL.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/B3MDJsggfDg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/B3MDJsggfDg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/B3MDJsggfDg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/B3MDJsggfDg/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/B3MDJsggfDg/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 20,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "B3MDJsggfDg"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "Ti-6Sz6KWZMG1hfYBLtYLPoLLzQ",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjBqUlgweHEyNEFV",
+      "snippet": {
+        "publishedAt": "2019-10-25T15:25:55Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "The Story of Pasta Grannies",
+        "description": "Food writer Vicky Bennison started her channel as a way to catalogue the traditional handmade pasta skills of Italy’s grandmothers. For the past five years, she has crisscrossed the country, inviting her audience into the homes of these nonnas as they lovingly prepare their favorite dishes. Whether it’s demonstrating a rare regional specialty or sharing their techniques for mastering the classics, the Pasta Grannies are inspiring the next generation of home cooks.\n\nCheck out the Pasta Grannies channel here: https://www.youtube.com/user/pastagrannies",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/0jRX0xq24AU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/0jRX0xq24AU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/0jRX0xq24AU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/0jRX0xq24AU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/0jRX0xq24AU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 21,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "0jRX0xq24AU"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "6Tu-fCuv1P1EJwWiXMZqjiY_Od0",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkdCYUdIUF9VdUxJ",
+      "snippet": {
+        "publishedAt": "2019-09-05T13:59:13Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Welcome to Your Front Row Seat to Fashion | YouTube.com/Fashion",
+        "description": "Introducing YouTube.com/Fashion, the ultimate destination for style content that bridges both our fabulous endemic creator community and the more traditional worlds of fashion and beauty. Each shelf on /Fashion is chock-full of videos from fashion and beauty creators, industry professionals, publishers and luxury fashion brands. We want anyone who is looking for style content to have a place to come and be inspired by what they see. \n\nWe can’t wait for you to explore our new offering, get inspired by all the great content and share with your friends. Be sure to come back often, as we have a lot more to come!\n\n#YouTubeFashion #YouTubeBeauty",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GBaGHP_UuLI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GBaGHP_UuLI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GBaGHP_UuLI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/GBaGHP_UuLI/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/GBaGHP_UuLI/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 22,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "GBaGHP_UuLI"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "wNyjZXOBnnEYFrwe40TVYNkbIIs",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnQ2N196QWc1dnZJ",
+      "snippet": {
+        "publishedAt": "2019-07-25T15:57:11Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "VidConfessions | VidCon 2019",
+        "description": "Where will they be in 10 years? What was their first YouTube video camera set up? Watch your fave creators dish it all out during VidCon 2019!\n\nAdelaineMorin - https://www.youtube.com/user/C0OK1EMONSTER/videos\nKyle Hanagami - https://www.youtube.com/user/kylehanagami\nDormtainment - https://www.youtube.com/user/DormtainmentTV\nAmber Scholl - https://www.youtube.com/user/PopppDivaaa\nKelsey Impicciche - https://www.youtube.com/user/keepcalmandkelseyon\nNick Eh 30 - https://www.youtube.com/channel/UCt9nYeSz90lnOnaVFjxFJzw\nAaron’sAnimals - https://www.youtube.com/channel/UCNo5PGwGmfnEprEUUb9AGgw\nZach King - https://www.youtube.com/user/ZachKingVine\nMolly Burke - https://www.youtube.com/user/MollyBurkeOfficial\nThe Fitness Marshall - https://www.youtube.com/user/TheFitnessMarshall\nCurly Velasquez - https://www.youtube.com/user/iwouldcryforyou\nFunForLouis - https://www.youtube.com/user/FunForLouis\nCloeCouture - https://www.youtube.com/user/CloeCouture\nCollins Key - https://www.youtube.com/user/CollinsKey\nDevan Key - https://www.youtube.com/user/devan11art\nShalom Blac - https://www.youtube.com/channel/UCHdbS7-HdeC6PMo9EtY5hFA\nTheSorryGirls - https://www.youtube.com/user/TheSorryGirls\nNatalies Outlet - https://www.youtube.com/user/nataliesoutlet\nPautips - https://www.youtube.com/user/Pautips\nDominic DeAngelis - https://www.youtube.com/user/THEKansasCitySTARZ\nJarvis Johnson - https://www.youtube.com/user/VSympathyV\nShameless Maya - https://www.youtube.com/user/shamelessmaya\nAsapScience - https://www.youtube.com/user/AsapSCIENCE\n\n#VidCon #VidCon2019\n\nChapters:\n0:00 Intro\n0:21 Who were you ten years ago?\n1:00 How would you describe yourself as a creator?\n1:25 Where do you see yourself in ten years? \n2:05 Best fan experience at Vidcon?\n2:47 What's the first YouTube video you watched?\n3:22 Which YouTube creator will be an icon in ten years?\n4:05 What's your YouTube video guilty pleasure?\n4:55 Describe your very first video capture set-up\n5:39 If you weren't a creator what would you do?\n6:05 What would your fans be surprised to learn about you?\n6:31 How do you want to be remembered?\n6:57 What do you hope changes and stays the same in ten years?",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/t67_zAg5vvI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/t67_zAg5vvI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/t67_zAg5vvI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/t67_zAg5vvI/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/t67_zAg5vvI/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 23,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "t67_zAg5vvI"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "q60miybyZymSaZIQWYyfmY6d9-c",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjlPR2lmU3FjTXNv",
+      "snippet": {
+        "publishedAt": "2019-07-16T16:55:02Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Letting The Creator In Front Of Me Choose What I Vlog | Creator Summit Paris Edition",
+        "description": "Watch what happens when we let seven creators from five different countries take control and decide what the creator in front of them vlogs from our #creatorsummit in Paris.\n\nFor more about our hosts and featured creators, check out...\n\nCallux\nhttps://www.youtube.com/callux\n\nAlfie Deyes\nhttps://www.youtube.com/PointlessBlogTv\n\nMihlali N\nhttps://www.youtube.com/channel/UCWhkEFN9UXdV2zFFZvP7O0A\n\nFly With Haifa\nhttps://www.youtube.com/BeSaySo\n\nSafa Srour\nhttps://www.youtube.com/channel/UCa6Znhazsts0wpQgXmlWEhg\n\nNaomi Jon\nhttps://www.youtube.com/naomiwayne\n\nMissesVlog\nhttps://www.youtube.com/MissesVlog\n\nFastGoodCuisine\nhttps://www.youtube.com/FastGoodCuisine\n\nHugo Posay\nhttps://www.youtube.com/MultiGaming01\n\nLili Cross\nhttps://www.youtube.com/LiliCrossing1\n\nAmyway921WOT\nhttps://www.youtube.com/Amway921WOT\n\nSofia Karlberg\nhttps://www.youtube.com/sofiakarlbergs\n\nLowi Sahi\nhttps://www.youtube.com/Lowinazal\n\nDuygu Özaslan\nhttps://www.youtube.com/itsmeduygu",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/9OGifSqcMso/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/9OGifSqcMso/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/9OGifSqcMso/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/9OGifSqcMso/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/9OGifSqcMso/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 24,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "9OGifSqcMso"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "JpYFo_yCEnwb6QBJ_RuHZVDJdJ8",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmlGM1ZNYUNkT3Bv",
+      "snippet": {
+        "publishedAt": "2019-06-29T16:54:55Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "GRWM: GIGI GORGEOUS | PRIDE 2019 EDITION",
+        "description": "Watch Gigi Gorgeous talk her experiences over the years, what Pride means to her and what she’s looking forward to this year.\n\nLet’s get into this glam! \n\nIf you are in crisis or in need of immediate help, please reach out to a professional: https://suicidepreventionlifeline.org\n\nAdditional resources: https://www.thetrevorproject.org/ 1-866-488-7386\n\nFollow Gigi Gorgeous on Social: \nGigi’s Channel: https://www.youtube.com/channel/UCzco9CewPf0F-SP1p6LhWrw \nGigis Instagram: https://www.instagram.com/gigigorgeous/ \nGigi’s Twitter: https://twitter.com/TheGigiGorgeous\nThis Is Everything Documentary: https://www.youtube.com/watch?v=10WmFYiMnoI\n\n#GigiGorgeous #WorldPride #GRWM",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/iF3VMaCdOpo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/iF3VMaCdOpo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/iF3VMaCdOpo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/iF3VMaCdOpo/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/iF3VMaCdOpo/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 25,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "iF3VMaCdOpo"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "Fs5EehuN9IsCRdEJgh1fFHwTKAg",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkNNWU0wWWMwN1dF",
+      "snippet": {
+        "publishedAt": "2019-06-27T17:07:08Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "GRWM: TAREK ALI | PRIDE 2019 EDITION",
+        "description": "Breaking stereotypes and sharing advice for the next generation of YouTube Creators, Tarek Ali shares his sources of inspiration and what his identity as black queer man means to him. \n\nGet ready for Pride with your newest fave!\n\nIf you are in crisis or in need of immediate help, please reach out to a professional: https://suicidepreventionlifeline.org\n\nAdditional resources: https://www.thetrevorproject.org/ 1-866-488-7386\n\nFollow Tarek Ali on Social: \nTarek’s Channel: https://www.youtube.com/channel/UCGJMWVRE5ypcQzjiBC2jcWQ \nTarek’s Instagram: https://www.instagram.com/itstarekali/ \nTarek’s Twitter: https://twitter.com/itstarekali\n\n#TarekAli #GRWM #WorldPride",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/CMYM0Yc07WE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/CMYM0Yc07WE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/CMYM0Yc07WE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/CMYM0Yc07WE/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/CMYM0Yc07WE/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 26,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "CMYM0Yc07WE"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "wswMaR0TJYwgojWC2G0GZjJh6oI",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmtiTzJQUjlndVVV",
+      "snippet": {
+        "publishedAt": "2019-06-19T16:56:22Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Nikita Dragun & Kim Petras: In Conversation | PRIDE 2019",
+        "description": "DragunEgg? Just hatched. Bops? They keep coming.\n\nBeauty guru Nikita Dragun and pop icon Kim Petras come together to talk about living online with Pride.\n\nIf you are in crisis or in need of immediate help, please reach out to a professional: https://suicidepreventionlifeline.org\n\nAdditional resources: https://www.thetrevorproject.org/ 1-866-488-7386\n\nKim Petras: https://www.youtube.com/kimpetras\nStream Kim Petras on YouTube Music: https://yt.be/music/KimPetras\nNikita Dragun: https://www.youtube.com/nikitadragun\nDragun Beauty: https://www.dragunbeauty.com\n\n\n#NikitaDragun #KimPetras #Pride",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kbO2PR9guUU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kbO2PR9guUU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kbO2PR9guUU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/kbO2PR9guUU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/kbO2PR9guUU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 27,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "kbO2PR9guUU"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "5Xdj_bRfjhOmclG9CScqkeZqOp8",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkJMYzJoZGdYa0Vz",
+      "snippet": {
+        "publishedAt": "2019-06-16T20:36:46Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Father's Day 2019 | Love Letters",
+        "description": "Though their fathers are behind bars, their love is unbreakable. Watch this year’s #LoveLetters.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/BLc2hdgXkEs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/BLc2hdgXkEs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/BLc2hdgXkEs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/BLc2hdgXkEs/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/BLc2hdgXkEs/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 28,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "BLc2hdgXkEs"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "QvBNGP0AzXuocpZN5juMbP2QzK4",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjFZUU9TM1BjQkdj",
+      "snippet": {
+        "publishedAt": "2019-05-23T13:57:52Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Cheong Choon Ng's Story: A Rubber Band Phenomenon",
+        "description": "Cheong is a dad who found a way to connect with his daughters over rubber band bracelets, turning his rainbow loom invention into an international phenomenon thanks to the power of YouTube tutorials.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1YQOS3PcBGc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1YQOS3PcBGc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1YQOS3PcBGc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/1YQOS3PcBGc/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/1YQOS3PcBGc/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 29,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "1YQOS3PcBGc"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "USWY6aWnyOUmXzCQTBsb8uN6tQY",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkhrWkQ0bGdLUFg4",
+      "snippet": {
+        "publishedAt": "2019-05-09T18:55:02Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Assumptions About Me | YouTube Creator Summit Edition",
+        "description": "Think you know everything about your favorite YouTube creators? We asked for your assumptions, now watch and find out if they're true. #CreatorSummit\n\nFor more, check out...\n\nMissRemiAshten\nhttps://www.youtube.com/MissRemiAshten\n\nKristopher London\nhttps://www.youtube.com/JustSayItMmokay\n\nCollins Key\nhttps://www.youtube.com/CollinsKey\n\nElleOfTheMills\nhttps://www.youtube.com/ElleOfTheMills\n\nemma chamberlain\nhttps://www.youtube.com/channel/UC78cxCAcp7JfQPgKxYdyGrg\n\nsWooZie\nhttps://www.youtube.com/swoozie06\n\nSofie Dossi\nhttps://www.youtube.com/SofieDossi\n\nWassabi\nhttps://www.youtube.com/hoiitsroi\n\nHevesh5\nhttps://www.youtube.com/hevesh5/\n\nMrBeast\nhttps://www.youtube.com/MrBeast6000\n\nSam Tsui\nhttps://www.youtube.com/TheSamTsui\n\nWengie\nhttps://www.youtube.com/WWWengie\n\nNick Eh 30\nhttps://www.youtube.com/channel/UCt9nYeSz90lnOnaVFjxFJzw\n\nhyuneeEats\nhttps://www.youtube.com/channel/UCkS6mJ0i2oMdHEdR-Jpw9Ug\n\nJoey Graceffa\nhttps://www.youtube.com/JoeyGraceffa",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HkZD4lgKPX8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HkZD4lgKPX8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HkZD4lgKPX8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/HkZD4lgKPX8/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 30,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "HkZD4lgKPX8"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "88V-Qq19X5WrmTMs6M0CfWFgzFE",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlJrWVFRSy13Mkxn",
+      "snippet": {
+        "publishedAt": "2019-05-06T22:52:56Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Charles Lomu's Story: Barbering for Change",
+        "description": "Charles Lomu is making a difference one fresh cut at a time with his ‘Groom Room’ at Granville Boys High School. He’s blending youth work and barbering to give kids struggling with school a sense of belonging and reason to attend. Charles learnt his barbering skills through YouTube. \n\nFind something new to learn at youtube.com/learning\n\nCharles was inspired by:\n\nChris Bossio: https://www.youtube.com/channel/UCD9Oybf28FhVdVDG6hwg6Yw\n\n360Jeezy: https://www.youtube.com/user/360Jeezy\n\nVICKTHEBARBER: https://www.youtube.com/user/VICKTHEBARBER\n \nDLMasterBarber: https://www.youtube.com/channel/UCr_Kw2LqhISgiCa9P19fJRQ",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RkYQQK-w2Lg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RkYQQK-w2Lg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RkYQQK-w2Lg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/RkYQQK-w2Lg/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/RkYQQK-w2Lg/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 31,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "RkYQQK-w2Lg"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "psEvnyZDLg1n0IBPRNMi0MOiMQo",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnplX2Y5bGpHZXNz",
+      "snippet": {
+        "publishedAt": "2019-05-06T22:52:49Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Eddie Woo's Story: Sharing the Wonder of Mathematics",
+        "description": "Kids often think maths is too hard, or just not fun. Eddie Woo is changing that. A teacher in Sydney, he shares his passion with the community, country and world by uploading his classes to YouTube. Now he has students and teachers tuning in learn the Eddie Woo way. \nFind something new to learn at youtube.com/learning\n\nEddie’s channel: https://www.youtube.com/channel/UCq0EGvLTyy-LLT1oUSO_0FQ\n\nThank you to the Australian Broadcasting Corporation, TEN's ‘The Project’, Channel 9's ‘Today Show’ and TEDxSydney for their footage.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ze_f9ljGess/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ze_f9ljGess/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ze_f9ljGess/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ze_f9ljGess/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ze_f9ljGess/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 32,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "ze_f9ljGess"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "fwmRRag4ibefCdMJbt-DOttN5GM",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjBUNTFjMWtwclpn",
+      "snippet": {
+        "publishedAt": "2019-05-06T22:52:44Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Macinley Butson's Story: Inventing Armour to Battle Radiation",
+        "description": "Macinley Butson was just sixteen when she decided to do something to protect women from excess radiation during breast cancer treatment. She turned to YouTube for the skills needed to create a potentially life-saving invention. \n\nFind something new to learn at youtube.com/learning\n\nFeatured content\n\nAHSChannel: https://www.youtube.com/channel/UCzwZNwPALKkvafocMMzPffA\n\numnLibraries: https://www.youtube.com/channel/UCvoNfb1gD1GqQYkdnhjTY1w\n\nSiraj Raval: https://www.youtube.com/channel/UCWN3xxRkmTPmbKwht9FuE5A\n\npatrickJMT: https://www.youtube.com/channel/UCFe6jenM1Bc54qtBsIJGRZQ\n\nTheRingLord.com: https://www.youtube.com/channel/UCWjjGB2ROk2je8yfFbyB8Zw\n\nalisinchainmail: https://www.youtube.com/channel/UCyycafwKK1HjVQQWSP-iFEw\n\nSkallagrim: https://www.youtube.com/channel/UC3WIohkLkH4GFoMrrWVZZFA\n\nThank you to TEDx Sydney for their footage.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/0T51c1kprZg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/0T51c1kprZg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/0T51c1kprZg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/0T51c1kprZg/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/0T51c1kprZg/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 33,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "0T51c1kprZg"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "gicVrjsK8-aWSSw5s1i_u3hZ8n4",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkVrUEN6d1pfeDU4",
+      "snippet": {
+        "publishedAt": "2019-04-22T15:11:52Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Krystn Keller's Story: Healing through How-Tos",
+        "description": "Krystn delved into the world of natural soap making on YouTube in her search for a way to clear her son's eczema. She did just that and now runs her own skincare brand. To learn more about Krystn and Keller Works, check out her site: https://kellerworks.com/.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/EkPCzwZ_x58/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/EkPCzwZ_x58/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/EkPCzwZ_x58/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/EkPCzwZ_x58/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/EkPCzwZ_x58/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 34,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "EkPCzwZ_x58"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "qpSWADnYNhceDcDV_hX7Or3DPLs",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmVsbGxMUnVrUWFr",
+      "snippet": {
+        "publishedAt": "2018-12-31T16:59:49Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "YouTube's Toast to 2019 — Q&A with Zane, Tati, Poppy and Mr. Kate & Joey",
+        "description": "Ring in the new year with Zane Hijazi, Tati Westbrook, Poppy and Mr. Kate & Joey Zehr! \n\nThis video was filmed at the YouTube Space in Los Angeles.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/elllLRukQak/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/elllLRukQak/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/elllLRukQak/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/elllLRukQak/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/elllLRukQak/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 35,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "elllLRukQak"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "NE8qJvBupuHyKKJLjK2ipounoDM",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjhxVFFiazJBMDJN",
+      "snippet": {
+        "publishedAt": "2018-12-06T18:03:14Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "YouTube Rewind 2018: Behind the Scenes | #YouTubeRewind",
+        "description": "Behind the scenes of YouTube Rewind 2018, the epic year-end celebration of the videos, people, music and moments that mattered the most to you in  2018. #YouTubeRewind\n\nWatch Rewind again: https://youtu.be/YbJOTdZBX1g\nWatch the year's trending videos: http://youtube.com/rewind\nSee the trends as they happen: http://youtube.com/trending",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/8qTQbk2A02M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/8qTQbk2A02M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/8qTQbk2A02M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/8qTQbk2A02M/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/8qTQbk2A02M/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 36,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "8qTQbk2A02M"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "ccPG-icwT6_FZFvi-iE1T4J2bQQ",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjhnRTV4a3l6cWhz",
+      "snippet": {
+        "publishedAt": "2018-12-03T18:00:00Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Get Ready for YouTube Rewind 2018 | #RewindIsComing",
+        "description": "It’s almost time to hit Rewind, #RewindisComing.\n\nYouTube Rewind 2018 releases on December 6th (10 am PST). Get ready to see the videos, people, music and moments that made 2018 on YouTube.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/8gE5xkyzqhs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/8gE5xkyzqhs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/8gE5xkyzqhs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/8gE5xkyzqhs/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/8gE5xkyzqhs/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 37,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "8gE5xkyzqhs"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "HwJhaBYH_iVmGvYO8glqf0H7LyI",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnFNLWRPWWl5dkNB",
+      "snippet": {
+        "publishedAt": "2018-11-29T17:02:22Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "YouTube Stories | Fashion by Ally",
+        "description": "Stories is available to eligible creators with over 10,000 subscribers. Get inspired and discover how Stories can give your fans a backstage pass. Learn More: https://creatoracademy.youtube.com/page/lesson/stories And check out Fashion by Ally's channel! https://www.youtube.com/fashionbyally",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/qM-dOYiyvCA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/qM-dOYiyvCA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/qM-dOYiyvCA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/qM-dOYiyvCA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/qM-dOYiyvCA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 38,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "qM-dOYiyvCA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "1OB9On65h0q4JMUQLvgIoFCFmAY",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlliSk9UZFpCWDFn",
+      "snippet": {
+        "publishedAt": "2018-12-06T17:58:29Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "YouTube Rewind 2018: Everyone Controls Rewind | #YouTubeRewind",
+        "description": "YouTube Rewind 2018. Celebrating the videos, people, music and moments that defined 2018. #YouTubeRewind\n\nIt wouldn’t be Rewind without the creators: https://rewind.youtube/creators\nExplore the videos, music and trends that defined YouTube in 2018: https://rewind.youtube\n\nWatch the Behind the Scenes video: https://youtu.be/8qTQbk2A02M  \nSee all the Easter Eggs: https://goo.gl/xr3uUn  \n\nMusic by The Hood Internet\nYouTube Rewind 2018 produced by Portal A \n\nStarring:\n\n10Ocupados\nAdam Rippon\nAfros e Afins por Nátaly Neri\nAlisha Marie\nAmi Rodriguez \nAnwar Jibawi\nAsapSCIENCE\nAuthenticGames\nBB Ki Vines\nBearhug\nBie The Ska\nBilingirl Chika\nBokyem TV\nCajuTV\nCasey Neistat\nCaspar\nCherrygumms\nCollins Key\nDagi Bee\nDesimpedidos\nDiva Depressão\nDolan Twins\nDomics\nDotty TV\nElle Mills\nemma chamberlain\nEnes Batur\nEnjoyPhoenix\nEroldStory\nFAP TV\nFavijTV\nFischer's\nFurious Jumper\nGabbie Hanna\nGamingWithKev\nGEN HALILINTAR\nGongdaesang\ngymvirtual\nHannah Stocking\nHikakinTV\nHow Ridiculous\nillymation\nItsFunneh\nJaidenAnimations \nJames Charles\nJohn Oliver\nJordindian \nJubilee Media\nJukiLop\njulioprofe\nKatya Zamolodchikova\nKaykai Salaider \nKelly MissesVlog\nKrystal Yam & family\nLA LATA\nLachlan\nLaurDIY\nLele Pons\nLife Noggin\nLilly Singh\nLiza Koshy\nLosPolinesios\nLucas the Spider\nLuisito Comunica (Rey Palomo)\nLuzu\nLyna\nManual do Mundo\nMarkiplier \nMarques Brownlee\nMarshmello\nMason Ramsey\nMe Poupe!\nMerrell Twins\nMichael Dapaah \nMissRemiAshten\nmmoshaya\nMolly Burke\nMs Yeah\nMuro Pequeno\nNick Eh 30\nNikkieTutorials \nNinja\nNoor Stars \nPautips\nPinkfong Baby Shark\nPozzi\nPrimitive Technology\nRobleisIUTU\nRosanna Pansino\nRudy Mancuso\nSafiya Nygaard\nSam Tsui\nSamHarveyUK\nSHALOM BLAC\nSimone Giertz\nskinnyindonesian24\nSofia Castro \n@StrayRogue and @DitzyFlama (Bongo Cat)\nsWooZie\nTabbes\nTechnical Guruji \nThe Try Guys\nTheKateClapp\nTheOdd1sOut\nTiền Zombie v4 \nTrevor Noah\nTrixie Mattel\nWengie\nWhinderssonNunes\nWill Smith\nYammy \nYes Theory\n\nAll comments featured in Rewind inspired by real comments from the YouTube community.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/YbJOTdZBX1g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/YbJOTdZBX1g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/YbJOTdZBX1g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/YbJOTdZBX1g/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/YbJOTdZBX1g/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 39,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "YbJOTdZBX1g"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "4A_-33xpdKApkHnh1933d5sN-FQ",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmxlcFlrRFo2Mk9Z",
+      "snippet": {
+        "publishedAt": "2018-11-19T00:02:39Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "#SaveYourInternet",
+        "description": "Imagine if you couldn’t watch the videos you love. We support copyright reform with an Article 13 that works for everyone.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/lepYkDZ62OY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/lepYkDZ62OY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/lepYkDZ62OY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/lepYkDZ62OY/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/lepYkDZ62OY/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 40,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "lepYkDZ62OY"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "wZjWWdU1hMuyu0SI8VduA8jmb-U",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLl82TXRvUjhKR1Rv",
+      "snippet": {
+        "publishedAt": "2018-11-12T12:59:34Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "One View Can Create Change | #CreatorsforChange 2018",
+        "description": "Creators around the world are making videos that opens minds, promote harmony and inspire togetherness. Because no matter your message, when you share your view with positivity, there’s no limit to the change it can create. \n\nWatch all 50+ films at http://youtube.com/creatorsforchange\n\nRead more about Creators for Change here → http://yt.be/creatorsforchange\n\nSpecial thank you to:\nAfros e Afins (Nátaly Neri): http://yt.be/cfc/natalyneri\nAsapSCIENCE: http://yt.be/cfc/asapscience\nBeleaf in Fatherhood: http://yt.be/cfc/beleafinfatherhood\nBENI: http://yt.be/cfc/beni\nCameo Project: http://yt.be/cfc/cameoproject\nConnor Franta: http://yt.be/cfc/connorfranta\nDatteltäter: http://yt.be/cfc/datteltater\nDiana zur Löwen: http://yt.be/cfc/dianazurlowen\nDuo Harbatah: http://yt.be/cfc/duoharbatah\nEh Bee Family: http://yt.be/cfc/ehbeefamily\nFilm Maker Muslim: http://yt.be/cfc/filmmakermuslim\nFly With Haifa: http://yt.be/cfc/flywithhaifa\nFun for Louis: http://yt.be/cfc/funforlouis\nGirliyapa: http://yt.be/cfc/girliyapa\nGita Savitri Devi: http://yt.be/cfc/gitasavitridevi\nHallease: http://yt.be/cfc/hallease\nHugoDécrypte: http://yt.be/cfc/hugodecrypte\nHumza Productions: http://yt.be/cfc/humzaproductions\nImJette: http://yt.be/cfc/imjette\nİlker Gümüşoluk: http://yt.be/cfc/ilkergumusoluk\nJanina Vela: http://yt.be/cfc/janinavela\nJazza John: http://yt.be/cfc/jazzajohn\nJouelzy: http://yt.be/cfc/jouelzy\nJovi Adhiguna Hunter: http://yt.be/cfc/jovihunter\nJubilee Media: http://yt.be/cfc/jubileemedia\nL-FRESH the LION: http://yt.be/cfc/lfreshthelion\nLea Camilleri: http://yt.be/cfc/leacamilleri\nMaha AJ: http://yt.be/cfc/mahaaj\nMaximNoise: http://yt.be/cfc/maximnoise\nMILCK: http://yt.be/cfc/milck\nMinistry of Funny: http://yt.be/cfc/ministryoffunny\nMostlySane: http://yt.be/cfc/mostlysane\nMuaz Osman: http://yt.be/cfc/muazosman\nMuro Pequeno: http://yt.be/cfc/muropequeno\nMyles Dyer: http://yt.be/cfc/mylesdyer\nMyPaleSkin: http://yt.be/cfc/mypaleskin\nNiharika Nm: http://yt.be/cfc/niharikanm\nOmar Farooq: http://yt.be/cfc/omarfarooq\nPicnicly: http://yt.be/cfc/picnicly\nRaneem Al Muhandis: http://yt.be/cfc/raneemalmuhandis\nRiyadh K: http://yt.be/cfc/riyadhk\nShog AL Maskery: http://yt.be/cfc/shogalmaskery\nSubhi Taha: http://yt.be/cfc/subhitaha\nSwann Périssé: http://yt.be/cfc/swannperisse\nThe MingThing: http://yt.be/cfc/themingthing\nVictoria Volkóva: http://yt.be/cfc/victoriavolkova\nYasmany Del Real: http://yt.be/cfc/holayasmany\n\n\n\"YOUTH\" & \"WILD\" \nPerformed by Troye Sivan\nCourtesy of Capitol Records under license from Universal Music Enterprises",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 41,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "_6MtoR8JGTo"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "WSlfrhnlC3ZkhUSbOcH-yReoR6M",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmV3U3QwXzQtak5N",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:00:27Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Gender | ‘In My Personal Space’ Feat. Lily Cole, Sid & Dina | #CreatorsforChange",
+        "description": "From gender imbalances to the question of who pays the bill, Nadir tackles the subject of Gender with the help of Lily Cole, Sid & Dina.\n\nAs part of YouTube #CreatorsforChange, Nadir Nahdi invited some of the world’s biggest musicians, celebrities and fellow YouTubers into his wardrobe to discuss the awkward, uncomfortable issues we avoid in everyday life. The biggest of issues in the smallest of spaces.\n\nWatch the other episodes in the playlist to see how Nadir and guests tackled hate with humour.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ewSt0_4-jNM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ewSt0_4-jNM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ewSt0_4-jNM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ewSt0_4-jNM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ewSt0_4-jNM/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 42,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "ewSt0_4-jNM"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "hHKtlUA3e5dNFkA85su6fbe4ip8",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlVnSmdQdFJ3UFdJ",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:00:39Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Love | ‘In My Personal Space’ Feat. Tom Daley and Fern Brady | #CreatorsforChange",
+        "description": "From coming out to hiding in plain sight, Nadir tackles the subject of Love with the help of Tom Daley and Fern Brady.\n\nAs part of YouTube #CreatorsforChange, Nadir Nahdi invited some of the world’s biggest musicians, celebrities and fellow YouTubers into his wardrobe to discuss the awkward, uncomfortable issues we avoid in everyday life. The biggest of issues in the smallest of spaces.\n\nWatch the other episodes in the playlist to see how Nadir and guests tackled hate with humour.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 43,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "UgJgPtRwPWI"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "nQIm0Qc9zrZn1T98cj_La0_EQdM",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlVOWVg0Ny1NN01J",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:00:44Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Race | ‘In My Personal Space’ Feat. Michael Dapaah | #CreatorsforChange",
+        "description": "From singing Backstreet Boys medleys to proving people wrong, Nadir tackles the subject of Race with the help of Michael Dapaah.\n\nAs part of YouTube #CreatorsforChange, Nadir Nahdi invited some of the world’s biggest musicians, celebrities and fellow YouTubers into his wardrobe to discuss the awkward, uncomfortable issues we avoid in everyday life. The biggest of issues in the smallest of spaces.\n\nWatch the other episodes in the playlist to see how Nadir and guests tackled hate with humour.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/UNYX47-M7MI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/UNYX47-M7MI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/UNYX47-M7MI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/UNYX47-M7MI/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/UNYX47-M7MI/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 44,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "UNYX47-M7MI"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "4Sw-onOxlVA6dpTgmHe6RX1KbYw",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnJNT2xacHpwWXFN",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:00:51Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Fitting In | ‘In My Personal Space’ Feat. Alesha Dixon | #CreatorsforChange",
+        "description": "From lazy brains to lazier stereotypes, Nadir tackles the subject of Fitting In with the help of Alesha Dixon.\n\nAs part of YouTube #CreatorsforChange, Nadir Nahdi invited some of the world’s biggest musicians, celebrities and fellow YouTubers into his wardrobe to discuss the awkward, uncomfortable issues we avoid in everyday life. The biggest of issues in the smallest of spaces.\n\nWatch the other episodes in the playlist to see how Nadir and guests tackled hate with humour.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/rMOlZpzpYqM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/rMOlZpzpYqM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/rMOlZpzpYqM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/rMOlZpzpYqM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/rMOlZpzpYqM/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 45,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "rMOlZpzpYqM"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "kIw181OpEfVTzVJkSVKMMqwWJV0",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkJqbm9MdEcyTktZ",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:01:07Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Mental Health | ‘In My Personal Space’ Feat. Pro Green and Humza | #CreatorsforChange",
+        "description": "From hugs with your dad to telling your friends you love them, Nadir tackles the subject of Mental Health with the help of Pro Green and Humza.\n\nAs part of YouTube #CreatorsforChange, Nadir Nahdi invited some of the world’s biggest musicians, celebrities and fellow YouTubers into his wardrobe to discuss the awkward, uncomfortable issues we avoid in everyday life. The biggest of issues in the smallest of spaces.\n\nWatch the other episodes in the playlist to see how Nadir and guests tackled hate with humour.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 46,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "BjnoLtG2NKY"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "ao0Uv5SPIHM1PstbVoLYze0dxDA",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnItRndZUURWMjlF",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:00:05Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "One View Can Create Change | #CreatorsforChange 2018 (:30)",
+        "description": "Creators around the world are making videos that opens minds, promote harmony and inspire togetherness. Because no matter your message, when you share your view with positivity, there’s no limit to the change it can create. \n\nWatch all 50+ films at http://youtube.com/creatorsforchange\n\nRead more about Creators for Change here → http://yt.be/creatorsforchange\n\nSpecial thank you to:\nAfros e Afins (Nátaly Neri): http://yt.be/cfc/natalyneri\nAsapSCIENCE: http://yt.be/cfc/asapscience\nBeleaf in Fatherhood: http://yt.be/cfc/beleafinfatherhood\nBENI: http://yt.be/cfc/beni\nCameo Project: http://yt.be/cfc/cameoproject\nConnor Franta: http://yt.be/cfc/connorfranta\nDatteltäter: http://yt.be/cfc/datteltater\nDiana zur Löwen: http://yt.be/cfc/dianazurlowen\nDuo Harbatah: http://yt.be/cfc/duoharbatah\nEh Bee Family: http://yt.be/cfc/ehbeefamily\nFilm Maker Muslim: http://yt.be/cfc/filmmakermuslim\nFly With Haifa: http://yt.be/cfc/flywithhaifa\nFun for Louis: http://yt.be/cfc/funforlouis\nGirliyapa: http://yt.be/cfc/girliyapa\nGita Savitri Devi: http://yt.be/cfc/gitasavitridevi\nHallease: http://yt.be/cfc/hallease\nHugoDécrypte: http://yt.be/cfc/hugodecrypte\nHumza Productions: http://yt.be/cfc/humzaproductions\nImJette: http://yt.be/cfc/imjette\nİlker Gümüşoluk: http://yt.be/cfc/ilkergumusoluk\nJanina Vela: http://yt.be/cfc/janinavela\nJazza John: http://yt.be/cfc/jazzajohn\nJouelzy: http://yt.be/cfc/jouelzy\nJovi Adhiguna Hunter: http://yt.be/cfc/jovihunter\nJubilee Media: http://yt.be/cfc/jubileemedia\nL-FRESH the LION: http://yt.be/cfc/lfreshthelion\nLea Camilleri: http://yt.be/cfc/leacamilleri\nMaha AJ: http://yt.be/cfc/mahaaj\nMaximNoise: http://yt.be/cfc/maximnoise\nMILCK: http://yt.be/cfc/milck\nMinistry of Funny: http://yt.be/cfc/ministryoffunny\nMostlySane: http://yt.be/cfc/mostlysane\nMuaz Osman: http://yt.be/cfc/muazosman\nMuro Pequeno: http://yt.be/cfc/muropequeno\nMyles Dyer: http://yt.be/cfc/mylesdyer\nMyPaleSkin: http://yt.be/cfc/mypaleskin\nNiharika Nm: http://yt.be/cfc/niharikanm\nOmar Farooq: http://yt.be/cfc/omarfarooq\nPicnicly: http://yt.be/cfc/picnicly\nRaneem Al Muhandis: http://yt.be/cfc/raneemalmuhandis\nRiyadh K: http://yt.be/cfc/riyadhk\nShog AL Maskery: http://yt.be/cfc/shogalmaskery\nSubhi Taha: http://yt.be/cfc/subhitaha\nSwann Périssé: http://yt.be/cfc/swannperisse\nThe MingThing: http://yt.be/cfc/themingthing\nVictoria Volkóva: http://yt.be/cfc/victoriavolkova\nYasmany Del Real: http://yt.be/cfc/holayasmany",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/r-FwYQDV29E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/r-FwYQDV29E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/r-FwYQDV29E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/r-FwYQDV29E/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/r-FwYQDV29E/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 47,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "r-FwYQDV29E"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "Xv7WYz4XyQMMUzMAa66DAo8q4xw",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLldiRGs2U0NfU1Vz",
+      "snippet": {
+        "publishedAt": "2018-11-12T13:00:12Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "One View Can Create Change | #CreatorsforChange 2018 (:15)",
+        "description": "Creators around the world are making videos that opens minds, promote harmony and inspire togetherness. Because no matter your message, when you share your view with positivity, there’s no limit to the change it can create. \n\nWatch all 50+ films at http://youtube.com/creatorsforchange\n\nRead more about Creators for Change here → http://yt.be/creatorsforchange\n\nSpecial thank you to:\nAfros e Afins (Nátaly Neri): http://yt.be/cfc/natalyneri\nAsapSCIENCE: http://yt.be/cfc/asapscience\nBeleaf in Fatherhood: http://yt.be/cfc/beleafinfatherhood\nBENI: http://yt.be/cfc/beni\nCameo Project: http://yt.be/cfc/cameoproject\nConnor Franta: http://yt.be/cfc/connorfranta\nDatteltäter: http://yt.be/cfc/datteltater\nDiana zur Löwen: http://yt.be/cfc/dianazurlowen\nDuo Harbatah: http://yt.be/cfc/duoharbatah\nEh Bee Family: http://yt.be/cfc/ehbeefamily\nFilm Maker Muslim: http://yt.be/cfc/filmmakermuslim\nFly With Haifa: http://yt.be/cfc/flywithhaifa\nFun for Louis: http://yt.be/cfc/funforlouis\nGirliyapa: http://yt.be/cfc/girliyapa\nGita Savitri Devi: http://yt.be/cfc/gitasavitridevi\nHallease: http://yt.be/cfc/hallease\nHugoDécrypte: http://yt.be/cfc/hugodecrypte\nHumza Productions: http://yt.be/cfc/humzaproductions\nImJette: http://yt.be/cfc/imjette\nİlker Gümüşoluk: http://yt.be/cfc/ilkergumusoluk\nJanina Vela: http://yt.be/cfc/janinavela\nJazza John: http://yt.be/cfc/jazzajohn\nJouelzy: http://yt.be/cfc/jouelzy\nJovi Adhiguna Hunter: http://yt.be/cfc/jovihunter\nJubilee Media: http://yt.be/cfc/jubileemedia\nL-FRESH the LION: http://yt.be/cfc/lfreshthelion\nLea Camilleri: http://yt.be/cfc/leacamilleri\nMaha AJ: http://yt.be/cfc/mahaaj\nMaximNoise: http://yt.be/cfc/maximnoise\nMILCK: http://yt.be/cfc/milck\nMinistry of Funny: http://yt.be/cfc/ministryoffunny\nMostlySane: http://yt.be/cfc/mostlysane\nMuaz Osman: http://yt.be/cfc/muazosman\nMuro Pequeno: http://yt.be/cfc/muropequeno\nMyles Dyer: http://yt.be/cfc/mylesdyer\nMyPaleSkin: http://yt.be/cfc/mypaleskin\nNiharika Nm: http://yt.be/cfc/niharikanm\nOmar Farooq: http://yt.be/cfc/omarfarooq\nPicnicly: http://yt.be/cfc/picnicly\nRaneem Al Muhandis: http://yt.be/cfc/raneemalmuhandis\nRiyadh K: http://yt.be/cfc/riyadhk\nShog AL Maskery: http://yt.be/cfc/shogalmaskery\nSubhi Taha: http://yt.be/cfc/subhitaha\nSwann Périssé: http://yt.be/cfc/swannperisse\nThe MingThing: http://yt.be/cfc/themingthing\nVictoria Volkóva: http://yt.be/cfc/victoriavolkova\nYasmany Del Real: http://yt.be/cfc/holayasmany",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/WbDk6SC_SUs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/WbDk6SC_SUs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/WbDk6SC_SUs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/WbDk6SC_SUs/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/WbDk6SC_SUs/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 48,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "WbDk6SC_SUs"
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "_ZN1srUhv05w-9yj_NMoVByjr-o",
+      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnVZMWNtLTdQQmVz",
+      "snippet": {
+        "publishedAt": "2018-10-22T14:27:54Z",
+        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+        "title": "Chef May's Story: Rediscovering The Taste of Home",
+        "description": "May became a celebrated chef in Manchester, England after learning to cook the flavors of her childhood in Thailand by watching YouTube. Find something new to learn at youtube.com/learning.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/uY1cm-7PBes/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/uY1cm-7PBes/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/uY1cm-7PBes/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/uY1cm-7PBes/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/uY1cm-7PBes/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "YouTube",
+        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
+        "position": 49,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "uY1cm-7PBes"
+        }
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 322,
+    "resultsPerPage": 50
+  }
+}

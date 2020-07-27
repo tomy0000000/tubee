@@ -71,17 +71,14 @@ class Channel(db.Model):
 
     @property
     def expiration(self):
-        try:
-            return try_parse_datetime(self.hub_infos["expiration"])
-        except TypeError:
-            return None
+        return try_parse_datetime(self.hub_infos["expiration"])
 
     @expiration.setter
     def expiration(self, expiration):
         raise ValueError("expiration can not be set")
 
     @expiration.deleter
-    def expiration(self, exception):
+    def expiration(self):
         raise ValueError("expiration can not be delete")
 
     def activate(self):

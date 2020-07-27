@@ -1,0 +1,41 @@
+{
+  "kind": "youtube#channelListResponse",
+  "etag": "uFAvKJyxXRysX41DJlFykJYQmTA",
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 1
+  },
+  "items": [
+    {
+      "kind": "youtube#channel",
+      "etag": "VmB0k5PlIxoDgxftQOPeSXUemUY",
+      "id": "UCBR8-60-B28hp2BmDPdntcQ",
+      "snippet": {
+        "title": "YouTube",
+        "description": "YouTube's Official Channel helps you discover what's new & trending globally. Watch must-see videos, from music to culture to Internet phenomena",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/a/AATXAJznvS4WonT7Isnnv3217Ad1Vd1EVz_wBUrrrDB0gw=s88-c-k-c0xffffffff-no-rj-mo",
+            "width": 88,
+            "height": 88
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/a/AATXAJznvS4WonT7Isnnv3217Ad1Vd1EVz_wBUrrrDB0gw=s240-c-k-c0xffffffff-no-rj-mo",
+            "width": 240,
+            "height": 240
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/a/AATXAJznvS4WonT7Isnnv3217Ad1Vd1EVz_wBUrrrDB0gw=s800-c-k-c0xffffffff-no-rj-mo",
+            "width": 800,
+            "height": 800
+          }
+        },
+        "localized": {
+          "title": "YouTube",
+          "description": "YouTube's Official Channel helps you discover what's new & trending globally. Watch must-see videos, from music to culture to Internet phenomena"
+        },
+        "country": "US"
+      }
+    }
+  ]
+}

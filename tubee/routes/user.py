@@ -31,6 +31,7 @@ from ..helper import (
     youtube,
 )
 from ..models import User
+
 user_blueprint = Blueprint("user", __name__)
 
 
@@ -91,8 +92,8 @@ def setting():
 def setting_youtube_authorize():
     flow = youtube.build_flow()
     authorization_url, state = flow.authorization_url(
-        access_type="offline",
-        include_granted_scopes="true")
+        access_type="offline", include_granted_scopes="true"
+    )
     session["state"] = state
     return redirect(authorization_url)
 
@@ -126,8 +127,7 @@ def setting_youtube_revoke():
 @user_blueprint.route("/setting/line-notify/authorize")
 @login_required
 def setting_line_notify_authorize():
-    redirect_uri = url_for("user.setting_line_notify_oauth_callback",
-                           _external=True)
+    redirect_uri = url_for("user.setting_line_notify_oauth_callback", _external=True)
     return oauth.LineNotify.authorize_redirect(redirect_uri)
 
 
@@ -165,18 +165,18 @@ def setting_dropbox_authorize():
 def setting_dropbox_oauth_callback():
     try:
         oauth_result = dropbox.build_flow(session).finish(request.args)
-    except BadRequestException as error:
+    except BadRequestException:
         abort(400)
-    except BadStateException as error:
+    except BadStateException:
         # Session Expire, Start the auth flow again.
         return redirect(url_for("user.setting"))
-    except CsrfException as error:
+    except CsrfException:
         # CSRF Not Matched, Raise Error
         abort(403)
-    except NotApprovedException as error:
+    except NotApprovedException:
         # User didn't Grant Access
         return redirect(url_for("user.setting"))
-    except ProviderException as error:
+    except ProviderException:
         # I Have no clue of what this is for...?
         abort(403)
     current_user.dropbox = oauth_result
