@@ -163,10 +163,9 @@ def channel_renew(channel_id):
 @api_blueprint.route("/<channel_id>/fetch-videos")
 @login_required
 def fetch_videos(channel_id):
-    """Renew Subscription Info, Both Hub and Info"""
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    channel_item.fetch_videos()
-    return True
+    response = channel_item.fetch_videos()
+    return jsonify(response)
 
 
 @api_blueprint.route("/<action_id>")
