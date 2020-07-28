@@ -7,23 +7,16 @@ from wtforms.fields import (
     StringField,
     SubmitField,
 )
-from wtforms.validators import (
-    DataRequired,
-    EqualTo,
-    Length,
-)
+from wtforms.validators import DataRequired, EqualTo, Length
+
 from .models import ActionType
 
 
 class LoginForm(FlaskForm):
     """Login form"""
 
-    username = StringField(
-        "Username", validators=[DataRequired(), Length(min=6, max=30)]
-    )
-    password = PasswordField(
-        "Password", validators=[DataRequired(), Length(min=6, max=20)]
-    )
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Sign In")
 
 
@@ -37,7 +30,7 @@ class RegisterForm(FlaskForm):
         "Password",
         validators=[
             DataRequired(),
-            Length(min=6, max=20),
+            Length(min=6, max=30),
             EqualTo("password_confirm", message="Password Mismatched!"),
         ],
     )
@@ -45,7 +38,7 @@ class RegisterForm(FlaskForm):
         "Password Confirm",
         validators=[
             DataRequired(),
-            Length(min=6, max=20),
+            Length(min=6, max=30),
             EqualTo("password", message="Password Mismatched!"),
         ],
     )

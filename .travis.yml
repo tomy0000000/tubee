@@ -11,7 +11,6 @@ install:
   - pip install pipenv
   - pipenv install --dev
 script:
-  - flask
   - flask test --coverage
 after_script: codecov
 # jobs:
