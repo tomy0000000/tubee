@@ -127,13 +127,6 @@ def channel_status(channel_id):
     """From Hub fetch Status"""
     channel = Channel.query.filter_by(id=channel_id).first_or_404()
     response = channel.update_hub_infos()
-    for key, val in response.items():
-        if not val:
-            continue
-        if isinstance(val, datetime):
-            response[key] = datetime.strptime(val, "%Y-%m-%y %H:%M:%S.%f")
-        elif isinstance(val[0], datetime):
-            response[key] = (datetime.strptime(val[0], "%Y-%m-%y %H:%M:%S.%f"), val[1])
     return jsonify(response)
 
 

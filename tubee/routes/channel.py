@@ -97,7 +97,7 @@ def subscribe():
 @channel_blueprint.route("/<channel_id>/callback", methods=["GET", "POST"])
 def callback(channel_id):
     """
-    GET: Receive Hub Challenges to maintain subscription
+    GET: Receive Hub Challenges to sustain subscription
     POST: New Update from Hub
     """
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
@@ -112,21 +112,26 @@ def callback(channel_id):
         if response:
             callback_item.type = "Hub Challenge"
             infos["details"] = response
+            callback_item.infos = infos
         else:
             response = callback_item.type = "Unknown GET Request"
+        db.session.commit()
+        return response
     elif request.method == "POST":
+
         # Preprocessing
-        test_mode = bool("testing" in request.args.to_dict())
-        post_datas = request.get_data().decode("utf-8")
-        soup = bs4.BeautifulSoup(post_datas, "xml")
+        infos["data"] = request.get_data(as_text=True)
+        soup = bs4.BeautifulSoup(infos["data"], "xml")
+        response = {}
         # TODO: Inspecting
-        try:
-            video_id = soup.find("yt:videoId").string
-        except Exception as error:
+
+        tag = soup.find("yt:videoId")
+        if tag is None:
             logging.info("Video ID not Found for {}".format(callback_item))
-            infos["data"] = post_datas
             callback_item.infos = infos
             db.session.commit()
+            return response
+        video_id = tag.string
 
         # Update Database Records
         video_item = Video.query.get(video_id)
@@ -136,48 +141,34 @@ def callback(channel_id):
         video_item.callbacks.append(callback_item)
         callback_item.video = video_item
         callback_item.type = "Hub Notification"
-        infos["data"] = post_datas
+        callback_item.infos = infos
+        db.session.commit()
+
+        # Auto Renew if expiration is close
+        expiration = channel_item.expiration
+        if expiration and expiration - datetime.now() < timedelta(days=2):
+            response["renew"] = channel_item.renew()
+            logging.info("Channel renewed during callback")
+            logging.info(response["renew"])
+            notify_admin(
+                "Deployment",
+                "Pushover",
+                message="{} <{}>".format(channel_item.name, channel_item.id),
+                title="Channel renewed during callback",
+            )
+
+        # Pass actions if not new video
+        if not new_video:
+            return jsonify(response)
 
         # Fetch Video Infos
-        # video_title = soup.entry.find("title").string
-        # video_datetime = parser.parse(
-        #     soup.entry.find("published").string).replace(tzinfo=None)
-        # video_infos = build_youtube_api().videos().list(
-        #     part="snippet", id=video_id).execute()["items"][0]["snippet"]
-        # video_description = video_item.details["snippet"]["description"]
-        # video_thumbnails = video_item.details["snippet"]["thumbnails"]["medium"]["url"]
-        # previous_callback = Callback.query.filter_by(
-        #     video_id=video_id).count() - 1  # Don't count this callback
-        # new_video_update = bool(previous_callback)
         try:  # TODO
             video_file_url = youtube_dl.fetch_video_metadata(video_id)["url"]
-        except Exception as error:
+        except Exception:
             video_file_url = None
 
-        # List users
-        response = {}
+        # List users and execute actions
         for sub in Subscription.query.filter_by(channel_id=channel_id).all():
-            # old_video_update = bool(
-            #     video_datetime < sub.subscribe_timestamp)
-            # logging.info(
-            #     "New Video Update: {}".format(new_video_update))
-            # logging.info(
-            #     "Old Video Update: {}".format(old_video_update))
-            # logging.info(
-            #     "Action as Test Mode: {}".format(test_mode))
-            # logging.info("Subscriber is Admin: {}".format(
-            #     sub.user.admin))
-
-            # Decide to Run or Not
-            if test_mode and sub.user.admin:
-                logging.info("Test Callback Pass")
-                pass
-            elif not new_video:
-                continue
-            # elif old_video_update or new_video_update:
-            #     continue
-
-            # Execute Actions
             response[sub.username] = {}
             for action in sub.actions:
                 try:
@@ -195,20 +186,4 @@ def callback(channel_id):
                     results = error
                 logging.info("{}-{}: {}".format(sub.username, action.id, results))
                 response[sub.username][action.id] = str(results)
-
-        # Auto Renew if expiration is close
-        expiration = channel_item.expiration
-        if expiration and expiration - datetime.now() < timedelta(days=2):
-            response["renew"] = channel_item.renew()
-            logging.info("Channel renewed during callback")
-            logging.info(response["renew"])
-            notify_admin(
-                "Deployment",
-                "Pushover",
-                message="{} <{}>".format(channel_item.name, channel_item.id),
-                title="Channel renewed during callback",
-            )
-        response = jsonify(response)
-    callback_item.infos = infos
-    db.session.commit()
-    return response
+        return jsonify(response)
