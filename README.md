@@ -1,6 +1,6 @@
 # Tubee
 
-![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg)
+![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg?logo=python)
 [![Travis Build Status](https://img.shields.io/travis/com/tomy0000000/Tubee?logo=Travis)](https://travis-ci.com/tomy0000000/Tubee)
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
 [![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)](https://github.com/tomy0000000/Tubee/blob/master/LICENSE)
@@ -60,13 +60,19 @@ docker-compose \
 	exec tubee flask deploy
 ```
 
-### Accessing
+### Accessing appication and backends
 
 | Service  | Endpoint                                    |
 | -------- | ------------------------------------------- |
 | Postgres | postgres://tubee:tubee@localhost:5432/tubee |
 | Redis    | redis://localhost:6379                      |
 | Flask    | http://localhost:5000                       |
+
+### Build Image for release
+
+```bash
+docker build --tag tomy0000000/tubee .
+```
 
 ## Deployment Guide
 
@@ -94,15 +100,24 @@ docker-compose \
 | ------- | ------------------- |
 | Nginx   | http://localhost:80 |
 
-## Additional Guide
+## Maintenance Guide
 
-### Restart Nginx
+### Gracefully Restart Nginx
 
 ```bash
 docker-compose \
 	--file docker-compose.yml \
 	--file docker-compose.prod.yml \
 	kill -s HUP nginx
+```
+
+### Gracefully Restart Gunicorn
+
+```bash
+docker-compose \
+	--file docker-compose.yml \
+	--file docker-compose.prod.yml \
+	kill -s HUP tubee
 ```
 
 ### Remove Postgres Data
