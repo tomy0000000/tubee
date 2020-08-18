@@ -99,4 +99,3 @@ class UserModelTestCase(unittest.TestCase):
         mocked_is_subscribing.return_value = False
         u.subscribe_to(self.test_channel_id)
         mocked_channel.assert_called()
-
