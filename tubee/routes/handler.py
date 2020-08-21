@@ -2,6 +2,7 @@
 import traceback
 from flask import (
     Blueprint,
+    current_app,
     flash,
     jsonify,
     render_template,
@@ -10,10 +11,10 @@ from flask import (
 from flask_login import current_user
 from werkzeug.exceptions import HTTPException
 
-handler = Blueprint("handler", __name__)
+handler_blueprint = Blueprint("handler", __name__)
 
 
-@handler.app_errorhandler(Exception)
+@handler_blueprint.app_errorhandler(Exception)
 def unhandled_exception(error):
     """
     400 <BadRequest>                    :
@@ -53,12 +54,8 @@ def unhandled_exception(error):
     if isinstance(error, HTTPException):
         code = error.code
     else:
-        try:
-            raise error
-        except Exception:
-            pass
-        traceback.print_exc()
         code = 500
+    current_app.logger.getChild("error").exception("Error")
 
     # Return an error response to user
     if request.path.startswith("/api"):

@@ -69,9 +69,9 @@ class DevelopmentConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        app.logger.setLevel(logging.DEBUG)
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-        logging.info("Development Config Loaded")
+        app.logger.setLevel(logging.DEBUG)
+        app.logger.info("Development Config Loaded")
 
 
 class TestingConfig(Config):
@@ -86,8 +86,9 @@ class TestingConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        app.logger.setLevel(logging.DEBUG)
-        logging.info("Testing Config Loaded")
+        for logger_name in app.logger.manager.loggerDict:
+            if logger_name.startswith("tubee"):
+                logging.getLogger(logger_name).setLevel(logging.WARNING)
 
 
 class ProductionConfig(Config):
@@ -102,7 +103,7 @@ class ProductionConfig(Config):
     def init_app(cls, app):
         Config.init_app(app)
         app.logger.setLevel(logging.INFO)
-        logging.info("Production Config Loaded")
+        app.logger.info("Production Config Loaded")
 
 
 # class UnixConfig(ProductionConfig):

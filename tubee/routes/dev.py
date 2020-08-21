@@ -1,11 +1,19 @@
 """Routes for Developing/Testing"""
-import logging
 import pprint
 from os.path import basename
 
 from dropbox.exceptions import ApiError
 from dropbox.files import WriteMode
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    abort,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import current_user, login_required
 
 from ..helper import admin_required, youtube_dl
@@ -83,7 +91,7 @@ def test_dropbox():
 @admin_required
 def test_download_to_dropbox(video_id):
     metadata = youtube_dl.fetch_video_metadata(video_id)
-    logging.info(metadata)
+    current_app.logger.info(metadata)
     response = current_user.dropbox.files_save_url(
         "/{}".format("{}.mp4".format(metadata["title"])), metadata["url"]
     )

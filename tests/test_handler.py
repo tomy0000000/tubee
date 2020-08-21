@@ -50,7 +50,7 @@ class BasicsTestCase(unittest.TestCase):
         self.assertIn("application/json", response.headers.get("content-type"))
         self.assertIn(self.error_message, response.get_data(as_text=True))
 
-    @mock.patch("tubee.handler.current_user")
+    @mock.patch("tubee.routes.handler.current_user")
     def test_admin_handler(self, mocked_current_user):
         mocked_current_user.is_authenticated = True
         mocked_current_user.admin = True

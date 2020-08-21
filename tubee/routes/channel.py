@@ -1,10 +1,9 @@
 """Channel Related Routes"""
 import bs4
-import logging
 import pyrfc3339
-from datetime import datetime, timedelta
 from flask import (
     Blueprint,
+    current_app,
     flash,
     jsonify,
     render_template,
@@ -15,7 +14,7 @@ from flask import (
 from flask_login import current_user, login_required
 from .. import db
 from ..forms import ActionForm
-from ..helper import notify_admin, youtube_dl
+from ..helper import youtube_dl
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel, Subscription, Video
 
@@ -127,7 +126,7 @@ def callback(channel_id):
 
         tag = soup.find("yt:videoId")
         if tag is None:
-            logging.info("Video ID not Found for {}".format(callback_item))
+            current_app.logger.info("Video ID not Found for {}".format(callback_item))
             callback_item.infos = infos
             db.session.commit()
             return response
@@ -148,8 +147,8 @@ def callback(channel_id):
         # expiration = channel_item.expiration
         # if expiration and expiration - datetime.now() < timedelta(days=2):
         #     response["renew"] = channel_item.renew()
-        #     logging.info("Channel renewed during callback")
-        #     logging.info(response["renew"])
+        #     current_app.logger.info("Channel renewed during callback")
+        #     current_app.logger.info(response["renew"])
         #     notify_admin(
         #         "Deployment",
         #         "Pushover",
@@ -184,6 +183,8 @@ def callback(channel_id):
                     )
                 except Exception as error:
                     results = error
-                logging.info("{}-{}: {}".format(sub.username, action.id, results))
+                current_app.logger.info(
+                    "{}-{}: {}".format(sub.username, action.id, results)
+                )
                 response[sub.username][action.id] = str(results)
         return jsonify(response)

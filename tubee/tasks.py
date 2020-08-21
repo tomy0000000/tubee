@@ -73,7 +73,7 @@ def renew_channels(self, channel_ids_with_url):
             "info": channel.update_youtube_infos(),
         }
     channels_update_hub_infos.apply_async(args=[channel_ids_with_url], countdown=60)
-    logging.info(results)
+    logging.getLogger("tubee.task").info(results)
     return results
 
 
@@ -85,7 +85,7 @@ def channels_update_hub_infos(channel_ids_with_url):
         if not channel:
             continue
         results[channel_id] = channel.update_hub_infos(callback_url, topic_url)
-    logging.info(results)
+    logging.getLogger("tubee.task").info(results)
     return results
 
 
@@ -97,5 +97,5 @@ def channels_fetch_videos(channel_ids):
         if not channel:
             continue
         results[channel_id] = channel.fetch_videos()
-    logging.info(results)
+    logging.getLogger("tubee.task").info(results)
     return results

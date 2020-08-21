@@ -2,7 +2,6 @@
 
 Some Misc Functions used in this app
 """
-import logging
 from datetime import datetime
 from functools import wraps
 from urllib.parse import urlencode, urljoin, urlparse
@@ -53,7 +52,7 @@ def app_engine_required(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if not request.headers.get("X-Appengine-Cron"):
-            logging.info("Forbidden Triggered at {}".format(datetime.now()))
+            current_app.logger.info("Forbidden Triggered at {}".format(datetime.now()))
             abort(401)
         return func(*args, **kwargs)
 

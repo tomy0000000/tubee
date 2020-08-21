@@ -1,5 +1,4 @@
 """Channel Model"""
-import logging
 from datetime import datetime
 
 from .. import db
@@ -191,10 +190,10 @@ class Channel(db.Model):
         response = subscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
-        logging.info("Callback URL: {}".format(callback_url))
-        logging.info("Topic URL   : {}".format(topic_url))
-        logging.info("Channel ID  : {}".format(self.id))
-        logging.info("Response    : {}".format(response.status_code))
+        current_app.logger.info("Callback URL: {}".format(callback_url))
+        current_app.logger.info("Topic URL   : {}".format(topic_url))
+        current_app.logger.info("Channel ID  : {}".format(self.id))
+        current_app.logger.info("Response    : {}".format(response.status_code))
         return response.success
 
     # TODO: DEPRECATE THIS
@@ -207,5 +206,5 @@ class Channel(db.Model):
             # "hub_response": self.update_hub_infos(stringify=stringify, callback_url, topic_url),
         }
         # update_channel_hub_infos.apply_async(self.id, callback_url, topic_url)
-        logging.info("Channel Renewed: {}<{}>".format(self.name, self.id))
+        current_app.logger.info("Channel Renewed: {}<{}>".format(self.name, self.id))
         return response

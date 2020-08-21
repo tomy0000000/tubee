@@ -1,5 +1,4 @@
 """Notification Model"""
-import logging
 from datetime import datetime
 from enum import Enum
 from uuid import uuid4
@@ -100,7 +99,7 @@ class Notification(db.Model):
             key: val for key, val in kwargs.items() if key not in VALID_ARGS[service]
         }
         for key, val in invalid_args.items():
-            logging.warning(
+            current_app.logger.warning(
                 "Invalid {} Notification Arguments ({}, {}) is ommited".format(
                     service.value, key, val
                 )

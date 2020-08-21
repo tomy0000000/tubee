@@ -1,6 +1,5 @@
 """User Model"""
 import json
-import logging
 
 import dropbox
 import requests
@@ -364,10 +363,10 @@ class User(UserMixin, db.Model):
             )
         except HttpError as error:
             error_message = json.loads(error.content)["error"]["message"]
-            logging.error(
+            current_app.logger.error(
                 "Faield to insert {} to {}'s playlist".format(video_id, self.username)
             )
-            logging.error(error_message)
+            current_app.logger.error(error_message)
             raise APIError(error_message)
 
     # Pushover, Line Notify Methods

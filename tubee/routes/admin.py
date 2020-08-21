@@ -1,8 +1,8 @@
 """Routes for Admin Access"""
-import logging
 import os
 import platform
 import sys
+import gunicorn
 
 import flask
 import werkzeug
@@ -44,8 +44,9 @@ def admin_dashboard():
     infos = {
         "os_version": platform.platform(),
         "python_version": sys.version,
-        "flask_version": flask.__version__,
         "werkzeug_version": werkzeug.__version__,
+        "flask_version": flask.__version__,
+        "gunicorn_version": gunicorn.SERVER_SOFTWARE,
         "app_config": current_app.config,
         "os_env": os.environ,
     }
@@ -73,11 +74,11 @@ def raise_exception():
 @login_required
 @admin_required
 def test_logging():
-    logging.debug("debug Log")
-    logging.info("info Log")
-    logging.warning("warning Log")
-    logging.error("error Log")
-    logging.critical("critical Log")
+    current_app.logger.debug("debug Log")
+    current_app.logger.info("info Log")
+    current_app.logger.warning("warning Log")
+    current_app.logger.error("error Log")
+    current_app.logger.critical("critical Log")
     flash("Logged Success", "success")
     return redirect(url_for("admin.admin_dashboard"))
 

@@ -1,5 +1,4 @@
 """API for Frontend Access"""
-import logging
 from datetime import datetime, timedelta
 
 # from celery.result import AsyncResult
@@ -30,11 +29,11 @@ def deploy():
     server_key = current_app.config["DEPLOY_KEY"]
     client_key = request.args.to_dict().get("key")
     if not server_key:
-        logging.info("Deploy triggered without server key")
+        current_app.logger.info("Deploy triggered without server key")
     if not client_key:
-        logging.info("Deploy triggered without client key")
+        current_app.logger.info("Deploy triggered without client key")
     if server_key != client_key:
-        logging.info("Deploy triggered but keys don't matched")
+        current_app.logger.info("Deploy triggered but keys don't matched")
     if not server_key or not client_key or server_key != client_key:
         abort(401)
 
@@ -94,7 +93,7 @@ def channels_cron_renew():
             )
     # task = schedule_channels_renew(channels)
     task = renew_channels.apply_async(args=[channel_ids_with_url])
-    logging.info("Cron Renew Triggered: {task.id}")
+    current_app.logger.info("Cron Renew Triggered: {task.id}")
     notify_admin(
         "Cron Renew", "Pushover", message=task.id, title="Cron Renew Triggered"
     )
