@@ -4,6 +4,8 @@
 [![Travis Build Status](https://img.shields.io/travis/com/tomy0000000/Tubee?logo=Travis)](https://travis-ci.com/tomy0000000/Tubee)
 [![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
 [![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)](https://github.com/tomy0000000/Tubee/blob/master/LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 <p align="center">
     <img src="tubee/static/favicon.png" align="center">
