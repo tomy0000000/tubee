@@ -54,7 +54,7 @@ from .models import Channel
 
 
 @celery.task(bind=True)
-def renew_channels(self, channel_ids_with_url):
+def renew_channels(self, channel_ids_with_url, next_countdown=-1):
     results = {}
     for index, (channel_id, callback_url, topic_url) in enumerate(channel_ids_with_url):
         self.update_state(
@@ -73,6 +73,10 @@ def renew_channels(self, channel_ids_with_url):
             "info": channel.update_youtube_infos(),
         }
     channels_update_hub_infos.apply_async(args=[channel_ids_with_url], countdown=60)
+    if next_countdown > 0:
+        renew_channels.apply_async(
+            args=[channel_ids_with_url, next_countdown], countdown=next_countdown
+        )
     logging.getLogger("tubee.task").info(results)
     return results
 

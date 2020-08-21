@@ -25,6 +25,7 @@ celery = Celery(__name__)
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
+    app.version = __version__
     app.config.from_object(config[config_name])
     external_config = os.path.join(app.instance_path, "logging.cfg")
     load_external = os.path.exists(external_config) and os.path.isfile(external_config)

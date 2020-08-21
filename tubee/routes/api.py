@@ -1,12 +1,9 @@
 """API for Frontend Access"""
 from datetime import datetime, timedelta
 
-# from celery.result import AsyncResult
 from flask import Blueprint, abort, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
-
-# from google.cloud.tasks_v2.types import Task as GoogleCloudTask
 
 from ..forms import ActionForm
 from ..helper import (
@@ -93,7 +90,7 @@ def channels_cron_renew():
             )
     # task = schedule_channels_renew(channels)
     task = renew_channels.apply_async(args=[channel_ids_with_url])
-    current_app.logger.info("Cron Renew Triggered: {task.id}")
+    current_app.logger.info(f"Cron Renew Triggered: {task.id}")
     notify_admin(
         "Cron Renew", "Pushover", message=task.id, title="Cron Renew Triggered"
     )
@@ -108,12 +105,9 @@ def channels_renew():
         (channel.id, build_callback_url(channel.id), build_topic_url(channel.id),)
         for channel in Channel.query.all()
     ]
-    # task = schedule_channels_renew(Channel.query.all())
-    task = renew_channels.apply_async(args=[channel_ids_with_url])
+    next_countdown = int(request.args.to_dict().get("next_countdown", -1))
+    task = renew_channels.apply_async(args=[channel_ids_with_url, next_countdown])
     response = None
-    # if isinstance(task, GoogleCloudTask):
-    #     response = {"name": task.name}
-    # if isinstance(task, AsyncResult):
     response = {
         "id": task.id,
         "status": url_for("api.task_status", task_id=task.id),

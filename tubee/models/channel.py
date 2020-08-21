@@ -70,7 +70,10 @@ class Channel(db.Model):
 
     @property
     def expiration(self):
-        return try_parse_datetime(self.hub_infos["expiration"])
+        try:
+            return try_parse_datetime(self.hub_infos["expiration"])
+        except (TypeError, KeyError):
+            return None
 
     @expiration.setter
     def expiration(self, expiration):
@@ -138,7 +141,7 @@ class Channel(db.Model):
                 .list(part="snippet", id=self.id)
                 .execute()
             )
-            if api_result["pageInfo"]["totalResults"] == 0:
+            if "items" not in api_result:
                 if self.name is None:
                     raise InvalidAction(f"Channel {self.id} doesn't exists")
                 raise APIError(

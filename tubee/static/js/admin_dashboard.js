@@ -1,53 +1,47 @@
-function update_progress(status_url) {
+function update_progress(status_url, progress_bar, message_box) {
   // send GET request to status URL
   $.getJSON(status_url).done((data) => {
     // Update UI
     let percent = (data.current / data.total) * 100;
-    $("#progressbar").width(`${percent}%`);
-    $("#progressbar").attr("aria-valuenow", percent);
-    $("#channel-renew-results").text(
-      `Currently Processing: ${data.channel_id}`
-    );
+    progress_bar.width(`${percent}%`);
+    progress_bar.attr("aria-valuenow", percent);
+
     // Update after 2 second or terminate
     if (data.status === "Success" || data.status === "Failure") {
       if (data.status === "Success") {
-        $("#progressbar").addClass("bg-success");
+        progress_bar.addClass("bg-success");
       } else {
-        $("#progressbar").addClass("bg-danger");
+        progress_bar.addClass("bg-danger");
       }
-      $("#channel-renew").append(
-        $("#channel-renew-results").text(JSON.stringify(data.result))
-      );
+      message_box.text(JSON.stringify(data.result));
     } else {
+      message_box.text(`Currently Processing: ${data.channel_id}`);
       setTimeout(() => {
-        update_progress(status_url);
+        update_progress(status_url, progress_bar, message_box);
       }, 2000);
     }
   });
 }
 
 $(document).ready(function () {
-  $("#start-renew-btn").click(function (e) {
-    e.preventDefault();
+  $(".channel-renew-api-btn").click(function (element) {
+    element.preventDefault();
     // send ajax POST request to start background job
     $.getJSON($(this).attr("data-api-endpoint")).done((data) => {
-      $("#channel-renew").append(
-        $("<div>")
-          .addClass("progress my-3")
-          .append(
-            $("<div>")
-              .attr({
-                id: "progressbar",
-                class: "progress-bar",
-                role: "progressbar",
-                "aria-valuemin": "0",
-                "aria-valuemax": "100",
-              })
-              .width("0%")
-          ),
-        $("<div>").attr("id", "channel-renew-results")
+      let progress_bar = $("<div>")
+        .attr({
+          class: "progress-bar",
+          role: "progressbar",
+          "aria-valuemin": "0",
+          "aria-valuemax": "100",
+        })
+        .width("0%");
+      let message_box = $("<div>");
+      $("#management").append(
+        $("<div>").addClass("progress my-3").append(progress_bar),
+        message_box
       );
-      update_progress(data.status);
+      update_progress(data.status, progress_bar, message_box);
     });
   });
 });
