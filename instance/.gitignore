@@ -1,3 +1,5 @@
 *
 !.gitignore
+!gunicorn.conf.py
 !logging.cfg
+!nginx.conf

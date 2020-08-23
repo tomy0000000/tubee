@@ -64,11 +64,13 @@ docker-compose \
 
 ### Accessing appication and backends
 
-| Service  | Endpoint                                    |
-| -------- | ------------------------------------------- |
-| Postgres | postgres://tubee:tubee@localhost:5432/tubee |
-| Redis    | redis://localhost:6379                      |
-| Flask    | http://localhost:5000                       |
+| Service        | Endpoint                                    |
+| -------------- | ------------------------------------------- |
+| Postgres       | postgres://tubee:tubee@localhost:5432/tubee |
+| RabbitMQ       | ampq://guest@localhost:5672//               |
+| RabbitMQ (Web) | http://localhost:15672                      |
+| Redis          | redis://localhost:6379                      |
+| Flask          | http://localhost:5000                       |
 
 ### Build Image for release
 

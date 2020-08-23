@@ -143,19 +143,6 @@ def callback(channel_id):
         callback_item.infos = infos
         db.session.commit()
 
-        # # Auto Renew if expiration is close
-        # expiration = channel_item.expiration
-        # if expiration and expiration - datetime.now() < timedelta(days=2):
-        #     response["renew"] = channel_item.renew()
-        #     current_app.logger.info("Channel renewed during callback")
-        #     current_app.logger.info(response["renew"])
-        #     notify_admin(
-        #         "Deployment",
-        #         "Pushover",
-        #         message="{} <{}>".format(channel_item.name, channel_item.id),
-        #         title="Channel renewed during callback",
-        #     )
-
         # Pass actions if not new video
         if not new_video:
             return jsonify(response)

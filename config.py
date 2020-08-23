@@ -26,6 +26,7 @@ class Config:
     }
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
     REMEMBER_COOKIE_SECURE = True
+    CELERY_RESULT_BACKEND = "rpc://"
 
     # Pushover
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
@@ -63,8 +64,7 @@ class DevelopmentConfig(Config):
         "DEV_DATABASE_URL"
     ) or "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
 
-    BROKER_URL = os.environ.get("DEV_REDIS_URL")
-    CELERY_RESULT_BACKEND = os.environ.get("DEV_REDIS_URL")
+    BROKER_URL = os.environ.get("DEV_BROKER_URL")
 
     @classmethod
     def init_app(cls, app):
@@ -80,8 +80,7 @@ class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL", "sqlite://")
-    BROKER_URL = os.environ.get("TEST_REDIS_URL")
-    CELERY_RESULT_BACKEND = os.environ.get("TEST_REDIS_URL")
+    BROKER_URL = os.environ.get("TEST_BROKER_URL")
 
     @classmethod
     def init_app(cls, app):
@@ -95,9 +94,7 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URL"
     ) or "sqlite:///" + os.path.join(basedir, "data.sqlite")
-    BROKER_URL = os.environ.get("REDIS_URL")
-    CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
-    DEPLOY_KEY = os.environ.get("DEPLOY_KEY")
+    BROKER_URL = os.environ.get("BROKER_URL")
 
     @classmethod
     def init_app(cls, app):

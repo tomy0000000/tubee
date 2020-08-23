@@ -2,15 +2,12 @@
 
 Some Misc Functions used in this app
 """
-from datetime import datetime
 from functools import wraps
 from urllib.parse import urlencode, urljoin, urlparse
 
 from dateutil import parser
 from flask import abort, current_app, request, url_for
 from flask_login import current_user
-
-# from google.cloud import tasks_v2
 
 
 def try_parse_datetime(string):
@@ -34,26 +31,6 @@ def admin_required(func):
     def decorated_function(*args, **kwargs):
         if not current_user.admin:
             abort(403)
-        return func(*args, **kwargs)
-
-    return decorated_function
-
-
-def app_engine_required(func):
-    """Restrict view function to app-engine-triggered-only
-
-    Arguments:
-        func {view function} -- The view function to be restricting
-
-    Returns:
-        view function -- The restricted function
-    """
-
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if not request.headers.get("X-Appengine-Cron"):
-            current_app.logger.info("Forbidden Triggered at {}".format(datetime.now()))
-            abort(401)
         return func(*args, **kwargs)
 
     return decorated_function

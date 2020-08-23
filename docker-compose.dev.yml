@@ -6,11 +6,6 @@ services:
       context: .
       args:
         INSTALL_DEV: "true"
-    command: "flask run -h 0.0.0.0"
-    env_file:
-      - "instance/development.env"
-    environment:
-      FLASK_ENV: "development"
     ports:
       - "5000:5000"
     volumes:
@@ -20,25 +15,15 @@ services:
       context: .
       args:
         INSTALL_DEV: "true"
-    command: "watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery worker --app=celery_worker.celery --loglevel=info"
-    depends_on:
-      - "redis"
-    env_file:
-      - "instance/development.env"
-    environment:
-      FLASK_ENV: "development"
     volumes:
       - ".:/usr/src/tubee"
-  redis:
+  rabbitmq:
     ports:
-      - "6379:6379"
+      - "5672:5672"
+      - "15672:15672"
+  # redis:
+  #   ports:
+  #     - "6379:6379"
   postgres:
-    env_file:
-      - "instance/development.env"
     ports:
       - "5432:5432"
-    volumes:
-      - "postgres_data:/var/lib/postgresql/data/"
-
-volumes:
-  postgres_data:
