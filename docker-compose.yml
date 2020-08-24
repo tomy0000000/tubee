@@ -2,28 +2,18 @@ version: "3.8"
 
 services:
   tubee:
-    command: "flask run -h 0.0.0.0"
     depends_on:
       - "celery"
       - "rabbitmq"
       # - "redis"
       - "postgres"
-    env_file:
-      - "instance/development.env"
-    environment:
-      FLASK_ENV: "development"
     image: "tomy0000000/tubee"
     volumes:
       - "./logs:/usr/src/tubee/logs"
   celery:
-    command: "watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery worker --app=celery_worker.celery --loglevel=info"
     depends_on:
       - "rabbitmq"
       # - "redis"
-    env_file:
-      - "instance/development.env"
-    environment:
-      FLASK_ENV: "development"
     image: "tomy0000000/tubee"
   rabbitmq:
     hostname: "tubee-rabbitmq"
@@ -38,8 +28,6 @@ services:
   #   volumes:
   #     - "redis_data:/data"
   postgres:
-    env_file:
-      - "instance/development.env"
     image: "postgres:12-alpine"
     volumes:
       - "postgres_data:/var/lib/postgresql/data/"
