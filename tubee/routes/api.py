@@ -1,13 +1,11 @@
 """API for Frontend Access"""
-from datetime import datetime, timedelta
-
+from celery.result import AsyncResult
 from flask import Blueprint, abort, current_app, jsonify, request, url_for
 from flask_login import current_user, login_required
 from flask_migrate import Migrate, upgrade
 
 from ..forms import ActionForm
 from ..helper import (
-    app_engine_required,
     build_callback_url,
     build_topic_url,
     notify_admin,
@@ -72,31 +70,6 @@ def user_info():
     return jsonify(status)
 
 
-@api_blueprint.route("/channels/cron-renew")
-@app_engine_required
-def channels_cron_renew():
-    channel_ids_with_url = []
-    for channel in Channel.query.all():
-        if channel.hub_infos["state"] != "verified" or (
-            channel.expiration
-            and channel.expiration < datetime.now() + timedelta(days=2)
-        ):
-            channel_ids_with_url.append(
-                (
-                    channel.id,
-                    build_callback_url(channel.id),
-                    build_topic_url(channel.id),
-                )
-            )
-    # task = schedule_channels_renew(channels)
-    task = renew_channels.apply_async(args=[channel_ids_with_url])
-    current_app.logger.info(f"Cron Renew Triggered: {task.id}")
-    notify_admin(
-        "Cron Renew", "Pushover", message=task.id, title="Cron Renew Triggered"
-    )
-    return jsonify(task.id)
-
-
 @api_blueprint.route("/channels/renew")
 @login_required
 def channels_renew():
@@ -106,8 +79,13 @@ def channels_renew():
         for channel in Channel.query.all()
     ]
     next_countdown = int(request.args.to_dict().get("next_countdown", -1))
-    task = renew_channels.apply_async(args=[channel_ids_with_url, next_countdown])
-    response = None
+    if next_countdown > 0:
+        for channel_task in channel_ids_with_url:
+            renew_channels.apply_async(
+                args=[channel_task, next_countdown], countdown=next_countdown
+            )
+    else:
+        task = renew_channels.apply_async(args=[channel_ids_with_url])
     response = {
         "id": task.id,
         "status": url_for("api.task_status", task_id=task.id),

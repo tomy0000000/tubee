@@ -5,7 +5,8 @@ services:
     command: "flask run -h 0.0.0.0"
     depends_on:
       - "celery"
-      - "redis"
+      - "rabbitmq"
+      # - "redis"
       - "postgres"
     env_file:
       - "instance/development.env"

@@ -10,71 +10,39 @@
         </button>
         <div class="collapse navbar-collapse" id="navbars">
             <ul class="navbar-nav mr-auto">
-                {% if title == "Dashboard" %}
-                <li class="nav-item active">
+                <li class="nav-item {{ 'active' if title == 'Dashboard' }}">
                     <a class="nav-link" href="{{ url_for('main.dashboard') }}">
                         Dashboard
+                        {% if title == "Dashboard" %}
                         <span class="sr-only">(current)</span>
+                        {% endif %}
                     </a>
                 </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.dashboard') }}">
-                        Dashboard
-                    </a>
-                </li>
-                {% endif %}
-                {% if title == "Subscribe" %}
-                <li class="nav-item active">
+                <li class="nav-item {{ 'active' if title == 'Subscribe' }}">
                     <a class="nav-link" href="{{ url_for('channel.subscribe') }}">
                         Subscribe
+                        {% if title == "Subscribe" %}
                         <span class="sr-only">(current)</span>
+                        {% endif %}
                     </a>
                 </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('channel.subscribe') }}">
-                        Subscribe
-                    </a>
-                </li>
-                {% endif %}
-                {% if title == "YouTube Subcription" %}
-                <li class="nav-item active">
+                <li class="nav-item {{ 'active' if title == 'YouTube Subcription' }}">
                     <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
                         YouTube Subcription
+                        {% if title == "YouTube Subcription" %}
                         <span class="sr-only">(current)</span>
+                        {% endif %}
                     </a>
                 </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
-                        YouTube Subcription
-                    </a>
-                </li>
-                {% endif %}
                 {% if current_user.admin %}
-                {% if title == "Admin Dashboard" %}
-                <li class="nav-item active">
+                <li class="nav-item {{'active' if title == 'Admin Dashboard' }}">
                     <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">
                         Admin
+                        {% if title == "Admin Dashboard" %}
                         <span class="sr-only">(current)</span>
+                        {% endif %}
                     </a>
                 </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">
-                        Admin
-                    </a>
-                </li>
-                {% endif %}
-                {% if config.DEBUG %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_dev" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dev</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown_dev">
-                        <a class="dropdown-item" href="{{ url_for('dev.user_dict') }}">Dict: User</a>
-                    </div>
-                </li>
-                {% endif %}
                 {% endif %}
             </ul>
             <ul class="navbar-nav">

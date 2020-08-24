@@ -31,10 +31,9 @@ class Channel(db.Model):
 
     def __init__(self, channel_id):
         from ..tasks import (
-            # schedule_channels_update_hub_infos,
-            # schedule_channels_fetch_videos,
             channels_update_hub_infos,
             channels_fetch_videos,
+            renew_channels,
         )
 
         self.id = channel_id
@@ -46,9 +45,6 @@ class Channel(db.Model):
             db.session.delete(self)
             db.session.commit()
             raise error
-
-        # schedule_channels_update_hub_infos([channel_id], countdown=60)
-        # schedule_channels_fetch_videos([channel_id])
 
         channels_update_hub_infos.apply_async(
             args=[
@@ -63,6 +59,12 @@ class Channel(db.Model):
             countdown=60,
         )
         channels_fetch_videos.apply_async(args=[[channel_id]])
+        channel_id_with_url = (
+            channel_id,
+            build_callback_url(channel_id),
+            build_topic_url(channel_id),
+        )
+        renew_channels.apply_async(args=[channel_id_with_url, 345600], countdown=345600)
         self.activate()
 
     def __repr__(self):

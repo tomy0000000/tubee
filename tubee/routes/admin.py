@@ -52,11 +52,12 @@ def admin_dashboard():
         "app_config": current_app.config,
         "os_env": os.environ,
     }
-    celery_tasks = [
-        task
-        for worker_tasks in celery.control.inspect().scheduled().values()
-        for task in worker_tasks
-    ]
+    worker_tasks = celery.control.inspect().scheduled()
+    celery_tasks = (
+        [task for worker in worker_tasks.values() for task in worker]
+        if worker_tasks
+        else []
+    )
     callbacks = Callback.query.order_by(Callback.timestamp.desc()).all()
     notifications = Notification.query.order_by(
         Notification.sent_timestamp.desc()

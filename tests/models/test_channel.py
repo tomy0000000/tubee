@@ -35,6 +35,7 @@ class ChannelModelTestCase(unittest.TestCase):
         self.app_context.pop()
 
     @mock.patch("tubee.models.channel.Channel.activate")
+    @mock.patch("tubee.tasks.renew_channels")
     @mock.patch("tubee.tasks.channels_fetch_videos")
     @mock.patch("tubee.tasks.channels_update_hub_infos")
     @mock.patch("tubee.models.channel.Channel.update_youtube_infos")
@@ -43,6 +44,7 @@ class ChannelModelTestCase(unittest.TestCase):
         mocked_update_youtube_infos,
         mocked_channels_update_hub_infos,
         mocked_channels_fetch_videos,
+        mocked_renew_channels,
         mocked_activate,
     ):
         mocked_update_youtube_infos.return_value = True
@@ -51,6 +53,7 @@ class ChannelModelTestCase(unittest.TestCase):
         mocked_activate.return_value = None
         self.test_channel = Channel(channel_id=self.test_channel_id)
 
+    @mock.patch("tubee.tasks.renew_channels")
     @mock.patch("tubee.tasks.channels_fetch_videos")
     @mock.patch("tubee.tasks.channels_update_hub_infos")
     @mock.patch("tubee.models.channel.Channel.update_youtube_infos")
@@ -59,6 +62,7 @@ class ChannelModelTestCase(unittest.TestCase):
         mocked_update_youtube_infos,
         mocked_channels_update_hub_infos,
         mocked_channels_fetch_videos,
+        mocked_renew_channels,
     ):
         mocked_update_youtube_infos.side_effect = InvalidAction("test_message")
         with self.assertRaises(InvalidAction):
@@ -78,6 +82,12 @@ class ChannelModelTestCase(unittest.TestCase):
         for call in mocked_channels_fetch_videos.apply_async.call_args_list:
             args, kwargs = call
             self.assertEqual(kwargs["args"][0][0], self.test_channel_id)
+        for call in mocked_renew_channels.apply_async.call_args_list:
+            args, kwargs = call
+            self.assertEqual(kwargs["args"][0][0][0], self.test_channel_id)
+            self.assertTrue(kwargs["args"][0][0][1].startswith("http"))
+            self.assertIn(self.test_channel_id, kwargs["args"][0][0][1])
+            self.assertIn(self.test_channel_id, kwargs["args"][0][0][2])
         self.assertEqual(self.test_channel.id, self.test_channel_id)
 
     def test_channel_expiration_getter(self):

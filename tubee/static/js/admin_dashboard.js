@@ -41,7 +41,9 @@ $(document).ready(function () {
         $("<div>").addClass("progress my-3").append(progress_bar),
         message_box
       );
-      update_progress(data.status, progress_bar, message_box);
+      setTimeout(() => {
+        update_progress(data.status, progress_bar, message_box);
+      }, 2000);
     });
   });
 });
