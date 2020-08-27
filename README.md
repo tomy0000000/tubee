@@ -6,7 +6,6 @@
 [![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)](https://github.com/tomy0000000/Tubee/blob/master/LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-
 <p align="center">
     <img src="tubee/static/favicon.png" align="center">
     <br>
@@ -71,6 +70,12 @@ docker-compose \
 | RabbitMQ (Web) | http://localhost:15672                      |
 | Redis          | redis://localhost:6379                      |
 | Flask          | http://localhost:5000                       |
+
+### Build Image for development
+
+```bash
+docker build --build-arg INSTALL_DEV=true --tag tomy0000000/tubee .
+```
 
 ### Build Image for release
 

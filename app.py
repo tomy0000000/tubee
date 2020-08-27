@@ -10,7 +10,7 @@ COV = None
 if os.environ.get("FLASK_COVERAGE"):
     import coverage
 
-    COV = coverage.coverage(branch=True, include="tubee/*")
+    COV = coverage.coverage(branch=True, include="tubee/*", omit="tubee/tests/*")
     COV.start()
 
 import sys
@@ -29,12 +29,7 @@ from tubee.models import (
     Video,
 )
 
-config = os.environ.get("FLASK_ENV")
-if not config:
-    if os.environ.get("GAE_INSTANCE"):
-        config = "gae"
-    else:
-        config = "default"
+config = os.environ.get("FLASK_ENV", "default")
 app = create_app(config)
 migrate = Migrate()
 with app.app_context():
@@ -71,7 +66,7 @@ def test(coverage):
 
     import unittest
 
-    tests = unittest.TestLoader().discover("tests")
+    tests = unittest.TestLoader().discover("tubee/tests")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
     if COV:
         COV.stop()
@@ -81,7 +76,7 @@ def test(coverage):
         basedir = os.path.abspath(os.path.dirname(__file__))
         covdir = os.path.join(basedir, "htmlcov")
         COV.html_report(directory=covdir)
-        print("HTML version: file://%s/index.html" % covdir)
+        print(f"HTML version: file://{covdir}/index.html")
     sys.exit(not results.wasSuccessful())
 
 
