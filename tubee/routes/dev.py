@@ -24,31 +24,6 @@ def empty():
     return render_template("empty.html")
 
 
-@dev_blueprint.route("/handler/<status_code>")
-@login_required
-@admin_required
-def handler(status_code):
-    abort(int(status_code))
-
-
-@dev_blueprint.route("/test-dropbox")
-@login_required
-@admin_required
-def test_dropbox():
-    file_path = "instance/my-file.txt"
-    filename = basename(file_path)
-    with open(file_path, "rb") as file:
-        try:
-            response = current_user.dropbox.files_upload(
-                file.read(), "/{}".format(filename), mode=WriteMode("overwrite")
-            )
-        except ApiError as error:
-            flash(str(error), "danger")
-        else:
-            flash(str(response), "success")
-    return redirect(url_for("main.dashboard"))
-
-
 @dev_blueprint.route("/test-download-to-dropbox/<video_id>")
 @login_required
 @admin_required

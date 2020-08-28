@@ -28,10 +28,10 @@
             "placement": "right",
             "title": "Copied!",
             "trigger": "click"
-        }).on("mouseleave", function() {
-            $(this).tooltip("hide");
-        }).on("click", function(e) {
-            e.preventDefault();
+        }).on("mouseleave", (element) => {
+            $(element).tooltip("hide");
+        }).on("click", (event) => {
+            event.preventDefault();
         });
     });
 </script>
