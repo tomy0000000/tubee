@@ -69,6 +69,8 @@ def create_app(config_name):
     app.register_blueprint(routes.main_blueprint)
     app.register_blueprint(routes.admin_blueprint, url_prefix="/admin")
     app.register_blueprint(routes.api_blueprint, url_prefix="/api")
+    app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
+    app.register_blueprint(routes.api_task_blueprint, url_prefix="/api/task")
     app.register_blueprint(routes.channel_blueprint, url_prefix="/channel")
     app.register_blueprint(routes.user_blueprint, url_prefix="/user")
     if app.debug:

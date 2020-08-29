@@ -50,7 +50,7 @@
       </th>
       <td class="align-middle channel-name">
         <a
-          href="{{ url_for('channel.channel', channel_id=subscription.channel_id) }}"
+          href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
         >
           <p class="mb-0">{{ subscription.channel.name }}</p>
         </a>
@@ -79,15 +79,15 @@
           type="button"
           class="btn btn-danger unsubscribe-btn"
           data-channel-name="{{ subscription.channel.name }}"
-          data-api-endpoint="{{ url_for('api.channel_unsubscribe', channel_id=subscription.channel_id) }}"
+          data-api-endpoint="{{ url_for('api_channel.unsubscribe', channel_id=subscription.channel_id) }}"
         >
           Unsubscribe
         </button>
         {% if current_user.admin %}
-        <button
+        <button 
           class="btn btn-warning renew-btn"
           type="button"
-          data-renew-url="{{ url_for('api.channel_renew', channel_id=subscription.channel_id) }}"
+          data-renew-url="{{ url_for('api_channel.renew', channel_id=subscription.channel_id) }}"
         >
           Renew
         </button>

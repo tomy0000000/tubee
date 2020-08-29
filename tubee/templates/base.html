@@ -1,8 +1,5 @@
 {% import 'widgets/message.html' as message_widget %}
 {% import 'widgets/dev_test_ribbon.html' as ribbon %}
-{% import 'widgets/navbar.html' as navbar %}
-{% import 'widgets/stylesheets.html' as stylesheets %}
-{% import 'widgets/scripts.html' as scripts %}
 <!DOCTYPE html>
 <html class="h-100">
 
@@ -11,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
     <title>Tubee - {{ title }}</title>
-    {{ stylesheets.stylesheets() }}
+    {% include "widgets/stylesheets.html" %}
     {{ ribbon.ribbon_css() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <!-- PAGE CSS -->
@@ -19,7 +16,7 @@
     <!-- END PAGE CSS -->
 
 <body class="d-flex flex-column h-100">
-    {{ navbar.navbar(title, current_user) }}
+    {% include "widgets/navbar.html" %}
     <main role="main" class="flex-grow-1">
         <!-- CONTAINER -->
         <div id="content-container" class="container h-100">
@@ -39,7 +36,7 @@
     </footer>
     <!-- END FOOTER -->
     {{ ribbon.ribbon_tag() }}
-    {{ scripts.scripts() }}
+    {% include "widgets/scripts.html" %}
     {{ moment.include_moment(no_js=True) }}
     <!-- PAGE JS -->
     {% block script %}{% endblock %}

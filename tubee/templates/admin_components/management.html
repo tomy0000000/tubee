@@ -1,0 +1,42 @@
+<!-- BEGIN MANAGEMENT -->
+<h1>Management</h1>
+<div class="buttons">
+    <button
+        type="button"
+        id="channel-renew-all"
+        class="btn btn-secondary"
+        data-api-endpoint="{{ url_for('api_channel.renew_all') }}"
+    >
+        Renew all channel
+    </button>
+    <button
+        type="button"
+        id="channel-renew-all-schedule"
+        class="btn btn-secondary"
+        data-api-endpoint="{{ url_for('api_channel.renew_all', next_countdown=345600) }}"
+    >
+        Renew all channel (schedule)
+    </button>
+    <button
+        type="button"
+        id="task-remove-all"
+        class="btn btn-secondary"
+        data-api-endpoint="{{ url_for('api_task.remove_all') }}"
+    >
+        Remove All Task
+    </button>
+    <a
+        class="btn btn-secondary"
+        href="{{ url_for('admin.raise_exception') }}"
+        role="button"
+        >Raise Exception</a
+    >
+    <a
+        class="btn btn-secondary"
+        href="{{ url_for('admin.test_logging') }}"
+        role="button"
+        >Test Logging</a
+    >
+</div>
+<div class="results"></div>
+<!-- END MANAGEMENT -->

@@ -1,44 +1,65 @@
-{% macro navbar(title, current_user) %}
 <!-- STICKY NAVBAR -->
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">
-            <img id="hero" src="{{ url_for('static', filename='img/tubee_text.png') }}" class="d-inline-block align-top">
+            <img
+                id="hero"
+                src="{{ url_for('static', filename='img/tubee_text.png') }}"
+                class="d-inline-block align-top"
+            />
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbars"
+            aria-controls="navbars"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbars">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item {{ 'active' if title == 'Dashboard' }}">
                     <a class="nav-link" href="{{ url_for('main.dashboard') }}">
-                        Dashboard
-                        {% if title == "Dashboard" %}
+                        Dashboard {% if title == "Dashboard" %}
                         <span class="sr-only">(current)</span>
                         {% endif %}
                     </a>
                 </li>
                 <li class="nav-item {{ 'active' if title == 'Subscribe' }}">
-                    <a class="nav-link" href="{{ url_for('channel.subscribe') }}">
-                        Subscribe
-                        {% if title == "Subscribe" %}
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('channel.subscribe') }}"
+                    >
+                        Subscribe {% if title == "Subscribe" %}
                         <span class="sr-only">(current)</span>
                         {% endif %}
                     </a>
                 </li>
-                <li class="nav-item {{ 'active' if title == 'YouTube Subcription' }}">
-                    <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
-                        YouTube Subcription
-                        {% if title == "YouTube Subcription" %}
+                <li
+                    class="nav-item {{ 'active' if title == 'YouTube Subcription' }}"
+                >
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('main.youtube_subscription') }}"
+                    >
+                        YouTube Subcription {% if title == "YouTube Subcription"
+                        %}
                         <span class="sr-only">(current)</span>
                         {% endif %}
                     </a>
                 </li>
                 {% if current_user.admin %}
-                <li class="nav-item {{'active' if title == 'Admin Dashboard' }}">
-                    <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">
-                        Admin
-                        {% if title == "Admin Dashboard" %}
+                <li
+                    class="nav-item {{'active' if title == 'Admin Dashboard' }}"
+                >
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('admin.admin_dashboard') }}"
+                    >
+                        Admin {% if title == "Admin Dashboard" %}
                         <span class="sr-only">(current)</span>
                         {% endif %}
                     </a>
@@ -48,15 +69,29 @@
             <ul class="navbar-nav">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ current_user.username }}</a>
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="dropdown_user"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        >{{ current_user.username }}</a
+                    >
                     <div class="dropdown-menu" aria-labelledby="dropdown_user">
-                        <a class="dropdown-item" href="{{ url_for('user.setting') }}">Setting</a>
-                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">Logout</a>
+                        <a
+                            class="dropdown-item"
+                            href="{{ url_for('user.setting') }}"
+                            >Setting</a
+                        >
+                        <a
+                            class="dropdown-item"
+                            href="{{ url_for('user.logout') }}"
+                            >Logout</a
+                        >
                     </div>
                 </li>
-                {% else %}
-
-                {% if title == "Login" %}
+                {% else %} {% if title == "Login" %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('user.login') }}">
                         Login
@@ -69,9 +104,7 @@
                         Login
                     </a>
                 </li>
-                {% endif %}
-
-                {% if title == "Register" %}
+                {% endif %} {% if title == "Register" %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('user.register') }}">
                         Register
@@ -84,16 +117,24 @@
                         Register
                     </a>
                 </li>
-                {% endif %}
-
-                {% endif %}
+                {% endif %} {% endif %}
             </ul>
             <form class="form-inline mx-2">
-                <input id="subscribe-input" class="form-control mr-sm-2" type="text" placeholder="Channel ID" aria-label="Channel ID">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Subscribe</button>
+                <input
+                    id="subscribe-input"
+                    class="form-control mr-sm-2"
+                    type="text"
+                    placeholder="Channel ID"
+                    aria-label="Channel ID"
+                />
+                <button
+                    class="btn btn-outline-success my-2 my-sm-0"
+                    type="submit"
+                >
+                    Subscribe
+                </button>
             </form>
         </div>
     </nav>
 </header>
 <!-- END STICKY NAVBAR -->
-{% endmacro %}

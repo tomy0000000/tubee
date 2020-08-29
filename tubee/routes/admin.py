@@ -17,7 +17,6 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from .. import celery
 from ..helper import admin_required
 from ..models import Callback, Notification, Service
 
@@ -52,12 +51,6 @@ def admin_dashboard():
         "app_config": current_app.config,
         "os_env": os.environ,
     }
-    worker_tasks = celery.control.inspect().scheduled()
-    celery_tasks = (
-        [task for worker in worker_tasks.values() for task in worker]
-        if worker_tasks
-        else []
-    )
     callbacks = Callback.query.order_by(Callback.timestamp.desc()).all()
     notifications = Notification.query.order_by(
         Notification.sent_timestamp.desc()
@@ -65,7 +58,6 @@ def admin_dashboard():
     return render_template(
         "admin_dashboard.html",
         infos=infos,
-        celery_tasks=celery_tasks,
         callbacks=callbacks,
         notifications=notifications,
         links=links,

@@ -1,41 +1,54 @@
 version: "3.8"
 
 services:
-  tubee:
-    build:
-      context: .
-      args:
-        INSTALL_DEV: "true"
-    command: "flask run -h 0.0.0.0"
-    env_file:
-      - "instance/development.env"
-    environment:
-      FLASK_ENV: "development"
-    ports:
-      - "5000:5000"
-    volumes:
-      - ".:/usr/src/tubee"
-  celery:
-    build:
-      context: .
-      args:
-        INSTALL_DEV: "true"
-    command: "watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery worker --app=celery_worker.celery --loglevel=info"
-    env_file:
-      - "instance/development.env"
-    environment:
-      FLASK_ENV: "development"
-    volumes:
-      - ".:/usr/src/tubee"
-  rabbitmq:
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-  # redis:
-  #   ports:
-  #     - "6379:6379"
-  postgres:
-    env_file:
-      - "instance/development.env"
-    ports:
-      - "5432:5432"
+    tubee:
+        build:
+            context: .
+            args:
+                INSTALL_DEV: "true"
+        command: "flask run -h 0.0.0.0"
+        env_file:
+            - "instance/development.env"
+        environment:
+            FLASK_ENV: "development"
+        ports:
+            - "5000:5000"
+        volumes:
+            - ".:/usr/src/tubee"
+    celery:
+        build:
+            context: .
+            args:
+                INSTALL_DEV: "true"
+        command:
+            [
+                "watchmedo",
+                "auto-restart",
+                "--directory=./",
+                "--pattern=*.py",
+                "--recursive",
+                "--",
+                "celery",
+                "worker",
+                "--app=celery_worker.celery",
+                "--loglevel=info",
+                "--statedb=/usr/src/tubee/instance/%n.state",
+            ]
+        env_file:
+            - "instance/development.env"
+        environment:
+            FLASK_ENV: "development"
+        volumes:
+            - ".:/usr/src/tubee"
+    rabbitmq:
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+    # redis:
+    #   ports:
+    #     - "6379:6379"
+    postgres:
+        env_file:
+            - "instance/development.env"
+        ports:
+            - "5432:5432"

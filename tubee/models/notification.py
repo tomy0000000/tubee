@@ -12,7 +12,7 @@ from .. import db
 
 class Service(Enum):
     Pushover = "Pushover"
-    LineNotify = "LineNotify"
+    LineNotify = "Line Notify"
 
 
 VALID_ARGS = {

@@ -1,0 +1,16 @@
+<h1>Celery Tasks</h1>
+<table
+    id="celery-table"
+    class="table table-striped table-hover table-responsive"
+    data-template-endpoint="{{ url_for('static', filename='component/admin_celery_task.html') }}"
+    data-api-endpoint="{{ url_for('api_task.list_all') }}"
+>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle">Name</th>
+            <th scope="col" class="align-middle">Args</th>
+            <th scope="col" class="align-middle">ETA</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
