@@ -15,22 +15,14 @@ if os.environ.get("FLASK_COVERAGE"):
 
 import sys
 import click
+from flask.cli import AppGroup
 from flask_migrate import Migrate, upgrade
 from tubee import create_app, db
-from tubee.models import (
-    Action,
-    Callback,
-    Channel,
-    Notification,
-    Subscription,
-    SubscriptionTag,
-    Tag,
-    User,
-    Video,
-)
+from tubee import models
 
 config = os.environ.get("FLASK_ENV", "default")
 app = create_app(config)
+docker_cli = AppGroup("docker", help="Run application with docker-compose.")
 migrate = Migrate()
 with app.app_context():
     migrate.init_app(app, db, render_as_batch=True)
@@ -38,18 +30,7 @@ with app.app_context():
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(
-        db=db,
-        Action=Action,
-        Callback=Callback,
-        Channel=Channel,
-        Notification=Notification,
-        Subscription=Subscription,
-        SubscriptionTag=SubscriptionTag,
-        Tag=Tag,
-        User=User,
-        Video=Video,
-    )
+    return dict(db=db, models=models)
 
 
 @app.cli.command()
@@ -100,5 +81,42 @@ def deploy():
     upgrade()
 
 
+@docker_cli.command("up")
+@click.option(
+    "--dev/--prod",
+    "development",
+    default=True,
+    help="Application mode.  [default: dev]",
+)
+@click.option(
+    "--detach/--no-detach",
+    default=True,
+    show_default=True,
+    help="Run application in detach mode.",
+)
+@click.option(
+    "--build/--no-build",
+    default=True,
+    show_default=True,
+    help="Build before running application.",
+)
+def docker_up(build, detach, development):
+    """Run Development Application"""
+    import subprocess
+
+    command = "docker-compose --file docker-compose.yml --file".split()
+    if development:
+        command.append("docker-compose.dev.yml")
+    else:
+        command.append("docker-compose.prod.yml")
+    command.append("up")
+    if detach:
+        command.append("--detach")
+    if build:
+        command.append("--build")
+    sys.exit(subprocess.call(command))
+
+
+app.cli.add_command(docker_cli)
 if __name__ == "__main__":
     app.run()
