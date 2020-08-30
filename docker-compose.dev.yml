@@ -44,9 +44,6 @@ services:
         ports:
             - "5672:5672"
             - "15672:15672"
-    # redis:
-    #   ports:
-    #     - "6379:6379"
     postgres:
         env_file:
             - "instance/development.env"

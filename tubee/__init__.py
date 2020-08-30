@@ -11,9 +11,9 @@ from flask_login import LoginManager, current_user
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
-from config import config
+from tubee.config import config
 
-__version__ = "dev"
+__version__ = "dev_20200831"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()

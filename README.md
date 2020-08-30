@@ -129,6 +129,15 @@ docker-compose \
 	kill -s HUP tubee
 ```
 
+### Gracefully Restart Celery
+
+```bash
+docker-compose \
+	--file docker-compose.yml \
+	--file docker-compose.prod.yml \
+	kill -s HUP celery
+```
+
 ### Remove Postgres Data
 
 ```bash

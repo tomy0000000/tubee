@@ -1,38 +1,28 @@
 version: "3.8"
 
 services:
-  tubee:
-    depends_on:
-      - "celery"
-      - "rabbitmq"
-      # - "redis"
-      - "postgres"
-    image: "tomy0000000/tubee"
-    volumes:
-      - "./logs:/usr/src/tubee/logs"
-  celery:
-    depends_on:
-      - "rabbitmq"
-      # - "redis"
-    image: "tomy0000000/tubee"
-  rabbitmq:
-    hostname: "tubee-rabbitmq"
-    image: "rabbitmq:latest"
-    volumes:
-      - "rabbitmq_data:/var/lib/rabbitmq"
-  # redis:
-  #   command: "redis-server --bind 0.0.0.0 --appendonly yes"
-  #   image: "redis:6.0"
-  #   sysctls:
-  #     - "net.core.somaxconn=511"
-  #   volumes:
-  #     - "redis_data:/data"
-  postgres:
-    image: "postgres:12-alpine"
-    volumes:
-      - "postgres_data:/var/lib/postgresql/data/"
+    tubee:
+        depends_on:
+            - "celery"
+            - "rabbitmq"
+            - "postgres"
+        image: "tomy0000000/tubee"
+        volumes:
+            - "./logs:/usr/src/tubee/logs"
+    celery:
+        depends_on:
+            - "rabbitmq"
+        image: "tomy0000000/tubee"
+    rabbitmq:
+        hostname: "tubee-rabbitmq"
+        image: "rabbitmq:latest"
+        volumes:
+            - "rabbitmq_data:/var/lib/rabbitmq"
+    postgres:
+        image: "postgres:12-alpine"
+        volumes:
+            - "postgres_data:/var/lib/postgresql/data/"
 
 volumes:
-  rabbitmq_data:
-  redis_data:
-  postgres_data:
+    rabbitmq_data:
+    postgres_data:

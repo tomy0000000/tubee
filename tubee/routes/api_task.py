@@ -1,21 +1,45 @@
 """API for Tasks"""
-from flask import Blueprint, abort, jsonify, request, url_for
-from flask_login import current_user, login_required
+from flask import Blueprint, jsonify
+from flask_login import login_required
 
 from .. import celery
-from ..forms import ActionForm
-from ..models import Action
 from ..helper import admin_required
 from ..tasks import renew_channels
 
 api_task_blueprint = Blueprint("api_task", __name__)
 
 
-@api_task_blueprint.route("/list")
+@api_task_blueprint.route("/list-scheduled")
+@login_required
+@admin_required
+def list_scheduled():
+    worker_scheduled = celery.control.inspect().scheduled()
+    if worker_scheduled:
+        tasks = [task for worker in worker_scheduled.values() for task in worker]
+    else:
+        tasks = []
+    return jsonify(tasks)
+
+
+@api_task_blueprint.route("/list-revoked")
+@login_required
+@admin_required
+def list_revoked():
+    worker_revoked = celery.control.inspect().revoked()
+    if worker_revoked:
+        revoked_tasks = [task for worker in worker_revoked.values() for task in worker]
+    else:
+        revoked_tasks = []
+    return jsonify(revoked_tasks)
+
+
+@api_task_blueprint.route("/list-all")
 @login_required
 @admin_required
 def list_all():
     worker_scheduled = celery.control.inspect().scheduled()
+    if not worker_scheduled:
+        return jsonify([])
     worker_revoked = celery.control.inspect().revoked()
     if worker_revoked:
         revoked_tasks = [task for worker in worker_revoked.values() for task in worker]

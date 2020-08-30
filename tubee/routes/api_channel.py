@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
+from uuid import uuid4
+
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
-from ..helper import (
-    admin_required,
-    build_callback_url,
-    build_topic_url,
-)
+
+from ..helper import admin_required, build_callback_url, build_topic_url
 from ..models import Channel
 from ..tasks import renew_channels
 
@@ -30,14 +29,16 @@ def renew_all():
             compact_args.append(task_args)
         else:
             expiration = channel.expiration
-            if expiration is not None:
-                eta = channel.expiration - timedelta(days=1)
-            else:
+            if expiration is None:
                 eta = datetime.now() + timedelta(days=4)
+            elif expiration > datetime.now() + timedelta(days=1):
+                eta = expiration - timedelta(days=1)
+            else:
+                eta = datetime.now()
             task = renew_channels.apply_async(
                 args=[[task_args], next_countdown],
                 eta=eta,
-                task_id=f"renew_{channel.id}",
+                task_id=f"renew_{channel.id}_{str(uuid4())[:8]}",
             )
             response[channel.id] = task.id
     if immediate:
