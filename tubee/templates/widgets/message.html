@@ -1,44 +1,36 @@
-{% set special_message_type = ["secondary", "success", "danger", "warning",
-"info", "light", "dark"] %} {% macro message(message_float=False) %} {% with
-messages = get_flashed_messages(with_categories=true) %} {% if messages %}
-<!-- MESSAGE -->
-{% if message_float %}
-<div id="message-wrapper">
-    {% endif %} {% for category, message in messages %} {% if category in
-    special_message_type %}
-    <div
-        id="main-alert"
-        class="alert alert-{{ category }} alert-dismissible fade show"
-        role="alert"
-    >
-        {{ message }}
-        <button
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-label="Close"
+{% set special_message_type = ["secondary", "success", "danger", "warning", "info", "light", "dark"] %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+    <!-- MESSAGE -->
+    {% if message_float %}
+    <div id="message-wrapper">
+    {% endif %}
+
+    {% for category, message in messages %}
+        {% set category = category if category in special_message_type else 'primary' %}
+        <div
+            id="main-alert"
+            class="alert alert-{{ category }} alert-dismissible fade show"
+            role="alert"
         >
-            <span aria-hidden="true">&times;</span>
-        </button>
+            {{ message }}
+            <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+            >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+
+    {% if message_float %}
     </div>
-    {% else %}
-    <div
-        id="main-alert"
-        class="alert alert-primary alert-dismissible fade show"
-        role="alert"
-    >
-        {{ message }}
-        <button
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-label="Close"
-        >
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endif %} {% endfor %} {% if message_float %}
-</div>
+    {% endif %}
+    <!-- END MESSAGE -->
 {% endif %}
-<!-- END MESSAGE -->
-{% endif %} {% endwith %} {% endmacro %}
+
+{% endwith %}

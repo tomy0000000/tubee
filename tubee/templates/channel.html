@@ -132,7 +132,11 @@
         {% else %}
         <button type="button" class="btn btn-success btn-lg">Subscribe</button>
         {% endif %} {% if current_user.admin %}
-        <button type="button" class="btn btn-secondary btn-lg">
+        <button
+            type="button"
+            id="hub-reload-btn"
+            class="btn btn-secondary btn-lg"
+        >
             Reload Hub Status
         </button>
         {% endif %}
@@ -369,14 +373,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="state"
-                        >
-                            <div
-                                class="spinner-border text-primary"
-                                role="status"
-                            >
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -394,14 +391,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="expiration"
-                        >
-                            <div
-                                class="spinner-border text-danger"
-                                role="status"
-                            >
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -421,14 +411,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="last-notification"
-                        >
-                            <div
-                                class="spinner-border text-success"
-                                role="status"
-                            >
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -446,14 +429,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="last-notification-error"
-                        >
-                            <div
-                                class="spinner-border text-warning"
-                                role="status"
-                            >
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -473,14 +449,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="last-challenge"
-                        >
-                            <div
-                                class="spinner-border text-success"
-                                role="status"
-                            >
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -498,14 +467,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="last-challenge-error"
-                        >
-                            <div
-                                class="spinner-border text-warning"
-                                role="status"
-                            >
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -525,11 +487,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="last-subscribe"
-                        >
-                            <div class="spinner-border text-info" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -547,11 +505,7 @@
                         <td
                             class="align-middle border-top-0 hub-table-cell"
                             id="last-unsubscribe"
-                        >
-                            <div class="spinner-border text-info" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </td>
+                        ></td>
                     </tr>
                 </tbody>
             </table>
@@ -572,9 +526,11 @@
                             class="align-middle border-top-0 hub-table-cell"
                             id="stat"
                         >
+                            {#
                             <div class="spinner-border text-dark" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
+                            #}
                         </td>
                     </tr>
                 </tbody>

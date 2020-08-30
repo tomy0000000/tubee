@@ -46,43 +46,39 @@ refresh_action_fields = (type) => {
     }
 };
 
-$(document).ready(function () {
-    // Hub Status
+reload_hub_status = () => {
+    insert_spinner($("#state"), "primary");
+    insert_spinner($("#expiration"), "danger");
+    insert_spinner($("#last-notification"), "success");
+    insert_spinner($("#last-notification-error"), "warning");
+    insert_spinner($("#last-challenge"), "success");
+    insert_spinner($("#last-challenge-error"), "warning");
+    insert_spinner($("#last-subscribe"), "info");
+    insert_spinner($("#last-unsubscribe"), "info");
+    insert_spinner($("#stat"), "dark");
+
+    // Start Request
     $.ajax({
         type: "get",
-        url: $("#status-grid").attr("data-api-endpoint"),
+        url: $("#status-grid").data("api-endpoint"),
     })
-        .done(function (responseData) {
+        .done((responseData) => {
             let state = responseData.state;
-            let badge;
-            switch (state) {
-                case "verified":
-                    badge = $("<span></span>")
-                        .addClass("badge badge-success")
-                        .text(state);
-                    $("#state").empty().append(badge);
-                    break;
-                case "expired":
-                    badge = $("<span></span>")
-                        .addClass("badge badge-danger")
-                        .text(state);
-                    $("#state").empty().append(badge);
-                    break;
-                case "unverified":
-                    badge = $("<span></span>")
-                        .addClass("badge badge-info")
-                        .text(state);
-                    $("#state").empty().append(badge);
-                    break;
-                case "unsubscribed":
-                    badge = $("<span></span>")
-                        .addClass("badge badge-secondary")
-                        .text(state);
-                    $("#state").empty().append(badge);
-                    break;
-                default:
-                    $("#state").text(state);
-            }
+            const BADGE_TYPE_MAPPING = {
+                verified: "success",
+                expired: "danger",
+                unverified: "warning",
+                unsubscribed: "secondary",
+            };
+            let badge_type =
+                state in BADGE_TYPE_MAPPING
+                    ? BADGE_TYPE_MAPPING[state]
+                    : "info";
+            let badge = $("<span></span>")
+                .addClass(`badge badge-${badge_type}`)
+                .text(state);
+            $("#state").empty().append(badge);
+
             $("#expiration").text(responseData.expiration);
             $("#last-notification").text(responseData.last_notification);
             $("#last-notification-error").text(
@@ -106,6 +102,13 @@ $(document).ready(function () {
             $("#last-unsubscribe").text("Error");
             $("#stat").text("Error");
         });
+};
+
+$(document).ready(function () {
+    $("#hub-reload-btn").click(function (event) {
+        event.preventDefault();
+        reload_hub_status();
+    });
 
     // Edit Action Modals
     $("#edit_action_modal").on("show.bs.modal", function (event) {

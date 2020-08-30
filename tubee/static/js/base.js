@@ -1,4 +1,16 @@
+const VALID_SPINNER_TYPE = [
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "light",
+    "dark",
+];
+
 insert_spinner = (location, type) => {
+    type = VALID_SPINNER_TYPE.includes(type) ? type : "primary";
     $(location).append(
         $("<div>")
             .attr({

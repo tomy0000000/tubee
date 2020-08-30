@@ -1,7 +1,8 @@
-{% extends "base.html" %} {% set title = "Dashboard" %} {% block style %}
+{% from "widgets/callback_badge.html" import badge %} {% extends "base.html" %}
+{% set title = "Dashboard" %} {% block style %}
 <link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/dashboard.css') }}"
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/dashboard.css') }}"
 />
 {% endblock %} {% block script %}
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
@@ -9,100 +10,103 @@
 
 <!-- BEGIN Toggle View -->
 <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-end">
-    <li class="page-item">
-      <a class="page-link" href="#">
-        <i class="fas fa-list"></i>
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">
-        <i class="fas fa-portrait"></i>
-      </a>
-    </li>
-  </ul>
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" href="#">
+                <i class="fas fa-list"></i>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">
+                <i class="fas fa-portrait"></i>
+            </a>
+        </li>
+    </ul>
 </nav>
 <!-- END Toggle View -->
 
 <!-- BEGIN Subscription Table -->
 <table class="table table-striped table-hover table-responsive-lg">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col" class="align-middle"></th>
-      <th scope="col" class="align-middle">Channel Name</th>
-      <th scope="col" class="align-middle">Recent Activity</th>
-      <th scope="col" class="align-middle"></th>
-      {% if current_user.admin %}
-      <th scope="col" class="align-middle">Hub Status</th>
-      {% endif %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for subscription in subscriptions %}
-    <tr>
-      <th scope="row" class="align-middle channel-thumbnails">
-        {% if subscription.channel.infos.snippet.thumbnails.high.url %}
-        <img
-          src="{{ subscription.channel.infos.snippet.thumbnails.high.url }}"
-          class="rounded-circle"
-        />
-        {% endif %}
-      </th>
-      <td class="align-middle channel-name">
-        <a
-          href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
-        >
-          <p class="mb-0">{{ subscription.channel.name }}</p>
-        </a>
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ subscription.channel_id }}"
-        >
-          <p class="mb-0">{{ subscription.channel_id }}</p>
-        </a>
-        {% if subscription.channel.infos.snippet.customUrl %}
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ subscription.channel.infos.snippet.customUrl }}"
-        >
-          <p class="mb-0">
-            #{{ subscription.channel.infos.snippet.customUrl }}
-          </p>
-        </a>
-        {% endif %}
-      </td>
-      <td class="align-middle"></td>
-      <td class="align-middle">
-        <button
-          type="button"
-          class="btn btn-danger unsubscribe-btn"
-          data-channel-name="{{ subscription.channel.name }}"
-          data-api-endpoint="{{ url_for('api_channel.unsubscribe', channel_id=subscription.channel_id) }}"
-        >
-          Unsubscribe
-        </button>
-        {% if current_user.admin %}
-        <button 
-          class="btn btn-warning renew-btn"
-          type="button"
-          data-renew-url="{{ url_for('api_channel.renew', channel_id=subscription.channel_id) }}"
-        >
-          Renew
-        </button>
-        {% endif %}
-      </td>
-      {% if current_user.admin %}
-      <td class="align-middle">
-        <span class="badge badge-primary">{{ subscription.channel.hub_infos.state }}</span>
-        <br />
-        <span class="badge badge-warning">{{ moment(subscription.channel.expiration).fromNow() }}</span>
-      </td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-  </tbody>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="align-middle"></th>
+            <th scope="col" class="align-middle">Channel Name</th>
+            <th scope="col" class="align-middle">Recent Activity</th>
+            <th scope="col" class="align-middle"></th>
+            {% if current_user.admin %}
+            <th scope="col" class="align-middle">Hub Status</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for subscription in subscriptions %}
+        <tr>
+            <th scope="row" class="align-middle channel-thumbnails">
+                {% if subscription.channel.infos.snippet.thumbnails.high.url %}
+                <img
+                    src="{{ subscription.channel.infos.snippet.thumbnails.high.url }}"
+                    class="rounded-circle"
+                />
+                {% endif %}
+            </th>
+            <td class="align-middle channel-name">
+                <a
+                    href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
+                >
+                    <p class="mb-0">{{ subscription.channel.name }}</p>
+                </a>
+                <a
+                    href="#"
+                    class="text-muted clipboard"
+                    data-clipboard-text="{{ subscription.channel_id }}"
+                >
+                    <p class="mb-0">{{ subscription.channel_id }}</p>
+                </a>
+                {% if subscription.channel.infos.snippet.customUrl %}
+                <a
+                    href="#"
+                    class="text-muted clipboard"
+                    data-clipboard-text="{{ subscription.channel.infos.snippet.customUrl }}"
+                >
+                    <p class="mb-0">
+                        #{{ subscription.channel.infos.snippet.customUrl }}
+                    </p>
+                </a>
+                {% endif %}
+            </td>
+            <td class="align-middle"></td>
+            <td class="align-middle">
+                <button
+                    type="button"
+                    class="btn btn-danger unsubscribe-btn"
+                    data-channel-name="{{ subscription.channel.name }}"
+                    data-api-endpoint="{{ url_for('api_channel.unsubscribe', channel_id=subscription.channel_id) }}"
+                >
+                    Unsubscribe
+                </button>
+                {% if current_user.admin %}
+                <button
+                    class="btn btn-warning renew-btn"
+                    type="button"
+                    data-renew-url="{{ url_for('api_channel.renew', channel_id=subscription.channel_id) }}"
+                >
+                    Renew
+                </button>
+                {% endif %}
+            </td>
+            {% if current_user.admin %}
+            <td class="align-middle">
+                {{ badge(subscription.channel.hub_infos.state) }}
+                <br />
+                <span class="badge badge-warning"
+                    >{{ moment(subscription.channel.expiration).fromNow()
+                    }}</span
+                >
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 <!-- END Subscription Table -->
 

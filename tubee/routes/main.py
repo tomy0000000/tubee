@@ -77,7 +77,7 @@ def channel(channel_id):
     )
     form = ActionForm()
     return render_template(
-        "channel.html", channel=channel_item, actions=actions, form=form
+        "channel.html", channel=channel_item, actions=actions, form=form, videos=videos
     )
 
 

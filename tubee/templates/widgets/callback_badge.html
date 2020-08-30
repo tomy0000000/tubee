@@ -1,0 +1,14 @@
+{% set badge_type_mapping = {
+    "verified": "success",
+    "expired": "danger",
+    "unverified": "warning",
+    "unsubscribed": "secondary",
+}%}
+
+{% macro badge(context) %}
+{% if context in badge_type_mapping %}
+<span class="badge badge-{{ badge_type_mapping[context] }}">{{ context }}</span>
+{% else %}
+<span class="badge badge-info">{{ context }}</span>
+{% endif %}
+{% endmacro %}

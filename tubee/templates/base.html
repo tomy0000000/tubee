@@ -1,5 +1,3 @@
-{% import 'widgets/message.html' as message_widget %}
-{% import 'widgets/dev_test_ribbon.html' as ribbon %}
 <!DOCTYPE html>
 <html class="h-100">
 
@@ -9,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
     <title>Tubee - {{ title }}</title>
     {% include "widgets/stylesheets.html" %}
-    {{ ribbon.ribbon_css() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <!-- PAGE CSS -->
     {% block style %}{% endblock %}
@@ -20,7 +17,7 @@
     <main role="main" class="flex-grow-1">
         <!-- CONTAINER -->
         <div id="content-container" class="container h-100">
-            {{ message_widget.message(message_float) }}
+            {% include "widgets/message.html" %}
             <!-- CONTENT -->
             {% block content %}{% endblock %}
             <!-- END CONTENT -->
@@ -35,7 +32,17 @@
         </div>
     </footer>
     <!-- END FOOTER -->
-    {{ ribbon.ribbon_tag() }}
+    
+    {% if config.DEBUG %}
+        <!-- RIBBON -->
+        <a class="github-fork-ribbon right-bottom fixed" href="#" data-ribbon="Development Build"></a>
+        <!-- END RIBBON -->
+    {% elif config.TESTING %}
+        <!-- RIBBON -->
+        <a class="github-fork-ribbon right-bottom fixed" href="#" data-ribbon="Testing Build"></a>
+        <!-- END RIBBON -->
+    {% endif %}
+
     {% include "widgets/scripts.html" %}
     {{ moment.include_moment(no_js=True) }}
     <!-- PAGE JS -->
