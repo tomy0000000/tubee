@@ -13,6 +13,8 @@ services:
         depends_on:
             - "rabbitmq"
         image: "tomy0000000/tubee"
+        volumes:
+            - "./logs:/usr/src/tubee/logs"
     rabbitmq:
         hostname: "tubee-rabbitmq"
         image: "rabbitmq:latest"
@@ -21,7 +23,7 @@ services:
     postgres:
         image: "postgres:12-alpine"
         volumes:
-            - "postgres_data:/var/lib/postgresql/data/"
+            - "postgres_data:/var/lib/postgresql/data"
 
 volumes:
     rabbitmq_data:

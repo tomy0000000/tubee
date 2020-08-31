@@ -17,7 +17,7 @@ services:
                 "worker",
                 "--app=celery_worker.celery",
                 "--loglevel=info",
-                "--statedb=/usr/src/tubee/instance/%n.state",
+                "--statedb=/usr/src/tubee/instance/celery/%n.state",
             ]
         env_file:
             - "instance/production.env"
@@ -28,8 +28,6 @@ services:
             - application:/usr/src/tubee
     rabbitmq:
         restart: "always"
-    # redis:
-    #   restart: "always"
     postgres:
         env_file:
             - "instance/production.env"

@@ -254,30 +254,28 @@
                         }}
                         <div class="col-8">{{ form.action_type }}</div>
                     </div>
-                    <div id="notification-fields" class="action-type-fields">
-                        {% for field in form.notification %}
-                        <div class="form-group row">
-                            {{ field.label(class="col-4 col-form-label") }}
-                            <div class="col-8">{{ field }}</div>
-                        </div>
-                        {% endfor %}
+                    {% for field in form.notification %}
+                    <div
+                        class="form-group row action-type-fields notification-fields"
+                    >
+                        {{ field.label(class="col-4 col-form-label") }}
+                        <div class="col-8">{{ field }}</div>
                     </div>
-                    <div id="playlist-fields" class="action-type-fields">
-                        {% for field in form.playlist %}
-                        <div class="form-group row">
-                            {{ field.label(class="col-4 col-form-label") }}
-                            <div class="col-8">{{ field }}</div>
-                        </div>
-                        {% endfor %}
+                    {% endfor %}{% for field in form.playlist %}
+                    <div
+                        class="form-group row action-type-fields playlist-fields"
+                    >
+                        {{ field.label(class="col-4 col-form-label") }}
+                        <div class="col-8">{{ field }}</div>
                     </div>
-                    <div id="download-fields" class="action-type-fields">
-                        {% for field in form.download %}
-                        <div class="form-group row">
-                            {{ field.label(class="col-4 col-form-label") }}
-                            <div class="col-8">{{ field }}</div>
-                        </div>
-                        {% endfor %}
+                    {% endfor %}{% for field in form.download %}
+                    <div
+                        class="form-group row action-type-fields download-fields"
+                    >
+                        {{ field.label(class="col-4 col-form-label") }}
+                        <div class="col-8">{{ field }}</div>
                     </div>
+                    {% endfor %}
                 </form>
                 <!-- END Action Form -->
             </div>
