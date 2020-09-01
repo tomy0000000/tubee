@@ -1,52 +1,7 @@
-load_edit_modal = (action_operation) => {
-    $("#edit_save_spinner").hide();
-    $("#edit_action_modal").find("#submit").prop("disabled", false);
-    let api_endpoint;
+let edit_modal = $("#edit-action-modal");
 
-    if (action_operation === "new") {
-        $("#edit_action_modal").find(".modal-title").text("New Action");
-        api_endpoint = "/api/action/new";
-        $("#action_type").prop("disabled", false);
-        $("#edit_loading_spinner").hide();
-    } else {
-        $("#edit_action_modal").find(".modal-title").text("Edit Action");
-        api_endpoint = "/api/action/edit";
-        $("#edit_loading_spinner").show();
-        $("#action_form").hide();
-        $.get(`/api/${action_operation}`).done(function (data) {
-            $("#action_name").val(data.action_name);
-            $("#action_type").val(data.action_type).prop("disabled", true);
-            $("#edit_loading_spinner").hide();
-            $("#action_form").show();
-        });
-    }
-    refresh_action_fields($("#action_type").val());
-    return api_endpoint;
-};
-
-load_remove_modal = (action_name) => {
-    // Appearence
-    $("#remove_spinner").hide();
-    $("#remove_button").prop("disabled", false);
-    $("#remove_action_modal")
-        .find(".modal-body")
-        .text(`Are you sure you want to remove action ${action_name}?`);
-};
-
-refresh_action_fields = (type) => {
-    $(".action-type-fields").hide();
-    if (type === "Notification") {
-        $(".notification-fields").show();
-    } else if (type === "Playlist") {
-        $(".playlist-fields").show();
-    } else if (type === "Download") {
-        $(".download-fields").show();
-    } else {
-        console.log("Unknown Type");
-    }
-};
-
-reload_hub_status = () => {
+let reload_hub_status = (event) => {
+    event.preventDefault();
     insert_spinner($("#state"), "primary");
     insert_spinner($("#expiration"), "danger");
     insert_spinner($("#last-notification"), "success");
@@ -104,84 +59,230 @@ reload_hub_status = () => {
         });
 };
 
-$(document).ready(function () {
-    $("#hub-reload-btn").click(function (event) {
+let load_new_modal = (event) => {
+    // Init
+    let modal = $(event.target);
+    let submit_button = modal.find(".submit-btn");
+    let action_type_input = modal.find("#action_type");
+
+    // Appearence
+    $(".new-action-save-spinner").hide();
+    submit_button.prop("disabled", false);
+
+    // Bind event
+    refresh_action_fields(action_type_input.val());
+    action_type_input.change((event) => {
         event.preventDefault();
-        reload_hub_status();
+        refresh_action_fields($(event.target).val());
     });
+    submit_button.click(send_new_action_request);
+};
 
-    // Edit Action Modals
-    $("#edit_action_modal").on("show.bs.modal", function (event) {
-        let button = $(event.relatedTarget); // Button that triggered the modal
-        let action_id = button.data("action-id"); // Extract info from data-* attributes
-        let api_endpoint = load_edit_modal(action_id);
+let load_edit_modal = (event) => {
+    // Init
+    let submit_button = edit_modal.find(".submit-btn");
+    let action_type_input = edit_modal.find("#action_type");
+    let api_endpoint = $(event.relatedTarget).data("api-endpoint");
+    submit_button.data("api-endpoint", api_endpoint);
 
-        $(this)
-            .find("#action_type")
-            .on("change", function (event) {
-                event.preventDefault();
-                refresh_action_fields($(this).val());
-            });
+    // Appearence
+    $("#edit-loading-spinner").show();
+    $("#edit-action-form").hide();
+    $("#edit-save-spinner").hide();
+    submit_button.prop("disabled", false);
 
-        $(this)
-            .find("#submit")
-            .on("click", function (event) {
-                // Appearence
-                event.preventDefault();
-                $("#edit_save_spinner").show();
-                $(this).prop("disabled", true);
-                $("#action_form").serializeArray();
-                // Request
-                $.post(
-                    api_endpoint,
-                    $("#action_form").serializeArray(),
-                    function (data, textStatus, xhr) {
-                        console.log(data);
-                    }
-                )
-                    .done(function (responseData) {
-                        console.log(Boolean(responseData));
-                        if (Boolean(responseData)) {
-                            $("#edit_action_modal").modal("hide");
-                            location.reload();
-                        } else {
-                            alert("Save Failed, Try Again");
-                            load_edit_modal(action_id);
-                        }
-                    })
-                    .fail(function (responseData) {
-                        alert("Save Failed, Try Again");
-                        load_edit_modal(action_id);
-                    });
-            });
-    });
+    // TODO: Edit API is not enabled yet
+    submit_button.prop("disabled", true);
 
-    // Remove Action Modals
-    $("#remove_action_modal").on("show.bs.modal", function (event) {
-        let button = $(event.relatedTarget);
-        let action_id = button.data("action-id");
-        let action_name = button.data("action-name");
-        load_remove_modal(action_name);
-        $("#remove_button").on("click", function (event) {
-            // Appearence
-            event.preventDefault();
-            $("#remove_spinner").show();
-            $(this).prop("disabled", true);
-            // Request
-            $.get(`/api/${action_id}/remove`)
-                .done(function (data) {
-                    console.log(Boolean(data));
-                    if (Boolean(data)) {
-                        $("#remove_action_modal").modal("hide");
-                        location.reload();
-                    } else {
-                        alert("Remove Failed, Try Again");
-                    }
-                })
-                .fail(function (responseData) {
-                    alert("Remove Failed, Try Again");
-                    load_remove_modal(action_name);
-                });
+    // Load Action Info
+    $.get(api_endpoint)
+        .done(load_action_context)
+        .fail(() => {
+            alert("Oops, Something went wrong");
+            location.reload();
         });
+
+    // Bind event
+    refresh_action_fields(action_type_input.val());
+    action_type_input.change((event) => {
+        event.preventDefault();
+        refresh_action_fields($(event.target).val());
     });
+    submit_button.click(send_edit_action_request);
+};
+
+let load_remove_modal = (event) => {
+    // Init
+    let modal = $(event.target);
+    let submit_button = modal.find(".submit-btn");
+    let api_endpoint = $(event.relatedTarget).data("api-endpoint");
+    let action_name = $(event.relatedTarget).data("action-name");
+    submit_button.data("api-endpoint", api_endpoint);
+
+    // Appearence
+    modal.find(".remove-action-save-spinner").hide();
+    submit_button.prop("disabled", false);
+    modal
+        .find(".modal-body")
+        .text(`Are you sure you want to remove action ${action_name}?`);
+
+    // Bind event
+    submit_button.click(send_delete_action_request);
+};
+
+let send_new_action_request = (event) => {
+    // Init
+    event.preventDefault();
+    let button = $(event.target);
+    let api_endpoint = button.data("api-endpoint");
+    let data = $("#new-action-form").serializeArray();
+
+    // Appearence
+    $(".new-action-save-spinner").show();
+    button.prop("disabled", true);
+
+    // Request
+    $.post(api_endpoint, data, (requestData) => {
+        console.log(requestData);
+    })
+        .done((responseData) => {
+            if (Boolean(responseData)) {
+                $("#new-action-modal").modal("hide");
+                location.reload();
+            } else {
+                alert("Save Failed, Try Again");
+                $(".new-action-save-spinner").hide();
+                button.prop("disabled", false);
+            }
+        })
+        .fail(() => {
+            alert("Save Failed, Try Again");
+            $(".new-action-save-spinner").hide();
+            button.prop("disabled", false);
+        })
+        .always((responseData) => {
+            console.log(responseData);
+        });
+};
+
+let send_edit_action_request = (event) => {
+    // Init
+    event.preventDefault();
+    let button = $(event.target);
+    let api_endpoint = button.data("api-endpoint");
+    let data = $("#edit-action-form").serializeArray();
+
+    // Appearence
+    $("#edit-save-spinner").show();
+    button.prop("disabled", true);
+
+    // Request
+    $.post(api_endpoint, data, (requestData) => {
+        console.log(requestData);
+    })
+        .done((responseData) => {
+            console.log(Boolean(responseData));
+            if (Boolean(responseData)) {
+                $("#edit-action-modal").modal("hide");
+                location.reload();
+            } else {
+                alert("Save Failed, Try Again");
+                $("#edit-save-spinner").hide();
+                button.prop("disabled", false);
+            }
+        })
+        .fail((responseData) => {
+            alert("Save Failed, Try Again");
+            $("#edit-save-spinner").hide();
+            button.prop("disabled", false);
+        });
+};
+
+let send_delete_action_request = (event) => {
+    // Init
+    event.preventDefault();
+    let button = $(event.target);
+    let api_endpoint = button.data("api-endpoint");
+
+    // Appearence
+    $(".remove-action-save-spinner").show();
+    button.prop("disabled", true);
+
+    // Request
+    $.ajax(api_endpoint, {
+        method: "DELETE",
+    })
+        .done((responseData) => {
+            if (Boolean(responseData)) {
+                $("#remove-action-modal").modal("hide");
+                location.reload();
+            } else {
+                alert("Remove Failed, Try Again");
+                $(".remove-action-save-spinner").hide();
+                button.prop("disabled", false);
+            }
+        })
+        .fail(() => {
+            alert("Remove Failed, Try Again");
+            $(".remove-action-save-spinner").hide();
+            button.prop("disabled", false);
+        })
+        .always((responseData) => {
+            console.log(responseData);
+        });
+};
+
+let load_action_context = (data) => {
+    edit_modal.find("#action_name").val(data.action_name);
+    edit_modal
+        .find("#action_type")
+        .val(data.action_type)
+        .prop("disabled", true);
+    refresh_action_fields(data.action_type);
+    switch (data.action_type) {
+        case "Notification":
+            edit_modal.find("#notification-service").val(data.details.service);
+            edit_modal.find("#notification-message").val(data.details.message);
+            edit_modal.find("#notification-title").val(data.details.title);
+            edit_modal.find("#notification-url").val(data.details.url);
+            edit_modal
+                .find("#notification-url_title")
+                .val(data.details.url_title);
+            edit_modal
+                .find("#notification-image_url")
+                .val(data.details.image_url);
+            break;
+        case "Playlist":
+            edit_modal
+                .find("#playlist-playlist_id")
+                .val(data.details.playlist_id);
+            break;
+        case "Download":
+            edit_modal.find("#download-file_path").val(data.details.file_path);
+            break;
+        default:
+            break;
+    }
+    $("#edit-loading-spinner").hide();
+    $("#edit-action-form").show();
+};
+
+let refresh_action_fields = (type) => {
+    $(".action-type-fields").hide();
+    if (type === "Notification") {
+        $(".notification-fields").show();
+    } else if (type === "Playlist") {
+        $(".playlist-fields").show();
+    } else if (type === "Download") {
+        $(".download-fields").show();
+    } else {
+        console.log("Unknown Type");
+    }
+};
+
+$(document).ready(function () {
+    $("#hub-reload-btn").click(reload_hub_status);
+    $("#new-action-modal").on("show.bs.modal", load_new_modal);
+    $("#edit-action-modal").on("show.bs.modal", load_edit_modal);
+    $("#remove-action-modal").on("show.bs.modal", load_remove_modal);
 });

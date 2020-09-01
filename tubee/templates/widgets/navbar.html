@@ -55,10 +55,7 @@
                 <li
                     class="nav-item {{'active' if title == 'Admin Dashboard' }}"
                 >
-                    <a
-                        class="nav-link"
-                        href="{{ url_for('admin.admin_dashboard') }}"
-                    >
+                    <a class="nav-link" href="{{ url_for('admin.dashboard') }}">
                         Admin {% if title == "Admin Dashboard" %}
                         <span class="sr-only">(current)</span>
                         {% endif %}

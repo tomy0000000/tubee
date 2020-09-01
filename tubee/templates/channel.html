@@ -5,7 +5,10 @@
 />
 {% endblock %} {% block script %}
 <script src="{{ url_for('static', filename='js/channel.js') }}"></script>
-{% endblock %} {% block content %}
+{% endblock %} {% block content %} {% include
+"channel_component/new_action_modal.html" %} {% include
+"channel_component/edit_action_modal.html" %} {% include
+"channel_component/remove_action_modal.html" %}
 
 <!-- BEGIN Video Thumbnails Carousel -->
 <div class="bd-example">
@@ -148,19 +151,17 @@
 <table class="table table-striped table-hover">
     <thead class="thead-dark">
         <tr>
-            <th scope="col"></th>
+            <th scope="col">Name</th>
             <th scope="col">Type</th>
             <th scope="col">
                 <button
                     type="button"
                     class="btn btn-success"
                     data-toggle="modal"
-                    data-target="#edit_action_modal"
-                    data-action-id="new"
+                    data-target="#new-action-modal"
                 >
                     New
                 </button>
-                <!-- <a class="btn btn-success" href="" role="button">New</a> -->
             </th>
         </tr>
     </thead>
@@ -184,8 +185,8 @@
                     type="button"
                     class="btn btn-secondary"
                     data-toggle="modal"
-                    data-target="#edit_action_modal"
-                    data-action-id="{{ action.id }}"
+                    data-target="#edit-action-modal"
+                    data-api-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
                 >
                     Edit
                 </button>
@@ -193,9 +194,9 @@
                     type="button"
                     class="btn btn-danger"
                     data-toggle="modal"
-                    data-target="#remove_action_modal"
-                    data-action-id="{{ action.id }}"
+                    data-target="#remove-action-modal"
                     data-action-name="{{ action.name }}"
+                    data-api-endpoint="{{ url_for('api_action.delete', action_id=action.id) }}"
                 >
                     Remove
                 </button>
@@ -206,149 +207,6 @@
     </tbody>
 </table>
 <!-- END Action Infos -->
-
-<!-- BEGIN Edit Action Modal -->
-<div
-    class="modal fade"
-    id="edit_action_modal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="edit_action_modal_title"
-    aria-hidden="true"
->
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="edit_action_modal_title"></h5>
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="edit_loading_spinner" class="text-center">
-                    <div class="spinner-border text-success" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-                <!-- BEGIN Action Form -->
-                <form
-                    id="action_form"
-                    name="action_form"
-                    class="needs-validation"
-                    method="POST"
-                >
-                    {{ form.csrf_token }} {{ form.channel_id(value=channel.id)
-                    }}
-                    <div class="form-group row">
-                        {{ form.action_name.label(class="col-4 col-form-label")
-                        }}
-                        <div class="col-8">{{ form.action_name }}</div>
-                    </div>
-                    <div class="form-group row">
-                        {{ form.action_type.label(class="col-4 col-form-label")
-                        }}
-                        <div class="col-8">{{ form.action_type }}</div>
-                    </div>
-                    {% for field in form.notification %}
-                    <div
-                        class="form-group row action-type-fields notification-fields"
-                    >
-                        {{ field.label(class="col-4 col-form-label") }}
-                        <div class="col-8">{{ field }}</div>
-                    </div>
-                    {% endfor %}{% for field in form.playlist %}
-                    <div
-                        class="form-group row action-type-fields playlist-fields"
-                    >
-                        {{ field.label(class="col-4 col-form-label") }}
-                        <div class="col-8">{{ field }}</div>
-                    </div>
-                    {% endfor %}{% for field in form.download %}
-                    <div
-                        class="form-group row action-type-fields download-fields"
-                    >
-                        {{ field.label(class="col-4 col-form-label") }}
-                        <div class="col-8">{{ field }}</div>
-                    </div>
-                    {% endfor %}
-                </form>
-                <!-- END Action Form -->
-            </div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                >
-                    Reset
-                </button>
-                <button id="submit" class="btn btn-success" type="button">
-                    <span
-                        id="edit_save_spinner"
-                        class="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                    ></span>
-                    Save
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END Edit Action Modal -->
-
-<!-- BEGIN Remove Action Modal -->
-<div
-    class="modal fade"
-    id="remove_action_modal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="remove_action_modal_title"
-    aria-hidden="true"
->
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="remove_action_modal_title">
-                    Remove?
-                </h5>
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                >
-                    Cancel
-                </button>
-                <button id="remove_button" class="btn btn-danger" type="button">
-                    <span
-                        id="remove_spinner"
-                        class="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                    ></span>
-                    Save
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END Remove Action Modal -->
 
 <!-- BEGIN Hub Infos -->
 {% if current_user.admin %}

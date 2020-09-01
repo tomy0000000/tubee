@@ -1,0 +1,94 @@
+<!-- BEGIN New Action Modal -->
+<div
+    class="modal fade"
+    id="new-action-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="new-action-modal-title"
+    aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="new-action-modal-title">
+                    New Action
+                </h5>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- BEGIN Action Form -->
+                <form
+                    id="new-action-form"
+                    name="new-action-form"
+                    class="needs-validation"
+                    method="POST"
+                >
+                    {{ form.csrf_token }} {{ form.channel_id(value=channel.id)
+                    }}
+                    <div class="form-group row">
+                        {{ form.action_name.label(class="col-4 col-form-label")
+                        }}
+                        <div class="col-8">{{ form.action_name }}</div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.action_type.label(class="col-4 col-form-label")
+                        }}
+                        <div class="col-8">{{ form.action_type }}</div>
+                    </div>
+                    {% for field in form.notification %}
+                    <div
+                        class="form-group row action-type-fields notification-fields"
+                    >
+                        {{ field.label(class="col-4 col-form-label") }}
+                        <div class="col-8">{{ field }}</div>
+                    </div>
+                    {% endfor %}{% for field in form.playlist %}
+                    <div
+                        class="form-group row action-type-fields playlist-fields"
+                    >
+                        {{ field.label(class="col-4 col-form-label") }}
+                        <div class="col-8">{{ field }}</div>
+                    </div>
+                    {% endfor %}{% for field in form.download %}
+                    <div
+                        class="form-group row action-type-fields download-fields"
+                    >
+                        {{ field.label(class="col-4 col-form-label") }}
+                        <div class="col-8">{{ field }}</div>
+                    </div>
+                    {% endfor %}
+                </form>
+                <!-- END Action Form -->
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                >
+                    Cancel
+                </button>
+                <button
+                    class="btn btn-success submit-btn"
+                    type="button"
+                    data-api-endpoint="{{ url_for('api_action.new') }}"
+                >
+                    <span
+                        class="spinner-border spinner-border-sm new-action-save-spinner"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END New Action Modal -->

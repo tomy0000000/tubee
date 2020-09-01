@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% set title = "Admin Dashboard" %} {% block style %}
 <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/<filename>') }}"> -->
 {% endblock %} {% block script %}
-<script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %} {% block content %}
 
 <br />
@@ -115,7 +115,7 @@
         role="tabpanel"
         aria-labelledby="sitemap-tab"
     >
-        {% include 'admin_components/sitemap.html' %}
+        {% include 'admin_component/sitemap.html' %}
     </div>
     <div
         class="tab-pane fade"
@@ -123,7 +123,7 @@
         role="tabpanel"
         aria-labelledby="management-tab"
     >
-        {% include "admin_components/management.html" %}
+        {% include "admin_component/management.html" %}
     </div>
 
     <div
@@ -428,7 +428,7 @@
         role="tabpanel"
         aria-labelledby="celery-tasks-tab"
     >
-        {% include "admin_components/celery.html" %}
+        {% include "admin_component/celery.html" %}
     </div>
 </div>
 <!-- END TAB PAGES -->

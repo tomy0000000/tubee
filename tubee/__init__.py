@@ -13,7 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from tubee.config import config
 
-__version__ = "dev_20200831"
+__version__ = "dev_20200902"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -69,6 +69,7 @@ def create_app(config_name):
     app.register_blueprint(routes.main_blueprint)
     app.register_blueprint(routes.admin_blueprint, url_prefix="/admin")
     app.register_blueprint(routes.api_blueprint, url_prefix="/api")
+    app.register_blueprint(routes.api_action_blueprint, url_prefix="/api/action")
     app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
     app.register_blueprint(routes.api_task_blueprint, url_prefix="/api/task")
     app.register_blueprint(routes.channel_blueprint, url_prefix="/channel")

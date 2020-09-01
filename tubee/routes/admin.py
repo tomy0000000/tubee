@@ -26,7 +26,7 @@ admin_blueprint = Blueprint("admin", __name__)
 @admin_blueprint.route("/dashboard")
 @login_required
 @admin_required
-def admin_dashboard():
+def dashboard():
     links = {}
     for rule in current_app.url_map.iter_rules():
         query = {arg: f"[{arg}]" for arg in rule.arguments}
@@ -56,7 +56,7 @@ def admin_dashboard():
         Notification.sent_timestamp.desc()
     ).paginate()
     return render_template(
-        "admin_dashboard.html",
+        "admin.html",
         infos=infos,
         callbacks=callbacks,
         notifications=notifications,
@@ -81,7 +81,7 @@ def test_logging():
     current_app.logger.error("error Log")
     current_app.logger.critical("critical Log")
     flash("Logged Success", "success")
-    return redirect(url_for("admin.admin_dashboard"))
+    return redirect(url_for("admin.dashboard"))
 
 
 @admin_blueprint.route("/notification/push", methods=["POST"])
@@ -96,4 +96,4 @@ def notification_push():
             message=request.form["message"],
         )
         flash(response, "success")
-        return redirect(url_for("admin.admin_dashboard"))
+        return redirect(url_for("admin.dashboard"))
