@@ -166,23 +166,26 @@ class Channel(db.Model):
         """Update videos, Called by task"""
         from .video import Video
 
-        # Querying from a special playlist created by YouTube
-        # Playlist ID is replacing prefix of Channel ID from UC to UU
-        playlist_items = build_youtube_api().playlistItems()
-        request = playlist_items.list(
-            part="snippet", maxResults=50, playlistId=f"UU{self.id[2:]}",
+        search = build_youtube_api().search()
+        request = search.list(
+            part="snippet",
+            channelId=self.id,
+            maxResults=50,
+            order="date",
+            type="video",
+            fields=Video.DETAILS_FIELDS,
         )
 
         results = {"new_item_appended": 0, "video_ids": []}
         while request is not None:
             api_results = request.execute()
             for video in api_results["items"]:
-                video_id = video["snippet"]["resourceId"]["videoId"]
+                video_id = video["id"]["videoId"]
                 if not Video.query.get(video_id):
-                    Video(video_id, self, fetch_infos=False)
+                    Video(video_id, self, details=video["snippet"])
                     results["new_item_appended"] += 1
                     results["video_ids"].append(video_id)
-            request = playlist_items.list_next(request, api_results)
+            request = search.list_next(request, api_results)
 
         return results
 
