@@ -1,2261 +1,1611 @@
 {
-  "kind": "youtube#playlistItemListResponse",
-  "etag": "HK0HHrgu-Fms9VCrvJDyGmczXhE",
-  "prevPageToken": "CDIQAQ",
-  "items": [
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "vGxyufkIklaeLNzqE9oZOHfDzYU",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnoxenhqLWF4Q0Vv",
-      "snippet": {
-        "publishedAt": "2018-10-22T14:27:03Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Joshua Carroll's Story: Reaching for the stars",
-        "description": "Joshua is a veteran who realized his dream of becoming a physicist by teaching himself advanced mathematics from YouTube. Find something new to learn at youtube.com/learning.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/z1zxj-axCEo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/z1zxj-axCEo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/z1zxj-axCEo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/z1zxj-axCEo/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/z1zxj-axCEo/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
-        },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 50,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "z1zxj-axCEo"
-        }
-      }
+    "kind": "youtube#searchListResponse",
+    "etag": "ge-vbCyAxArEJR3SFwv-dTxYIe0",
+    "prevPageToken": "CDIQAQ",
+    "pageInfo": {
+        "totalResults": 344,
+        "resultsPerPage": 50
     },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "sPC7A_yXWQfCgp8762aoY_lpMMI",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmI2WEFwQjFVYkZn",
-      "snippet": {
-        "publishedAt": "2018-08-09T16:00:02Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Community - Together We Connect",
-        "description": "Community posts are available for creators with over 10,000 subscribers. Get inspired and explore how Community lets you take your fans everywhere you go. Learn more at: https://creatoracademy.youtube.com/page/lesson/community-tab?cid=fans&hl=en",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/b6XApB1UbFg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/b6XApB1UbFg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/b6XApB1UbFg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/b6XApB1UbFg/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/b6XApB1UbFg/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+    "items": [
+        {
+            "etag": "pU1CVFHanB702-tWUuvUcIxLwlQ",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "UgJgPtRwPWI"
+            },
+            "snippet": {
+                "publishedAt": "2018-11-12T13:00:39Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Love | ‘In My Personal Space’ Feat. Tom Daley and Fern Brady | #CreatorsforChange",
+                "description": "From coming out to hiding in plain sight, Nadir tackles the subject of Love with the help of Tom Daley and Fern Brady. As part of YouTube #CreatorsforChange, ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/UgJgPtRwPWI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 51,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "b6XApB1UbFg"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "BsGamRoccTO3cFsIESnFNTeuP08",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmFCTzNhMFFuZXAw",
-      "snippet": {
-        "publishedAt": "2018-07-02T21:07:17Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Cheer on With Your Community",
-        "description": "See how the England team has united its community on YouTube during the World Cup. Learn more: https://creatoracademy.youtube.com/page/lesson/community-tab?cid=fans&hl=en",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "URbVB7c2Cl_OMojZmkpnXkRQOPM",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "BjnoLtG2NKY"
+            },
+            "snippet": {
+                "publishedAt": "2018-11-12T13:01:07Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Mental Health | ‘In My Personal Space’ Feat. Pro Green and Humza | #CreatorsforChange",
+                "description": "From hugs with your dad to telling your friends you love them, Nadir tackles the subject of Mental Health with the help of Pro Green and Humza. As part of ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/BjnoLtG2NKY/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 52,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "aBO3a0Qnep0"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "MZ_Eu-srMt1kYMq9RTQAbxqpWwU",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjQzb19wQnRySVl3",
-      "snippet": {
-        "publishedAt": "2018-06-21T23:45:01Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Introducing Premieres",
-        "description": "Introducing Premieres. \n\nWith Premieres, you’ll be part of a shared community experience. Engage with your favorite creator and other fans in Live Chat and then watch the newest video in real time together.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/43o_pBtrIYw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/43o_pBtrIYw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/43o_pBtrIYw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/43o_pBtrIYw/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/43o_pBtrIYw/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "_fZ7ZQqMvQCrCddA_QmCNj0vcT4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "_6MtoR8JGTo"
+            },
+            "snippet": {
+                "publishedAt": "2018-11-12T12:59:34Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "One View Can Create Change | #CreatorsforChange 2018",
+                "description": "Creators around the world are making videos that opens minds, promote harmony and inspire togetherness. Because no matter your message, when you share ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/_6MtoR8JGTo/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 53,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "43o_pBtrIYw"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "RLz3OW4ZWpo7xXN_K5c_IKhGV84",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjNzQldKa0c5dGY0",
-      "snippet": {
-        "publishedAt": "2018-06-20T17:39:41Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Tune In: YouTube OnStage LIVE at VidCon 2018 - June 21 6:30 PM PT",
-        "description": "Tune in to YouTube OnStage LIVE at VidCon to see performances from your favorite YouTube creators including Marshmello, Liza Koshy, Mike Tompkins, Swoozie, Kurt Hugo Schneider, Natti Natasha, Matt Steffanina, Merrick Hanna & many more.\n\nCheck back after the show for all the highlights on youtube.com/VidCon",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "O_P6SBvb44cBqVHgJdcfhSnGH3U",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "uY1cm-7PBes"
+            },
+            "snippet": {
+                "publishedAt": "2018-10-22T14:27:54Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Chef May&#39;s Story: Rediscovering The Taste of Home",
+                "description": "May became a celebrated chef in Manchester, England after learning to cook the flavors of her childhood in Thailand by watching YouTube. Find something new ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/uY1cm-7PBes/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/uY1cm-7PBes/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/uY1cm-7PBes/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 54,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "3sBWJkG9tf4"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "zEyUuaJ7GncUdba4VWVhnIaJOGA",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkduR1BBWXZ2ZTFB",
-      "snippet": {
-        "publishedAt": "2018-06-07T19:08:51Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#ProudToCreate: Pride 2018",
-        "description": "You don't just imagine a better future – you create it. This Pride Month, we're celebrating LGBTQ voices that shape our world – past, present, and future. \n\nTo read more, please visit our blog: https://youtube.googleblog.com/2018/06/what-are-you-proudtocreate.html\n\nMusic: “Drop” by Big Freedia, DJ Snake, and Diplo\n\nSpecial thanks to:\nTyler Oakley |  https://youtu.be/tJFk9dPdxO0\nA Dazed Film, Bravo NYC - Directed by Aurélien Heilbronn\nAustralian Broadcasting Corporation Library Sales\nYoung M.A and her Brooklyn Roots: Noisey Raps | https://youtu.be/QveOY-2eCyg\nMykki Blanco Celebrates Johannesburg’s Born-Free Queer Artists and Activists | https://youtu.be/6AXWQT486_E \nCurtis Blair - Beauty is Confidence - Director; Marissa Baklayan - Model\nSHHE 'Eyes Shut': A Dazed Film - Directed by Harry Clark @harryclarkphotography - Music by SHHE @shhemusic - Performed by James Southward @jimbz1 and Francesco Ferrari \nQueer Couple Reveal the Key to Modern Marriage and Happiness | https://youtu.be/ymoB2YMoNac \nInterrupt This Program/CBC Arts\nThe New Yorker\nNBC Universal Archives; Ballez Company, Katy Pyle - Artistic Director; Jules Skloot - Dancer\nDJ Mitch Ferrino; C.L.A.T - Producer\nQueer (Self) Portrait/CBC Arts\nGlamour Magazine\nLOVERBOY: Charles Jeffrey Takes New York’s Underground Queer Club Scene | https://youtu.be/VECiJoBu0h8 \ni-D Meets: Troye Sivan | https://youtu.be/uPJ6NT2RXk4",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GnGPAYvve1A/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GnGPAYvve1A/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GnGPAYvve1A/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/GnGPAYvve1A/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/GnGPAYvve1A/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "qdJ8iiERsEtPG1LjIn2aBn62-uA",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "z1zxj-axCEo"
+            },
+            "snippet": {
+                "publishedAt": "2018-10-22T14:27:03Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Joshua Carroll&#39;s Story: Reaching for the stars",
+                "description": "Joshua is a veteran who realized his dream of becoming a physicist by teaching himself advanced mathematics from YouTube. Find something new to learn at ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/z1zxj-axCEo/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/z1zxj-axCEo/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/z1zxj-axCEo/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 55,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "GnGPAYvve1A"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "72KsI1zkECWdid0acoBFQ3CRi6M",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlRmcUwxOWUtWXNz",
-      "snippet": {
-        "publishedAt": "2018-05-11T21:03:07Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Community - #TogetherWeCreate",
-        "description": "Community posts are now available for creators with over 10,000 subscribers. Get inspired and discover what’s possible with a strong community behind you. Learn More: https://creatoracademy.youtube.com/page/lesson/community-tab?cid=fans&hl=en",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/TfqL19e-Yss/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/TfqL19e-Yss/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/TfqL19e-Yss/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/TfqL19e-Yss/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/TfqL19e-Yss/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "mQ1P96CGick48jeNQXmzbNBiXZQ",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "b6XApB1UbFg"
+            },
+            "snippet": {
+                "publishedAt": "2018-08-09T16:00:02Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Community - Together We Connect",
+                "description": "Community posts are available for creators with over 10000 subscribers. Get inspired and explore how Community lets you take your fans everywhere you go.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/b6XApB1UbFg/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/b6XApB1UbFg/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/b6XApB1UbFg/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 56,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "TfqL19e-Yss"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "avXG-ITwgDxWjtzzhxyZ4f1FMSw",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnNfNlYwSGJTanpB",
-      "snippet": {
-        "publishedAt": "2018-02-01T17:59:32Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#CreateBlackHistory: Celebrating Black History Month",
-        "description": "This Black History Month, in an effort to recognize contemporary history-makers in the making, we invited 28 black creators to tell us who they think will create Black History. Each day this month, we’ll be publishing one of those stories as a Reel on YouTube Spotlight channel. Celebrate Black History Month with us by visiting the YouTube Spotlight channel in the YouTube mobile app and swiping over to the Reels tab. \n\nFeaturing:\n4YallEntertainment - youtube.com/4YallEntertainment\nAkilah Obviously - youtube.com/smoothiefreak\nAlonzo Lerone - youtube.com/alonzolerone\nAndreasChoice - youtube.com/AndreasChoice\nAri Fitz - youtube.com/itsarifitz\nAysha Abdul - youtube.com/KeepItBeautifulxo\nBachelorsPadTV - youtube.com/BachelorsPadTv\nBlackNerdComedy - youtube.com/BlackNerdComedy\nDamon & Jo - youtube.com/DamonAndJo\nDangMattSmith - youtube.com/dangmattsmith\nDormtainment - youtube.com/DormtainmentTV\nGloZell - youtube.com/glozell1\nJay Versace - youtube.com/jaayversace\nJouelzy - youtube.com/jouelzy\nLa Guardia Cross - youtube.com/laguardiacross\nNaptural85 - youtube.com/Naptural85\nRandomStructure TV - youtube.com/RandomStructureTV\nShameless Maya - youtube.com/shamelessmaya\nShan Boody - youtube.com/shannontboodram\nSoldierKnowsBest - youtube.com/SoldierKnowsBest\nTeala Dunn - youtube.com/Tealaxx2\nTeam 2 Moms - youtube.com/OliviaHas2Moms\nTiffanyRotheWorkouts - youtube.com/TiffanyRotheWorkouts\nTPindell - youtube.com/tpindell3\nTyroneMagnus - youtube.com/TyroneMagnus\nWill Power - youtube.com/Guide2Anything",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "btTgfIDwWYQxenwy2MMgFvybcRU",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "aBO3a0Qnep0"
+            },
+            "snippet": {
+                "publishedAt": "2018-07-02T21:07:17Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Cheer on With Your Community",
+                "description": "See how the England team has united its community on YouTube during the World Cup. Learn more: ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/aBO3a0Qnep0/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 57,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "s_6V0HbSjzA"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "CjTWWkDC-ccLY961_IVBMel-Zw4",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk9JUVE4am1zYk1N",
-      "snippet": {
-        "publishedAt": "2017-12-06T17:59:15Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Rewind 2017: Behind the Scenes | #YouTubeRewind",
-        "description": "Behind the scenes of YouTube Rewind 2017, the epic year-end celebration of the videos, people, music and memes that made 2017 on YouTube. #YouTubeRewind\n\nWatch Rewind again: https://youtu.be/FlsCjmMhFmw\nWatch the year's trending videos: http://youtube.com/rewind\nSee the trends as they happen: http://youtube.com/trending",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "R0Fo9WKJjJ7MirLWUG3jCL9bACE",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "43o_pBtrIYw"
+            },
+            "snippet": {
+                "publishedAt": "2018-06-21T23:45:01Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Introducing Premieres",
+                "description": "Introducing Premieres. With Premieres, you'll be part of a shared community experience. Engage with your favorite creator and other fans in Live Chat and then ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/43o_pBtrIYw/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/43o_pBtrIYw/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/43o_pBtrIYw/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 58,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "OIQQ8jmsbMM"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "xfJVi5xp_2StZ08Hk_hFjU17FQI",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmJDaTZUelJvQUhj",
-      "snippet": {
-        "publishedAt": "2017-12-04T18:00:04Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Get Ready for YouTube Rewind 2017 | #RewindisComing",
-        "description": "It’s almost time to hit Rewind, #RewindisComing.\n\nYouTube Rewind 2017 releases on December 6th (10am PST). Get ready to see the videos, people, music and memes that made 2017 on YouTube.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "EptnpntzUa_qtb67ez3oRnokIYY",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "3sBWJkG9tf4"
+            },
+            "snippet": {
+                "publishedAt": "2018-06-20T17:39:41Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Tune In: YouTube OnStage LIVE at VidCon 2018 - June 21 6:30 PM PT",
+                "description": "Tune in to YouTube OnStage LIVE at VidCon to see performances from your favorite YouTube creators including Marshmello, Liza Koshy, Mike Tompkins, ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/3sBWJkG9tf4/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 59,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "bCi6TzRoAHc"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "Ed7uDWMf3QC8iKiFii0rgZilYvs",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkZsc0NqbU1oRm13",
-      "snippet": {
-        "publishedAt": "2017-12-06T17:58:51Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Rewind: The Shape of 2017 | #YouTubeRewind",
-        "description": "YouTube Rewind 2017. Celebrating the videos, people, music and memes that made 2017. #YouTubeRewind\n\nMeet the featured Creators in Rewind: https://rewind2017.withyoutube.com/creators\nSpend more time with your favorite Creators, videos and trends from 2017: https://yt.be/rewind2017\nTest your Rewind knowledge with our trivia game: http://yt.be/dejaview\n\nWatch trending videos from 2017: http://youtube.com/rewind\nSee the trends as they happen: http://youtube.com/trending\n\nWatch the Behind the Scenes video: https://youtu.be/OIQQ8jmsbMM  \nSee all the Easter Eggs: https://goo.gl/3U9otg\n\nMusic by The Hood Internet: https://www.youtube.com/thehoodinternet\n\nYouTube Rewind 2017 produced by Portal A",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "k5QL7EHAxntIpsoWA_dJqngiQzM",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "GnGPAYvve1A"
+            },
+            "snippet": {
+                "publishedAt": "2018-06-07T19:08:51Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#ProudToCreate: Pride 2018",
+                "description": "You don't just imagine a better future – you create it. This Pride Month, we're celebrating LGBTQ voices that shape our world – past, present, and future. To read ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/GnGPAYvve1A/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/GnGPAYvve1A/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/GnGPAYvve1A/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 60,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "FlsCjmMhFmw"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "HbCskeuOJF_40YYJZuNeKrL4-zM",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkZRd2ZVekVfNHRj",
-      "snippet": {
-        "publishedAt": "2017-11-29T22:54:33Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Omar Hussein",
-        "description": "Omar Hussein is a creator who found his voice on YouTube. Omar created \"Al-Tayer\" a social satire show focused on the Saudi environment surrounding him. As his show gained popularity, Omar became the CEO of Uturn Entertainment, a leading multi-channel network in Saudi Arabia. As his channel neared a million subscribers, Omar stopped broadcasting his show and focused on earning a master’s degree in the UK. Omar has diversified his interest in YouTube by creating a new, self-titled vlogging channel which has become his primary home on the site.\n\nFor his YouTube Creators for Change project, Omar aims to promote empathy and understanding towards the Muslim community through a music video that demonstrates the importance of education as a way to generate tolerance and acceptance for everyone.\n\nTo see Omar's Creators for Change project, visit his channel -- https://www.youtube.com/user/honga1st",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "6GyzYPj4UgUyPs8UsOI974E0Ebc",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "TfqL19e-Yss"
+            },
+            "snippet": {
+                "publishedAt": "2018-05-11T21:03:07Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Community - #TogetherWeCreate",
+                "description": "Community posts are now available for creators with over 10000 subscribers. Get inspired and discover what's possible with a strong community behind you.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/TfqL19e-Yss/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/TfqL19e-Yss/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/TfqL19e-Yss/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 61,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "FQwfUzE_4tc"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "NA8P-JSKok1f0tyebe-c68ynrrc",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjFjZ0stQklyWGVz",
-      "snippet": {
-        "publishedAt": "2017-11-10T15:07:13Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#VeteransDay: Thank You for Everything",
-        "description": "This #VeteransDay, we want to say thank you to those who’ve served their country and shared their stories with the world.\n\nToday and every day, we at YouTube salute everything you have done and continue to do -- for your families, for communities, and for our nation.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1cgK-BIrXes/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1cgK-BIrXes/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1cgK-BIrXes/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/1cgK-BIrXes/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/1cgK-BIrXes/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "eQ_SkHGgf9Zo8C5vU2fJoTj7mY4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "s_6V0HbSjzA"
+            },
+            "snippet": {
+                "publishedAt": "2018-02-01T17:59:32Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#CreateBlackHistory: Celebrating Black History Month",
+                "description": "This Black History Month, in an effort to recognize contemporary history-makers in the making, we invited 28 black creators to tell us who they think will create ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/s_6V0HbSjzA/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 62,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "1cgK-BIrXes"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "hACS8t4Z3JI2V3iGEaT6tTBM2ig",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLklLMklGSXJyY1BV",
-      "snippet": {
-        "publishedAt": "2017-11-07T01:01:00Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Franchesca Ramsey",
-        "description": "Franchesca Ramsey is a YouTube vlogger and writer known for her unique voice, social commentary and comedy. In 2016, Franchesca was one of four YouTube creators who asked live video questions of the US presidential candidates at the Democratic debates in Charleston, South Carolina. In addition to making YouTube videos, she's a former writer and correspondent for Comedy Central's \"\"The Nightly Show with Larry Wilmore\"\" and is currently the host of MTV's \"\"Decoded\"\".\n\nFor her YouTube Creators for Change project, Franchesca discusses policing in America today and presents some impactful ways to use your voice in your local community.\n\nTo see Franchesca's Creators for Change project, visit her channel -- https://www.youtube.com/user/chescaleigh",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "26o9fzoC1bblCg6eSv1ae-Iz5jY",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "OIQQ8jmsbMM"
+            },
+            "snippet": {
+                "publishedAt": "2017-12-06T17:59:15Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Rewind 2017: Behind the Scenes | #YouTubeRewind",
+                "description": "Behind the scenes of YouTube Rewind 2017, the epic year-end celebration of the videos, people, music and memes that made 2017 on YouTube.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/OIQQ8jmsbMM/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 63,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "IK2IFIrrcPU"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "PtaqtIcS9WyPK-mYHF7HTbTDBto",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlhnczNjUXJkTVBZ",
-      "snippet": {
-        "publishedAt": "2017-10-30T00:17:53Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube TV + Julio Jones: All The Julios",
-        "description": "Introducing YouTube TV.\nFinally, cable-free live TV. Try it free here: https://tv.youtube.com\n\nYouTube TV is a TV streaming service that lets you watch live TV from ABC, CBS, FOX, NBC, and popular cable networks. Enjoy local and national live sports, and must-see shows the moment they air. Record all your favorites without DVR storage space limits, and stream wherever you go. YouTube TV comes with 6 accounts per household.\n\nYouTube TV is currently available in select U.S. cities, with more coming soon! Learn where we’re launched here: https://tv.youtube.com/tv/availability.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "GG5p_FePpAiRMh8yaqOJWn6GOIg",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "FlsCjmMhFmw"
+            },
+            "snippet": {
+                "publishedAt": "2017-12-06T17:58:51Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Rewind: The Shape of 2017 | #YouTubeRewind",
+                "description": "YouTube Rewind 2017. Celebrating the videos, people, music and memes that made 2017. #YouTubeRewind Meet the featured Creators in Rewind: ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/FlsCjmMhFmw/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 64,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "Xgs3cQrdMPY"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "SwUCN56BWbZZQMK07p2MSvOJsls",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkxXNkFQOUZwajNF",
-      "snippet": {
-        "publishedAt": "2017-11-03T20:35:15Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Dina Tokio",
-        "description": "London-based blogger and recent mom Dina Tokio has a keen eye for fashion and all things beauty related. She creates content for her YouTube channel and blog that ranges from styling tips to everyday lifestyle vlogs and passionate rants. Dina was part of YouTube's #MadeForYou campaign, where she was selected as one the UK's most influential social media stars of the moment!\n\nFor her YouTube Creators for Change project, Dina has created a four-part series that aims to celebrate Muslim women who have shunned cultural stereotypes in hopes of inspiring young girls that they can go on to do whatever it is they want in life with or without a hijab.\n\n\nTo see Dina's Creators for Change project, visit her channel -- https://www.youtube.com/user/dinatokio",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "m05lobw42vhX--D5DRIFgnmxOKA",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "bCi6TzRoAHc"
+            },
+            "snippet": {
+                "publishedAt": "2017-12-04T18:00:04Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Get Ready for YouTube Rewind 2017 | #RewindisComing",
+                "description": "It's almost time to hit Rewind, #RewindisComing. YouTube Rewind 2017 releases on December 6th (10am PST). Get ready to see the videos, people, music and ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/bCi6TzRoAHc/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 65,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "LW6AP9Fpj3E"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "fU6tRBmUapDOUbes7q1cs-j2vpI",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnFOM1ZNOU9fd09V",
-      "snippet": {
-        "publishedAt": "2017-10-19T16:28:34Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Natalie Tran",
-        "description": "Since uploading her first video on YouTube in 2006, Natalie Tran’s YouTube channel has grown a global fanbase of over 1.8 million subscribers with over half a billion channel views. Tran's videos are a collection of scripted comedy clips that contain a mixture of monologues and sketches focusing on the oddities of awkward everyday situations – with Tran playing multiple characters.\n\nFor her YouTube Creators for Change project, Natalie created a short series of videos from her very personal experiences that tackle some of the racism and sexism people in interracial relationships face in hopes of generating understanding and empathy.\n\nTo see Natalie's Creators for Change project, visit her channel -- https://www.youtube.com/user/communitychannel",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "5y18vWKiKtxrNAgn_5uJ44oeoR0",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "FQwfUzE_4tc"
+            },
+            "snippet": {
+                "publishedAt": "2017-11-29T22:54:33Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Omar Hussein",
+                "description": "Omar Hussein is a creator who found his voice on YouTube. Omar created \"Al-Tayer\" a social satire show focused on the Saudi environment surrounding him.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/FQwfUzE_4tc/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 66,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "qN3VM9O_wOU"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "foxv4udkZwjCJL-evkZHve6jmbw",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjBKckFDSGYxQjdV",
-      "snippet": {
-        "publishedAt": "2017-09-20T16:48:50Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Barış Özcan",
-        "description": "Istanbul-based storyteller Baris produces and broadcasts YouTube videos about art, design, technology and literature. Every week, Baris tries to tell simple stories around complex technological concepts and social issues. Baris is an award-winning art director at Abak.us – the creative agency he founded – and a prominent public speaker at events like TEDx in Turkey. He is married to one of the first-ever Turkish internet bloggers, Devletsah, and has a son.\n\nFor his YouTube Creators for Change project, Baris produced a six-part YouTube series in scripted/fiction format on topics related to hate, race, religion, sexual orientation, extremism and xenophobia. Each webisode will bring us into the world of a detective furiously working solve to a mystery and show us his experiences with some of the darkest corners of human nature.\n\nTo see Baris' Creators for Change project, visit his channel channel -- https://www.youtube.com/user/b31416",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/0JrACHf1B7U/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/0JrACHf1B7U/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/0JrACHf1B7U/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/0JrACHf1B7U/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/0JrACHf1B7U/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "Rj1Gd12YJ3b17Yd7ADK8Bh-4fEg",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "1cgK-BIrXes"
+            },
+            "snippet": {
+                "publishedAt": "2017-11-10T15:07:13Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#VeteransDay: Thank You for Everything",
+                "description": "This #VeteransDay, we want to say thank you to those who've served their country and shared their stories with the world. Today and every day, we at YouTube ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/1cgK-BIrXes/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/1cgK-BIrXes/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/1cgK-BIrXes/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 67,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "0JrACHf1B7U"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "05XAeaETyReoBvpmRk4pSE46ehg",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjd1b2dsZzZuWDh3",
-      "snippet": {
-        "publishedAt": "2017-09-21T18:22:56Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Abdel En Vrai",
-        "description": "Abdel discovered his passion for making people laugh through stand-up comedy. He started his YouTube channel, Abdel en Vrai, 3 years ago and uses it to share content about peace, love and tolerance. Humor helps get the message across with more impact. Abdel has always been an activist for equality and social justice, which led him to win the Brussels Citizen of the Year Award in 2013.\n\nFor his YouTube Creators for Change project, Abdel hosted two workshop-style events focused on engaging Belgian youth with content creation. Additionally, he will be releasing a series of videos to further his message about Muslim tolerance and acceptance.\n\nTo view Abdel's Creators for Change project, visit his channel -- https://www.youtube.com/channel/UCfQKQmVsZVslQsVhK_eR-mw",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/7uoglg6nX8w/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/7uoglg6nX8w/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/7uoglg6nX8w/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/7uoglg6nX8w/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/7uoglg6nX8w/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "wjzjG_jVfu1cirJSLeLZmoS_VTU",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "IK2IFIrrcPU"
+            },
+            "snippet": {
+                "publishedAt": "2017-11-07T01:01:00Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Franchesca Ramsey",
+                "description": "Franchesca Ramsey is a YouTube vlogger and writer known for her unique voice, social commentary and comedy. In 2016, Franchesca was one of four ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/IK2IFIrrcPU/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 68,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "7uoglg6nX8w"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "IzrcAdvEHIm4Sf4Tf2Q30K_IHYc",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjlGV0lHX2M2UGZJ",
-      "snippet": {
-        "publishedAt": "2017-08-29T15:00:04Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube: What will you watch next?",
-        "description": "YouTube has an updated look and new features. With a simplified design that lets content shine and new ways to watch like dark theme and adjustable speed playback on mobile, the redesigned experience now looks cleaner and more consistent across both desktop and mobile devices.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "9LA6OqpVK7VtpTf1KVJ1_eGj5wk",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "LW6AP9Fpj3E"
+            },
+            "snippet": {
+                "publishedAt": "2017-11-03T20:35:15Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Dina Tokio",
+                "description": "London-based blogger and recent mom Dina Tokio has a keen eye for fashion and all things beauty related. She creates content for her YouTube channel and ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/LW6AP9Fpj3E/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 69,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "9FWIG_c6PfI"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "I4mp6XztTtYI42IrcfuuXB0DuFw",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLloyb2JRSmRRaHFZ",
-      "snippet": {
-        "publishedAt": "2017-08-21T15:16:55Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: AIB",
-        "description": "All India Bakchod (AIB) is one of India's funniest and edgiest comedy collectives. Consisting of comedians Rohan Joshi, Tanmay Bhat, Gursimran Khamba and Ashish Shakya, AIB has revolutionized comedy content in India. They started with India’s first ever, and most heard, comedy podcast, then went on to become one of the biggest YouTube channels in India with over 1.7 million subscribers. In 2015, they did the first ever news comedy show \"On Air With AIB\" which was seen on digital as well as prime time television. AIB belongs to an emerging group of digital crusaders advocating for the cause of net neutrality in India.\n\nFor their YouTube Creators for Change project, they use comedic parody to highlight the harassment, misogyny and hatred women face online every day and create a conversation around how to make digital environments safer.\n\nTo see AIB's Creators for Change project, visit their channel: https://www.youtube.com/user/allindiabakchod",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "L8k5bE5tQE9z8BBGuyXlXhqmZNc",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "Xgs3cQrdMPY"
+            },
+            "snippet": {
+                "publishedAt": "2017-10-30T00:17:53Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube TV + Julio Jones: All The Julios",
+                "description": "Introducing YouTube TV. Finally, cable-free live TV. Try it free here: https://tv.youtube.com YouTube TV is a TV streaming service that lets you watch live TV from ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/Xgs3cQrdMPY/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 70,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "Z2obQJdQhqY"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "FGKQZ91nZSZwN3OfvOFCak9H5qE",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLndqNmhxZEN2NDA4",
-      "snippet": {
-        "publishedAt": "2017-08-15T04:40:32Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Cameo Project",
-        "description": "Cameo Project is a YouTube channel based in Indonesia. They are known for their fun, lively videos in which they talk about social issues and sensitive topics in Indonesia in order to raise awareness among the Indonesian people. In addition to videos centered around politics and social issues, they make funny, relatable videos about life in Indonesia.\n\nFor their YouTube Creators for Change project, Cameo partnered with an NGO called \"\"Maarif Institute\"\" who has a wide network of students across the country. Together they aim to educate high school and university students in 10 cities in Indonesia about the importance of creating positive content.\n\nTo see Cameo Project's Creator for Change project, visit their channel -- https://www.youtube.com/user/CameoProject",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wj6hqdCv408/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wj6hqdCv408/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wj6hqdCv408/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/wj6hqdCv408/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/wj6hqdCv408/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "9p1sW_iPqRwyaqaVQAzsgnr1GKI",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "qN3VM9O_wOU"
+            },
+            "snippet": {
+                "publishedAt": "2017-10-19T16:28:34Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Natalie Tran",
+                "description": "Since uploading her first video on YouTube in 2006, Natalie Tran's YouTube channel has grown a global fanbase of over 1.8 million subscribers with over half a ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/qN3VM9O_wOU/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 71,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "wj6hqdCv408"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "mDj4ScAg9-9_Ix8ogQ4A2dMh9wo",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnVlbTdRRnAwdUtZ",
-      "snippet": {
-        "publishedAt": "2017-06-27T16:00:14Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#ProudToBe: Celebrate Brave Voices this Pride",
-        "description": "In a world where some people still try to silence LGBTQ+ voices, the act of being yourself is an act of bravery for all to see. And in the context of a global climate that highlights the vulnerability of LGBTQ+ rights, it’s more important than ever that LGBTQ+ voices and stories are shared and heard. \n\nAn inclusive, vibrant, ever-expanding LGBTQ+ community has been a vital part of YouTube since we started. And we’re proud to stand with a group that believes every human being deserves the right to be who they are and love who they love. So to all those brave voices who continue to make Youtube the colorful, diverse and supportive place it is, we’re #ProudToBe with you.\n\n--\n\nYouTube Creators for Change is proud to launch #ProudToBe, our fifth annual Pride campaign. Creators for Change is YouTube’s global initiative dedicated to amplifying the voices of role models who are tackling difficult social issues with their channels. From combating hate speech, to countering xenophobia and extremism, to simply making the case for greater tolerance and empathy toward others, these creators are helping generate positive social change with their global fan bases. Learn more at https://www.youtube.com/yt/creators-for-change/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/uem7QFp0uKY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/uem7QFp0uKY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/uem7QFp0uKY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/uem7QFp0uKY/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/uem7QFp0uKY/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "FOXJupAxaWokIWQqc17WExZQxbs",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "7uoglg6nX8w"
+            },
+            "snippet": {
+                "publishedAt": "2017-09-21T18:22:56Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Abdel En Vrai",
+                "description": "Abdel discovered his passion for making people laugh through stand-up comedy. He started his YouTube channel, Abdel en Vrai, 3 years ago and uses it to ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/7uoglg6nX8w/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/7uoglg6nX8w/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/7uoglg6nX8w/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 72,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "uem7QFp0uKY"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "iFDBvMDWVp-LSHF_7AYsTCjvYqc",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmt3bUZQS1FBWDRn",
-      "snippet": {
-        "publishedAt": "2017-06-22T23:28:12Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube: Our Brand Mission",
-        "description": "Our mission is to give everyone a voice and show them the world.\nWe believe that everyone deserves to have a voice, and that the world is a better place when we listen, share and build community through our stories. Our values are based on four essential freedoms that define who we are: freedom of expression, freedom of opportunity, freedom of information and the freedom to belong\n\nFor more about who we are visit www.youtube.com/yt/about \n\n\nAdam Brapps: https://yt.be/UnH5\nAlex Chacon: https://yt.be/kZUy\nAllure: https://yt.be/B27M\nAnna Akana: https://yt.be/mzQx\nanneclutzVLOGS: https://yt.be/TLG6\nAsia Jackson: https://yt.be/bqXK\nBBC News: https://yt.be/bbxA\nBlogilates: https://yt.be/U9wf\nCapturing Conor: https://yt.be/XnyH\nCoby Persin: https://yt.be/8pVx\nThe Color Run: https://yt.be/PKN9\nCorridor: https://yt.be/atnU\nDazed: https://yt.be/yoTc\nDavidmooretv: https://yt.be/RXNg\nDennis Barnhoorn: https://yt.be/dDdU\nDermablend Professional: https://yt.be/7JUk\nDevinsupertramp: https://yt.be/7hju\nDoddlevloggle: https://yt.be/dW8K\nDude Perfect: https://yt.be/w93P\nElite Daily: https://yt.be/j3Sw\nFaceovermatter: https://yt.be/opsZ\nFutures Without Violence: https://yt.be/L3GU\nGigi Gorgeous: https://yt.be/8Tsq\nGoPro: https://yt.be/9ZGh\nGoPro: https://yt.be/rrLq\nGreat Big Story: https://yt.be/ZHx3\nHARD TON: https://yt.be/eHtn\nHow Ridiculous: https://yt.be/ZwNP\nHuman the Movie VOL.1 ©HUMAN/GOODPLANET FOUNDATION: https://yt.be/RUU0\nHuman the Movie VOL.2 ©HUMAN/GOODPLANET FOUNDATION: https://yt.be/hPy9\nHuman the Movie VOL.3 ©HUMAN/GOODPLANET FOUNDATION: https://yt.be/5RSS\nIngrid Nilsen: https://yt.be/vdEz\nJamie and Nikki: https://yt.be/esf5\nJana vlogs Old Channel: https://yt.be/Mgzs\nJason Murray Media: https://yt.be/cQ2v\nJeff Nickell: https://yt.be/CNLq\nJenkemmag: https://yt.be/Q8Nt\nJoey Graceffa: https://yt.be/Sgzd\nJoey Graceffa: https://yt.be/Mmiv\nKameron Monet: https://yt.be/Vo5Y\nKarlee Steel: https://yt.be/TQ7N\nLapsley: https://yt.be/H2k7\nLiza Koshy: https://yt.be/zyir\nLuke Birch: https://yt.be/p9gL\nMarkiplier: https://yt.be/vWH5\nMarkiplier: https://yt.be/D7pj\nMichelle Phan: https://yt.be/XRLr\nMo Vlogs: https://yt.be/A8sK\nThe Murrays: https://yt.be/Z8MW\nMyjoi Copeland: https://yt.be/ViG4\nNigahiga: https://yt.be/neQ4\nNitro Circus: https://yt.be/HW38\nNOWNESS: https://yt.be/Krk1\nNowthisisliving: https://yt.be/9LZU\nNPR Music: https://yt.be/jNCt\nOKbaby: https://yt.be/2M3k\nOKGoVEVO: https://yt.be/AKuW\nPeople are Awesome: https://yt.be/xnyZ\nPillar Point : https://yt.be/Bw2A\nraisingFISHERmen: https://yt.be/aN5o\nReasonTV: https://yt.be/C7Ui\nRomanAtwoodVlogs: https://yt.be/dNRx\nRomanAtwoodVlogs: https://yt.be/faWf\nRumble Viral: https://yt.be/4Xd7\nThe Slow Mo Guys: https://yt.be/U8BP\nThe Slow Mo Guys: https://yt.be/jiUJ\nThe Slow Mo Guys: https://yt.be/rK8F\nSimone Giertz: https://yt.be/osvG\nStuart Edge: https://yt.be/Dt4v\nSummer Mckeen: https://yt.be/4bhQ\nIISuperwomanII: https://yt.be/5jRQ\nTroye Sivan: https://yt.be/5GjR\nTroye Sivan: https://yt.be/r4iw\nTyler Oakley: https://yt.be/99Y5\nThe White House: https://yt.be/gc3f\nWong Fu Productions: https://yt.be/eUa4\nWorld Rugby: https://yt.be/U8BP\nYouTube Spotlight: https://yt.be/zcBh\nYouTube Spotlight: https://yt.be/32EL\nYouTube Creators: https://yt.be/JCNV\nZEDA Films: https://yt.be/JA8C",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "KtQ9iPMIdkI-KjdIJ6_rF_BxhNw",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "0JrACHf1B7U"
+            },
+            "snippet": {
+                "publishedAt": "2017-09-20T16:48:50Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Barış Özcan",
+                "description": "Istanbul-based storyteller Baris produces and broadcasts YouTube videos about art, design, technology and literature. Every week, Baris tries to tell simple ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/0JrACHf1B7U/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/0JrACHf1B7U/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/0JrACHf1B7U/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 73,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "kwmFPKQAX4g"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "RIAL56mUht1C1Rgul_A0Z3fb-O0",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkZ3LThFT1l1UU9r",
-      "snippet": {
-        "publishedAt": "2017-06-21T18:53:31Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube OnStage LIVE at VidCon: Weds 6/21/17 7pm PT",
-        "description": "For the first time ever, YouTube and VidCon are teaming up to bring you a live entertainment showcase like no other to kick off VidCon 2017! \n\nThis epic show presented by Kellogg’s Pop-Tarts® will include appearances by top creators, musical performances, unexpected collaborations, and feature all the biggest and best talent that YouTube has to offer. Featuring Todrick Hall, Tyler Oakley, Poppin Jon, Dito, Fik-Shun, Brooklyn & Bailey, Rosanna Pansino, Swoozie, Slow Mo Guys, Rudy Mancuso, Joey Graceffa, Collins Key, Grace VanderWaal, Matt Steffanina, & Jason Derulo.\n\nTune in for the live show at http://yt.be/onstage, Wednesday 6/21, 7pm PT and check back after the show for all the top highlight clips and best moments.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "jsyjRtDXtcIYxs4gFTHJbKdTJm8",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "9FWIG_c6PfI"
+            },
+            "snippet": {
+                "publishedAt": "2017-08-29T15:00:04Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube: What will you watch next?",
+                "description": "YouTube has an updated look and new features. With a simplified design that lets content shine and new ways to watch like dark theme and adjustable speed ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/9FWIG_c6PfI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 74,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "Fw-8EOYuQOk"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "CKcOjMROYjXY4YQgm5RZnegYLJ4",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkx4YmR2bzJ2Rndj",
-      "snippet": {
-        "publishedAt": "2017-06-20T14:54:47Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#MoreThanARefugee",
-        "description": "The International Rescue Committee (IRC) invited seven YouTube creators to get to know refugees around the world and share their stories.  See those stories at https://goo.gl/MtucBa\n \nLearn more about the IRC and YouTube’s partnership, and make a donation at https://www.Rescue.org/YouTube. Google will match all donations up to $500k.\n \nWith thanks to Maryam, Catherine, Hasan, and many others for sharing their stories.\n \nFeatured creators:\nThe Young Turks: www.youtube.com/theyoungturks\nASAPScience: www.youtube.com/asapscience\nFly With Haifa: www.youtube.com/flywithhaifa\nTyler Oakley: www.youtube.com/tyleroakley\nEh Bee Family: www.youtube.com/ehbees\nJouelzy: www.youtube.com/jouelzy\nSuli Breaks: www.youtube.com/sulibreazy\n \nThe International Rescue Committee responds to the world’s worst humanitarian crises. Founded in 1933 at the call of Albert Einstein, the IRC is at work in over 40 countries and 28 offices across the U.S. helping people to survive and regain control of their future. Learn more at www.rescue.org/YouTube\n \nYouTube Creators for Change is a new initiative from YouTube dedicated to amplifying the voices of role models who are tackling difficult social issues with their channels. From combating hate speech, to countering xenophobia and extremism, to simply making the case for greater tolerance and empathy toward others, these creators are helping generate positive social change with their global fan bases. Learn more at https://www.youtube.com/yt/creators-for-change/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "KNBGgtRTLpVv4K1jHfrV3rSTXRo",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "Z2obQJdQhqY"
+            },
+            "snippet": {
+                "publishedAt": "2017-08-21T15:16:55Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: AIB",
+                "description": "All India Bakchod (AIB) is one of India's funniest and edgiest comedy collectives. Consisting of comedians Rohan Joshi, Tanmay Bhat, Gursimran Khamba and ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/Z2obQJdQhqY/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 75,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "Lxbdvo2vFwc"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "W2mN_9fPebQLW_q8y2Uq1it0ZuM",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkZ3Y0FEc0VBdk9N",
-      "snippet": {
-        "publishedAt": "2017-06-19T18:45:05Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Introducing YouTube TV",
-        "description": "Introducing YouTube TV.\nFinally, live TV made for us. Try it free here: https://tv.youtube.com\n\nYouTube TV is a TV streaming service that lets you watch live TV from ABC, CBS, FOX, NBC, and popular cable networks. Enjoy local and national live sports, and must-see shows the moment they air. Record all your favorites without DVR storage space limits, and stream wherever you go. YouTube TV comes with 6 accounts per household.\n\nYouTube TV is currently available in select U.S. cities, with more coming soon! Learn where we’re launched here: https://tv.youtube.com/tv/availability.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/FwcADsEAvOM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/FwcADsEAvOM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/FwcADsEAvOM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/FwcADsEAvOM/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/FwcADsEAvOM/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "soESEzEl-3p4GeGg_Huo-3UcGCQ",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "wj6hqdCv408"
+            },
+            "snippet": {
+                "publishedAt": "2017-08-15T04:40:32Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Cameo Project",
+                "description": "Cameo Project is a YouTube channel based in Indonesia. They are known for their fun, lively videos in which they talk about social issues and sensitive topics in ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/wj6hqdCv408/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/wj6hqdCv408/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/wj6hqdCv408/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 76,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "FwcADsEAvOM"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "0IpnsMxKntsEnNKSLUUYAaVe9kc",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkdXRVVvUEJhU3g0",
-      "snippet": {
-        "publishedAt": "2017-05-12T16:37:52Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Happy Mother’s Day to #AllTheMoms",
-        "description": "This Mother’s Day, we’re celebrating #AllTheMoms out there who share their stories and inspire us every single day.\n \nFrom the joyful moments to the challenging ones – moments that make you laugh and sometimes cry –we want to thank every mom brave enough to share the crazy, amazing adventure of parenting with their community. \n \nYou show us what it means to be a parent today and remind us that whatever your journey, nobody is truly alone when they’re raising a child.\n \nOn social, make sure to give a shout-out to #AllTheMoms (including yours!) and tell them how much you appreciate everything they do.\n\nA collection of channels featured in our video:\nMillennial Moms → https://www.youtube.com/channel/UC3HlKrAmvpZItrX-tiITI4g\nJamie and Nikki → https://www.youtube.com/user/Reslim\nAwestruck → https://www.youtube.com/channel/UCalcFcqOC_UdfxQAPHhwOqg\nChriselle Lim→ https://www.youtube.com/user/chrisellelim\nAnna Saccone→ https://www.youtube.com/channel/UCzdEQyIy-uCVXcjwfq8SbKw\nAlyssa Donahue → https://www.youtube.com/user/charmingroyalty\nAudrey Shook/ A real life fairy tale → https://www.youtube.com/channel/UCrn9Jt2CZ-SWFA5kqkIUYfg\nJon Oren → https://www.youtube.com/user/jonandrachael312\nNewsflare → https://www.youtube.com/user/NewsflareBreaking\nNamiiCho → https://www.youtube.com/user/NamiiCho\nTeam2Moms → https://www.youtube.com/user/OliviaHas2Moms\nMonami Frost → https://www.youtube.com/channel/UC79Pfi2FCgEHjLqBbGDnKwA\nSam Collins → https://www.youtube.com/user/SupraMan38\nLuany Cristina → https://www.youtube.com/user/luany77\nNorth American Drywall → https://www.youtube.com/channel/UC2BinIxJssH11mGiRjlJaYw\nPoke my Heart → https://www.youtube.com/user/CutiesNFuzzies\nAna Paula Xongani → https://www.youtube.com/user/xonganiartecomtecido\nFlaviaCalina→ https://www.youtube.com/user/Fla1982\nマリリン fukuse yuuri → https://www.youtube.com/channel/UCmsA3A5_HKBwI9OktSttTFg\nShruti Arjun Anand → https://www.youtube.com/user/shrutiarjunanand\nMY KIDS AND I → https://www.youtube.com/user/ProductJunkieXoxo\nAdamJernberg → https://www.youtube.com/user/AdamJernberg\nKelly Gunderson → https://www.youtube.com/channel/UCFQstAIeDLt1Le3jMgYv8xw\nMelanie Fiona → https://www.youtube.com/user/melaniefionatv\nAubrey Marceaux→ https://www.youtube.com/user/Aubreymyers3\nSoul Vaidosa→ https://www.youtube.com/channel/UCs-YXTZrJfI9AUYjNK3vY1A\nSheena McFeely→ https://www.youtube.com/user/sheenammcfeely\nTodayWithTray→ https://www.youtube.com/channel/UCDRdPzo9qB5xwQNJsC0n9lg",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "i0kEwnq2JNzU-gBPTQ6tTAV_m4I",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "uem7QFp0uKY"
+            },
+            "snippet": {
+                "publishedAt": "2017-06-27T16:00:14Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#ProudToBe: Celebrate Brave Voices this Pride",
+                "description": "In a world where some people still try to silence LGBTQ+ voices, the act of being yourself is an act of bravery for all to see. And in the context of a global climate ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/uem7QFp0uKY/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/uem7QFp0uKY/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/uem7QFp0uKY/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 77,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "GWEUoPBaSx4"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "qcB38CfJGbB5Nb3t9LHumc_WcAs",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlZZLVZRMEt2aGdV",
-      "snippet": {
-        "publishedAt": "2017-05-11T16:24:59Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Learn Something New Every Day!",
-        "description": "Learning and educational content have exploded on YouTube in recent years. There are half a billion views of learning-related content on YouTube every day. Come learn with us!",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "nwZQNDf1PnUaEWGn7QdBtpQ22OQ",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "kwmFPKQAX4g"
+            },
+            "snippet": {
+                "publishedAt": "2017-06-22T23:28:12Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube: Our Brand Mission",
+                "description": "Our mission is to give everyone a voice and show them the world. We believe that everyone deserves to have a voice, and that the world is a better place when ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/kwmFPKQAX4g/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 78,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "VY-VQ0KvhgU"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "WwjApK-bUIpMH0yQZJzU1VS1yTw",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmJkWDU1STlXSER3",
-      "snippet": {
-        "publishedAt": "2017-03-07T18:11:03Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#HerVoiceIsMyVoice: Celebrate the Women Who Inspire Us Every Day",
-        "description": "The strength of individual women empowers us all. This International Women’s Day, we’re turning up the volume on female voices and honoring the impact they have on all of us. #HerVoiceIsMyVoice is a moment to celebrate and share the voices of inspirational women from around the world. \n\nShow your support on social by sharing the voice of a woman who has inspired you using #HerVoiceIsMyVoice.\n\nMusic featuring “Quiet” by MILCK, a song made by and for women.\n\nA collection of channels featured in our video:\nThe Ellen Show → https://www.youtube.com/channel/UCp0hYYBW6IMayGgR-WeoCvQ\nTulane  →  https://www.youtube.com/user/Tulane\nLilly Singh → https://www.youtube.com/user/IISuperwomanII \nOWN → https://www.youtube.com/channel/UCKBnlTTgEnhIXv_c4LvvyMQ \nGreat Big Story → https://www.youtube.com/channel/UCajXeitgFL-rb5-gXI-aG8Q \nLeona Chin → https://www.youtube.com/channel/UCf56MqBTCu9FNYSgYhLhILA \nEm Ford → https://www.youtube.com/user/mypaleskinblog\nIssa Rae → https://www.youtube.com/user/actingrl112 \nDina Tokio → https://www.youtube.com/user/dinatokio\nAnniesa Hasibuan → https://www.youtube.com/channel/UCRfzyEHmfUoT0OfANzXBEEw \nChesca Leigh → https://www.youtube.com/channel/UCzkFu0AVOtXy-vTo028mJxw\nMalala Fund → https://www.youtube.com/channel/UCk4FE7YqfCvSkhYal-yAx3Q \nAfros e Afins → https://www.youtube.com/channel/UCjivwB8MrrGCMlIuoSdkrQg \nAcidez Feminina → https://www.youtube.com/channel/UCxdAaYkXAf7xlYAAhf9nsZA \nColine → https://www.youtube.com/user/eppcoline \nFabulous Nat → https://www.youtube.com/channel/UCqXsG_pMaYNAmYsEnx-AM_w\nDailyNation → https://www.youtube.com/channel/UCz9jK123qAo5ATWtuuCn8IA\nHayla TV → https://www.youtube.com/channel/UCJlR_vpux2H2Y9fdZS9-e_A \nCeci Saia → https://www.youtube.com/channel/UCUZsXDMFiu2w_EQfkKcfz5g \nAmena  →  https://www.youtube.com/user/Amenakin\nKumamiki → https://www.youtube.com/channel/UCr-QcqNToYablI-jU2VPVSw \nMyLifeAsEva → https://www.youtube.com/channel/UCAoMPWcQKA_9Af5YhWdrZgw \nBilingirl Chika → https://www.youtube.com/user/cyoshida1231 \nYuya → https://www.youtube.com/user/lady16makeup\nMILCK → https://www.youtube.com/channel/UCVOL6yCyx-llAU25lAv45JA",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/bdX55I9WHDw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/bdX55I9WHDw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/bdX55I9WHDw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/bdX55I9WHDw/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/bdX55I9WHDw/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "0a8SrmtB8gu8C8JghfwsGQ-voDM",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "Fw-8EOYuQOk"
+            },
+            "snippet": {
+                "publishedAt": "2017-06-21T18:53:31Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube OnStage LIVE at VidCon: Weds 6/21/17 7pm PT",
+                "description": "For the first time ever, YouTube and VidCon are teaming up to bring you a live entertainment showcase like no other to kick off VidCon 2017! This epic show ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/Fw-8EOYuQOk/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 79,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "bdX55I9WHDw"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "it2MLgkKgNN5wrqGqCWPqaab5_8",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjFqLVdQUzBrQUM4",
-      "snippet": {
-        "publishedAt": "2016-12-13T00:43:32Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Kids Holiday Music Collab - Shooting Stars (Original Song performed at YouTube Space LA)",
-        "description": "A few of YouTube’s music creators came together to perform a YouTube Kids original song and shoot a holiday music collab video just in time for the holidays at YouTube Space LA. Happy Holidays to families all over the world!\n\nYou can find this video and more kid-friendly videos on the YouTube Kids app. Download and view it here: https://ytkids.app.goo.gl/KuqI\n\n#YouTubeSpaceLA #YTKidsHolidays\n\nSongwriters: \nRuth Royal, Dinesh Wicks, Jude Gibbs, Jonathan Penny, Adam Gock and Mitch Stewart http://www.thedasoffice.com\n\nPerformers:\nAaliyah Rose https://www.youtube.com/user/aaliyahrosemusic\nCam Anthony https://www.youtube.com/user/CamrenAnthony\nHayden Summerall https://www.youtube.com/user/haydensummerall\nL2M https://www.youtube.com/channel/UC_4G8YkHFMC2xukuVziP7xA\nSunny Keller https://www.youtube.com/channel/UC63UZ-gmGAqoIk-Kxd3A6mg\n\nCheck out what it was like for L2M and the other performers behind-the-scenes at YouTube Space LA: \n\nBACKSTAGE AT YOUTUBE! - L2M Pop Shop Episode 8\nhttps://youtu.be/wvxhEh5Qv7s\n\nSHOOTING STARS AT YOUTUBE! - L2M Pop Shop Episode 9\nhttps://youtu.be/dQC24-S24k0\n\nFor more holiday music videos, check out L2M's favorite holiday songs playlist featured in the YouTube Kids app: https://ytkids.app.goo.gl/M87W",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "f7MgK81iedL6KkWODEaRzID2s2A",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "Lxbdvo2vFwc"
+            },
+            "snippet": {
+                "publishedAt": "2017-06-20T14:54:47Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#MoreThanARefugee",
+                "description": "The International Rescue Committee (IRC) invited seven YouTube creators to get to know refugees around the world and share their stories. See those stories at ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/Lxbdvo2vFwc/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 80,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "1j-WPS0kAC8"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "PG4GlfO3OnOCLAYnPd2_Vs6AKDI",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlk4TXV4SE5MZlo4",
-      "snippet": {
-        "publishedAt": "2016-12-07T18:00:03Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Rewind 2016: Behind the Scenes | #YouTubeRewind",
-        "description": "Behind the scenes of YouTube Rewind 2016, the epic year-end celebration of the videos, people, music and moves that made 2016 on YouTube. #YouTubeRewind\n\n\nWatch Rewind again: https://youtu.be/_GuOjXYl5ew\nWatch the year's trending videos: http://youtube.com/rewind\nSee the trends as they happen: http://youtube.com/trending\nSpend more time with your favorite creators, videos and trends from 2016: http://yt.be/rewind2016",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "KJAskdNbVRif9rx_ff0sArXh_Sc",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "FwcADsEAvOM"
+            },
+            "snippet": {
+                "publishedAt": "2017-06-19T18:45:05Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Introducing YouTube TV",
+                "description": "Introducing YouTube TV. Finally, live TV made for us. Try it free here: https://tv.youtube.com YouTube TV is a TV streaming service that lets you watch live TV ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/FwcADsEAvOM/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/FwcADsEAvOM/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/FwcADsEAvOM/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 81,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "Y8MuxHNLfZ8"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "Tp1Mdfqs-AkLFCxrdR18_16-4p4",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlVhSUt1OGhHUXFZ",
-      "snippet": {
-        "publishedAt": "2016-12-07T19:08:33Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Rewind 2016: Epic Group Running Man Challenge in 360° #YouTubeRewind",
-        "description": "360° Easter Egg Behind the Scenes of YouTube Rewind 2016. Featuring Meg DeAngelis, The GabbieShow, Josh Holza (Damn Daniel), CloeCoture, Supereeego, Meghan Rienks, Timothy DeLaGhetto, Manny Mua, Beauty TakenIn, Alexa Losey, jessiepaege, patrickstarr",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "EmiNNk2D4cqWrbXiuEoLVQKJmHY",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "GWEUoPBaSx4"
+            },
+            "snippet": {
+                "publishedAt": "2017-05-12T16:37:52Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Happy Mother’s Day to #AllTheMoms",
+                "description": "This Mother's Day, we're celebrating #AllTheMoms out there who share their stories and inspire us every single day. From the joyful moments to the challenging ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/GWEUoPBaSx4/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 82,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "UaIKu8hGQqY"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "qV34fJgA0f7F_OP1BIh63NqHGR0",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlBSQVZBQ2JmWkgw",
-      "snippet": {
-        "publishedAt": "2016-12-07T19:08:57Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Rewind 2016: Unboxing the Cube in 360° #YouTubeRewind",
-        "description": "360° Easter Egg Behind the Scenes of YouTube Rewind 2016. Featuring Marques Brownlee, Meredith Foster, LaurDIY, Alex Wassabi & UnboxTherapy.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/PRAVACbfZH0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/PRAVACbfZH0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/PRAVACbfZH0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/PRAVACbfZH0/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/PRAVACbfZH0/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "s0EHBpM1VXrnFbZnKvpdNT2to7o",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "VY-VQ0KvhgU"
+            },
+            "snippet": {
+                "publishedAt": "2017-05-11T16:24:59Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Learn Something New Every Day!",
+                "description": "Learning and educational content have exploded on YouTube in recent years. There are half a billion views of learning-related content on YouTube every day.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/VY-VQ0KvhgU/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 83,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "PRAVACbfZH0"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "-XJnKAaz7qBHnciFEWJ9yPXUYGA",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLl9HdU9qWFlsNWV3",
-      "snippet": {
-        "publishedAt": "2016-12-07T18:00:03Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Rewind: The Ultimate 2016 Challenge | #YouTubeRewind",
-        "description": "YouTube Rewind 2016. Celebrating the videos, people, music and moves that made 2016. #YouTubeRewind\n\nSpend more time with your favorite creators, videos and trends from 2016: http://yt.be/rewind2016\nWatch trending videos from 2016: http://youtube.com/rewind\nSee trends as they happen: http://youtube.com/trending\nWatch the BTS video: https://youtu.be/Y8MuxHNLfZ8\nWatch all the easter eggs: https://goo.gl/WihKvv\n\nMusic by The Hood Internet https://www.youtube.com/user/thehoodinternet\nWith an original remix by Major Lazer https://www.youtube.com/user/majorlazer\n\nAlex Wassabi https://www.youtube.com/user/hoiitsroi\nAlfie https://www.youtube.com/user/PointlessBlog\nAIB https://www.youtube.com/user/allindiabakchod\nAmazingPhil https://www.youtube.com/user/AmazingPhil\nAndreasChoice https://www.youtube.com/user/AndreasChoice\nBethany Mota https://www.youtube.com/user/Macbarbie07\nBFvsGF https://www.youtube.com/user/BFvsGF\nBibisBeautyPalace https://www.youtube.com/user/BibisBeautyPalace\nBie The Ska https://www.youtube.com/user/bomberball\nCaELiKe https://www.youtube.com/user/CaELiKe\nCasey Neistat https://www.youtube.com/user/caseyneistat\nCaspar https://www.youtube.com/user/dicasp\nConnor Franta https://www.youtube.com/user/ConnorFranta\nCyprien https://www.youtube.com/user/MonsieurDream\ndanisnotonfire https://www.youtube.com/user/danisnotonfire\nDude Perfect https://www.youtube.com/user/corycotton\nDwayne \"The Rock\" Johnson https://www.youtube.com/user/therock\nEeOneGuy https://www.youtube.com/user/EeOneGuy\nelrubiusOMG https://www.youtube.com/user/elrubiusOMG\nenchufetv https://www.youtube.com/user/enchufetv\nGigi Gorgeous https://www.youtube.com/user/GregoryGORGEOUS\nGrace Helbig https://www.youtube.com/user/graciehinabox\nhajimesyacho https://www.youtube.com/user/0214mex\nHannah Hart https://www.youtube.com/user/MyHarto/\nHayla https://www.youtube.com/user/HaylaTV\nHevesh5 https://www.youtube.com/user/Hevesh5\nHolaSoyGerman https://www.youtube.com/user/HolaSoyGerman\niHasCupquake https://www.youtube.com/user/iHasCupquake\nIngrid Nilsen https://www.youtube.com/user/missglamorazzi\njacksepticeye https://www.youtube.com/user/jacksepticeye\nJenn McAllister https://www.youtube.com/user/jennxpenn\nJoey Graceffa https://www.youtube.com/user/JoeyGraceffa\nJoutJout Prazer https://www.youtube.com/user/joutjoutprazer\nKianAndJC https://www.youtube.com/user/KianAndJc\nKSI https://www.youtube.com/user/KSIOlajidebt\nKurt Hugo Schneider https://www.youtube.com/user/KurtHugoSchneider\nLaurDIY https://www.youtube.com/user/LaurDIY\nLilly Singh https://www.youtube.com/user/IISuperwomanII\nLiza Koshy https://www.youtube.com/channel/UCxSz6JVYmzVhtkraHWZC7HQ\nLosPolinesios https://www.youtube.com/user/LosPolinesios\nLuisito Rey https://www.youtube.com/user/luisitorey\nLuzu https://www.youtube.com/user/luzugames\nMamrie Hart https://www.youtube.com/user/YouDeserveADrink\nMarkiplier https://www.youtube.com/user/markiplierGAME\nMarques Brownlee https://www.youtube.com/user/marquesbrownlee\nMatPat https://www.youtube.com/user/MatthewPatrick13\nMatt Steffanina https://www.youtube.com/user/MattSDance\nMeg DeAngelis https://www.youtube.com/user/maybabytumbler\nMeredith Foster https://www.youtube.com/user/StilaBabe09\nNicky Jam https://www.youtube.com/channel/UCpb_iJuhFe8V6rQdbNqfAlQ\nPewDiePie https://www.youtube.com/user/PewDiePie\nPIKOTARO https://www.youtube.com/channel/UCKpIOnsk-gcwHXIzuk24ExA\nPorta dos Fundos https://www.youtube.com/user/portadosfundos\nPrankvsPrank https://www.youtube.com/user/PrankvsPrank\nRADIO FISH https://www.youtube.com/channel/UCok3jJg7q1-PKV6XYDYTA_A\nRclbeauty101 https://www.youtube.com/user/Rclbeauty101\nRhett & Link https://www.youtube.com/user/RhettandLink\nSebastián Villalobos https://www.youtube.com/user/VillalobosSebastian\nSeth Meyers https://www.youtube.com/user/LateNightSeth\nSQUEEZIE https://www.youtube.com/user/aMOODIEsqueezie\nsWooZie https://www.youtube.com/user/swoozie06\nThe Dolan Twins https://www.youtube.com/user/TheDolanTwins\nThe Late Late Show with James Corden https://www.youtube.com/channel/UCJ0uqCI0Vqr2Rrt1HseGirg\nThe Slow Mo Guys https://www.youtube.com/user/theslowmoguys\nTheWillyrex https://www.youtube.com/user/TheWillyrex\nTre Melvin https://www.youtube.com/user/ThisIsACommentary\nTrevor Noah https://www.youtube.com/channel/UCwWhs_6x42TyRM4Wstoq8HA\nUnbox Therapy https://www.youtube.com/user/unboxtherapy\nVanossGaming https://www.youtube.com/user/VanossGaming\nVRZOchannel https://www.youtube.com/user/VrzoChannel\nWerevertumorro https://www.youtube.com/user/werevertumorro\nWhat's Inside? https://www.youtube.com/user/lincolnmarkham\nwhatdafaqshow https://www.youtube.com/user/WHATDAFAQSHOW\nWhinderssonNunes https://www.youtube.com/user/whinderssonnunes\nYosStoP https://www.youtube.com/user/YosStoP\nYuka Kinoshita https://www.youtube.com/user/kinoyuu0204\nYuya https://www.youtube.com/user/lady16makeup\n& more!\n\nYouTube Rewind 2016 produced by Portal A",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "CyWUZbez_YLDyqDTZrfVgJFsnAs",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "bdX55I9WHDw"
+            },
+            "snippet": {
+                "publishedAt": "2017-03-07T18:11:03Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#HerVoiceIsMyVoice: Celebrate the Women Who Inspire Us Every Day",
+                "description": "The strength of individual women empowers us all. This International Women's Day, we're turning up the volume on female voices and honoring the impact they ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/bdX55I9WHDw/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/bdX55I9WHDw/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/bdX55I9WHDw/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 84,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "_GuOjXYl5ew"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "wWxWPNcw_RoONahl_7_mmD3y-8Q",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmw2LXFVa1gzaWZV",
-      "snippet": {
-        "publishedAt": "2016-11-07T03:22:57Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Meet the #voteIRL Dogglegangers",
-        "description": "Voting is the most important thing you can do on November 8th, so don't woof it. Make a plan and cast your ballot. Find your polling place here to #voteIRL: https://www.google.com/#q=Where+do+I+vote+in+the+2016+United+States+election+%23Everyonein2016&eob=va/4/16/\n\nYouTubers everywhere will be voting in real life on Election Day. But even as the nation fetches votes, we can’t just roll-over and stop making videos.\n\nSo we hired professional stand-ins (or... sit-ins) to fill in while YouTubers go to the polls.\n\nPresenting:\n\nPresenting:\nTylerBarkley → youtube.com/tyleroakley\nDwayneTheDogJohnson → youtube.com/therock\nK9Obrien → youtube.com/teamcoco\nBethFurryMota → youtube.com/bethanymota\nBarkeesBrownlee → youtube.com/mkbhd\nFrenchieNeistat → youtube.com/caseyneistat\nGrowlzell → youtube.com/glozell1\n\nDon’t make these doggies sad, or you'll be barking up the wrong tree.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "b3d5OsktKVoxFqy5aVMqOVsfQeo",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "1j-WPS0kAC8"
+            },
+            "snippet": {
+                "publishedAt": "2016-12-13T00:43:32Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Kids Holiday Music Collab - Shooting Stars (Original Song performed at YouTube Space LA)",
+                "description": "A few of YouTube's music creators came together to perform a YouTube Kids original song and shoot a holiday music collab video just in time for the holidays at ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/1j-WPS0kAC8/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 85,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "l6-qUkX3ifU"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "AwgTPSFeZG75LojB-kpdxUpaYuA",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmRkTjl5WlBzMlAw",
-      "snippet": {
-        "publishedAt": "2016-11-07T03:22:12Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "A Special \"Vote In Real Life\" Message from President Obama  | #voteIRL",
-        "description": "President Obama congratulates you for everything your generation has done to change the planet. But now it’s showtime. It's time to get out there and vote in real life. Find your polling place here: https://www.google.com/#q=Where+do+I+vote+in+the+2016+United+States+election+%23Everyonein2016&eob=va/4/16/\n\nDon't let your voice be silent. #voteIRL",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "LQkJxP26sc7zUvyAqsjLgq4gAZU",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "PRAVACbfZH0"
+            },
+            "snippet": {
+                "publishedAt": "2016-12-07T19:08:57Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Rewind 2016: Unboxing the Cube in 360° #YouTubeRewind",
+                "description": "360° Easter Egg Behind the Scenes of YouTube Rewind 2016. Featuring Marques Brownlee, Meredith Foster, LaurDIY, Alex Wassabi & UnboxTherapy.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/PRAVACbfZH0/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/PRAVACbfZH0/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/PRAVACbfZH0/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 86,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "ddN9yZPs2P0"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "6FCceHg7ZNwSUQQzgljKGDt1N64",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkdCWkRZbm9XV0NV",
-      "snippet": {
-        "publishedAt": "2016-10-17T20:29:57Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Register to Vote in 1:34 With the One and Only Cher",
-        "description": "Legendary goddess of pop, Cher, shares her love of makeup in the same amount of time it will take you to register to #voteIRL. \nBe fabulous like Cher.\nREGISTER NOW: http://g.co/elections/134",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "0123wA7TY5AYm8rEWkM_0CwZ4S0",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "UaIKu8hGQqY"
+            },
+            "snippet": {
+                "publishedAt": "2016-12-07T19:08:33Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Rewind 2016: Epic Group Running Man Challenge in 360° #YouTubeRewind",
+                "description": "360° Easter Egg Behind the Scenes of YouTube Rewind 2016. Featuring Meg DeAngelis, The GabbieShow, Josh Holza (Damn Daniel), CloeCoture, ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/UaIKu8hGQqY/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 87,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "GBZDYnoWWCU"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "dr_v3HLXSuBh27qrm53qCHdzk_s",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjNhV2M0UjlhNjlF",
-      "snippet": {
-        "publishedAt": "2016-09-28T18:36:38Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Register to Vote in 1:34 With the Cast of 'The West Wing'",
-        "description": "Allison Janney, Richard Schiff, Bradley Whitford, and Dulé Hill from \"The West Wing\" want you to register to vote and #voteIRL in this upcoming election! Don't make C.J. tell you twice... REGISTER HERE: http://g.co/elections/134",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/3aWc4R9a69E/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/3aWc4R9a69E/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/3aWc4R9a69E/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/3aWc4R9a69E/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/3aWc4R9a69E/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "N9jJR57BnTlZRIV7H0_z-5UkWuY",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "_GuOjXYl5ew"
+            },
+            "snippet": {
+                "publishedAt": "2016-12-07T18:00:03Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Rewind: The Ultimate 2016 Challenge | #YouTubeRewind",
+                "description": "YouTube Rewind 2016. Celebrating the videos, people, music and moves that made 2016. #YouTubeRewind Spend more time with your favorite creators, ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/_GuOjXYl5ew/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 88,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "3aWc4R9a69E"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "BLyEJPaYPyprjBMVQM6qciwGSWo",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlZwRHBERjNvZWVz",
-      "snippet": {
-        "publishedAt": "2016-09-28T02:29:49Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Register to Vote in 1:34 - #voteIRL",
-        "description": "1 minute. 34 seconds. In the U.S., that’s all it takes to register to vote. A single registration lasts a lifetime of elections. We’ve made it easy for you here: http://g.co/elections/134\n\nThere are a lot of things you can do in 1:34. You can shoot hoops, enjoy popcorn, do a plank, make tea, or sing a song. It’s probably been about 1:34 since you started reading this description.\n\nWe want to make sure that everyone has the ability to use their voice and cast their vote this November. \nBut in order to #voteIRL, it’s essential that you are registered before mid October.\n\nA special thanks to these YouTubers below, and everyone making 1:34 videos:\n\nAJ Rafael: https://www.youtube.com/ilajil\nAlex & Erika: https://www.youtube.com/AlexErikaSanDiego\nAmbrosia Malbrough: https://www.youtube.com/xGOLDn\nAnne Jane Jackson: https://www.youtube.com/peacerocker07\nBill Maher https://www.youtube.com/RealTime\nCarrie Rad https://www.youtube.com/CarrieRad\nCeresiaworld: https://www.youtube.com/ceresiasworld\nChainsmokers: https://www.youtube.com/ChainsmokersVEVO\nChinaCandyCulture: https://www.youtube.com/ChinaCandyCouture\nChvrches: https://www.youtube.com/CHVRCHES\nCiarahoneydip: https://www.youtube.com/Ciarahoneydip\nConan O’Brien: https://www.youtube.com/teamcoco\nDangerissweet: https://www.youtube.com/Tcooley086\nDaym Drops: https://www.youtube.com/channel/UCJNtkDAqZBwJF4GKVD-5QKw\nEddie G!: https://www.youtube.com/ohemgeeitseddieg\nEdepot: https://www.youtube.com/edepot\nEmily Dao: https://www.youtube.com/ehehehems\nEric Dunn: https://www.youtube.com/ericvdunn\nEvelyn From The Internets: https://www.youtube.com/spicyeve\nFREE DAD VIDEOS: https://www.youtube.com/channel/UCxg8ylqn-I3zrXc9bI8j4zg\nFung Bros: https://www.youtube.com/FungBrosComedy\nFunky Dineva: https://www.youtube.com/beeper246\nGlitchxCity: https://www.youtube.com/GlitchxCity\nGnash: https://www.youtube.com/gcnash16\nIrixGuy's Adventure Channel: https://www.youtube.com/IrixGuy\nJentotheden: https://www.youtube.com/jentotheden\nJohnnieDominoProductions https://www.youtube.com/TheJohnnieDominoShow\nJust Call Me Wah: https://www.youtube.com/darkskinneddivas\nKunes Country Video: https://www.youtube.com/UCd4o-a_tUOYkDeSzPdt6TsQ\nLacieAndRobin https://www.youtube.com/channel/UCQ2Kc1ZGDCEbA_cRPEIGqkg\nLipsticknCurls: https://www.youtube.com/xlovedivine\nMacDoesIt: https://www.youtube.com/MacDoesit\nMachinima: https://www.youtube.com/machinima\nMillionaire Hoy: https://www.youtube.com/yaboymillhoy\nMini Marley: https://www.youtube.com/minimarley12\nMISS YANI: https://www.youtube.com/MissYanYiBeautynLife\nModaMob: https://www.youtube.com/modamob\nMy Natural Sisters: https://www.youtube.com/MyNaturalSistas\nOliviaHas2Moms: https://www.youtube.com/OliviaHas2Moms\nProfessorPuppet: https://www.youtube.com/ProfessorPuppet\nRandomStructureTV: https://www.youtube.com/RandomStructureTV\nRaymond Braun: https://www.youtube.com/channel/UCbj0oi9NY34z2JJ9ElYNwyQ\nRooster Teeth: https://www.youtube.com/RoosterTeeth\nRyan Seacrest Presents: https://www.youtube.com/ryanseacrest\nShalom Blac: https://www.youtube.com/channel/UCHdbS7-HdeC6PMo9EtY5hFA\nSmoothiefreak: https://www.youtube.com/smoothiefreak\nStephanie Haney: https://www.youtube.com/MsStephanieChristine\nThe cast of the West Wing\nThe Curly Cooper's: https://www.youtube.com/channel/UCwskTA3Rm_ktVDRxlhLHUgQ\nThe Rock: https://www.youtube.com/therock\nTheChicNatura https://www.youtube.com/backsyncfan\nTimothy DeLaGhetto: https://www.youtube.com/TimothyDeLaGhetto2\nTodrick Hall: https://www.youtube.com/user/todrickhall \nTOLEMIGOCA: https://www.youtube.com/onlinedenden\nVagabrothers: https://www.youtube.com/vagabrothers\nVera Sweeney: https://www.youtube.com/veryvera1\n\nAnd don’t forget to register.\n#voteIRL",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VpDpDF3oees/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VpDpDF3oees/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VpDpDF3oees/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/VpDpDF3oees/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/VpDpDF3oees/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "PHS2wL5droZpTFpibWrGmxAXsx8",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "Y8MuxHNLfZ8"
+            },
+            "snippet": {
+                "publishedAt": "2016-12-07T18:00:03Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Rewind 2016: Behind the Scenes | #YouTubeRewind",
+                "description": "Behind the scenes of YouTube Rewind 2016, the epic year-end celebration of the videos, people, music and moves that made 2016 on YouTube.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/Y8MuxHNLfZ8/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 89,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "VpDpDF3oees"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "By3d29B2LzS2P5k5uZoPfJ91YWk",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkRBTE1SZ2FrZC1j",
-      "snippet": {
-        "publishedAt": "2016-09-22T11:01:01Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "YouTube Creators for Change: Humza Arshad",
-        "description": "Humza Arshad is a British and Pakistani YouTube comedian based in the U.K. Widely known for his Diary of a Badman series on YouTube, Humza also uses his self-deprecating comedy to tackle difficult issues like extremism and gang violence. He has even done school tours in the U.K where he’s spoken to kids about embracing their identities and countering hate and extremism. For more on Humza, visit his channel: https://www.youtube.com/user/HumzaProductions",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/DALMRgakd-c/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/DALMRgakd-c/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/DALMRgakd-c/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/DALMRgakd-c/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/DALMRgakd-c/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "bZPLZLf1eu-byl1ZOs2jRyJ4428",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "l6-qUkX3ifU"
+            },
+            "snippet": {
+                "publishedAt": "2016-11-07T03:22:57Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Meet the #voteIRL Dogglegangers",
+                "description": "Voting is the most important thing you can do on November 8th, so don't woof it. Make a plan and cast your ballot. Find your polling place here to #voteIRL: ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/l6-qUkX3ifU/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 90,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "DALMRgakd-c"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "pZUbtesRJbI46sZLRj7t2RTIWoI",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjZtTnotUHBFWDRF",
-      "snippet": {
-        "publishedAt": "2016-09-21T15:00:02Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#voteIRL - Use Your Voice. Vote in Real Life.",
-        "description": "Today, we’re announcing YouTube’s get out the vote campaign, #voteIRL, where together with the YouTube creator community, we’re helping get young people to the polls. Even though people are clearly following the election online, we want to make sure they get involved “in real life,” too. \n\nWe believe in giving everyone a voice. So this U.S. elections season, we’re committed to making sure that people--especially young people--use their voice by voting.\n\nREGISTER TO VOTE NOW: http://g.co/elections/134\n\nDid you know it only takes 1:34 to register to vote? For National Voter Registration Day, starting today the YouTube community will be making 1:34 videos to make sure that you're registered to vote. \n\nKeep an eye out for familiar 1:34 faces all week long: https://www.youtube.com/playlist?list=PLbpi6ZahtOH4M-P1l2fzGAzXG4OYDzL7R\n\nA special thanks to the stars of our #voteIRL video:\n\nBethany Mota: youtube.com/bethanymota\nHannah Hart: youtube.com/harto\nHank Green: youtube.com/vlogbrothers\nDulce Candy: youtube.com/DulceCandy87\nThe Young Turks / Cenk Uygur: youtube.com/TheYoungTurks\nKingsley: youtube.com/kingsley\nLaci Green: youtube.com/lacigreen\nPhilip Defranco: youtube.com/sxephil\nEric Ochoa: youtube.com/SUPEReeeGO/\nFranchesca Ramsey: youtube.com/chescaleigh\nAnna Akana: youtube.com/user/AnnaAkana\nMark Watson: youtube.com/SoldierKnowsBest/\nJulie Boroswki: youtube.com/TokenLibertarianGirl\nBlimey Cow: youtube.com/blimeycow",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "yt8XpDGI3Yi0OZwC-QQW-7ORHVM",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "ddN9yZPs2P0"
+            },
+            "snippet": {
+                "publishedAt": "2016-11-07T03:22:12Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "A Special &quot;Vote In Real Life&quot; Message from President Obama  | #voteIRL",
+                "description": "President Obama congratulates you for everything your generation has done to change the planet. But now it's showtime. It's time to get out there and vote in real ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/ddN9yZPs2P0/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 91,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "6mNz-PpEX4E"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "I8SaUvcM4FhHGZsCfV86Gm1Z1yY",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLi0zZVNna05fQlY4",
-      "snippet": {
-        "publishedAt": "2016-08-21T03:32:52Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Congratulations, Julius Yego",
-        "description": "Javelin champion Julius Yego - also known as \"Mr. YouTube Man\" - taught himself the sport by watching YouTube videos.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "WMGVIdbE7faMfATM1VEIyCRZbm4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "GBZDYnoWWCU"
+            },
+            "snippet": {
+                "publishedAt": "2016-10-17T20:29:57Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Register to Vote in 1:34 With the One and Only Cher",
+                "description": "Legendary goddess of pop, Cher, shares her love of makeup in the same amount of time it will take you to register to #voteIRL. Be fabulous like Cher.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/GBZDYnoWWCU/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 92,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "-3eSgkN_BV8"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "M2Z98Qv2hvNa_2UROsinfBfW6l4",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm5tLW02cXVyQThj",
-      "snippet": {
-        "publishedAt": "2016-08-17T17:14:48Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Be Heard",
-        "description": "Some of the most important moments leading up to Election Day won't make headlines. They'll happen when people - from creators to candidates, from activists to everyday citizens - turn to YouTube to stand up and be heard. Join us in celebrating this ongoing political conversation and all the voices behind it.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/nm-m6qurA8c/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/nm-m6qurA8c/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/nm-m6qurA8c/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/nm-m6qurA8c/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/nm-m6qurA8c/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "io_mAXcg-hUSrSc8MpDJj4Khuj4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "3aWc4R9a69E"
+            },
+            "snippet": {
+                "publishedAt": "2016-09-28T18:36:38Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Register to Vote in 1:34 With the Cast of &#39;The West Wing&#39;",
+                "description": "Allison Janney, Richard Schiff, Bradley Whitford, and Dulé Hill from \"The West Wing\" want you to register to vote and #voteIRL in this upcoming election!",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/3aWc4R9a69E/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/3aWc4R9a69E/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/3aWc4R9a69E/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 93,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "nm-m6qurA8c"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "O9W_t3HxYXh6VgbBZnm1XsFmevU",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmR0Q3llcHVMdDhR",
-      "snippet": {
-        "publishedAt": "2016-06-21T17:00:01Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "#ProudToBe: Coming Together to Celebrate Identity",
-        "description": "Celebrating the inspiring voices who are #ProudToBe\nSHARE THIS VIDEO: https://youtu.be/dtCyepuLt8Q\nMUSIC: \"Nothing Without Love\" by Nate Ruess\n\nFrom commemorating Pride parades to opening up about transitions and explaining the ABCs of LGBT (https://www.youtube.com/watch?v=uFqLrSHWNT4), YouTube is a place where anyone can belong no matter who they are or who they love. That is why today we want to help people honor and celebrate who they’re #ProudToBe.\n\nNow, more than ever, it’s important that we help accept, love, and celebrate one another. In the wake of the tragic events in Orlando, we stand together in support of the LGBTQ community. We stand together with everyone who has the courage to own and share their identity. We stand together to show the power of solidarity, the power of love, the power of pride. To those beautiful and brave voices who continue to make YouTube the vibrant, diverse and empathetic community it is, we are #ProudToBe with you.\n\nJOIN IN: Who are you #ProudToBe? \nUpload a video or share a post with #ProudToBe in the title so others can find it.\n\nSUBSCRIBE: http://yt.be/spotlight/subscribe",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "yVVJoIHO7IHLzzil1OfLsM7Hu3g",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "VpDpDF3oees"
+            },
+            "snippet": {
+                "publishedAt": "2016-09-28T02:29:49Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Register to Vote in 1:34 - #voteIRL",
+                "description": "1 minute. 34 seconds. In the U.S., that's all it takes to register to vote. A single registration lasts a lifetime of elections. We've made it easy for you here: ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/VpDpDF3oees/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/VpDpDF3oees/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/VpDpDF3oees/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 94,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "dtCyepuLt8Q"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "TfarnhumALuQYdxWv_GUt0RIzQ0",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkRQRUpCLUZDSXRr",
-      "snippet": {
-        "publishedAt": "2016-04-01T07:22:02Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Experience YouTube in #SnoopaVision",
-        "description": "Welcome to SnoopaVision, a fully immersive experience that lets you watch any video on YouTube in 360 degrees, with Snoop Dogg.\n\nThe best of SnoopaVision: https://goo.gl/f495Zw\n\nWatch more Snoop: https://www.youtube.com/westfesttv \nNew album \"High Definition\" dropping soon\n\nOh, and by the way, Happy April 1st. \n\nVideo brought to you by YouTube and Portal A",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/DPEJB-FCItk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/DPEJB-FCItk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/DPEJB-FCItk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/DPEJB-FCItk/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/DPEJB-FCItk/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "F2NiSyOQ3hw-mqdAzA4DvKBazSg",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "DALMRgakd-c"
+            },
+            "snippet": {
+                "publishedAt": "2016-09-22T11:01:01Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube Creators for Change: Humza Arshad",
+                "description": "Humza Arshad is a British and Pakistani YouTube comedian based in the U.K. Widely known for his Diary of a Badman series on YouTube, Humza also uses his ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/DALMRgakd-c/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/DALMRgakd-c/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/DALMRgakd-c/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 95,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "DPEJB-FCItk"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "UKto3WPa9OtZ94KeWJ0ZG8ONJpc",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkNsZ0JfaG1TTW9N",
-      "snippet": {
-        "publishedAt": "2016-04-01T07:22:52Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "6ft Man in 6ft Giant Water Balloon - The Slow Mo Guys in SnoopaVision",
-        "description": "Learn more about SnoopaVision: https://youtu.be/DPEJB-FCItk\n\nWelcome to SnoopaVision, a fully immersive experience that lets you watch any video on YouTube in 360 degrees, with Snoop Dogg. \n\nWatch more Snoop: https://www.youtube.com/westfesttv\nNew album \"High Definition\" dropping soon\n\nWatch more Meredith: https://www.youtube.com/user/StilaBabe09\nWatch more JacksFilms: https://www.youtube.com/jacksfilms\nOriginal video: https://www.youtube.com/watch?v=NMbM-ERy2Lk",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ClgB_hmSMoM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ClgB_hmSMoM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ClgB_hmSMoM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/ClgB_hmSMoM/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/ClgB_hmSMoM/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "Ytrdh8RtOsiSVyj4ekKqnnXjQv4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "6mNz-PpEX4E"
+            },
+            "snippet": {
+                "publishedAt": "2016-09-21T15:00:02Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#voteIRL - Use Your Voice. Vote in Real Life.",
+                "description": "Today, we're announcing YouTube's get out the vote campaign, #voteIRL, where together with the YouTube creator community, we're helping get young people ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/6mNz-PpEX4E/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 96,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "ClgB_hmSMoM"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "LaDeMW_wMr-xSNr9RVpcWhebQUU",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlBraUltbnVrWkF3",
-      "snippet": {
-        "publishedAt": "2016-04-01T07:23:05Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "GGN Larry King & Snoop Dogg AKA Lion in SnoopaVision",
-        "description": "Learn more about SnoopaVision: https://youtu.be/DPEJB-FCItk\n\nWelcome to SnoopaVision, a fully immersive experience that lets you watch any video on YouTube in 360 degrees, with Snoop Dogg.\n\nWatch more Snoop: https://www.youtube.com/westfesttv\nNew album \"High Definition\" dropping soon\n\nOriginal video: https://www.youtube.com/watch?v=8awqtaD3LAI",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/PkiImnukZAw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/PkiImnukZAw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/PkiImnukZAw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/PkiImnukZAw/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/PkiImnukZAw/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "mUgtNuV573i0J16cV7NsMTpJGg4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "-3eSgkN_BV8"
+            },
+            "snippet": {
+                "publishedAt": "2016-08-21T03:32:52Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Congratulations, Julius Yego",
+                "description": "Javelin champion Julius Yego - also known as \"Mr. YouTube Man\" - taught himself the sport by watching YouTube videos.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/-3eSgkN_BV8/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 97,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "PkiImnukZAw"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "ZUT_WBnQVYflgUbQCays76hcqU8",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk0zbDZtTTNxVnpr",
-      "snippet": {
-        "publishedAt": "2016-04-01T07:23:16Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "The Ice-Cream Van in SnoopaVision",
-        "description": "Learn more about SnoopaVision: https://youtu.be/DPEJB-FCItk\n\nWelcome to SnoopaVision, a fully immersive experience that lets you watch any video on YouTube in 360 degrees, with Snoop Dogg.\n\nWatch more Snoop: https://www.youtube.com/westfesttv\nNew album \"High Definition\" dropping soon\n\nWatch more Vsauce: https://www.youtube.com/Vsauce\nWatch more Olga: https://www.youtube.com/olgakay\nWatch more Taryn: https://www.youtube.com/TarynSouthern\nWatch more H3H3: https://www.youtube.com/h3h3Productions\nOriginal video: https://www.youtube.com/watch?v=1v1RR8vCbnI",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/M3l6mM3qVzk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/M3l6mM3qVzk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/M3l6mM3qVzk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/M3l6mM3qVzk/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/M3l6mM3qVzk/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "n8Fol2N6UkHCibjpxzAadZNSxyk",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "nm-m6qurA8c"
+            },
+            "snippet": {
+                "publishedAt": "2016-08-17T17:14:48Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Be Heard",
+                "description": "Some of the most important moments leading up to Election Day won't make headlines. They'll happen when people - from creators to candidates, from activists ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/nm-m6qurA8c/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/nm-m6qurA8c/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/nm-m6qurA8c/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 98,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "M3l6mM3qVzk"
-        }
-      }
-    },
-    {
-      "kind": "youtube#playlistItem",
-      "etag": "39lydlADyRAE9lri5KaFSz9VmFU",
-      "id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmFPTFRVWVRrQ0NV",
-      "snippet": {
-        "publishedAt": "2016-04-01T07:23:43Z",
-        "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
-        "title": "Crazy Mountain Biking POV in SnoopaVision",
-        "description": "Learn more about SnoopaVision: https://youtu.be/DPEJB-FCItk\n\nWelcome to SnoopaVision, a fully immersive experience that lets you watch any video on YouTube in 360 degrees, with Snoop Dogg.\n\nWatch more Snoop: https://www.youtube.com/westfesttv\nNew album \"High Definition\" dropping soon\n\nWatch more Vsauce: https://www.youtube.com/Vsauce\nWatch more Olga: https://www.youtube.com/olgakay\nWatch more Taryn: https://www.youtube.com/TarynSouthern\nWatch more H3H3: https://www.youtube.com/h3h3Productions\nOriginal video: https://www.youtube.com/watch?v=1v1RR8vCbnI",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/aOLTUYTkCCU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/aOLTUYTkCCU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/aOLTUYTkCCU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          },
-          "standard": {
-            "url": "https://i.ytimg.com/vi/aOLTUYTkCCU/sddefault.jpg",
-            "width": 640,
-            "height": 480
-          },
-          "maxres": {
-            "url": "https://i.ytimg.com/vi/aOLTUYTkCCU/maxresdefault.jpg",
-            "width": 1280,
-            "height": 720
-          }
+        {
+            "etag": "0QQYWA49QVQSiZw22DbfSHHtIHo",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "dtCyepuLt8Q"
+            },
+            "snippet": {
+                "publishedAt": "2016-06-21T17:00:01Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "#ProudToBe: Coming Together to Celebrate Identity",
+                "description": "Celebrating the inspiring voices who are #ProudToBe SHARE THIS VIDEO: https://youtu.be/dtCyepuLt8Q MUSIC: \"Nothing Without Love\" by Nate Ruess From ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/dtCyepuLt8Q/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         },
-        "channelTitle": "YouTube",
-        "playlistId": "UUBR8-60-B28hp2BmDPdntcQ",
-        "position": 99,
-        "resourceId": {
-          "kind": "youtube#video",
-          "videoId": "aOLTUYTkCCU"
+        {
+            "etag": "9NalQvpo5qrM4jffzEm4NaOB5tQ",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "V47pFY9K4eg"
+            },
+            "snippet": {
+                "publishedAt": "2016-04-01T07:25:14Z",
+                "channelId": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "Webcam 101 for Seniors in SnoopaVision",
+                "description": "Learn more about SnoopaVision: https://youtu.be/DPEJB-FCItk Welcome to SnoopaVision, a fully immersive experience that lets you watch any video on ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/V47pFY9K4eg/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/V47pFY9K4eg/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/V47pFY9K4eg/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "YouTube",
+                "liveBroadcastContent": "none"
+            }
         }
-      }
-    }
-  ],
-  "pageInfo": {
-    "totalResults": 322,
-    "resultsPerPage": 50
-  }
+    ]
 }

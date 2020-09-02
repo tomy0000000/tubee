@@ -22,7 +22,7 @@ def renew_channels(self, channel_ids_with_url, next_countdown=-1):
         )
         channel = Channel.query.get(channel_id)
         if not channel:
-            task_logger.warning(f"<{channel_id}> ID not found, skipped.")
+            task_logger.warning(f"<{channel_id}> Channel not found, skipped.")
             continue
         results[channel_id] = {
             "subscription": channel.subscribe(callback_url, topic_url),
