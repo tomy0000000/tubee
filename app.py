@@ -81,26 +81,17 @@ def deploy():
     upgrade()
 
 
-@docker_cli.command("up")
+@docker_cli.command(
+    "up", context_settings=dict(ignore_unknown_options=True, allow_extra_args=True)
+)
 @click.option(
     "--dev/--prod",
     "development",
     default=True,
     help="Application mode.  [default: dev]",
 )
-@click.option(
-    "--detach/--no-detach",
-    default=True,
-    show_default=True,
-    help="Run application in detach mode.",
-)
-@click.option(
-    "--build/--no-build",
-    default=True,
-    show_default=True,
-    help="Build before running application.",
-)
-def docker_up(build, detach, development):
+@click.pass_context
+def docker(context, development):
     """Run Development Application"""
     import subprocess
 
@@ -110,10 +101,8 @@ def docker_up(build, detach, development):
     else:
         command.append("docker-compose.prod.yml")
     command.append("up")
-    if detach:
-        command.append("--detach")
-    if build:
-        command.append("--build")
+    command += context.args
+    # print(command)
     sys.exit(subprocess.call(command))
 
 
