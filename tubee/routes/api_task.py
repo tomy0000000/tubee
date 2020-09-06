@@ -1,17 +1,21 @@
 """API for Tasks"""
-from flask import Blueprint, jsonify
-from flask_login import login_required
+from flask import Blueprint, abort, jsonify
+from flask_login import current_user, login_required
 
 from .. import celery
-from ..helper import admin_required
 from ..tasks import renew_channels
 
 api_task_blueprint = Blueprint("api_task", __name__)
 
 
+@api_task_blueprint.before_request
+def admin_required():
+    if not current_user.admin:
+        abort(403)
+
+
 @api_task_blueprint.route("/list-scheduled")
 @login_required
-@admin_required
 def list_scheduled():
     worker_scheduled = celery.control.inspect().scheduled()
     if worker_scheduled:
@@ -23,7 +27,6 @@ def list_scheduled():
 
 @api_task_blueprint.route("/list-revoked")
 @login_required
-@admin_required
 def list_revoked():
     worker_revoked = celery.control.inspect().revoked()
     if worker_revoked:
@@ -35,7 +38,6 @@ def list_revoked():
 
 @api_task_blueprint.route("/list-all")
 @login_required
-@admin_required
 def list_all():
     worker_scheduled = celery.control.inspect().scheduled()
     if not worker_scheduled:
@@ -55,7 +57,6 @@ def list_all():
 
 @api_task_blueprint.route("/remove-all")
 @login_required
-@admin_required
 def remove_all():
     worker_tasks = celery.control.inspect().scheduled()
     if not worker_tasks:
@@ -74,7 +75,6 @@ def remove_all():
 
 @api_task_blueprint.route("/<task_id>/status")
 @login_required
-@admin_required
 def status(task_id):
     task = renew_channels.AsyncResult(task_id)
     response = {

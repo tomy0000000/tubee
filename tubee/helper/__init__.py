@@ -17,7 +17,7 @@ def try_parse_datetime(string):
         return None
 
 
-def admin_required(func):
+def admin_required_decorator(func):
     """Restrict view function to admin-only
 
     Arguments:

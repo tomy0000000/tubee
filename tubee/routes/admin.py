@@ -2,12 +2,13 @@
 import os
 import platform
 import sys
-import gunicorn
 
 import flask
+import gunicorn
 import werkzeug
 from flask import (
     Blueprint,
+    abort,
     current_app,
     flash,
     redirect,
@@ -17,19 +18,23 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from ..helper import admin_required
 from ..models import Callback, Notification, Service
 
 admin_blueprint = Blueprint("admin", __name__)
 
 
+@admin_blueprint.before_request
+def admin_required():
+    if not current_user.admin:
+        abort(403)
+
+
 @admin_blueprint.route("/dashboard")
 @login_required
-@admin_required
 def dashboard():
     links = {}
     for rule in current_app.url_map.iter_rules():
-        query = {arg: f"[{arg}]" for arg in rule.arguments}
+        query = {arg: f"<{arg}>" for arg in rule.arguments}
         url = url_for(rule.endpoint, **query)
         try:
             blueprint, endpoint = rule.endpoint.split(".")
@@ -66,14 +71,12 @@ def dashboard():
 
 @admin_blueprint.route("/raise-exception")
 @login_required
-@admin_required
 def raise_exception():
     raise Exception
 
 
 @admin_blueprint.route("/test-logging")
 @login_required
-@admin_required
 def test_logging():
     current_app.logger.debug("debug Log")
     current_app.logger.info("info Log")
@@ -86,7 +89,6 @@ def test_logging():
 
 @admin_blueprint.route("/notification/push", methods=["POST"])
 @login_required
-@admin_required
 def notification_push():
     """Send Test Notification to User"""
     if request.method == "POST":

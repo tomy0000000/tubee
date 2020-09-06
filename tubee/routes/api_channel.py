@@ -4,11 +4,32 @@ from uuid import uuid4
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
-from ..helper import admin_required, build_callback_url, build_topic_url
+from ..helper import admin_required_decorator, build_callback_url, build_topic_url
+from ..helper.youtube import build_youtube_api
 from ..models import Channel
 from ..tasks import renew_channels
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
+
+
+@api_channel_blueprint.route("/<query>")
+@login_required
+def search(query):
+    response = (
+        build_youtube_api()
+        .search()
+        .list(part="snippet", maxResults=30, q=query, type="channel")
+        .execute()
+    )
+    results = [
+        {
+            "title": item["snippet"]["title"],
+            "id": item["snippet"]["channelId"],
+            "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
+        }
+        for item in response["items"]
+    ]
+    return jsonify(results)
 
 
 @api_channel_blueprint.route("/renew-all")
@@ -84,7 +105,7 @@ def renew(channel_id):
 
 @api_channel_blueprint.route("/<channel_id>/fetch-videos")
 @login_required
-@admin_required
+@admin_required_decorator
 def fetch_videos(channel_id):
     # TODO: deprecate this
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()

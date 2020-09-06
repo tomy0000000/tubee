@@ -28,3 +28,19 @@ insert_spinner = (location, type) => {
 drop_spinner = (location) => {
     $(location).find("#loading-spinner-div").remove();
 };
+
+$(document).ready(() => {
+    new ClipboardJS(".clipboard");
+    $(".clipboard")
+        .tooltip({
+            placement: "right",
+            title: "Copied!",
+            trigger: "click",
+        })
+        .on("mouseleave", (element) => {
+            $(element).tooltip("hide");
+        })
+        .on("click", (event) => {
+            event.preventDefault();
+        });
+});
