@@ -43,4 +43,45 @@ $(document).ready(() => {
         .on("click", (event) => {
             event.preventDefault();
         });
+    $("#subscribe-input").autoComplete({
+        resolver: "custom",
+        events: {
+            search: function (query, callback, element) {
+                let url = $(element).data("channel-api");
+                console.log(url);
+                $.ajax(url, {
+                    data: { query: query },
+                }).done(function (result) {
+                    console.log(result);
+                    callback(result);
+                });
+            },
+        },
+        formatResult: function (item) {
+            return {
+                value: item.id,
+                text: item.title,
+                html: [
+                    $("<div>")
+                        .addClass("d-flex align-items-center")
+                        .append(
+                            $("<div>").append(
+                                $("<img>")
+                                    .attr({
+                                        class: "rounded-circle",
+                                        src: item.thumbnail,
+                                    })
+                                    .css("height", "2rem")
+                            ),
+                            $("<div>").append(
+                                $("<p>").addClass("mb-0 ml-2").text(item.title)
+                            )
+                        ),
+                ],
+            };
+        },
+        resolverSettings: {
+            requestThrottling: 1000,
+        },
+    });
 });

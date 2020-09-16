@@ -14,28 +14,6 @@ def admin_required():
         abort(403)
 
 
-@api_task_blueprint.route("/list-scheduled")
-@login_required
-def list_scheduled():
-    worker_scheduled = celery.control.inspect().scheduled()
-    if worker_scheduled:
-        tasks = [task for worker in worker_scheduled.values() for task in worker]
-    else:
-        tasks = []
-    return jsonify(tasks)
-
-
-@api_task_blueprint.route("/list-revoked")
-@login_required
-def list_revoked():
-    worker_revoked = celery.control.inspect().revoked()
-    if worker_revoked:
-        revoked_tasks = [task for worker in worker_revoked.values() for task in worker]
-    else:
-        revoked_tasks = []
-    return jsonify(revoked_tasks)
-
-
 @api_task_blueprint.route("/list-all")
 @login_required
 def list_all():
@@ -50,8 +28,8 @@ def list_all():
     tasks = []
     for worker in worker_scheduled.values():
         for task in worker:
-            if task["request"]["id"] not in revoked_tasks:
-                tasks.append(task)
+            task["active"] = bool(task["request"]["id"] not in revoked_tasks)
+            tasks.append(task)
     return jsonify(tasks)
 
 

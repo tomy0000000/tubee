@@ -18,13 +18,13 @@ body {
 }
 
 #subscribe-input {
-    width: 200px;
-    transition: all .2s ease-in-out;
+    width: 300px;
+    transition: all 0.2s ease-in-out;
 }
 
-#subscribe-input:focus {
+/* #subscribe-input:focus {
     width: 400px;
-}
+} */
 
 @media (min-width: 992px) {
     #username {

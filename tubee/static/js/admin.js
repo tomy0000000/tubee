@@ -74,11 +74,30 @@ load_tasks = (event) => {
     $.getJSON($("#celery-table").attr("data-api-endpoint")).done((data) => {
         data.forEach((element) => {
             let row = $(celery_task_template).clone();
-            row.find(".task-name").text(element.request.name);
+            row.find(".task-name").text(
+                `${element.request.name}\n${element.request.id}`
+            );
             row.find(".task-args").text(
                 JSON.stringify(element.request.args, null, 2)
             );
-            row.find(".task-eta").text(element.eta);
+            row.find(".task-eta").text(moment(element.eta).fromNow());
+            if (element.active) {
+                row.find(".task-active")
+                    .empty()
+                    .append(
+                        $("<span>")
+                            .addClass("badge badge-success")
+                            .text("Active")
+                    );
+            } else {
+                row.find(".task-active")
+                    .empty()
+                    .append(
+                        $("<span>")
+                            .addClass("badge badge-danger")
+                            .text("Revoked")
+                    );
+            }
             table.append(row);
         });
         drop_spinner("#celery-tasks");

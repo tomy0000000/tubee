@@ -121,9 +121,10 @@
                     id="subscribe-input"
                     class="form-control mr-sm-2"
                     type="text"
-                    placeholder="Channel ID"
-                    aria-label="Channel ID"
-                    data-channel-api="{{ url_for('api_channel.search', query='') }}"
+                    placeholder="Channel Name or ID"
+                    onchange="this.setAttribute('value', this.value);"
+                    aria-label="Channel Name or ID"
+                    data-channel-api="{{ url_for('api_channel.search') }}"
                 />
                 <button
                     class="btn btn-outline-success my-2 my-sm-0"

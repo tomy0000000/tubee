@@ -12,9 +12,10 @@ from ..tasks import renew_channels
 api_channel_blueprint = Blueprint("api_channel", __name__)
 
 
-@api_channel_blueprint.route("/<query>")
+@api_channel_blueprint.route("/search")
 @login_required
-def search(query):
+def search():
+    query = request.args.get("query")
     response = (
         build_youtube_api()
         .search()
