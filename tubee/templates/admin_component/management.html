@@ -13,9 +13,17 @@
         type="button"
         id="channel-renew-all-schedule"
         class="btn btn-secondary"
-        data-api-endpoint="{{ url_for('api_channel.renew_all', next_countdown=345600) }}"
+        data-api-endpoint="{{ url_for('api_channel.renew_all', execution=-1) }}"
     >
-        Renew all channel (schedule)
+        Renew all channel (auto)
+    </button>
+    <button
+        type="button"
+        id="channel-renew-all-random"
+        class="btn btn-secondary"
+        data-api-endpoint="{{ url_for('api_channel.renew_all', execution=-2) }}"
+    >
+        Renew all channel (random)
     </button>
     <button
         type="button"

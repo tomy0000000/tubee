@@ -9,14 +9,14 @@ task_logger = logging.getLogger("tubee.task")
 
 
 @celery.task(bind=True)
-def renew_channels(self, channel_ids_with_url, next_countdown=-1):
+def renew_channels(self, channel_ids, next_countdown=-1):
     results = {}
-    for index, (channel_id, callback_url, topic_url) in enumerate(channel_ids_with_url):
+    for index, channel_id in enumerate(channel_ids):
         self.update_state(
             state="PROGRESS",
             meta={
                 "current": index + 1,
-                "total": len(channel_ids_with_url),
+                "total": len(channel_ids),
                 "channel_id": channel_id,
             },
         )
@@ -25,28 +25,28 @@ def renew_channels(self, channel_ids_with_url, next_countdown=-1):
             task_logger.warning(f"<{channel_id}> Channel not found, skipped.")
             continue
         results[channel_id] = {
-            "subscription": channel.subscribe(callback_url, topic_url),
+            "subscription": channel.subscribe(),
             "info": channel.update_youtube_infos(),
         }
         task_logger.info(f"<{channel_id}> subscription renewed")
         task_logger.info(f"<{channel_id}> information updated")
-    channels_update_hub_infos.apply_async(args=[channel_ids_with_url], countdown=60)
+    channels_update_hub_infos.apply_async(args=[channel_ids], countdown=60)
     if next_countdown > 0:
         renew_channels.apply_async(
-            args=[channel_ids_with_url, next_countdown], countdown=next_countdown
+            args=[channel_ids, next_countdown], countdown=next_countdown
         )
     return results
 
 
 @celery.task
-def channels_update_hub_infos(channel_ids_with_url):
+def channels_update_hub_infos(channel_ids):
     results = {}
-    for channel_id, callback_url, topic_url in channel_ids_with_url:
+    for channel_id in channel_ids:
         channel = Channel.query.get(channel_id)
         if not channel:
             task_logger.warning(f"<{channel_id}> ID not found, skipped.")
             continue
-        results[channel_id] = channel.update_hub_infos(callback_url, topic_url)
+        results[channel_id] = channel.update_hub_infos()
         task_logger.info(
             f"<{channel_id}> new hub state: {results[channel_id]['state']}"
         )

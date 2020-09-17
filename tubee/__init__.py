@@ -72,7 +72,6 @@ def create_app(config_name):
     app.register_blueprint(routes.api_action_blueprint, url_prefix="/api/action")
     app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
     app.register_blueprint(routes.api_task_blueprint, url_prefix="/api/task")
-    app.register_blueprint(routes.channel_blueprint, url_prefix="/channel")
     app.register_blueprint(routes.user_blueprint, url_prefix="/user")
     if app.debug:
         app.register_blueprint(routes.dev_blueprint, url_prefix="/dev")

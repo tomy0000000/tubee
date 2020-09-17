@@ -1,5 +1,5 @@
 """API for Frontend Access"""
-from flask import Blueprint, jsonify, request, url_for
+from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 
 
@@ -34,7 +34,4 @@ def youtube_subscription():
     for channel in response["items"]:
         channel_id = channel["snippet"]["resourceId"]["channelId"]
         channel["snippet"]["subscribed"] = current_user.is_subscribing(channel_id)
-        channel["snippet"]["subscribe_endpoint"] = url_for(
-            "api_channel.subscribe", channel_id=channel_id
-        )
     return jsonify(response)

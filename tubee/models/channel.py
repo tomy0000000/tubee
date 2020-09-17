@@ -47,24 +47,11 @@ class Channel(db.Model):
             raise error
 
         channels_update_hub_infos.apply_async(
-            args=[
-                [
-                    (
-                        channel_id,
-                        build_callback_url(channel_id),
-                        build_topic_url(channel_id),
-                    )
-                ]
-            ],
+            args=[[channel_id]],
             countdown=60,
         )
         channels_fetch_videos.apply_async(args=[[channel_id]])
-        channel_id_with_url = (
-            channel_id,
-            build_callback_url(channel_id),
-            build_topic_url(channel_id),
-        )
-        renew_channels.apply_async(args=[channel_id_with_url, 345600], countdown=345600)
+        renew_channels.apply_async(args=[channel_id, 345600], countdown=345600)
         self.activate()
 
     def __repr__(self):

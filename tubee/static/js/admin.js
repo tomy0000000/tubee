@@ -107,6 +107,7 @@ load_tasks = (event) => {
 $(document).ready(() => {
     $("#channel-renew-all").click(api_with_progress);
     $("#channel-renew-all-schedule").click(api_get);
+    $("#channel-renew-all-random").click(api_get);
     $("#task-remove-all").click(api_get);
     $("#management-tab").on("shown.bs.tab", (event) => {
         $("#management > .results").empty();

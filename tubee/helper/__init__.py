@@ -114,7 +114,9 @@ def notify_admin(initiator, service, **kwargs):
 
 
 def build_callback_url(channel_id):
-    callback_url = url_for("channel.callback", channel_id=channel_id, _external=True)
+    callback_url = url_for(
+        "main.channel_callback", channel_id=channel_id, _external=True
+    )
     # if current_app.config["HUB_RECEIVE_DOMAIN"]:
     #     callback_url = callback_url.replace(
     #         request.host, current_app.config["HUB_RECEIVE_DOMAIN"]

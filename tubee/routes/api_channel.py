@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
+from random import randrange
 from uuid import uuid4
 
+import requests
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
-from ..helper import admin_required_decorator, build_callback_url, build_topic_url
-from ..helper.youtube import build_youtube_api
+from ..helper import admin_required_decorator
 from ..models import Channel
 from ..tasks import renew_channels
 
@@ -16,20 +17,51 @@ api_channel_blueprint = Blueprint("api_channel", __name__)
 @login_required
 def search():
     query = request.args.get("query")
-    response = (
-        build_youtube_api()
-        .search()
-        .list(part="snippet", maxResults=30, q=query, type="channel")
-        .execute()
-    )
+
+    URL = f"https://www.youtube.com/results?search_query={query}&sp=EgIQAg%253D%253D&pbj=1"
+    HEADERS = {
+        "x-youtube-client-name": "1",
+        "x-youtube-client-version": "2.20200915.04.01",
+    }
+    PATH = [
+        1,
+        "response",
+        "contents",
+        "twoColumnSearchResultsRenderer",
+        "primaryContents",
+        "sectionListRenderer",
+        "contents",
+        0,
+        "itemSectionRenderer",
+        "contents",
+    ]
+
+    contents = requests.get(URL, headers=HEADERS).json()
+    for key in PATH:
+        contents = contents[key]
     results = [
         {
-            "title": item["snippet"]["title"],
-            "id": item["snippet"]["channelId"],
-            "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
+            "title": item["channelRenderer"]["title"]["simpleText"],
+            "id": item["channelRenderer"]["channelId"],
+            "thumbnail": item["channelRenderer"]["thumbnail"]["thumbnails"][-1]["url"],
         }
-        for item in response["items"]
+        for item in contents
     ]
+    # response = (
+    #     build_youtube_api()
+    #     .search()
+    #     .list(part="snippet", maxResults=30, q=query, type="channel")
+    #     .execute()
+    # )
+    # results = response
+    # results = [
+    #     {
+    #         "title": item["snippet"]["title"],
+    #         "id": item["snippet"]["channelId"],
+    #         "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
+    #     }
+    #     for item in response["items"]
+    # ]
     return jsonify(results)
 
 
@@ -37,38 +69,38 @@ def search():
 @login_required
 def renew_all():
     """Renew Subscription Info, Both Hub and Info"""
-    next_countdown = int(request.args.to_dict().get("next_countdown", -1))
-    immediate = bool(next_countdown <= 0)
-    compact_args = []
-    response = {}
-    for channel in Channel.query.all():
-        task_args = (
-            channel.id,
-            build_callback_url(channel.id),
-            build_topic_url(channel.id),
+    execution = int(request.args.to_dict().get("execution", 0))
+    interval = 60 * 60 * 24 * 4
+    if execution == 0:
+        task = renew_channels.apply_async(
+            args=[channel.id for channel in Channel.query.all()]
         )
-        if immediate:
-            compact_args.append(task_args)
-        else:
-            expiration = channel.expiration
-            if expiration is None:
-                eta = datetime.now() + timedelta(days=4)
-            elif expiration > datetime.now() + timedelta(days=1):
-                eta = expiration - timedelta(days=1)
-            else:
-                eta = datetime.now()
-            task = renew_channels.apply_async(
-                args=[[task_args], next_countdown],
-                eta=eta,
-                task_id=f"renew_{channel.id}_{str(uuid4())[:8]}",
-            )
-            response[channel.id] = task.id
-    if immediate:
-        task = renew_channels.apply_async(args=[compact_args])
         response = {
             "id": task.id,
             "status": url_for("api_task.status", task_id=task.id),
         }
+    else:
+        response = {}
+        for channel in Channel.query.all():
+            expiration = channel.expiration
+            if expiration is None:
+                # eta = datetime.now() + timedelta(days=4)
+                countdown = 60 * 60 * 24 * 4
+            elif expiration > datetime.now() + timedelta(days=1):
+                # eta = expiration - timedelta(days=1)
+                countdown = expiration - timedelta(days=1) - datetime.now()
+                countdown = countdown.total_seconds()
+            else:
+                # eta = datetime.now()
+                countdown = 0
+            if execution == -2:
+                countdown = randrange(countdown)
+            task = renew_channels.apply_async(
+                args=[[channel.id], interval],
+                countdown=countdown,
+                task_id=f"renew_{channel.id}_{str(uuid4())[:8]}",
+            )
+            response[channel.id] = task.id
     return jsonify(response)
 
 

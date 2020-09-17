@@ -38,10 +38,10 @@ build_row = (channel) => {
     row.find(".channel-id-p").text(channel.snippet.channelId);
     if (!channel.snippet.subscribed) {
         row.find(".channel-subscribed").append(
-            $("<a>", {
-                class: "btn btn-success",
-                href: channel.snippet.subscribe_endpoint,
-                role: "button",
+            $("<button>", {
+                class: "btn btn-success subscribe-submit",
+                type: "button",
+                "data-channel-id": channel.snippet.channelId,
             })
                 .text("Subscribe")
                 .appendTo(row.find(".channel-subscribed"))
@@ -63,6 +63,7 @@ load_more = () => {
                 $("#subscription-table tbody").append(build_row(channel));
                 // build_row(channel).appendTo("#subscription-table tbody");
             });
+            $(".subscribe-submit").click(submit_subscribe);
 
             // Store nextPageToken to table
             if ("nextPageToken" in response_data) {

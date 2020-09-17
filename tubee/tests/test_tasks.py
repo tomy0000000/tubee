@@ -34,29 +34,20 @@ class BasicsTestCase(unittest.TestCase):
     def test_tasks_renew_channels(
         self, mocked_channel, mocked_channels_update_hub_infos
     ):
-        channel_ids_with_url = [
-            (channel_id, build_callback_url(channel_id), build_topic_url(channel_id),)
-            for channel_id in self.test_channel_ids
-        ]
-
         mocked_channel.query.get.return_value = False
-        renew_channels(channel_ids_with_url)
+        renew_channels(self.test_channel_ids)
 
         mocked_channel.query.get.return_value = mock.MagicMock()
-        renew_channels(channel_ids_with_url)
+        renew_channels(self.test_channel_ids)
 
     @mock.patch("tubee.tasks.Channel")
     def test_channels_update_hub_infos(self, mocked_channel):
-        channel_ids_with_url = [
-            (channel_id, build_callback_url(channel_id), build_topic_url(channel_id),)
-            for channel_id in self.test_channel_ids
-        ]
 
         mocked_channel.query.get.return_value = False
-        channels_update_hub_infos(channel_ids_with_url)
+        channels_update_hub_infos(self.test_channel_ids)
 
         mocked_channel.query.get.return_value = mock.MagicMock()
-        channels_update_hub_infos(channel_ids_with_url)
+        channels_update_hub_infos(self.test_channel_ids)
 
     @mock.patch("tubee.tasks.Channel")
     def test_channels_fetch_videos(self, mocked_channel):
