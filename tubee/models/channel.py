@@ -51,7 +51,7 @@ class Channel(db.Model):
             countdown=60,
         )
         channels_fetch_videos.apply_async(args=[[channel_id]])
-        renew_channels.apply_async(args=[channel_id, 345600], countdown=345600)
+        renew_channels.apply_async(args=[[channel_id], 345600], countdown=345600)
         self.activate()
 
     def __repr__(self):

@@ -158,10 +158,10 @@ def channel_callback(channel_id):
                     results = action.execute(
                         video_id=video_id,
                         video_title=video_item.name,
-                        video_description=video_item.details["snippet"]["description"],
-                        video_thumbnails=video_item.details["snippet"]["thumbnails"][
-                            "medium"
-                        ]["url"],
+                        video_description=video_item.details["description"],
+                        video_thumbnails=video_item.details["thumbnails"]["medium"][
+                            "url"
+                        ],
                         video_file_url=video_file_url,
                         channel_name=channel_item.name,
                     )

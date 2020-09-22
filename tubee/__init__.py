@@ -1,34 +1,36 @@
 """Main Application of Tubee"""
 import json
 import logging.config
-import os
+from os import path
 
 from authlib.integrations.flask_client import OAuth
 from celery import Celery
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
+from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
 from tubee.config import config
 
-__version__ = "dev_20200902"
+__version__ = "dev_20200922"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
+celery = Celery(__name__)
 login_manager = LoginManager()
+migrate = Migrate()
 moment = Moment()
 oauth = OAuth()
-celery = Celery(__name__)
 
 
-def create_app(config_name):
+def create_app(config_name, coverage=None):
     app = Flask(__name__, instance_relative_config=True)
     app.version = __version__
     app.config.from_object(config[config_name])
-    external_config = os.path.join(app.instance_path, "logging.cfg")
-    load_external = os.path.exists(external_config) and os.path.isfile(external_config)
+    external_config = path.join(app.instance_path, "logging.cfg")
+    load_external = path.exists(external_config) and path.isfile(external_config)
     if load_external:
         with open(external_config) as json_file:
             logging.config.dictConfig(json.load(json_file))
@@ -37,11 +39,15 @@ def create_app(config_name):
     app.db = db
     config[config_name].init_app(app)
 
+    if coverage:
+        app.coverage = coverage
+
     if load_external:
         app.logger.info("External Logging Config Loaded")
 
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    migrate.init_app(app, db, render_as_batch=True)
     moment.init_app(app)
     oauth.init_app(app)
     celery.conf.update(app.config)
@@ -64,7 +70,12 @@ def create_app(config_name):
         ),
     )
 
-    from . import routes
+    from . import commands, routes
+
+    app.shell_context_processor(commands.make_shell_context)
+    app.cli.add_command(commands.deploy)
+    app.cli.add_command(commands.test)
+    app.cli.add_command(commands.docker_cli)
 
     app.register_blueprint(routes.main_blueprint)
     app.register_blueprint(routes.admin_blueprint, url_prefix="/admin")

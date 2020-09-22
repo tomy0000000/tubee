@@ -2,4 +2,5 @@
 !.gitignore
 !gunicorn.conf.py
 !logging.cfg
+!logging_celery.cfg
 !nginx.conf

@@ -73,7 +73,7 @@ def renew_all():
     interval = 60 * 60 * 24 * 4
     if execution == 0:
         task = renew_channels.apply_async(
-            args=[channel.id for channel in Channel.query.all()]
+            args=[[channel.id for channel in Channel.query.all()]]
         )
         response = {
             "id": task.id,
@@ -84,16 +84,25 @@ def renew_all():
         for channel in Channel.query.all():
             expiration = channel.expiration
             if expiration is None:
+                # Expiration is not available yet (Channel just init)
+                # Set ETA to four days later
+
                 # eta = datetime.now() + timedelta(days=4)
                 countdown = 60 * 60 * 24 * 4
             elif expiration > datetime.now() + timedelta(days=1):
+                # Expiration is more than one day
+                # Set ETA to one day before expiration
+
                 # eta = expiration - timedelta(days=1)
                 countdown = expiration - timedelta(days=1) - datetime.now()
                 countdown = countdown.total_seconds()
             else:
+                # Expiration is less than one day
+                # Set ETA to now
+
                 # eta = datetime.now()
                 countdown = 0
-            if execution == -2:
+            if execution == -2 and countdown > 0:
                 countdown = randrange(countdown)
             task = renew_channels.apply_async(
                 args=[[channel.id], interval],
