@@ -5,6 +5,7 @@ from flask import current_app, url_for
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
+import youtube_dl
 
 
 def build_flow(state=None):
@@ -36,3 +37,19 @@ def build_youtube_api(credentials=None):
         cache_discovery=False,
         **kwargs
     )
+
+
+def build_youtube_dl(additional_options):
+    options = {
+        "skip_download": True,
+        "ignoreerrors": True,
+        "extract_flat": True,
+    }
+    options.update(additional_options)
+    return youtube_dl.YoutubeDL(options)
+
+
+def fetch_video_metadata(video_id):
+    service = build_youtube_dl({"format": "best"})
+    metadata = service.extract_info(video_id)
+    return metadata

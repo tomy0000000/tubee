@@ -1,14 +1,15 @@
 """Channel Model"""
 from datetime import datetime
+from urllib.parse import urlencode
+
+from flask import current_app, url_for
+from googleapiclient.errors import Error as YouTubeAPIError
 
 from .. import db
-from ..helper import build_callback_url, build_topic_url, try_parse_datetime
+from ..exceptions import APIError, InvalidAction
+from ..helper import try_parse_datetime
 from ..helper.hub import details, subscribe, unsubscribe
 from ..helper.youtube import build_youtube_api
-from ..exceptions import InvalidAction, APIError
-
-from googleapiclient.errors import Error as YouTubeAPIError
-from flask import current_app
 
 
 class Channel(db.Model):
@@ -55,7 +56,7 @@ class Channel(db.Model):
         self.activate()
 
     def __repr__(self):
-        return "<Channel {} (#{})>".format(self.name, self.id)
+        return f"<Channel {self.name} (#{self.id})>"
 
     @property
     def expiration(self):
@@ -83,14 +84,16 @@ class Channel(db.Model):
             db.session.commit()
         return results
 
-    def deactivate(self, callback_url=None, topic_url=None):
+    def deactivate(self):
         """Submitting hub unsubscription, called when last user unsubscribe"""
         if not self.active:
             raise AttributeError("Channel is already deactivate")
-        if not callback_url:
-            callback_url = build_callback_url(self.id)
-        if not topic_url:
-            topic_url = build_topic_url(self.id)
+        callback_url = url_for(
+            "main.channel_callback", channel_id=self.id, _external=True
+        )
+        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
+            {"channel_id": self.id}
+        )
         response = unsubscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
@@ -100,12 +103,14 @@ class Channel(db.Model):
             db.session.commit()
         return response
 
-    def update_hub_infos(self, callback_url=None, topic_url=None):
+    def update_hub_infos(self):
         """Update hub subscription details, called by task or app"""
-        if not callback_url:
-            callback_url = build_callback_url(self.id)
-        if not topic_url:
-            topic_url = build_topic_url(self.id)
+        callback_url = url_for(
+            "main.channel_callback", channel_id=self.id, _external=True
+        )
+        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
+            {"channel_id": self.id}
+        )
         results = details(current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url)
         results.pop("requests_url")
         results.pop("response_object")
@@ -176,19 +181,21 @@ class Channel(db.Model):
 
         return results
 
-    def subscribe(self, callback_url=None, topic_url=None):
+    def subscribe(self):
         """Submitting hub Subscription, called by task or app"""
-        if not callback_url:
-            callback_url = build_callback_url(self.id)
-        if not topic_url:
-            topic_url = build_topic_url(self.id)
+        callback_url = url_for(
+            "main.channel_callback", channel_id=self.id, _external=True
+        )
+        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
+            {"channel_id": self.id}
+        )
         response = subscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
-        current_app.logger.info("Callback URL: {}".format(callback_url))
-        current_app.logger.info("Topic URL   : {}".format(topic_url))
-        current_app.logger.info("Channel ID  : {}".format(self.id))
-        current_app.logger.info("Response    : {}".format(response.status_code))
+        current_app.logger.info(f"Callback URL: {callback_url}")
+        current_app.logger.info(f"Topic URL   : {topic_url}")
+        current_app.logger.info(f"Channel ID  : {self.id}")
+        current_app.logger.info(f"Response    : {response.status_code}")
         return response.success
 
     # TODO: DEPRECATE THIS
@@ -196,10 +203,10 @@ class Channel(db.Model):
         """Trigger renew functions"""
 
         response = {
-            "subscription_response": self.subscribe(callback_url, topic_url),
+            "subscription_response": self.subscribe(),
             "info_response": self.update_youtube_infos(),
             # "hub_response": self.update_hub_infos(stringify=stringify, callback_url, topic_url),
         }
         # update_channel_hub_infos.apply_async(self.id, callback_url, topic_url)
-        current_app.logger.info("Channel Renewed: {}<{}>".format(self.name, self.id))
+        current_app.logger.info(f"Channel Renewed: {self.name}<{self.id}>")
         return response

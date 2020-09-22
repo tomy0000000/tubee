@@ -38,9 +38,7 @@ class Subscription(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "<Subscription: {} subscribe to {}>".format(
-            self.username, self.channel_id
-        )
+        return f"<Subscription: {self.username} subscribe to {self.channel_id}>"
 
     def add_action(self, action_name, action_type, details):
         from . import Action

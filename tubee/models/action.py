@@ -39,9 +39,7 @@ class Action(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "<Action: {} associate with user {} for {}>".format(
-            self.type, self.username, self.channel_id
-        )
+        return f"<Action: {self.type} associate with user {self.username} for {self.channel_id}>"
 
     @property
     def user(self):

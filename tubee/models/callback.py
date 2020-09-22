@@ -29,4 +29,4 @@ class Callback(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "<{}'s Callback {}>".format(self.channel_id, self.id)
+        return f"<{self.channel_id}'s Callback {self.id}>"

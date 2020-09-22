@@ -3,10 +3,10 @@
 Some Misc Functions used in this app
 """
 from functools import wraps
-from urllib.parse import urlencode, urljoin, urlparse
+from urllib.parse import urljoin, urlparse
 
 from dateutil import parser
-from flask import abort, current_app, request, url_for
+from flask import abort, request
 from flask_login import current_user
 
 
@@ -111,29 +111,3 @@ def notify_admin(initiator, service, **kwargs):
                 initiator, service, **kwargs
             )
     return response
-
-
-def build_callback_url(channel_id):
-    callback_url = url_for(
-        "main.channel_callback", channel_id=channel_id, _external=True
-    )
-    # if current_app.config["HUB_RECEIVE_DOMAIN"]:
-    #     callback_url = callback_url.replace(
-    #         request.host, current_app.config["HUB_RECEIVE_DOMAIN"]
-    #     )
-    return callback_url
-
-
-def build_topic_url(channel_id):
-    param_query = urlencode({"channel_id": channel_id})
-    return current_app.config["HUB_YOUTUBE_TOPIC"] + param_query
-
-
-# def build_cloud_task_service():
-#     client = tasks_v2.CloudTasksClient()
-#     parent = client.queue_path(
-#         current_app.config["GOOGLE_CLOUD_PROJECT_ID"],
-#         current_app.config["GOOGLE_CLOUD_LOCATION"],
-#         current_app.config["GOOGLE_CLOUD_TASK_QUEUE"],
-#     )
-#     return client, parent

@@ -89,9 +89,7 @@ class Notification(db.Model):
             self.send()
 
     def __repr__(self):
-        return "<Notification: {}'s notification send with {}>".format(
-            self.user.username, self.initiator
-        )
+        return f"<Notification: {self.user.username}'s notification send with {self.initiator}>"
 
     @staticmethod
     def _clean_up_kwargs(kwargs, service):
@@ -100,9 +98,7 @@ class Notification(db.Model):
         }
         for key, val in invalid_args.items():
             current_app.logger.warning(
-                "Invalid {} Notification Arguments ({}, {}) is ommited".format(
-                    service.value, key, val
-                )
+                f"Invalid {service.value} Notification Arguments ({key}, {val}) is ommited"
             )
             kwargs.pop(key)
         return kwargs

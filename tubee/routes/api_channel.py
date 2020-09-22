@@ -103,7 +103,7 @@ def renew_all():
                 # eta = datetime.now()
                 countdown = 0
             if execution == -2 and countdown > 0:
-                countdown = randrange(countdown)
+                countdown = randrange(int(countdown))
             task = renew_channels.apply_async(
                 args=[[channel.id], interval],
                 countdown=countdown,

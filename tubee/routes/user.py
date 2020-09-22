@@ -106,7 +106,7 @@ def setting_youtube_oauth_callback():
     try:
         current_user.youtube = flow.credentials
     except (TypeError, ValueError) as error:
-        flash("YouTube Access Failed: {}".format(error), "danger")
+        flash(f"YouTube Access Failed: {error}", "danger")
     else:
         flash("YouTube Access Granted", "success")
     return redirect(url_for("user.setting"))

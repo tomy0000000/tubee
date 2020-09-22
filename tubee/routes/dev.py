@@ -10,7 +10,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from ..helper import youtube_dl
+from ..helper.youtube import fetch_video_metadata
 
 dev_blueprint = Blueprint("dev", __name__)
 
@@ -29,10 +29,10 @@ def empty():
 @dev_blueprint.route("/test-download-to-dropbox/<video_id>")
 @login_required
 def test_download_to_dropbox(video_id):
-    metadata = youtube_dl.fetch_video_metadata(video_id)
+    metadata = fetch_video_metadata(video_id)
     current_app.logger.info(metadata)
     response = current_user.dropbox.files_save_url(
-        "/{}".format("{}.mp4".format(metadata["title"])), metadata["url"]
+        f"/{metadata['title']}.mp4", metadata["url"]
     )
     flash(str(response), "success")
     return redirect(url_for("main.dashboard"))

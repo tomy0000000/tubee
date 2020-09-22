@@ -61,7 +61,7 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "<User: {}>".format(self.username)
+        return f"<User: {self.username}>"
 
     #     ######
     #     #     #   ##    ####   ####  #    #  ####  #####  #####
@@ -341,7 +341,7 @@ class User(UserMixin, db.Model):
         subscription = self.subscriptions.filter_by(channel_id=channel_id).first()
         if not subscription:
             raise InvalidAction(
-                "User {} hasn't subscribe to {}".format(self.username, channel_id)
+                f"User {self.username} hasn't subscribe to {channel_id}"
             )
         db.session.delete(subscription)
         db.session.commit()
@@ -364,7 +364,7 @@ class User(UserMixin, db.Model):
         except HttpError as error:
             error_message = json.loads(error.content)["error"]["message"]
             current_app.logger.error(
-                "Faield to insert {} to {}'s playlist".format(video_id, self.username)
+                f"Faield to insert {video_id} to {self.username}'s playlist"
             )
             current_app.logger.error(error_message)
             raise APIError(error_message)

@@ -16,7 +16,9 @@ update_progress = (status_url, progress_bar, message_box) => {
             }
             message_box.text(JSON.stringify(data.result));
         } else {
-            message_box.text(`Currently Processing: ${data.channel_id}`);
+            message_box.text(
+                `Currently Processing: ${data.result.channel_name} <${data.channel_id}>`
+            );
             setTimeout(
                 update_progress,
                 2000,

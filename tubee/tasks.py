@@ -12,15 +12,16 @@ task_logger = logging.getLogger("tubee.task")
 def renew_channels(self, channel_ids, next_countdown=-1):
     results = {}
     for index, channel_id in enumerate(channel_ids):
+        channel = Channel.query.get(channel_id)
         self.update_state(
             state="PROGRESS",
             meta={
                 "current": index + 1,
                 "total": len(channel_ids),
                 "channel_id": channel_id,
+                "channel_name": getattr(channel, "name"),
             },
         )
-        channel = Channel.query.get(channel_id)
         if not channel:
             task_logger.warning(f"<{channel_id}> Channel not found, skipped.")
             continue

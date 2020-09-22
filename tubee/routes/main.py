@@ -15,8 +15,8 @@ from flask_login import current_user, login_required
 
 from .. import db
 from ..forms import ActionForm
-from ..helper import youtube_dl, youtube_required
-from ..helper.youtube import build_youtube_api
+from ..helper import youtube_required
+from ..helper.youtube import build_youtube_api, fetch_video_metadata
 from ..models import Callback, Channel, Subscription, Video
 
 main_blueprint = Blueprint("main", __name__)
@@ -123,7 +123,7 @@ def channel_callback(channel_id):
 
         tag = soup.find("yt:videoId")
         if tag is None:
-            current_app.logger.info("Video ID not Found for {}".format(callback_item))
+            current_app.logger.info(f"Video ID not Found for {callback_item}")
             callback_item.infos = infos
             db.session.commit()
             return response
@@ -146,7 +146,7 @@ def channel_callback(channel_id):
 
         # Fetch Video Infos
         try:  # TODO
-            video_file_url = youtube_dl.fetch_video_metadata(video_id)["url"]
+            video_file_url = fetch_video_metadata(video_id)["url"]
         except Exception:
             video_file_url = None
 
@@ -167,9 +167,7 @@ def channel_callback(channel_id):
                     )
                 except Exception as error:
                     results = error
-                current_app.logger.info(
-                    "{}-{}: {}".format(sub.username, action.id, results)
-                )
+                current_app.logger.info(f"{sub.username}-{action.id}: {results}")
                 response[sub.username][action.id] = str(results)
         return jsonify(response)
 
