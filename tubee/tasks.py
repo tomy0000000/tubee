@@ -13,6 +13,9 @@ def renew_channels(self, channel_ids, next_countdown=-1):
     results = {}
     for index, channel_id in enumerate(channel_ids):
         channel = Channel.query.get(channel_id)
+        if not channel:
+            task_logger.warning(f"<{channel_id}> Channel not found, skipped.")
+            continue
         self.update_state(
             state="PROGRESS",
             meta={
@@ -22,9 +25,6 @@ def renew_channels(self, channel_ids, next_countdown=-1):
                 "channel_name": getattr(channel, "name"),
             },
         )
-        if not channel:
-            task_logger.warning(f"<{channel_id}> Channel not found, skipped.")
-            continue
         results[channel_id] = {
             "subscription": channel.subscribe(),
             "info": channel.update_youtube_infos(),
