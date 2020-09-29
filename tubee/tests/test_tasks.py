@@ -3,7 +3,6 @@ import unittest
 from unittest import mock
 
 from tubee import create_app, db
-from tubee.helper import build_callback_url, build_topic_url
 from tubee.tasks import channels_fetch_videos, channels_update_hub_infos, renew_channels
 
 
