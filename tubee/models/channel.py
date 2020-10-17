@@ -154,7 +154,7 @@ class Channel(db.Model):
                 error_type=error.__class__.__name__,
             )
 
-    def fetch_videos(self):
+    def fetch_videos(self, fetch_all=False):
         """Update videos, Called by task"""
         from .video import Video
 
@@ -177,7 +177,10 @@ class Channel(db.Model):
                     Video(video_id, self, details=video["snippet"])
                     results["new_item_appended"] += 1
                     results["video_ids"].append(video_id)
-            request = search.list_next(request, api_results)
+            if not fetch_all:
+                request = search.list_next(request, api_results)
+            else:
+                break
 
         return results
 

@@ -186,7 +186,8 @@
                     class="btn btn-secondary"
                     data-toggle="modal"
                     data-target="#edit-action-modal"
-                    data-api-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
+                    data-read-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
+                    data-edit-endpoint="{{ url_for('api_action.edit', action_id=action.id) }}"
                 >
                     Edit
                 </button>

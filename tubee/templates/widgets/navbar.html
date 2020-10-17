@@ -45,6 +45,13 @@
                         {% endif %}
                     </a>
                 </li>
+                <li class="nav-item {{ 'active' if title == 'Latest Upload' }}">
+                    <a class="nav-link" href="{{ url_for('main.latest') }}">
+                        Latest Upload {% if title == "Latest Upload" %}
+                        <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
                 {% if current_user.admin %}
                 <li
                     class="nav-item {{'active' if title == 'Admin Dashboard' }}"

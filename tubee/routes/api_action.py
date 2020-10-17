@@ -17,20 +17,10 @@ def new():
         ).first_or_404()
         if form.action_type.data == "Notification":
             details = form.notification.data
-            # details = {
-            #     "service": "Pushover",
-            #     "message": "{video_title}",
-            #     "title": "New from {channel_name}",
-            #     "url": "https://www.youtube.com/watch?v={video_id}",
-            #     "url_title": "{video_title}",
-            #     "image_url": "{video_thumbnails}",
-            # }
         elif form.action_type.data == "Playlist":
             details = form.playlist.data
-            # details = {"playlist_id": "WL"}
         elif form.action_type.data == "Download":
             details = form.download.data
-            # details = {"file_path": "/{video_title}.mp4"}
         response = subscription.add_action(
             form.action_name.data, form.action_type.data, details
         )
@@ -64,7 +54,7 @@ def delete(action_id):
     return jsonify(action.subscription.remove_action(action_id))
 
 
-@api_action_blueprint.route("/<action_id>/edit", methods=["POST"])
+@api_action_blueprint.route("/<action_id>", methods=["PATCH"])
 @login_required
 def edit(action_id):
     action = Action.query.filter_by(id=action_id).first_or_404()
@@ -74,5 +64,6 @@ def edit(action_id):
         or not form.validate_on_submit()
     ):
         abort(403)
-    # TODO: Validate each field
-    return jsonify({})
+
+    modified = action.edit(form.data)
+    return jsonify(modified)

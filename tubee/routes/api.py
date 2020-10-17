@@ -2,13 +2,12 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 
-
 api_blueprint = Blueprint("api", __name__)
 
 
 @api_blueprint.route("/user/services")
 @login_required
-def user_info():
+def user_services():
     status = {}
     for service in ["youtube", "pushover", "line_notify", "dropbox"]:
         status[service] = bool(getattr(current_user, service))

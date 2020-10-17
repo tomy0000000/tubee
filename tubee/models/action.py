@@ -61,6 +61,30 @@ class Action(db.Model):
     def channel(self, channel_id):
         raise AttributeError("Channel can't be modified")
 
+    def edit(self, new_data):
+        if new_data["action_type"] == "Notification":
+            details = new_data["notification"]
+        elif new_data["action_type"] == "Playlist":
+            details = new_data["playlist"]
+        elif new_data["action_type"] == "Download":
+            details = new_data["download"]
+
+        modified = {}
+        if new_data["action_name"] != self.name:
+            modified["name"] = {"old": self.name, "new": new_data["action_name"]}
+            self.name = new_data["action_name"]
+        if new_data["action_type"] != self.type.value:
+            modified["type"] = {"old": self.type.value, "new": new_data["action_type"]}
+            self.type = new_data["action_type"]
+        if details != self.details:
+            modified["details"] = {"old": self.details, "new": details}
+            self.details = details
+
+        if modified:
+            db.session.commit()
+
+        return modified
+
     def execute(self, **parameters):
         if self.type is ActionType.Notification:
             return self.user.send_notification(

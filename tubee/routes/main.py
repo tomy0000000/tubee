@@ -1,16 +1,11 @@
 """The Main Routes"""
+from datetime import datetime, timedelta
 from html import unescape
 from urllib.parse import urljoin
 
 import bs4
 import pyrfc3339
-from flask import (
-    Blueprint,
-    current_app,
-    jsonify,
-    render_template,
-    request,
-)
+from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
@@ -177,3 +172,20 @@ def channel_callback(channel_id):
 @youtube_required
 def youtube_subscription():
     return render_template("youtube_subscription.html")
+
+
+@main_blueprint.route("/latest")
+@login_required
+def latest():
+    """
+    docstring
+    """
+    one_day_ago = datetime.utcnow() - timedelta(days=1)
+    latest_video = Video.query.filter(Video.uploaded_timestamp > one_day_ago)
+    user_subscribed_channels = [
+        subscription.channel for subscription in current_user.subscriptions
+    ]
+    filtered_video = [
+        video for video in latest_video if video.channel in user_subscribed_channels
+    ]
+    return render_template("latest.html", videos=filtered_video)

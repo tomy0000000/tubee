@@ -28,6 +28,10 @@ class Video(db.Model):
         elif fetch_infos:
             self.update_infos()
 
+    def __iter__(self):
+        for key in ["id", "name", "channel_id", "uploaded_timestamp", "details"]:
+            yield (key, getattr(self, key))
+
     def _process_details(self):
         self.name = self.details["title"]
         self.uploaded_timestamp = parser.parse(self.details["publishedAt"])
