@@ -1,17 +1,14 @@
 """The Main Routes"""
 from datetime import datetime, timedelta
-from html import unescape
-from urllib.parse import urljoin
 
 import bs4
-import pyrfc3339
 from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
 from ..forms import ActionForm
 from ..helper import youtube_required
-from ..helper.youtube import build_youtube_api, fetch_video_metadata
+from ..helper.youtube import fetch_video_metadata
 from ..models import Callback, Channel, Subscription, Video
 
 main_blueprint = Blueprint("main", __name__)
@@ -32,53 +29,13 @@ def dashboard():
 @main_blueprint.route("/channel/<channel_id>")
 def channel(channel_id):
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    videos = (
-        build_youtube_api()
-        .search()
-        .list(
-            part="snippet",
-            channelId=channel_id,
-            maxResults=50,
-            order="date",
-            type="video",
-        )
-        .execute()["items"]
-    )
-    for video in videos:
-        video["snippet"]["title"] = unescape(video["snippet"]["title"])
-        video["snippet"]["publishedAt"] = pyrfc3339.parse(
-            video["snippet"]["publishedAt"]
-        )
-        base_thumbnails_url = video["snippet"]["thumbnails"]["high"]["url"]
-        video["snippet"]["thumbnails"]["standard"] = {
-            "url": urljoin(base_thumbnails_url, "sddefault.jpg"),
-            "width": 640,
-            "height": 480,
-        }
-        video["snippet"]["thumbnails"]["maxres"] = {
-            "url": urljoin(base_thumbnails_url, "maxresdefault.jpg"),
-            "width": 1280,
-            "height": 720,
-        }
-        callback_search = (
-            Callback.query.filter_by(
-                channel_id=channel_id,
-                type="Hub Notification",
-                video_id=video["id"]["videoId"],
-            )
-            .order_by(Callback.timestamp.asc())
-            .all()
-        )
-        video["snippet"]["callback"] = {
-            "datetime": callback_search[0].timestamp if bool(callback_search) else "",
-            "count": len(callback_search),
-        }
     actions = (
         current_user.subscriptions.filter_by(channel_id=channel_id)
         .first()
         .actions.all()
     )
     form = ActionForm()
+    videos = channel_item.videos.order_by(Video.uploaded_timestamp.desc())
     return render_template(
         "channel.html", channel=channel_item, actions=actions, form=form, videos=videos
     )

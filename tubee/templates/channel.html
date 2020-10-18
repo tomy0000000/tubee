@@ -29,35 +29,35 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img
-                    src="{{ videos[0].snippet.thumbnails.maxres.url }}"
+                    src="{{ videos[0].thumbnails.maxres.url }}"
                     class="d-block w-100"
-                    alt="{{ videos[0].snippet.title }}"
+                    alt="{{ videos[0].name }}"
                 />
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>{{ videos[0].snippet.title }}</h5>
-                    <p>{{ videos[0].snippet.description }}</p>
+                    <h5>{{ videos[0].name }}</h5>
+                    <p>{{ videos[0].details.description }}</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img
-                    src="{{ videos[1].snippet.thumbnails.maxres.url }}"
+                    src="{{ videos[1].thumbnails.maxres.url }}"
                     class="d-block w-100"
-                    alt="{{ videos[1].snippet.title }}"
+                    alt="{{ videos[1].name }}"
                 />
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>{{ videos[1].snippet.title }}</h5>
-                    <p>{{ videos[1].snippet.description }}</p>
+                    <h5>{{ videos[1].name }}</h5>
+                    <p>{{ videos[1].details.description }}</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img
-                    src="{{ videos[2].snippet.thumbnails.maxres.url }}"
+                    src="{{ videos[2].thumbnails.maxres.url }}"
                     class="d-block w-100"
-                    alt="{{ videos[2].snippet.title }}"
+                    alt="{{ videos[2].name }}"
                 />
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>{{ videos[2].snippet.title }}</h5>
-                    <p>{{ videos[2].snippet.description }}</p>
+                    <h5>{{ videos[2].name }}</h5>
+                    <p>{{ videos[2].details.description }}</p>
                 </div>
             </div>
         </div>
@@ -415,36 +415,33 @@
         <tr>
             <th scope="row" class="video-thumbnails">
                 <img
-                    src="{{ video.snippet.thumbnails.medium.url }}"
+                    src="{{ video.thumbnails.medium.url }}"
                     class="rounded vidoe-thumbnails"
                 />
             </th>
             <td class="align-middle video-title">
-                <a
-                    href="https://youtu.be/{{ video.id.videoId }}"
-                    target="_blank"
-                >
-                    {{ video.snippet.title }}
+                <a href="https://youtu.be/{{ video.id }}" target="_blank">
+                    {{ video.name|safe }}
                 </a>
                 <a
                     href="#"
                     class="text-muted clipboard"
-                    data-clipboard-text="{{ video.id.videoId }}"
+                    data-clipboard-text="{{ video.id }}"
                 >
-                    <p>#{{ video.id.videoId }}</p>
+                    <p>#{{ video.id }}</p>
                 </a>
             </td>
             <td class="align-middle">
-                {{ moment(video.snippet.publishedAt).format('lll') }}
+                {{ moment(video.uploaded_timestamp).format('lll') }}
             </td>
             {% if current_user.admin %}
             <td class="align-middle">
                 <button type="button" class="btn btn-primary">
-                    {% if video.snippet.callback.datetime %} {{
-                    moment(video.snippet.callback.datetime).format('lll') }} {%
+                    {% if video.callbacks.count() > 0 %} {{
+                    moment(video.callbacks[0].timestamp).format('lll') }} {%
                     else %}{% endif %}
                     <span class="badge badge-light"
-                        >{{ video.snippet.callback.count }}</span
+                        >{{ video.callbacks.count() }}</span
                     >
                 </button>
             </td>
