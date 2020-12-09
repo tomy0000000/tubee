@@ -23,6 +23,11 @@
             {% else %}
             {{ form.username(class="form-control") }}
             {% endif %}
+            <small id="usernameHint" class="form-text text-muted">
+                Upon registration, you agree to both
+                <a href="">Tubee</a>, <a href="https://policies.google.com/privacy">Google</a>, and
+                <a href="https://www.youtube.com/static?template=terms">YouTube</a>'s Terms of Service and Privacy Policy.
+            </small>
         </div>
         <div class="form-group">
             {{ form.password.label }}
