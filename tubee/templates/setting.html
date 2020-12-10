@@ -46,6 +46,12 @@
         </div>
         {% endif %}
     </div>
+    <small id="youtube-credentials-help" class="form-text text-muted">
+        You may also revoke access from
+        <a href="https://security.google.com/settings/security/permissions">
+            Google's security setting page
+        </a>
+    </small>
     <label for="line-notify-credentials" class="col-form-label">Line Notify Account</label>
     <div class="input-group">
         {% if current_user.line_notify_configured() %}
