@@ -32,8 +32,8 @@ class Channel(db.Model):
 
     def __init__(self, channel_id):
         from ..tasks import (
-            channels_update_hub_infos,
             channels_fetch_videos,
+            channels_update_hub_infos,
             renew_channels,
         )
 
@@ -195,10 +195,10 @@ class Channel(db.Model):
         response = subscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
-        current_app.logger.info(f"Callback URL: {callback_url}")
-        current_app.logger.info(f"Topic URL   : {topic_url}")
-        current_app.logger.info(f"Channel ID  : {self.id}")
-        current_app.logger.info(f"Response    : {response.status_code}")
+        current_app.logger.debug(f"Callback URL: {callback_url}")
+        current_app.logger.debug(f"Topic URL   : {topic_url}")
+        current_app.logger.debug(f"Channel ID  : {self.id}")
+        current_app.logger.debug(f"Response    : {response.status_code}")
         return response.success
 
     # TODO: DEPRECATE THIS

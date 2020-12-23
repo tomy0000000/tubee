@@ -1,12 +1,13 @@
-# Created by https://www.toptal.com/developers/gitignore/api/macos,dotenv,flask
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,dotenv,flask
+
+# Created by https://www.toptal.com/developers/gitignore/api/macos,nova,flask,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,nova,flask,dotenv
 
 ### dotenv ###
 .env
 
 ### Flask ###
-# instance/*
-# !instance/.gitignore
+instance/*
+!instance/.gitignore
 .webassets-cache
 
 ### Flask.Python Stack ###
@@ -62,6 +63,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+pytestdebug.log
 
 # Translations
 *.mo
@@ -74,13 +76,14 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-# instance/
+instance/
 
 # Scrapy stuff:
 .scrapy
 
 # Sphinx documentation
 docs/_build/
+doc/_build/
 
 # PyBuilder
 target/
@@ -119,6 +122,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+pythonenv*
 
 # Spyder project settings
 .spyderproject
@@ -141,6 +145,9 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# profiling data
+.prof
+
 ### macOS ###
 # General
 .DS_Store
@@ -149,6 +156,7 @@ dmypy.json
 
 # Icon must end with two \r
 Icon
+
 
 # Thumbnails
 ._*
@@ -169,7 +177,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### nova ###
+.nova/*
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,dotenv,flask
+# End of https://www.toptal.com/developers/gitignore/api/macos,nova,flask,dotenv
 
 *.sqlite

@@ -119,7 +119,11 @@ def channel_callback(channel_id):
                     )
                 except Exception as error:
                     results = error
-                current_app.logger.info(f"{sub.username}-{action.id}: {results}")
+                    current_app.logger.error(
+                        f"{sub.username}-{channel_id}-{action.id}: {error}"
+                    )
+                else:
+                    current_app.logger.info(f"{sub.username}-{channel_id}-{action.id}")
                 response[sub.username][action.id] = str(results)
         return jsonify(response)
 

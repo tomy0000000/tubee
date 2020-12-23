@@ -33,15 +33,15 @@ build_row = (channel) => {
     row.find(".channel-name").text(channel.snippet.title);
     row.find(".channel-id-a").attr(
         "data-clipboard-text",
-        channel.snippet.channelId
+        channel.snippet.resourceId.channelId
     );
-    row.find(".channel-id-p").text(channel.snippet.channelId);
+    row.find(".channel-id-p").text(channel.snippet.resourceId.channelId);
     if (!channel.snippet.subscribed) {
         row.find(".channel-subscribed").append(
             $("<button>", {
                 class: "btn btn-success subscribe-submit",
                 type: "button",
-                "data-channel-id": channel.snippet.channelId,
+                "data-channel-id": channel.snippet.resourceId.channelId,
             })
                 .text("Subscribe")
                 .appendTo(row.find(".channel-subscribed"))

@@ -9,7 +9,8 @@ from flask import (
     request,
 )
 from flask_login import current_user
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import HTTPException as WerkzeugHTTPException
+from googleapiclient.errors import HttpError as YouTubeHttpError
 
 handler_blueprint = Blueprint("handler", __name__)
 
@@ -51,10 +52,13 @@ def unhandled_exception(error):
     """
 
     # Log error to traceback if error is not triggered intentionally
-    if isinstance(error, HTTPException):
+    if isinstance(error, WerkzeugHTTPException):
         code = error.code
     else:
         code = 500
+
+    if isinstance(error, YouTubeHttpError) and "quota" in str(error):
+        current_app.logger.info(f"Quota: {error}")
     current_app.logger.getChild("error").exception("Error")
 
     # Return an error response to user

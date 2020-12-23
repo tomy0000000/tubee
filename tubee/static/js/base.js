@@ -30,19 +30,19 @@ drop_spinner = (location) => {
 };
 
 register_clipboard_items = (selector) => {
-    let clipboard = new ClipboardJS(selector);
-    clipboard.on("success", (event) => {
-        $(event.trigger)
-            .tooltip({
-                placement: "right",
-                title: "Copied!",
-                trigger: "manual",
-            })
-            .tooltip("show")
-            .mouseleave((event) => {
-                $(event.currentTarget).tooltip("hide");
-            });
-    });
+    new ClipboardJS(selector);
+    $(selector)
+        .tooltip({
+            placement: "right",
+            title: "Copied!",
+            trigger: "click",
+        })
+        .on("mouseleave", function () {
+            $(this).tooltip("hide");
+        })
+        .on("click", (event) => {
+            event.preventDefault();
+        });
 };
 
 submit_subscribe = (event) => {
