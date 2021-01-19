@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "tubee"
+version = "0.1.0"
+description = "A Web Application for Monitoring New YouTube Videos"
+authors = ["Tomy Hsieh <tomy0000000@gmail.com>"]
+license = "MIT License"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Authlib = "*"
+Flask = "*"
+Flask-Bcrypt = "*"
+Flask-Login = "*"
+Flask-Migrate = "*"
+Flask-Moment = "*"
+Flask-SQLAlchemy = "*"
+Flask-WTF = "*"
+WTForms = "*"
+Werkzeug = "*"
+beautifulsoup4 = "*"
+celery = "*"
+click = "*"
+dropbox = "*"
+google-api-python-client = "*"
+google-auth = "*"
+google-auth-oauthlib = "*"
+gunicorn = "*"
+lxml = "*"
+psycopg2 = "*"
+pushover-complete = "*"
+pyRFC3339 = "*"
+python-dateutil = "*"
+python-dotenv = "*"
+redis = "*"
+requests = "*"
+youtube-dl = "*"
+
+[tool.poetry.dev-dependencies]
+argh = "*"
+codecov = "*"
+coverage = "*"
+flask-shell-ipython = "*"
+pyyaml = "*"
+rope = "*"
+watchdog = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
