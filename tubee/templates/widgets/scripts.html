@@ -1,94 +1,75 @@
 <!-- SCRIPTS -->
 <!--
     This Widget loads different version of js file from CDN Based on flask config
-    * jQuery                    3.3.1
-    * Popper.js                 1.14.7
-    * Bootstrap JS              4.3.1
-    * moment.js                 2.24.0
-    * clipboard.js              2.0.4
+    * jQuery                    3.5.1
+    * Popper.js                 2.6.0
+    * Bootstrap JS              4.5.3
+    * moment.js                 2.29.1
+    * clipboard.js              2.0.6
     * bootstrap-autocomplete    2.3.7
 -->
 {% if config.DEBUG or config.TESTING %}
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"
+  integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.js"
-    integrity="sha256-xuqf1wnBhJrMktA1gWCaALUrLzy3aao/uBmwny2ybq8="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.js"
+  integrity="sha512-hf4jeGcnPXKjA105H0d1RQdTUPt9ETs8BVSjzfATDd26NeS8SyxZWd4J2TSf6MPnxlrxNjzenqiwppTP/cKZAg=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.js"
-    integrity="sha256-pl1bSrtlqtN/MCyW8XUTYuJCKohp9/iJESVW1344SBM="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.js"
+  integrity="sha512-KCgUnRzizZDFYoNEYmnqlo0PRE6rQkek9dE/oyIiCExStQ72O7GwIFfmPdkzk4OvZ/sbHKSLVeR4Gl3s7s679g=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.js"
-    integrity="sha256-dgFbqbQVzjkZPQxWd8PBtzGiRBhChc4I2wO/q/s+Xeo="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.js"
+  integrity="sha512-STI3jX2gEOm2Z4JLWBX1XqsXzHLXmK9H+c94IBv3AfM/w2w3zQfP05EZ/Zi4P/uBajPi2SAmdFxQ1UWQtt7gsA=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.js"
-    integrity="sha256-zcyVODxr75HbGSIdOeK8jLNS3rYq2t5M5qRAO7Kzaec="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.js"
+  integrity="sha512-tjW2dLIvxBrQWtbL7npJzlMVxznKMrkEJtRX5ztkEP6RC5oJdVkmAfFNHTSNrqv7++hAza+dvV4Bijf8rHeC0Q=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.js"
-    integrity="sha256-+suNGOLJQV4Vb1hLmG8QxRuUCftSTWTJElHRssPZGyM="
-    crossorigin="anonymous"
+  src="https://cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.js"
+  integrity="sha512-mnNRHMX9QlC9eIuZyQTOFVdqAa7fS6d1Y99zWpxAjhVMJvdY4WdznRN/Ln7hxBSpCwxs7xJy5uVhOOoNHY3SAQ=="
+  crossorigin="anonymous"
 ></script>
 {% else %}
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+  integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha256-ZvOgfh+ptkpoa2Y4HkRY28ir89u/+VRyDE7sB7hEEcI="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+  integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"
+  integrity="sha512-8qmis31OQi6hIRgvkht0s6mCOittjMa9GMqtK9hes5iEQBQE/Ca6yGE5FsW36vyipGoWQswBj/QBm2JR086Rkw=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"
-    integrity="sha256-AdQN98MVZs44Eq2yTwtoKufhnU+uZ7v2kXnD5vqzZVo="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
+  integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"
-    integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ="
-    crossorigin="anonymous"
+  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"
+  integrity="sha512-hDWGyh+Iy4Mr9AHOzUP2+Y0iVPn/BwxxaoSleEjH/i1o4EVTF/sh0/A1Syii8PWOae+uPr+T/KHwynoebSuAhw=="
+  crossorigin="anonymous"
 ></script>
 <script
-    src="//cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.min.js"
-    integrity="sha256-yYoz9OwGJUuV2927SrBHgg/bdqOF6oA0v781vA0/0FU="
-    crossorigin="anonymous"
+  src="https://cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.min.js"
+  integrity="sha512-B2TzfdZAYEaSbPKRtIfdmTmHKz+nt3pYHn0BuPl+uc5OP8ntPtbYVjAC00o6qrgwDwn4w357ZYQnnYaPdQV1xQ=="
+  crossorigin="anonymous"
 ></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/base.js') }}"></script>
-{#
-<script type="text/javascript">
-    new ClipboardJS(".clipboard");
-    $(function () {
-        $(".clipboard")
-            .tooltip({
-                placement: "right",
-                title: "Copied!",
-                trigger: "click",
-            })
-            .on("mouseleave", (element) => {
-                $(element).tooltip("hide");
-            })
-            .on("click", (event) => {
-                event.preventDefault();
-            });
-    });
-</script>
-#}
 <!-- END SCRIPT -->

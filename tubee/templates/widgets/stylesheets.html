@@ -1,55 +1,54 @@
 <!-- STYLESHEETS -->
 <!--
     This Widget loads different version of css file from CDN Based on flask config
-    * Bootstrap CSS 4.3.1
+    * Bootstrap CSS 4.5.3
     * Normalize CSS 8.0.1
-    * Font Awesome CSS 5.6.3
-    * Github Fork Ribbon CSS 0.2.2 (Dev and Test only)
+    * Font Awesome CSS 5.15.2
+    * Github Fork Ribbon CSS 0.2.3 (Dev and Test only)
 -->
 {% if config.DEBUG or config.TESTING %}
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css"
-    integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css"
+  integrity="sha512-drnvWxqfgcU6sLzAJttJv7LKdjWn0nxWCSbEAtxJ/YYaZMyoNLovG7lPqZRdhgL1gAUfa+V7tbin8y+2llC1cw=="
+  crossorigin="anonymous"
 />
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
-    integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+  integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg=="
+  crossorigin="anonymous"
 />
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.6.3/css/all.css"
-    integrity="sha256-Ueca4WCHITtxdlw02z2H/mux+yOlHTPESSLG5cEnUHc="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.css"
+  integrity="sha512-9iWaz7iMchMkQOKA8K4Qpz6bpQRbhedFJB+MSdmJ5Nf4qIN1+5wOVnzg5BQs/mYH3sKtzY+DOgxiwMz8ZtMCsw=="
+  crossorigin="anonymous"
 />
-
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.min.css"
-    integrity="sha512-D456OMkuSrn+OhD3OUGiO9WJJQNCjjrKdU5SCkrGGIQd8OyPEPB5oPjTJtrBWf2PVgAaHXFYXWWernQHtnodbw=="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
+  integrity="sha512-TktJbycEG5Van9KvrSHFUcYOKBroD7QCYkEe73HAutODCw9QTFcvF6fuxioYM1h6THNudK1GjVidazj6EslK4A=="
+  crossorigin="anonymous"
 />
 {% else %}
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+  integrity="sha512-oc9+XSs1H243/FRN9Rw62Fn8EtxjEYWHXRvjS43YtueEewbS6ObfXcJNyohjHqVKFPoXXUxwc+q1K7Dee6vv9g=="
+  crossorigin="anonymous"
 />
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+  integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+  crossorigin="anonymous"
 />
 <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.6.3/css/all.min.css"
-    integrity="sha256-lWwvJodqrCBurwAZ2n1MiE73AQgZ6Gr9jWRd6ed7WiQ="
-    crossorigin="anonymous"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+  integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+  crossorigin="anonymous"
 />
 {% endif %}
 <!-- END STYLESHEETS -->
