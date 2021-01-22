@@ -66,14 +66,15 @@ def test(run_converage):
 @click.pass_context
 def docker(context, development):
     """Run Development Application"""
-    import subprocess
-
-    command = "docker-compose --file docker-compose.yml --file".split()
+    command = ["docker-compose"]
     if development:
-        command.append("docker-compose.dev.yml")
+        command += "--file docker-compose.dev.yml".split()
+        command.append("up")
+        command += context.args
+        if subprocess.call(command) != 0:
+            raise RuntimeError("docker-compose failed")
+        sys.exit(subprocess.call(["flask", "run"]))
     else:
-        command.append("docker-compose.prod.yml")
-    command.append("up")
-    command += context.args
-    # print(command)
-    sys.exit(subprocess.call(command))
+        command.append("up")
+        command += context.args
+        sys.exit(subprocess.call(command))

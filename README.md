@@ -28,7 +28,7 @@ This application is still in development stage, use at your own risk.
 
 ## Requirements
 
-- Python 3.5+
+- Python 3.7+
 - [YouTube Data API](https://developers.google.com/youtube/registering_an_application) authorization credentials in **Both**
   - OAuth 2.0 token: used for accessing user information
   - API Keys: used for querying public metadata
@@ -47,7 +47,6 @@ For additional operation, you might also need
 
 ```bash
 docker-compose \
-	--file docker-compose.yml \
 	--file docker-compose.dev.yml \
 	up --detach --build
 ```
@@ -56,7 +55,6 @@ docker-compose \
 
 ```bash
 docker-compose \
-	--file docker-compose.yml \
 	--file docker-compose.dev.yml \
 	exec tubee flask deploy
 ```
@@ -88,19 +86,13 @@ docker build --tag tomy0000000/tubee .
 - Start Containers
 
 ```bash
-docker-compose \
-	--file docker-compose.yml \
-	--file docker-compose.prod.yml \
-	up --detach
+docker-compose up --detach
 ```
 
 - Run Migration
 
 ```bash
-docker-compose \
-	--file docker-compose.yml \
-	--file docker-compose.prod.yml \
-	exec tubee flask deploy
+docker-compose exec tubee flask deploy
 ```
 
 ### Accessing
@@ -114,28 +106,19 @@ docker-compose \
 ### Gracefully Restart Nginx
 
 ```bash
-docker-compose \
-	--file docker-compose.yml \
-	--file docker-compose.prod.yml \
-	kill -s HUP nginx
+docker-compose kill -s HUP nginx
 ```
 
 ### Gracefully Restart Gunicorn
 
 ```bash
-docker-compose \
-	--file docker-compose.yml \
-	--file docker-compose.prod.yml \
-	kill -s HUP tubee
+docker-compose kill -s HUP tubee
 ```
 
 ### Gracefully Restart Celery
 
 ```bash
-docker-compose \
-	--file docker-compose.yml \
-	--file docker-compose.prod.yml \
-	kill -s HUP celery
+docker-compose kill -s HUP celery
 ```
 
 ### Remove Postgres Data
@@ -148,8 +131,5 @@ docker volume rm tubee_postgres_data
 
 ```bash
 docker build --tag tomy0000000/tubee .
-docker-compose \
-	--file docker-compose.yml \
-	--file docker-compose.prod.yml \
-	up --detach --no-deps tubee
+docker-compose up --detach --no-deps tubee
 ```
