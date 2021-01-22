@@ -22,9 +22,8 @@ def dashboard():
         current_user.subscriptions.join(Subscription.channel)
         .order_by(Channel.name.asc())
         .all()
-    return render_template(
-        "subscription.html", subscriptions=subscriptions.all(), tag=tag
     )
+    return render_template("subscription.html", subscriptions=subscriptions)
 
 
 @main_blueprint.route("/channel/<channel_id>")
