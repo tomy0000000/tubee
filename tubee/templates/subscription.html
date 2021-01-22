@@ -1,29 +1,25 @@
-{% from "widgets/callback_badge.html" import badge %} {% extends "base.html" %}
-{% set title = "Dashboard" %} {% block style %}
+{% from "widgets/callback_badge.html" import badge %}
+
+{% extends "base.html" %}
+{% set title = "Subscriptions" %}
+
+{% block style %}
 <link
     rel="stylesheet"
-    href="{{ url_for('static', filename='css/dashboard.css') }}"
+    href="{{ url_for('static', filename='css/subscription.css') }}"
 />
-{% endblock %} {% block script %}
-<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-{% endblock %} {% block content %}
+{% endblock %}
 
-<!-- BEGIN Toggle View -->
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
-        <li class="page-item">
-            <a class="page-link" href="#">
-                <i class="fas fa-list"></i>
-            </a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">
-                <i class="fas fa-portrait"></i>
-            </a>
-        </li>
-    </ul>
-</nav>
-<!-- END Toggle View -->
+{% block script %}
+<script src="{{ url_for('static', filename='js/subscription.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+{% if tag %}
+{% include 'widgets/action_table.html' %}
+{% endif %}
 
 <!-- BEGIN Subscription Table -->
 <table class="table table-striped table-hover table-responsive-lg">

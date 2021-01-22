@@ -14,7 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from tubee.config import config
 
-__version__ = "dev_20200922"
+__version__ = "dev_20210123"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()

@@ -1,0 +1,61 @@
+<!-- BEGIN Action Infos -->
+<table class="table table-striped table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">
+        <button
+          type="button"
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#new-action-modal"
+        >
+          New
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for action in actions %}
+    <!-- BEGIN Action Row -->
+    <tr>
+      <th>
+        <p class="mb-0">{{ action.name }}</p>
+        <a
+          href="#"
+          class="text-muted clipboard"
+          data-clipboard-text="{{ action.id }}"
+        >
+          <p class="mb-0">{{ action.id }}</p>
+        </a>
+      </th>
+      <td class="align-middle">{{ action.type.value }}</td>
+      <td class="align-middle">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-toggle="modal"
+          data-target="#edit-action-modal"
+          data-read-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
+          data-edit-endpoint="{{ url_for('api_action.edit', action_id=action.id) }}"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-toggle="modal"
+          data-target="#remove-action-modal"
+          data-action-name="{{ action.name }}"
+          data-api-endpoint="{{ url_for('api_action.delete', action_id=action.id) }}"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+    <!-- END Action Row -->
+    {% endfor %}
+  </tbody>
+</table>
+<!-- END Action Infos -->
