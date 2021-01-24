@@ -76,7 +76,8 @@ class ChannelRoutesTestCase(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.get_data(as_text=True).count("Password Mismatched!"), 2,
+            response.get_data(as_text=True).count("Password Mismatched!"),
+            2,
         )
 
         # Test Full Register Topology
@@ -90,13 +91,13 @@ class ChannelRoutesTestCase(unittest.TestCase):
             follow_redirects=True,
         )
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Dashboard</title>", response.get_data(as_text=True))
+        self.assertIn("Subscriptions</title>", response.get_data(as_text=True))
         self.assertIn(self.client_username, response.get_data(as_text=True))
 
         # Test redirect logined user to Dashboard
         response = self.client.get("/user/register", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Dashboard</title>", response.get_data(as_text=True))
+        self.assertIn("Subscriptions</title>", response.get_data(as_text=True))
         self.assertIn("You&#39;ve already logined!", response.get_data(as_text=True))
 
         # Test Taken Username
@@ -119,7 +120,9 @@ class ChannelRoutesTestCase(unittest.TestCase):
 
         # Test DataRequired validator
         response = self.client.post(
-            "/user/login", data={"username": "", "password": ""}, follow_redirects=True,
+            "/user/login",
+            data={"username": "", "password": ""},
+            follow_redirects=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -143,13 +146,13 @@ class ChannelRoutesTestCase(unittest.TestCase):
             follow_redirects=True,
         )
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Dashboard</title>", response.get_data(as_text=True))
+        self.assertIn("Subscriptions</title>", response.get_data(as_text=True))
         self.assertIn(self.client_username, response.get_data(as_text=True))
 
         # Test redirect logined user to Dashboard
         response = self.client.get("/user/login", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Dashboard</title>", response.get_data(as_text=True))
+        self.assertIn("Subscriptions</title>", response.get_data(as_text=True))
         self.assertIn("You&#39;ve already logined!", response.get_data(as_text=True))
 
         # Logout and redirect to Login
