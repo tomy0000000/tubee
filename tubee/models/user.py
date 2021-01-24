@@ -38,7 +38,12 @@ class User(UserMixin, db.Model):
     _youtube_credentials = db.Column(db.JSON)
     _line_notify_credentials = db.Column(db.String(64))
     _dropbox_credentials = db.Column(db.JSON)
-    notifications = db.relationship("Notification", backref="user", lazy="dynamic")
+    notifications = db.relationship(
+        "Notification",
+        backref="user",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
     subscriptions = db.relationship(
         "Subscription",
         backref=db.backref("user", lazy="joined"),
