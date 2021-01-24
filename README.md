@@ -1,15 +1,26 @@
 # Tubee
 
-![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg?logo=python)
-[![Travis Build Status](https://img.shields.io/travis/com/tomy0000000/Tubee?logo=Travis)](https://travis-ci.com/tomy0000000/Tubee)
-[![codecov](https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf)](https://codecov.io/gh/tomy0000000/Tubee)
-[![liscense](https://img.shields.io/github/license/tomy0000000/Tubee.svg)](https://github.com/tomy0000000/Tubee/blob/master/LICENSE)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
 <p align="center">
-    <img src="tubee/static/favicon.png" align="center">
+    <img src="tubee/static/favicon.png">
     <br>
-    <img width="150" src="tubee/static/img/tubee_text.png" align="center">
+    <img width="150" src="tubee/static/img/tubee_text.png">
+    <br>
+    <img src="https://img.shields.io/badge/python-3.7+-blue.svg?logo=python" alt="Python Version">
+    <a href="https://travis-ci.com/tomy0000000/Tubee">
+        <img src="https://img.shields.io/travis/com/tomy0000000/Tubee?logo=Travis" alt="Travis Build Status">
+    </a>
+    <a href="https://codecov.io/gh/tomy0000000/Tubee">
+        <img src="https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf" alt="codecov">
+    </a>
+    <a href="https://github.com/tomy0000000/Tubee/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/tomy0000000/Tubee.svg" alt="liscense">
+    </a>
+    <a href="https://github.com/psf/black">
+        <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black">
+    </a>
+    <a href="https://github.com/prettier/prettier">
+        <img src="https://img.shields.io/badge/code%20style-prettier-ff69b4.svg" alt="Code style: prettier">
+    </a>
 </p>
 
 ## Overview
