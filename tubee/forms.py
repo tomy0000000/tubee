@@ -130,7 +130,9 @@ class ActionForm(FlaskForm):
     """Action Form"""
 
     action_name = StringField(
-        "Name", validators=[Length(max=32)], render_kw={"class": "form-control"}
+        "Name",
+        validators=[DataRequired(), Length(max=32)],
+        render_kw={"class": "form-control"},
     )
     action_type = SelectField(
         "Type",
