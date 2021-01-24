@@ -6,38 +6,48 @@ from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
-from ..forms import ActionForm
+from ..forms import ActionForm, TagForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
-from ..models import Callback, Channel, Subscription, Video
+from ..models import Callback, Channel, Subscription, Video, SubscriptionTag, Tag
 
 main_blueprint = Blueprint("main", __name__)
 
 
-@main_blueprint.route("/")
+@main_blueprint.route("/", defaults={"tag": None})
+@main_blueprint.route("/<tag>")
 @login_required
-def dashboard():
-    """Showing All Subscribed Channels"""
-    subscriptions = (
-        current_user.subscriptions.join(Subscription.channel)
-        .order_by(Channel.name.asc())
-        .all()
+def dashboard(tag):
+    """Showing Subscribed Channels with specified tag"""
+    subscriptions = current_user.subscriptions.join(Channel).order_by(
+        Channel.name.asc()
     )
-    return render_template("subscription.html", subscriptions=subscriptions)
+    if tag:
+        subscriptions = (
+            subscriptions.join(SubscriptionTag).join(Tag).filter(Tag.name == tag)
+        )
+    return render_template(
+        "subscription.html", subscriptions=subscriptions.all(), tag=tag
+    )
 
 
 @main_blueprint.route("/channel/<channel_id>")
 def channel(channel_id):
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    actions = (
-        current_user.subscriptions.filter_by(channel_id=channel_id)
-        .first()
-        .actions.all()
-    )
-    form = ActionForm()
+    # current_user.subscriptions.filter_by(channel_id=channel_id)
+    actions = current_user.subscriptions.actions.all()
+    subscription_tags = current_user.subscriptions.subscription_tags.join(
+        SubscriptionTag.tag
+    ).all()
     videos = channel_item.videos.order_by(Video.uploaded_timestamp.desc())
     return render_template(
-        "channel.html", channel=channel_item, actions=actions, form=form, videos=videos
+        "channel.html",
+        channel=channel_item,
+        actions=actions,
+        subscription_tags=subscription_tags,
+        action_form=ActionForm(),
+        tag_form=TagForm(),
+        videos=videos,
     )
 
 
@@ -138,9 +148,6 @@ def youtube_subscription():
 @main_blueprint.route("/latest")
 @login_required
 def latest():
-    """
-    docstring
-    """
     one_day_ago = datetime.utcnow() - timedelta(days=1)
     latest_video = Video.query.filter(Video.uploaded_timestamp > one_day_ago)
     user_subscribed_channels = [
