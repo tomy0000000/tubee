@@ -46,6 +46,17 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
+class TagForm(FlaskForm):
+    """Tag Form for editing subscription tag"""
+
+    tag_name = StringField(
+        "Tag",
+        validators=[DataRequired(), Length(max=32)],
+        render_kw={"class": "form-control"},
+    )
+    channel_id = HiddenField("Channel ID", validators=[DataRequired()])
+
+
 class ActionKwargsForm(FlaskForm):
     """Keyword Arguments for Actions"""
 
