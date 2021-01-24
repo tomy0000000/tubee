@@ -17,7 +17,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-
+from urllib.parse import unquote
 from ..models import Callback, Notification, Service
 
 admin_blueprint = Blueprint("admin", __name__)
@@ -38,6 +38,7 @@ def dashboard():
         url = url_for(rule.endpoint, **query)
         try:
             blueprint, endpoint = rule.endpoint.split(".")
+            url = unquote(url)
             if blueprint in links:
                 links[blueprint].append((url, rule.endpoint))
             else:
