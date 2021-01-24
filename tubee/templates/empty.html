@@ -1,13 +1,17 @@
+<!-- prettier-ignore -->
 {% extends "base.html" %}
 
+<!-- prettier-ignore -->
 {% if not title %}
 {% set title = "Test Page" %}
 {% endif %}
 
+<!-- prettier-ignore -->
 {% if not info %}
 {% set info = "Hello World!" %}
 {% endif %}
 
+<!-- prettier-ignore -->
 {% block content %}
 
 {% if pprint %}
@@ -16,4 +20,5 @@
 <p>{{ info }}</p>
 {% endif %}
 
+<!-- prettier-ignore -->
 {% endblock %}

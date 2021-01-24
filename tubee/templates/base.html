@@ -1,66 +1,63 @@
 <!DOCTYPE html>
 <html class="h-100">
-    <head>
-        <link
-            rel="icon"
-            href="{{ url_for('static', filename='favicon.png') }}"
-        />
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
-        />
-        <title>Tubee - {{ title }}</title>
-        {% include "widgets/stylesheets.html" %}
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='css/base.css') }}"
-        />
-        <!-- PAGE CSS -->
-        {% block style %}{% endblock %}
-        <!-- END PAGE CSS -->
-    </head>
-    <body class="d-flex flex-column h-100">
-        {% include "widgets/navbar.html" %}
-        <main role="main" class="flex-grow-1">
-            <!-- CONTAINER -->
-            <div id="content-container" class="container h-100">
-                {% include "widgets/message.html" %}
-                <!-- CONTENT -->
-                {% block content %}{% endblock %}
-                <!-- END CONTENT -->
-            </div>
-            <!-- END CONTAINER -->
-        </main>
-        <!-- FOOTER -->
-        <footer class="footer mt-auto py-3">
-            <div class="container text-muted text-center">
-                <span class="line">Copyright © 2021 Tomy Hsieh.</span>
-                <span class="line">All rights reserved.</span>
-            </div>
-        </footer>
-        <!-- END FOOTER -->
+  <head>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <title>Tubee - {{ title }}</title>
+    {% include "widgets/stylesheets.html" %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}"
+    />
+    <!-- PAGE CSS -->
+    {% block style %}{% endblock %}
+    <!-- END PAGE CSS -->
+  </head>
+  <body class="d-flex flex-column h-100">
+    {% include "widgets/navbar.html" %}
+    <main role="main" class="flex-grow-1">
+      <!-- CONTAINER -->
+      <div id="content-container" class="container h-100">
+        {% include "widgets/message.html" %}
+        <!-- CONTENT -->
+        {% block content %}{% endblock %}
+        <!-- END CONTENT -->
+      </div>
+      <!-- END CONTAINER -->
+    </main>
+    <!-- FOOTER -->
+    <footer class="footer mt-auto py-3">
+      <div class="container text-muted text-center">
+        <span class="line">Copyright © 2019 Tomy Hsieh.</span>
+        <span class="line">All rights reserved.</span>
+      </div>
+    </footer>
+    <!-- END FOOTER -->
 
-        {% if config.DEBUG %}
-        <!-- RIBBON -->
-        <a
-            class="github-fork-ribbon right-bottom fixed"
-            href="#"
-            data-ribbon="Development Build"
-        ></a>
-        <!-- END RIBBON -->
-        {% elif config.TESTING %}
-        <!-- RIBBON -->
-        <a
-            class="github-fork-ribbon right-bottom fixed"
-            href="#"
-            data-ribbon="Testing Build"
-        ></a>
-        <!-- END RIBBON -->
-        {% endif %} {% include "widgets/scripts.html" %} {{
-        moment.include_moment(no_js=True) }}
-        <!-- PAGE JS -->
-        {% block script %}{% endblock %}
-        <!-- END PAGE JS -->
-    </body>
+    {% if config.DEBUG %}
+    <!-- RIBBON -->
+    <a
+      class="github-fork-ribbon right-bottom fixed"
+      href="#"
+      data-ribbon="Development Build"
+    ></a>
+    <!-- END RIBBON -->
+    {% elif config.TESTING %}
+    <!-- RIBBON -->
+    <a
+      class="github-fork-ribbon right-bottom fixed"
+      href="#"
+      data-ribbon="Testing Build"
+    ></a>
+    <!-- END RIBBON -->
+    {% endif %} {% include "widgets/scripts.html" %} {{
+    moment.include_moment(no_js=True) }}
+    <!-- PAGE JS -->
+    {% block script %}{% endblock %}
+    <!-- END PAGE JS -->
+  </body>
 </html>

@@ -107,7 +107,8 @@ class ChannelModelTestCase(unittest.TestCase):
 
     @mock.patch("tubee.models.channel.details")
     def test_channel_update_hub_infos(
-        self, mocked_hub_details,
+        self,
+        mocked_hub_details,
     ):
         self.init_channel()
         mocked_hub_details.return_value = {

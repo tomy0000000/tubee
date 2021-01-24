@@ -1,43 +1,62 @@
-{% extends "base.html" %} {% set title = "Latest Upload" %} {# {% set alert =
-"Hello World" %} {% set alert_type = "primary" %} #} {% block style %}
-<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/<filename>') }}"> -->
-{% endblock %} {% block script %}
-<!-- <script src="{{ url_for('static', filename='js/<filename>') }}"></script> -->
-{% endblock %} {% block content %}
+<!-- prettier-ignore -->
+{% extends "base.html" %}
+{% set title = "Latest Upload" %}
+{#
+{% set alert = "Hello World" %}
+{% set alert_type = "primary" %}
+#}
+
+<!-- prettier-ignore -->
+{% block style %}
+{#
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/<filename>') }}"
+/>
+#} {% endblock %}
+
+<!-- prettier-ignore -->
+{% block script %}
+{#
+<script src="{{ url_for('static', filename='js/<filename>') }}"></script>
+#} {% endblock %}
+
+<!-- prettier-ignore -->
+{% block content %}
 <table class="table table-striped table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col" class="align-middle"></th>
-            <th scope="col" class="align-middle">Title</th>
-            <th scope="col" class="align-middle">Published Datetime</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for video in videos %}
-        <tr>
-            <th scope="row" class="video-thumbnails">
-                <img
-                    src="{{ video.details.thumbnails.medium.url }}"
-                    class="rounded vidoe-thumbnails"
-                />
-            </th>
-            <td class="align-middle video-title">
-                <a href="https://youtu.be/{{ video.id }}" target="_blank">
-                    {{ video.name }}
-                </a>
-                <a
-                    href="#"
-                    class="text-muted clipboard"
-                    data-clipboard-text="{{ video.id }}"
-                >
-                    <p>#{{ video.id }}</p>
-                </a>
-            </td>
-            <td class="align-middle">
-                {{ moment(video.uploaded_timestamp).format('lll') }}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="align-middle"></th>
+      <th scope="col" class="align-middle">Title</th>
+      <th scope="col" class="align-middle">Published Datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for video in videos %}
+    <tr>
+      <th scope="row" class="video-thumbnails">
+        <img
+          src="{{ video.details.thumbnails.medium.url }}"
+          class="rounded vidoe-thumbnails"
+        />
+      </th>
+      <td class="align-middle video-title">
+        <a href="https://youtu.be/{{ video.id }}" target="_blank">
+          {{ video.name }}
+        </a>
+        <a
+          href="#"
+          class="text-muted clipboard"
+          data-clipboard-text="{{ video.id }}"
+        >
+          <p>#{{ video.id }}</p>
+        </a>
+      </td>
+      <td class="align-middle">
+        {{ moment(video.uploaded_timestamp).format('lll') }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% endblock %}

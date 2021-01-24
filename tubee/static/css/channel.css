@@ -1,44 +1,44 @@
-.carousel-item>img {
-    filter: brightness(.5);
-    -webkit-filter: brightness(.5);
+.carousel-item > img {
+  filter: brightness(0.5);
+  -webkit-filter: brightness(0.5);
 }
 
 .youtube-btn {
-    background: #FF0000;
-    /*color: white;*/
+  background: #ff0000;
+  /*color: white;*/
 }
 
 .youtube-btn a {
-    color: white;
+  color: white;
 }
 
 #channel-description {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 #content-container {
-    position: relative;
-    /*top: -350px;*/
+  position: relative;
+  /*top: -350px;*/
 }
 
 .hub-table-cell {
-    width: 50%;
+  width: 50%;
 }
 
 @media (min-width: 992px) {
-    .col-lg-third-one th {
-        width: 25%
-    }
+  .col-lg-third-one th {
+    width: 25%;
+  }
 
-    .col-lg-third-one td {
-        width: 75%
-    }
+  .col-lg-third-one td {
+    width: 75%;
+  }
 }
 
 th.video-thumbnails img {
-    width: 15rem;
+  width: 15rem;
 }
 
 td.video-title p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }

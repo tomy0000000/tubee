@@ -65,7 +65,9 @@ def _formal_post_request(hub, endpoint, **data):
 
     # Sending Requests
     response = requests.post(
-        url=urljoin(hub, endpoint), headers=DEFAULT_HEADERS, data=data,
+        url=urljoin(hub, endpoint),
+        headers=DEFAULT_HEADERS,
+        data=data,
     )
     response.raise_for_status()
     return response
@@ -81,7 +83,9 @@ def _formal_get_request(hub, endpoint, **params):
     hub.secret              Subscriber-provided secret string
     """
     response = requests.get(
-        url=urljoin(hub, endpoint), headers=DEFAULT_HEADERS, params=params,
+        url=urljoin(hub, endpoint),
+        headers=DEFAULT_HEADERS,
+        params=params,
     )
     response.raise_for_status()
     return response

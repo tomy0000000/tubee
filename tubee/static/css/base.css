@@ -1,25 +1,25 @@
 body {
-    padding-top: 5rem;
+  padding-top: 5rem;
 }
 
 .line {
-    display: inline-block;
+  display: inline-block;
 }
 
 #hero {
-    height: 2rem;
+  height: 2rem;
 }
 
 #message-wrapper {
-    height: 0;
-    position: sticky;
-    top: 100px;
-    z-index: 1;
+  height: 0;
+  position: sticky;
+  top: 100px;
+  z-index: 1;
 }
 
 #subscribe-input {
-    width: 300px;
-    transition: all 0.2s ease-in-out;
+  width: 300px;
+  transition: all 0.2s ease-in-out;
 }
 
 /* #subscribe-input:focus {
@@ -27,7 +27,7 @@ body {
 } */
 
 @media (min-width: 992px) {
-    #username {
-        margin-right: 1rem;
-    }
+  #username {
+    margin-right: 1rem;
+  }
 }
