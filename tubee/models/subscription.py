@@ -2,8 +2,10 @@
 from datetime import datetime
 
 from .. import db
+from ..exceptions import InvalidAction
 from .action import Action
 from .subscription_tag import SubscriptionTag
+from .tag import Tag
 
 
 class Subscription(db.Model):
@@ -39,6 +41,19 @@ class Subscription(db.Model):
 
     def __repr__(self):
         return f"<Subscription: {self.username} subscribe to {self.channel_id}>"
+
+    def add_tag(self, tag_name):
+        tag = Tag.query.filter_by(name=tag_name, username=self.username).first()
+        if not tag:
+            tag = Tag(self.username, tag_name)
+        elif tag in self.subscription_tags:
+            raise InvalidAction(f"This channel is already tagged with {tag_name}")
+        SubscriptionTag(self.username, self.channel_id, tag.id)
+        return True
+
+    def remove_tag(self, tag_name):
+        # TODO
+        pass
 
     def add_action(self, action_name, action_type, details):
         from . import Action
