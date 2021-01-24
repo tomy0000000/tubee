@@ -2,66 +2,29 @@ version: "3.8"
 
 services:
   tubee:
-    command: "gunicorn --config instance/gunicorn.conf.py app:app"
     depends_on:
       - "celery"
       - "rabbitmq"
       - "postgres"
-    env_file:
-      - "instance/production.env"
-    environment:
-      FLASK_ENV: "production"
     image: "tomy0000000/tubee"
-    restart: "always"
     volumes:
-      - "application:/usr/src/tubee"
       - "./logs:/usr/src/tubee/logs"
   celery:
-    command:
-      [
-        "celery",
-        "--app=celery_worker.celery",
-        "worker",
-        "--loglevel=info",
-        "--statedb=/usr/src/tubee/instance/celery/%n.state",
-      ]
     depends_on:
       - "rabbitmq"
-    env_file:
-      - "instance/production.env"
-    environment:
-      FLASK_ENV: "production"
     image: "tomy0000000/tubee"
-    restart: "always"
     volumes:
       - "./logs:/usr/src/tubee/logs"
-      - "application:/usr/src/tubee"
   rabbitmq:
     hostname: "tubee-rabbitmq"
     image: "rabbitmq:latest"
-    restart: "always"
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
   postgres:
     image: "postgres:12-alpine"
-    env_file:
-      - "instance/production.env"
-    restart: "always"
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
-  nginx:
-    image: "tomy0000000/nginx:1.17-1.2"
-    depends_on:
-      - "tubee"
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: "always"
-    volumes:
-      - "./instance/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
-      - "application:/usr/share/nginx/tubee"
 
 volumes:
-  application:
   rabbitmq_data:
   postgres_data:

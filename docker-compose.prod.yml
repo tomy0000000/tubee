@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  tubee:
+    command: "gunicorn --config instance/gunicorn.conf.py app:app"
+    env_file:
+      - "instance/production.env"
+    environment:
+      FLASK_ENV: "production"
+    restart: "always"
+    volumes:
+      - application:/usr/src/tubee
+  celery:
+    command:
+      [
+        "celery",
+        "worker",
+        "--app=celery_worker.celery",
+        "--loglevel=info",
+        "--statedb=/usr/src/tubee/instance/celery/%n.state",
+      ]
+    env_file:
+      - "instance/production.env"
+    environment:
+      FLASK_ENV: "production"
+    restart: "always"
+    volumes:
+      - application:/usr/src/tubee
+  rabbitmq:
+    restart: "always"
+  postgres:
+    env_file:
+      - "instance/production.env"
+    restart: "always"
+  nginx:
+    image: "tomy0000000/nginx:1.17-1.2"
+    depends_on:
+      - "tubee"
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: "always"
+    volumes:
+      - ./instance/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - application:/usr/share/nginx/tubee
+
+volumes:
+  application:
