@@ -25,12 +25,33 @@
     </button>
     <div class="collapse navbar-collapse" id="navbars">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item {{ 'active' if title == 'Dashboard' }}">
-          <a class="nav-link" href="{{ url_for('main.dashboard') }}">
-            Dashboard {% if title == "Dashboard" %}
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle {{ 'active' if title == 'Subscriptions' }}"
+            href="#"
+            id="tagDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Subscriptions {% if title == "Subscriptions" %}
             <span class="sr-only">(current)</span>
             {% endif %}
           </a>
+          <div class="dropdown-menu" aria-labelledby="tagDropdown">
+            <a class="dropdown-item" href="{{ url_for('main.dashboard') }}"
+              >All</a
+            >
+            <div class="dropdown-divider"></div>
+            {% for tag in current_user.tags %}
+            <a
+              class="dropdown-item"
+              href="{{ url_for('main.dashboard', tag=tag.name) }}"
+              >{{ tag.name }}</a
+            >
+            {% endfor %}
+          </div>
         </li>
         <li class="nav-item {{ 'active' if title == 'YouTube Subscription' }}">
           <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
