@@ -15,3 +15,10 @@ class SubscriptionTag(db.Model):
         ),
         {},
     )
+
+    def __init__(self, username, channel_id, tag_id):
+        self.username = username
+        self.channel_id = channel_id
+        self.tag_id = tag_id
+        db.session.add(self)
+        db.session.commit()

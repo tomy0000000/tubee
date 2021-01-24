@@ -50,6 +50,9 @@ class User(UserMixin, db.Model):
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
+    tags = db.relationship(
+        "Tag", backref="user", lazy="immediate", cascade="all, delete-orphan"
+    )
 
     #      #####
     #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
