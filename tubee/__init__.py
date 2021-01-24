@@ -82,6 +82,7 @@ def create_app(config_name, coverage=None):
     app.register_blueprint(routes.api_blueprint, url_prefix="/api")
     app.register_blueprint(routes.api_action_blueprint, url_prefix="/api/action")
     app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
+    app.register_blueprint(routes.api_tag_blueprint, url_prefix="/api/tag")
     app.register_blueprint(routes.api_task_blueprint, url_prefix="/api/task")
     app.register_blueprint(routes.user_blueprint, url_prefix="/user")
     if app.debug:
