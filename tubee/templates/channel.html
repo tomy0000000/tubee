@@ -120,6 +120,34 @@
       <p class="mb-0">{{ channel.id }}</p>
     </a>
     <p id="channel-description">{{ channel.infos.snippet.description }}</p>
+    <form id="tag-form">
+      {{ tag_form.csrf_token }} {{ tag_form.channel_id(value=channel.id) }}
+      <div class="form-row">
+        <div class="col-auto">
+          {{ tag_form.tag_name.label(class="sr-only") }}
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">#</span>
+              {% for subscription_tag in subscription_tags %}
+              <span class="input-group-text"
+                >{{ subscription_tag.tag.name }}</span
+              >
+              {% endfor %}
+            </div>
+            {{ tag_form.tag_name }}
+          </div>
+        </div>
+        <div class="col-auto">
+          <button
+            class="btn btn-primary mb-2 submit-btn"
+            type="button"
+            data-api-endpoint="{{ url_for('api_tag.new') }}"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
     {% if current_user.is_subscribing(channel) %}
     <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
     {% else %}
