@@ -33,26 +33,28 @@
           class="needs-validation"
           method="POST"
         >
-          {{ form.csrf_token }} {{ form.channel_id(value=channel.id) }}
+          <!-- prettier-ignore -->
+          {{ action_form.csrf_token }}
+          {{ action_form.channel_id(value=channel.id) }}
           <div class="form-group row">
-            {{ form.action_name.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ form.action_name }}</div>
+            {{ action_form.action_name.label(class="col-4 col-form-label") }}
+            <div class="col-8">{{ action_form.action_name }}</div>
           </div>
           <div class="form-group row">
-            {{ form.action_type.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ form.action_type }}</div>
+            {{ action_form.action_type.label(class="col-4 col-form-label") }}
+            <div class="col-8">{{ action_form.action_type }}</div>
           </div>
-          {% for field in form.notification %}
+          {% for field in action_form.notification %}
           <div class="form-group row action-type-fields notification-fields">
             {{ field.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ field }}</div>
           </div>
-          {% endfor %}{% for field in form.playlist %}
+          {% endfor %}{% for field in action_form.playlist %}
           <div class="form-group row action-type-fields playlist-fields">
             {{ field.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ field }}</div>
           </div>
-          {% endfor %}{% for field in form.download %}
+          {% endfor %}{% for field in action_form.download %}
           <div class="form-group row action-type-fields download-fields">
             {{ field.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ field }}</div>
@@ -66,13 +68,13 @@
           Cancel
         </button>
         <button class="btn btn-success submit-btn" type="button">
+          Save
           <span
             id="edit-save-spinner"
             class="spinner-border spinner-border-sm"
             role="status"
             aria-hidden="true"
           ></span>
-          Save
         </button>
       </div>
     </div>
