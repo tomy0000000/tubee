@@ -274,7 +274,49 @@ let send_delete_action_request = (event) => {
     });
 };
 
+let send_tag_patch = (event) => {
+  // Init
+  event.preventDefault();
+  let button = $(event.target);
+  let api_endpoint = button.data("api-endpoint");
+  let data = $("#tag-form").serializeArray();
+
+  // Appearence
+  button.append(
+    $(
+      '<span class="spinner-border spinner-border-sm spinner" role="status" aria-hidden="true"></span>'
+    )
+  );
+  button.prop("disabled", true);
+
+  // Request
+  $.post({
+    type: "POST",
+    url: api_endpoint,
+    data: data,
+    success: (requestData) => {
+      console.log(requestData);
+    },
+  })
+    .done((responseData) => {
+      if (Boolean(responseData)) {
+        location.reload();
+      } else {
+        alert("Save Failed, Try Again");
+      }
+    })
+    .fail(() => {
+      alert("Save Failed, Try Again");
+    })
+    .always((responseData) => {
+      console.log(responseData);
+      button.find(".spinner").remove();
+      button.prop("disabled", false);
+    });
+};
+
 $(document).ready(function () {
+  $("#tag-form").find(".submit-btn").click(send_tag_patch);
   $("#hub-reload-btn").click(reload_hub_status);
   $("#new-action-modal").on("show.bs.modal", load_new_modal);
   $("#edit-action-modal").on("show.bs.modal", load_edit_modal);
