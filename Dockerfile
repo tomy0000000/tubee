@@ -10,7 +10,7 @@ ARG INSTALL_DEV
 COPY . .
 
 # Install pip and pipenv
-RUN pip install --upgrade pip pipenv
+RUN pip install --upgrade pip
 
 # Install Dependencies
-RUN pipenv install --system --deploy --ignore-pipfile $(test "$INSTALL_DEV" = false || echo "--dev")
+RUN pip install -r requirements.txt
