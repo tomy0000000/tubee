@@ -30,7 +30,11 @@
         >
           <!-- prettier-ignore -->
           {{ action_form.csrf_token }}
+          {% if channel is defined %}
           {{ action_form.channel_id(value=channel.id) }}
+          {% elif tag is defined %}
+          {{ action_form.tag(value=tag) }}
+          {% endif %}
           <div class="form-group row">
             {{ action_form.action_name.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ action_form.action_name }}</div>

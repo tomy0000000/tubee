@@ -17,9 +17,9 @@
 
 <!-- prettier-ignore -->
 {% block content %}
-{% include "channel_component/new_action_modal.html" %}
-{% include "channel_component/edit_action_modal.html" %}
-{% include "channel_component/remove_action_modal.html" %}
+{% include "action/modal_new.html" %}
+{% include "action/modal_edit.html" %}
+{% include "action/modal_remove.html" %}
 
 <!-- BEGIN Video Thumbnails Carousel -->
 {% if videos %} {% set thumb_num = [videos.count(), 3]|min %}
@@ -161,7 +161,7 @@
 </div>
 <!-- END Video Infos -->
 
-{% include 'widgets/action_table.html' %}
+{% include "action/table.html" %}
 
 <!-- BEGIN Hub Infos -->
 {% if current_user.admin %}
