@@ -21,11 +21,19 @@ class Channel(db.Model):
     hub_infos = db.Column(db.JSON)
     subscribe_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     unsubscribe_timestamp = db.Column(db.DateTime)
-    videos = db.relationship("Video", backref="channel", lazy="dynamic")
-    callbacks = db.relationship("Callback", backref="channel", lazy="dynamic")
-    subscribers = db.relationship(
+    actions = db.relationship("Action", back_populates="channel")
+    videos = db.relationship(
+        "Video", back_populates="channel", lazy="dynamic", cascade="all, delete-orphan"
+    )
+    callbacks = db.relationship(
+        "Callback",
+        back_populates="channel",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
+    subscriptions = db.relationship(
         "Subscription",
-        backref=db.backref("channel", lazy="joined"),
+        back_populates="channel",
         lazy="dynamic",
         cascade="all, delete-orphan",
     )

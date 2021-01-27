@@ -16,7 +16,10 @@ class Video(db.Model):
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
     uploaded_timestamp = db.Column(db.DateTime)
     details = db.Column(db.JSON)
-    callbacks = db.relationship("Callback", backref="video", lazy="dynamic")
+    channel = db.relationship("Channel", back_populates="videos")
+    callbacks = db.relationship(
+        "Callback", back_populates="video", lazy="dynamic", cascade="all, delete-orphan"
+    )
     DETAILS_FIELDS = "kind,etag,nextPageToken,prevPageToken,pageInfo,items(id,etag,snippet(publishedAt,channelId,title,description,thumbnails(default,medium,high,standard,maxres),channelTitle,liveBroadcastContent))"
     THUMBNAIL_SIZES_TUPLE = [
         ("medium", "mqdefault.jpg", 320, 180),

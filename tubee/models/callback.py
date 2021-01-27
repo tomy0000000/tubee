@@ -22,6 +22,8 @@ class Callback(db.Model):
     infos = db.Column(db.JSON)
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
     video_id = db.Column(db.String(32), db.ForeignKey("video.id"))
+    channel = db.relationship("Channel", back_populates="callbacks")
+    video = db.relationship("Video", back_populates="callbacks")
 
     def __init__(self, channel):
         self.channel = channel

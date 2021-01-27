@@ -18,48 +18,51 @@ class Action(db.Model):
     name = db.Column(db.String(32), nullable=False)
     type = db.Column(db.Enum(ActionType), nullable=False)
     details = db.Column(db.JSON)
-    username = db.Column(db.String(32))
-    channel_id = db.Column(db.String(32))
+    username = db.Column(db.String(32), db.ForeignKey("user.username"), nullable=False)
+    channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
+    tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"))
     __table_args__ = (
         db.ForeignKeyConstraint(
             [username, channel_id], ["subscription.username", "subscription.channel_id"]
         ),
         {},
     )
+    channel = db.relationship("Channel", back_populates="actions")
+    subscription = db.relationship("Subscription", back_populates="_actions")
+    tag = db.relationship("Tag", back_populates="actions")
+    user = db.relationship("User", back_populates="actions")
 
-    def __init__(self, action_name, action_type, user, channel, details=None):
+    def __init__(self, action_name, action_type, user, action_mixin, details=None):
+        from .tag import Tag
+        from .channel import Channel
+
         self.name = action_name
         self.type = (
             action_type if action_type is ActionType else ActionType(action_type)
         )
         self.username = user.username
-        self.channel_id = channel.id
+        if isinstance(action_mixin, Channel):
+            self.channel_id = action_mixin.id
+        elif isinstance(action_mixin, Tag):
+            self.tag_id = action_mixin.id
+        else:
+            raise ValueError("At least one of <Channel, Tag> must be given")
         self.details = details
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
-        return f"<Action: {self.type} associate with user {self.username} for {self.channel_id}>"
+        return f"<Action: {self.type} associate with user {self.username}>"
 
     @property
-    def user(self):
-        from . import User
+    def action_mixin(self):
+        if self.channel_id:
+            return self.channel
+        return self.tag
 
-        return User.query.get(self.username)
-
-    @user.setter
-    def user(self, user_id):
-        raise AttributeError("User can't be modified")
-
-    @property
-    def channel(self):
-        from . import Channel
-
-        return Channel.query.get(self.channel_id)
-
-    @channel.setter
-    def channel(self, channel_id):
-        raise AttributeError("Channel can't be modified")
+    @action_mixin.setter
+    def action_mixin(self, object):
+        raise AttributeError("Action Mixin can't be modified")
 
     def edit(self, new_data):
         if new_data["action_type"] == "Notification":
