@@ -15,12 +15,16 @@
 <!-- prettier-ignore -->
 {% block script %}
 <script src="{{ url_for('static', filename='js/subscription.js') }}"></script>
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
 
 {% if tag %}
+{% include "action/modal_new.html" %}
+{% include "action/modal_edit.html" %}
+{% include "action/modal_remove.html" %}
 {% include "action/table.html" %}
 {% endif %}
 
