@@ -9,27 +9,45 @@ const VALID_SPINNER_TYPE = [
   "dark",
 ];
 
-insert_spinner = (location, type) => {
-  type = VALID_SPINNER_TYPE.includes(type) ? type : "primary";
-  $(location).append(
-    $("<div>")
-      .attr({
-        id: "loading-spinner-div",
-        class: ["d-flex", "justify-content-center"],
+function set_loading(button) {
+  let spinner_id = Date.now();
+  $(button)
+    .append(
+      $("<span>").attr({
+        id: spinner_id,
+        class: "spinner-border spinner-border-sm",
       })
-      .append(
-        $("<div>")
-          .addClass(["spinner-border", `text-${type}`])
-          .append($("<span>").addClass("sr-only").text("Loading..."))
-      )
-  );
-};
+    )
+    .data({ "spinner-id": spinner_id })
+    .prop("disabled", true);
+}
 
-drop_spinner = (location) => {
-  $(location).find("#loading-spinner-div").remove();
-};
+function unset_loading(button) {
+  drop_spinner(button);
+  button.prop("disabled", false);
+}
 
-register_clipboard_items = (selector) => {
+function insert_spinner(location, type) {
+  type = VALID_SPINNER_TYPE.includes(type) ? type : "primary";
+  let spinner_id = Date.now();
+  $(location)
+    .append(
+      $("<div>")
+        .attr({
+          id: spinner_id,
+          class: `spinner-border text-${type}`,
+        })
+        .append($("<span>").addClass("sr-only").text("Loading..."))
+    )
+    .data({ "spinner-id": spinner_id });
+}
+
+function drop_spinner(location) {
+  let spinner_id = $(location).data("spinner-id");
+  $(location).find(`#${spinner_id}`).remove();
+}
+
+function register_clipboard_items(selector) {
   new ClipboardJS(selector);
   $(selector)
     .tooltip({
@@ -43,9 +61,9 @@ register_clipboard_items = (selector) => {
     .on("click", (event) => {
       event.preventDefault();
     });
-};
+}
 
-submit_subscribe = (event) => {
+function submit_subscribe(event) {
   // UI
   let icon = $("<span>").attr({
     class: "spinner-border spinner-border-sm mr-1",
@@ -96,7 +114,7 @@ submit_subscribe = (event) => {
       }
     },
   });
-};
+}
 
 $(document).ready(() => {
   register_clipboard_items(".clipboard");
