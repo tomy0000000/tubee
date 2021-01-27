@@ -9,7 +9,7 @@ from .. import db
 from ..forms import ActionForm, TagForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
-from ..models import Callback, Channel, Subscription, Video, SubscriptionTag, Tag
+from ..models import Callback, Channel, Video, SubscriptionTag, Tag
 
 main_blueprint = Blueprint("main", __name__)
 
@@ -22,29 +22,32 @@ def dashboard(tag):
     subscriptions = current_user.subscriptions.join(Channel).order_by(
         Channel.name.asc()
     )
+    actions = None
     if tag:
         subscriptions = (
             subscriptions.join(SubscriptionTag).join(Tag).filter(Tag.name == tag)
         )
+        actions = current_user.actions.join(Tag).filter(Tag.name == tag)
     return render_template(
-        "subscription.html", subscriptions=subscriptions.all(), tag=tag
+        "subscription.html",
+        actions=actions,
+        subscriptions=subscriptions.all(),
+        tag=tag,
+        action_form=ActionForm(),
     )
 
 
 @main_blueprint.route("/channel/<channel_id>")
 def channel(channel_id):
-    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    # current_user.subscriptions.filter_by(channel_id=channel_id)
-    actions = current_user.subscriptions.actions.all()
-    subscription_tags = current_user.subscriptions.subscription_tags.join(
-        SubscriptionTag.tag
-    ).all()
-    videos = channel_item.videos.order_by(Video.uploaded_timestamp.desc())
+    subscription = current_user.subscriptions.filter_by(
+        channel_id=channel_id
+    ).first_or_404()
+    videos = subscription.channel.videos.order_by(Video.uploaded_timestamp.desc())
     return render_template(
         "channel.html",
-        channel=channel_item,
-        actions=actions,
-        subscription_tags=subscription_tags,
+        channel=subscription.channel,
+        actions=subscription.actions,
+        subscription_tags=subscription.subscription_tags,
         action_form=ActionForm(),
         tag_form=TagForm(),
         videos=videos,
