@@ -1,4 +1,4 @@
-"""empty message
+"""Drop Conflict Constraint
 
 Revision ID: 9474e9817305
 Revises: 34935013ab33
