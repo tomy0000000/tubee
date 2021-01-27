@@ -40,19 +40,20 @@ class User(UserMixin, db.Model):
     _dropbox_credentials = db.Column(db.JSON)
     notifications = db.relationship(
         "Notification",
-        backref="user",
+        back_populates="user",
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
     subscriptions = db.relationship(
         "Subscription",
-        backref=db.backref("user", lazy="joined"),
+        back_populates="user",
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
     tags = db.relationship(
-        "Tag", backref="user", lazy="immediate", cascade="all, delete-orphan"
+        "Tag", back_populates="user", lazy="dynamic", cascade="all, delete-orphan"
     )
+    actions = db.relationship("Action", back_populates="user", lazy="dynamic")
 
     #      #####
     #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
@@ -222,8 +223,8 @@ class User(UserMixin, db.Model):
         if error_description == "Token expired or revoked":
             self._youtube_credentials = None
             db.session.commit()
-            raise APIError(error_description, "success")
-        raise APIError(error_description, "danger")
+            raise APIError(service="YouTube", message=error_description)
+        raise APIError(service="YouTube", message=error_description)
 
     #     ######
     #     #     # #####   ####  #####  #####   ####  #    #
@@ -288,7 +289,7 @@ class User(UserMixin, db.Model):
     def line_notify(self):
         response = self.line_notify.post("api/revoke")
         if response.status_code != 200 and response.status_code != 401:
-            raise APIError(response.text)
+            raise APIError(service="Line Notify", message=response.text)
         self._line_notify_credentials = None
         db.session.commit()
 
@@ -375,7 +376,7 @@ class User(UserMixin, db.Model):
                 f"Faield to insert {video_id} to {self.username}'s playlist"
             )
             current_app.logger.error(error_message)
-            raise APIError(error_message)
+            raise APIError(service="YouTube", message=error_message)
 
     # Pushover, Line Notify Methods
     def send_notification(self, initiator, service, **kwargs):

@@ -3,7 +3,6 @@ from datetime import datetime
 
 from .. import db
 from ..exceptions import InvalidAction
-from .action import Action
 from .subscription_tag import SubscriptionTag
 from .tag import Tag
 
@@ -18,17 +17,17 @@ class Subscription(db.Model):
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"), primary_key=True)
     subscribe_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     unsubscribe_timestamp = db.Column(db.DateTime)
-    actions = db.relationship(
+    user = db.relationship("User", back_populates="subscriptions")
+    channel = db.relationship("Channel", back_populates="subscriptions")
+    _actions = db.relationship(
         "Action",
-        foreign_keys=[Action.username, Action.channel_id],
-        backref="subscription",
+        back_populates="subscription",
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
     subscription_tags = db.relationship(
         "SubscriptionTag",
-        foreign_keys=[SubscriptionTag.username, SubscriptionTag.channel_id],
-        backref=db.backref("subscription", lazy="joined"),
+        back_populates="subscription",
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
@@ -41,6 +40,22 @@ class Subscription(db.Model):
 
     def __repr__(self):
         return f"<Subscription: {self.username} subscribe to {self.channel_id}>"
+
+    @property
+    def actions(self):
+        return [
+            action
+            for subscription_tag in self.subscription_tags
+            for action in subscription_tag.tag.actions
+        ] + self._actions.all()
+
+    @actions.setter
+    def actions(self, actions):
+        raise ValueError("Actions should be modify using instance methods")
+
+    @actions.deleter
+    def actions(self):
+        raise ValueError("Actions should be modify using instance methods")
 
     def add_tag(self, tag_name):
         tag = Tag.query.filter_by(name=tag_name, username=self.username).first()

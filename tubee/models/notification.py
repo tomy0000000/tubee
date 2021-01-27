@@ -63,6 +63,7 @@ class Notification(db.Model):
     kwargs = db.Column(db.JSON)
     sent_timestamp = db.Column(db.DateTime, index=True)
     response = db.Column(db.JSON)
+    user = db.relationship("User", back_populates="notifications")
 
     def __init__(self, initiator, user, service, send=True, **kwargs):
         """An Object which describe a Notification for a specific user
