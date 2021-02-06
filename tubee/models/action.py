@@ -34,15 +34,15 @@ class Action(db.Model):
 
     def __init__(self, action_name, action_type, user, action_mixin, details=None):
         from .tag import Tag
-        from .channel import Channel
+        from .subscription import Subscription
 
         self.name = action_name
         self.type = (
             action_type if action_type is ActionType else ActionType(action_type)
         )
         self.username = user.username
-        if isinstance(action_mixin, Channel):
-            self.channel_id = action_mixin.id
+        if isinstance(action_mixin, Subscription):
+            self.channel_id = action_mixin.channel_id
         elif isinstance(action_mixin, Tag):
             self.tag_id = action_mixin.id
         else:
@@ -57,7 +57,7 @@ class Action(db.Model):
     @property
     def action_mixin(self):
         if self.channel_id:
-            return self.channel
+            return self.subscription
         return self.tag
 
     @action_mixin.setter
