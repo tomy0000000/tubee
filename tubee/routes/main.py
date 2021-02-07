@@ -14,18 +14,21 @@ from ..models import Callback, Channel, Video, Subscription, SubscriptionTag, Ta
 main_blueprint = Blueprint("main", __name__)
 
 
-@main_blueprint.route("/", defaults={"tag": None})
-@main_blueprint.route("/<tag>")
+@main_blueprint.route("/", defaults={"tag": False})
+@main_blueprint.route("/untagged", defaults={"tag": None})
+@main_blueprint.route("/tag/<tag>")
 @login_required
 def dashboard(tag):
     """Showing Subscribed Channels with specified tag"""
-    subscriptions = current_user.subscriptions.join(Channel).order_by(
+    subscriptions = current_user.subscriptions.outerjoin(Channel).order_by(
         Channel.name.asc()
     )
     actions = None
-    if tag:
+    if tag is not False:
         subscriptions = (
-            subscriptions.join(SubscriptionTag).join(Tag).filter(Tag.name == tag)
+            subscriptions.outerjoin(SubscriptionTag)
+            .outerjoin(Tag)
+            .filter(Tag.name == tag)
         )
         actions = current_user.actions.join(Tag).filter(Tag.name == tag)
     return render_template(

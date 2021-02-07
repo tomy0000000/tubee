@@ -30,7 +30,9 @@
     <h1 class="display-1 m-0">Oops !</h1>
     <h1 class="m-0">You've ripped a hole in the fabric of the internet !!!</h1>
     <small class="text-muted">
-      <a href="{{ url_for('main.dashboard') }}">Return to the Safe Place</a>
+      <a href="{{ url_for('main.dashboard', tag=False) }}"
+        >Return to the Safe Place</a
+      >
     </small>
   </div>
 </div>
