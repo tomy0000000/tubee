@@ -69,19 +69,3 @@ class Subscription(db.Model):
     def remove_tag(self, tag_name):
         # TODO
         pass
-
-    def add_action(self, action_name, action_type, details):
-        from . import Action
-
-        return Action(action_name, action_type, self.user, self, details)
-
-    def remove_action(self, action_id):
-        action = self.actions.filter_by(id=action_id).first()
-        if action:
-            db.session.delete(action)
-            db.session.commit()
-            return True
-        return False
-
-    def edit_action():
-        pass
