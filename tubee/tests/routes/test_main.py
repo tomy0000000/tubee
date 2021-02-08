@@ -37,7 +37,7 @@ class MainRoutesTestCase(unittest.TestCase):
 
     @mock.patch("tubee.routes.main.current_user")
     def test_main_dashboard(self, mocked_current_user):
-        mocked_current_user.subscriptions.join().order_by().all.return_value = [
+        mocked_current_user.subscriptions.outerjoin().order_by().all.return_value = [
             mock.MagicMock(channel_id=channel_id)
             for channel_id in self.test_channel_ids
         ]
@@ -54,6 +54,3 @@ class MainRoutesTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         for channel_id in self.test_channel_ids:
             self.assertIn(channel_id, response.get_data(as_text=True))
-
-    # def test_youtube_subscription(self):
-    #     pass
