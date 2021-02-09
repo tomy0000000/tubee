@@ -31,7 +31,6 @@ pushover-complete = "*"
 pyRFC3339 = "*"
 python-dateutil = "*"
 python-dotenv = "*"
-redis = "*"
 requests = "*"
 youtube-dl = "*"
 
