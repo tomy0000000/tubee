@@ -1,5 +1,6 @@
 """Callback Model"""
 from datetime import datetime
+from flask import current_app
 
 from .. import db
 
@@ -29,6 +30,7 @@ class Callback(db.Model):
         self.channel = channel
         db.session.add(self)
         db.session.commit()
+        current_app.logger.info(f"Callback <{self.id}>: Created")
 
     def __repr__(self):
         return f"<{self.channel_id}'s Callback {self.id}>"

@@ -2,7 +2,6 @@
 from flask import (
     Blueprint,
     abort,
-    current_app,
     flash,
     redirect,
     render_template,
@@ -30,7 +29,6 @@ def empty():
 @login_required
 def test_download_to_dropbox(video_id):
     metadata = fetch_video_metadata(video_id)
-    current_app.logger.info(metadata)
     response = current_user.dropbox.files_save_url(
         f"/{metadata['title']}.mp4", metadata["url"]
     )

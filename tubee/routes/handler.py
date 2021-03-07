@@ -58,7 +58,7 @@ def unhandled_exception(error):
         code = 500
 
     if isinstance(error, YouTubeHttpError) and "quota" in str(error):
-        current_app.logger.info(f"Quota: {error}")
+        current_app.logger.info(f"YouTube API Quota exceed: {error}")
     current_app.logger.getChild("error").exception("Error")
 
     # Return an error response to user

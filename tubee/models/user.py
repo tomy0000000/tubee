@@ -68,6 +68,7 @@ class User(UserMixin, db.Model):
         self.password = password
         db.session.add(self)
         db.session.commit()
+        current_app.logger.info(f"User <{self.username}>: Create")
 
     def __repr__(self):
         return f"<User: {self.username}>"
@@ -343,6 +344,7 @@ class User(UserMixin, db.Model):
         if self.is_subscribing(channel):
             raise InvalidAction("You've already subscribed this channel")
         Subscription(self.username, channel.id)
+        current_app.logger.info(f"Subscription <{self.username}, {channel_id}>: Create")
         return True
 
     def unbsubscribe(self, channel_id):
@@ -354,6 +356,7 @@ class User(UserMixin, db.Model):
             )
         db.session.delete(subscription)
         db.session.commit()
+        current_app.logger.info(f"Subscription <{self.username}, {channel_id}>: Remove")
         return True
 
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
@@ -365,11 +368,16 @@ class User(UserMixin, db.Model):
             }
         }
         try:
-            return (
+            result = (
                 self.youtube.playlistItems()
                 .insert(part="snippet", body=resource)
                 .execute()
             )
+            current_app.logger.info(
+                f"User <{self.username}>: "
+                f"Insert video <{video_id}> to playlist <{playlist_id}>"
+            )
+            return result
         except HttpError as error:
             error_message = json.loads(error.content)["error"]["message"]
             current_app.logger.error(

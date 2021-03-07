@@ -52,14 +52,18 @@ class Action(db.Model):
                 .id
             )
         else:
+            current_app.logger.error(
+                f"Action <{self.id}>: Create failed without supply channel or tag"
+            )
             raise ValueError("At least one of <Channel, Tag> must be given")
         self.username = username
         self.edit(params)
         db.session.add(self)
         db.session.commit()
+        current_app.logger.info(f"Action <{self.id}>: Create")
 
     def __repr__(self):
-        return f"<Action ({self.id}): {self.type} by user {self.username}>"
+        return f"<Action <{self.id}>: {self.type} by {self.username}>"
 
     @property
     def action_mixin(self):
@@ -90,14 +94,18 @@ class Action(db.Model):
         if modified:
             db.session.commit()
 
+        current_app.logger.info(f"Action <{self.id}>: modified ({modified})")
         return modified
 
     def delete(self):
+        action_id = self.id
         try:
             db.session.delete(self)
             db.session.commit()
+            current_app.logger.info(f"Action <{action_id}>: Remove")
             return True
         except Exception:
+            current_app.logger.exception(f"Action <{action_id}>: Remove failed")
             return False
 
     def execute(self, **parameters):
@@ -135,6 +143,7 @@ class Action(db.Model):
                 parameters["video_file_url"],
             )
         else:
+            current_app.logger.info(f"Action <{self.id}>: Execute without valid type")
             raise RuntimeError("Invalid Action")
-        current_app.logger.info(f"Action <{self.id}> executed")
+        current_app.logger.info(f"Action <{self.id}>: Executed ({results})")
         return results

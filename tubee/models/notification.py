@@ -78,7 +78,6 @@ class Notification(db.Model):
             message {str} -- message of Notification
             image_url {str} -- URL of the image
         """
-        self.notification_id = str(uuid4())
         self.initiator = initiator
         self.user = user
         self.service = service if service is Service else Service(service)
@@ -86,11 +85,12 @@ class Notification(db.Model):
         self.kwargs = kwargs
         db.session.add(self)
         db.session.commit()
+        current_app.logger.info(f"Notification <{self.id}>: Create")
         if send:
             self.send()
 
     def __repr__(self):
-        return f"<Notification: {self.user.username}'s notification send with {self.initiator}>"
+        return f"<Notification <{self.id}>"
 
     @staticmethod
     def _clean_up_kwargs(kwargs, service):
@@ -98,9 +98,7 @@ class Notification(db.Model):
             key: val for key, val in kwargs.items() if key not in VALID_ARGS[service]
         }
         for key, val in invalid_args.items():
-            current_app.logger.warning(
-                f"Invalid {service.value} Notification Arguments ({key}, {val}) is ommited"
-            )
+            current_app.logger.warning(f"Invalid argument ({key}, {val}) is ommited")
             kwargs.pop(key)
         return kwargs
 
@@ -125,6 +123,7 @@ class Notification(db.Model):
             self.response = self._send_with_line_notify().json()
         self.sent_timestamp = datetime.utcnow()
         db.session.commit()
+        current_app.logger.info(f"Notification <{self.id}>: Sent ({self.response})")
         return self.response
 
     def _send_with_pushover(self):
