@@ -131,55 +131,6 @@ class ProductionConfig(Config):
 #         DevelopmentConfig.init_app(app)
 
 
-# class HerokuConfig(ProductionConfig):
-#     SSL_REDIRECT = bool(os.environ.get("DYNO"))
-#     CELERY_BROKER_URL = os.environ.get("REDIS_URL", None)
-#     CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", None)
-
-#     @classmethod
-#     def init_app(cls, app):
-#         ProductionConfig.init_app(app)
-
-#         # handle reverse proxy server headers
-#         from werkzeug.middleware.proxy_fix import ProxyFix
-
-#         app.wsgi_app = ProxyFix(app.wsgi_app)
-
-#         # log to stderr
-#         logging.info("Heroku Config Loaded")
-
-
-# class GoogleCloudAppEngineConfig(ProductionConfig):
-
-#     GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT_ID")
-#     GOOGLE_CLOUD_LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION")
-#     GOOGLE_CLOUD_TASK_QUEUE = os.environ.get("GOOGLE_CLOUD_TASK_QUEUE")
-
-#     @classmethod
-#     def init_app(cls, app):
-#         ProductionConfig.init_app(app)
-
-#         # log from stderr will be redirected to stackdriver
-#         import google.cloud.logging
-
-#         client = google.cloud.logging.Client()
-#         client.setup_logging()
-#         logging.info("App Engine Config Loaded")
-
-
-# class GoogleCloudComputeEngineConfig(ProductionConfig):
-#     @classmethod
-#     def init_app(cls, app):
-#         ProductionConfig.init_app(app)
-
-#         # log to stackdriver
-#         import google.cloud.logging
-
-#         client = google.cloud.logging.Client()
-#         client.setup_logging()
-#         logging.info("Compute Engine Config Loaded")
-
-
 config = {
     "default": DevelopmentConfig,
     "development": DevelopmentConfig,
@@ -188,7 +139,4 @@ config = {
     # "unix": UnixConfig,
     # "docker": DockerConfig,
     # "docker-dev": DockerDevelopmentConfig,
-    # "heroku": HerokuConfig,
-    # "gae": GoogleCloudAppEngineConfig,
-    # "gce": GoogleCloudComputeEngineConfig,
 }

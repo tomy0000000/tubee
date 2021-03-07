@@ -1,26 +1,6 @@
 version: "3.8"
 
 services:
-  # tubee:
-  #     build:
-  #         context: .
-  #         args:
-  #             INSTALL_DEV: "true"
-  #     command: "flask run -h 0.0.0.0"
-  #     depends_on:
-  #         - "celery"
-  #         - "rabbitmq"
-  #         - "postgres"
-  #     env_file:
-  #         - ".env"
-  #     environment:
-  #         FLASK_ENV: "development"
-  #     image: "tomy0000000/tubee"
-  #     ports:
-  #         - "5000:5000"
-  #     volumes:
-  #         - "./logs:/usr/src/tubee/logs"
-  #         - ".:/usr/src/tubee"
   celery:
     build:
       context: .
@@ -47,8 +27,8 @@ services:
       - ".env"
     environment:
       FLASK_ENV: "development"
+    network_mode: "host"
     volumes:
-      - "./logs:/usr/src/tubee/logs"
       - ".:/usr/src/tubee"
   rabbitmq:
     hostname: "tubee-rabbitmq"

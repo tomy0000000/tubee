@@ -32,6 +32,8 @@ services:
     environment:
       FLASK_ENV: "production"
     image: "tomy0000000/tubee"
+    networks:
+      - "rabbitmq_tunnel"
     restart: "always"
     volumes:
       - "./logs:/usr/src/tubee/logs"
@@ -39,6 +41,8 @@ services:
   rabbitmq:
     hostname: "tubee-rabbitmq"
     image: "rabbitmq:latest"
+    networks:
+      - "rabbitmq_tunnel"
     restart: "always"
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
@@ -60,6 +64,9 @@ services:
     volumes:
       - "./instance/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
       - "application:/usr/share/nginx/tubee"
+
+networks:
+  rabbitmq_tunnel:
 
 volumes:
   application:
