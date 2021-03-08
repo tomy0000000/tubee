@@ -25,9 +25,9 @@
 
 ## Overview
 
-Tubee is a web application, which runs tasks when your subscribed channel upload new videos.
+Tubee is a web application, which runs actions when your subscribed channel upload new videos, think of it as a better IFTTT but built specifically for YouTube.
 
-This application is still in development stage, use at your own risk.
+This application is, and will be rolling updated, to conform author's all sort of experiments. You're welcome to use it at your own risk, guides are provided in wiki section.
 
 ## Features
 
@@ -49,97 +49,3 @@ For additional operation, you might also need
 - [Pushover](https://pushover.net/) API Token
 - [Line Notify](https://notify-bot.line.me/zh_TW/) Client ID / Client Secret
 - [Dropbox](https://www.dropbox.com/developers/apps) App Key / App Secret
-
-## Development Guide
-
-### Setup
-
-- Start Containers
-
-```bash
-docker-compose \
-	--file docker-compose.dev.yml \
-	up --detach --build
-```
-
-- Run Migration
-
-```bash
-docker-compose \
-	--file docker-compose.dev.yml \
-	exec tubee flask deploy
-```
-
-### Accessing appication and backends
-
-| Service        | Endpoint                                    |
-| -------------- | ------------------------------------------- |
-| Postgres       | postgres://tubee:tubee@localhost:5432/tubee |
-| RabbitMQ       | ampq://guest@localhost:5672//               |
-| RabbitMQ (Web) | http://localhost:15672                      |
-| Flask          | http://localhost:5000                       |
-
-### Build Image for development
-
-```bash
-docker build --build-arg INSTALL_DEV=true --tag tomy0000000/tubee .
-```
-
-### Build Image for release
-
-```bash
-docker build --tag tomy0000000/tubee .
-```
-
-## Deployment Guide
-
-- Start Containers
-
-```bash
-docker-compose up --detach
-```
-
-- Run Migration
-
-```bash
-docker-compose exec tubee flask deploy
-```
-
-### Accessing
-
-| Service | Endpoint            |
-| ------- | ------------------- |
-| Nginx   | http://localhost:80 |
-
-## Maintenance Guide
-
-### Gracefully Restart Nginx
-
-```bash
-docker-compose kill -s HUP nginx
-```
-
-### Gracefully Restart Gunicorn
-
-```bash
-docker-compose kill -s HUP tubee
-```
-
-### Gracefully Restart Celery
-
-```bash
-docker-compose kill -s HUP celery
-```
-
-### Remove Postgres Data
-
-```bash
-docker volume rm tubee_postgres_data
-```
-
-### Apply Upgrade
-
-```bash
-docker build --tag tomy0000000/tubee .
-docker-compose up --detach --no-deps tubee
-```
