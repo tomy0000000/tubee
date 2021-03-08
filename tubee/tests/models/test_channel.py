@@ -229,8 +229,8 @@ class ChannelModelTestCase(unittest.TestCase):
     def test_channel_activate(self, mocked_subscribe):
         self.init_channel()
         mocked_subscribe.return_value = False
-        results = self.test_channel.activate()
-        self.assertFalse(results)
+        with self.assertRaises(RuntimeError):
+            self.test_channel.activate()
         self.assertFalse(self.test_channel.active)
         mocked_subscribe.return_value = True
         results = self.test_channel.activate()
