@@ -1,4 +1,4 @@
-"""Model Pacakge
+"""Model Package
 
 Collect models for import
 """

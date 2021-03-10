@@ -1,20 +1,4 @@
 """Routes involves user credentials"""
-from flask import (
-    abort,
-    Blueprint,
-    flash,
-    redirect,
-    request,
-    render_template,
-    session,
-    url_for,
-)
-from flask_login import (
-    current_user,
-    login_user,
-    logout_user,
-    login_required,
-)
 from dropbox.oauth import (
     BadRequestException,
     BadStateException,
@@ -22,14 +6,22 @@ from dropbox.oauth import (
     NotApprovedException,
     ProviderException,
 )
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
+from flask_login import current_user, login_required, login_user, logout_user
+
 from .. import oauth
 from ..exceptions import APIError
 from ..forms import LoginForm, RegisterForm
-from ..helper import (
-    dropbox,
-    is_safe_url,
-    youtube,
-)
+from ..helper import dropbox, is_safe_url, youtube
 from ..models import User
 
 user_blueprint = Blueprint("user", __name__)

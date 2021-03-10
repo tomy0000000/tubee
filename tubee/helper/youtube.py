@@ -1,11 +1,11 @@
 """YouTube Data API Functions"""
 import json
 
+import youtube_dl
 from flask import current_app, url_for
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-import youtube_dl
 
 
 def build_flow(state=None):

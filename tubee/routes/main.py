@@ -9,7 +9,7 @@ from .. import db
 from ..forms import ActionForm, TagForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
-from ..models import Callback, Channel, Video, Subscription, SubscriptionTag, Tag
+from ..models import Callback, Channel, Subscription, SubscriptionTag, Tag, Video
 
 main_blueprint = Blueprint("main", __name__)
 
@@ -64,7 +64,7 @@ def channel_callback(channel_id):
     GET: Receive Hub Challenges to sustain subscription
     POST: New Update from Hub
     """
-    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
+    channel_item = Channel.query.get_or_404(channel_id)
     callback_item = Callback(channel_item)
     infos = {
         "method": request.method,

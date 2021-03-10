@@ -1,16 +1,10 @@
 """Error Handlers"""
 import traceback
-from flask import (
-    Blueprint,
-    current_app,
-    flash,
-    jsonify,
-    render_template,
-    request,
-)
+
+from flask import Blueprint, current_app, flash, jsonify, render_template, request
 from flask_login import current_user
-from werkzeug.exceptions import HTTPException as WerkzeugHTTPException
 from googleapiclient.errors import HttpError as YouTubeHttpError
+from werkzeug.exceptions import HTTPException as WerkzeugHTTPException
 
 handler_blueprint = Blueprint("handler", __name__)
 

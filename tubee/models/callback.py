@@ -1,5 +1,6 @@
 """Callback Model"""
 from datetime import datetime
+
 from flask import current_app
 
 from .. import db
@@ -7,13 +8,10 @@ from .. import db
 
 class Callback(db.Model):
     """
-    id                   a unique id for identification
-    revieved_datetime    datetime when this callback was received
-    method               Type of HTTP request, e.g. "GET", "POST".......etc..
-    path                 Paths which receive this request
-    arguments            a dict of arguments from GET requests
-    data                 POST reqests body
-    user_agent           Sender's Identity
+    id            Unique ID
+    type          Challenge or Notification
+    timestamp     The timestamp when this callback was received
+    infos         Details of the request context
     """
 
     __tablename__ = "callback"

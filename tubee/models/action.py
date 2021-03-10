@@ -1,8 +1,9 @@
 """Action Model"""
 from enum import Enum
 
-from .. import db
 from flask import current_app
+
+from .. import db
 
 
 class ActionType(Enum):
