@@ -45,11 +45,7 @@ class Channel(db.Model):
     )
 
     def __init__(self, channel_id):
-        from ..tasks import (
-            channels_fetch_videos,
-            channels_update_hub_infos,
-            renew_channels,
-        )
+        from ..tasks import channels_fetch_videos, channels_refresh, renew_channels
 
         self.id = channel_id
         db.session.add(self)
