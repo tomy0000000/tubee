@@ -37,40 +37,40 @@ class ChannelModelTestCase(unittest.TestCase):
     @mock.patch("tubee.models.channel.Channel.activate")
     @mock.patch("tubee.tasks.renew_channels")
     @mock.patch("tubee.tasks.channels_fetch_videos")
-    @mock.patch("tubee.tasks.channels_update_hub_infos")
-    @mock.patch("tubee.models.channel.Channel.update_youtube_infos")
+    @mock.patch("tubee.tasks.channels_refresh")
+    @mock.patch("tubee.models.channel.Channel.update")
     def init_channel(
         self,
-        mocked_update_youtube_infos,
-        mocked_channels_update_hub_infos,
+        mocked_update,
+        mocked_channels_refresh,
         mocked_channels_fetch_videos,
         mocked_renew_channels,
         mocked_activate,
     ):
-        mocked_update_youtube_infos.return_value = True
-        mocked_channels_update_hub_infos.apply_async.return_value = None
+        mocked_update.return_value = True
+        mocked_channels_refresh.apply_async.return_value = None
         mocked_channels_fetch_videos.apply_async.return_value = None
         mocked_activate.return_value = None
         self.test_channel = Channel(channel_id=self.test_channel_id)
 
     @mock.patch("tubee.tasks.renew_channels")
     @mock.patch("tubee.tasks.channels_fetch_videos")
-    @mock.patch("tubee.tasks.channels_update_hub_infos")
-    @mock.patch("tubee.models.channel.Channel.update_youtube_infos")
+    @mock.patch("tubee.tasks.channels_refresh")
+    @mock.patch("tubee.models.channel.Channel.update")
     def test_channel_constructor(
         self,
-        mocked_update_youtube_infos,
-        mocked_channels_update_hub_infos,
+        mocked_update,
+        mocked_channels_refresh,
         mocked_channels_fetch_videos,
         mocked_renew_channels,
     ):
-        mocked_update_youtube_infos.side_effect = InvalidAction("test_message")
+        mocked_update.side_effect = InvalidAction("test_message")
         with self.assertRaises(InvalidAction):
             Channel(channel_id=self.test_channel_id)
 
-        mocked_update_youtube_infos.side_effect = None
+        mocked_update.side_effect = None
         self.init_channel()
-        for call in mocked_channels_update_hub_infos.apply_async.call_args_list:
+        for call in mocked_channels_refresh.apply_async.call_args_list:
             args, kwargs = call
             self.assertEqual(len(kwargs["args"]), 1)
             self.assertIsInstance(kwargs["args"][0], list)
@@ -106,7 +106,7 @@ class ChannelModelTestCase(unittest.TestCase):
             del self.test_channel.expiration
 
     @mock.patch("tubee.models.channel.details")
-    def test_channel_update_hub_infos(
+    def test_channel_refresh(
         self,
         mocked_hub_details,
     ):
@@ -130,7 +130,7 @@ class ChannelModelTestCase(unittest.TestCase):
             ),
             "last_notification": datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
         }
-        results = self.test_channel.update_hub_infos()
+        results = self.test_channel.refresh()
         TEST_FIELDS = [
             "last_challenge",
             "expiration",
@@ -157,7 +157,7 @@ class ChannelModelTestCase(unittest.TestCase):
         )
 
     @mock.patch("tubee.models.channel.build_youtube_api")
-    def test_channel_update_youtube_infos(self, mocked_youtube):
+    def test_channel_update(self, mocked_youtube):
         self.init_channel()
         with open(
             join(dirname(__file__), "../data", "youtube_channel_list_empty.json")
@@ -172,22 +172,22 @@ class ChannelModelTestCase(unittest.TestCase):
             YouTubeAPIError()
         )
         with self.assertRaises(APIError):
-            self.test_channel.update_youtube_infos()
+            self.test_channel.update()
 
         mocked_youtube.return_value.channels().list().execute.side_effect = None
         mocked_youtube.return_value.channels().list().execute.return_value = (
             test_empty_response
         )
         with self.assertRaises(InvalidAction):
-            self.test_channel.update_youtube_infos()
+            self.test_channel.update()
         self.test_channel.name = "test_channel_name"
         with self.assertRaises(APIError):
-            self.test_channel.update_youtube_infos()
+            self.test_channel.update()
 
         mocked_youtube.return_value.channels().list().execute.return_value = (
             test_response
         )
-        self.test_channel.update_youtube_infos()
+        self.test_channel.update()
         self.assertEqual(self.test_channel.infos, test_response["items"][0])
         self.assertEqual(
             self.test_channel.name, test_response["items"][0]["snippet"]["title"]

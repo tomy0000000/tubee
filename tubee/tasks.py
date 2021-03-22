@@ -27,11 +27,11 @@ def renew_channels(self, channel_ids, next_countdown=-1):
         )
         results[channel_id] = {
             "subscription": channel.subscribe(),
-            "info": channel.update_youtube_infos(),
+            "info": channel.update(),
         }
         task_logger.info(f"<{channel_id}> subscription renewed")
         task_logger.info(f"<{channel_id}> information updated")
-    channels_update_hub_infos.apply_async(args=[channel_ids], countdown=60)
+    channels_refresh.apply_async(args=[channel_ids], countdown=60)
     if next_countdown > 0:
         renew_channels.apply_async(
             args=[channel_ids, next_countdown], countdown=next_countdown
@@ -40,14 +40,14 @@ def renew_channels(self, channel_ids, next_countdown=-1):
 
 
 @celery.task
-def channels_update_hub_infos(channel_ids):
+def channels_refresh(channel_ids):
     results = {}
     for channel_id in channel_ids:
         channel = Channel.query.get(channel_id)
         if not channel:
             task_logger.warning(f"<{channel_id}> ID not found, skipped.")
             continue
-        results[channel_id] = channel.update_hub_infos()
+        results[channel_id] = channel.refresh()
         task_logger.info(
             f"<{channel_id}> new hub state: {results[channel_id]['state']}"
         )

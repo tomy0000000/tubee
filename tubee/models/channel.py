@@ -13,6 +13,12 @@ from ..helper.youtube import build_youtube_api
 
 
 class Channel(db.Model):
+    """
+    update:        Update metadata from YouTube API
+    refresh:       Refresh subscription status from Hub
+    subscribe:     Subscribe callback from Hub
+    """
+
     __tablename__ = "channel"
     id = db.Column(db.String(32), primary_key=True)
     name = db.Column(db.String(128))
@@ -49,7 +55,7 @@ class Channel(db.Model):
         db.session.add(self)
         db.session.commit()
         try:
-            self.update_youtube_infos()
+            self.update()
             current_app.logger.info(f"Channel <{self.id}>: Create")
         except (APIError, InvalidAction) as error:
             db.session.delete(self)
@@ -59,7 +65,7 @@ class Channel(db.Model):
             )
             raise error
 
-        channels_update_hub_infos.apply_async(
+        channels_refresh.apply_async(
             args=[[channel_id]],
             countdown=60,
         )
@@ -120,7 +126,7 @@ class Channel(db.Model):
             current_app.logger.error(f"Channel <{self.id}>: Deactivate failed")
         return response
 
-    def update_hub_infos(self):
+    def refresh(self):
         """Update hub subscription details, called by task or app"""
         callback_url = url_for(
             "main.channel_callback", channel_id=self.id, _external=True
@@ -144,7 +150,7 @@ class Channel(db.Model):
         current_app.logger.info(f"Channel <{self.id}>: Hub info updated ({response})")
         return response
 
-    def update_youtube_infos(self):
+    def update(self):
         """Update YouTube metadata, called by task"""
         try:
             api_result = (
@@ -155,7 +161,10 @@ class Channel(db.Model):
             )
             if "items" not in api_result:
                 if self.name is None:
-                    raise InvalidAction(f"Channel {self.id} doesn't exists")
+                    raise InvalidAction(
+                        f"Channel <{self.id}>: YouTube info update failed, "
+                        "doesn't exists"
+                    )
                 raise APIError(
                     service="YouTube",
                     message=f"Unable to update channel <{self.id}> info",
@@ -177,6 +186,24 @@ class Channel(db.Model):
                 message=str(error.args),
                 error_type=error.__class__.__name__,
             )
+
+    def subscribe(self):
+        """Submitting hub Subscription, called by task or app"""
+        callback_url = url_for(
+            "main.channel_callback", channel_id=self.id, _external=True
+        )
+        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
+            {"channel_id": self.id}
+        )
+        response = subscribe(
+            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
+        )
+        current_app.logger.debug(f"Callback URL: {callback_url}")
+        current_app.logger.debug(f"Topic URL   : {topic_url}")
+        current_app.logger.debug(f"Channel ID  : {self.id}")
+        current_app.logger.debug(f"Response    : {response.status_code}")
+        current_app.logger.info(f"Channel <{self.id}>: Hub Subscribe")
+        return response.success
 
     def fetch_videos(self, fetch_all=False):
         """Update videos, Called by task"""
@@ -208,37 +235,3 @@ class Channel(db.Model):
 
         current_app.logger.info(f"Channel <{self.id}>: Video Fetched ({results})")
         return results
-
-    def subscribe(self):
-        """Submitting hub Subscription, called by task or app"""
-        callback_url = url_for(
-            "main.channel_callback", channel_id=self.id, _external=True
-        )
-        topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
-            {"channel_id": self.id}
-        )
-        response = subscribe(
-            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
-        )
-        current_app.logger.debug(f"Callback URL: {callback_url}")
-        current_app.logger.debug(f"Topic URL   : {topic_url}")
-        current_app.logger.debug(f"Channel ID  : {self.id}")
-        current_app.logger.debug(f"Response    : {response.status_code}")
-        current_app.logger.info(f"Channel <{self.id}>: Hub Subscribe")
-        return response.success
-
-    # TODO: DEPRECATE THIS
-    def renew(self, stringify=False, callback_url=None, topic_url=None):
-        """Trigger renew functions"""
-
-        response = {
-            "subscription_response": self.subscribe(),
-            "info_response": self.update_youtube_infos(),
-            # "hub_response": self.update_hub_infos(
-            #     stringify=stringify,
-            #     callback_url,
-            #     topic_url
-            # ),
-        }
-        # update_channel_hub_infos.apply_async(self.id, callback_url, topic_url)
-        return response

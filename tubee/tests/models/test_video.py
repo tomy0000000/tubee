@@ -26,18 +26,18 @@ class UserModelTestCase(unittest.TestCase):
     @mock.patch("tubee.models.channel.Channel.activate")
     @mock.patch("tubee.tasks.renew_channels")
     @mock.patch("tubee.tasks.channels_fetch_videos")
-    @mock.patch("tubee.tasks.channels_update_hub_infos")
-    @mock.patch("tubee.models.channel.Channel.update_youtube_infos")
+    @mock.patch("tubee.tasks.channels_refresh")
+    @mock.patch("tubee.models.channel.Channel.update")
     def init_channel(
         self,
-        mocked_update_youtube_infos,
-        mocked_channels_update_hub_infos,
+        mocked_update,
+        mocked_channels_refresh,
         mocked_channels_fetch_videos,
         mocked_renew_channels,
         mocked_activate,
     ):
-        mocked_update_youtube_infos.return_value = True
-        mocked_channels_update_hub_infos.apply_async.return_value = None
+        mocked_update.return_value = True
+        mocked_channels_refresh.apply_async.return_value = None
         mocked_channels_fetch_videos.apply_async.return_value = None
         mocked_activate.return_value = None
         self.test_channel = Channel(channel_id=self.test_channel_id)
