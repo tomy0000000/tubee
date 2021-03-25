@@ -8,7 +8,6 @@ import gunicorn
 import werkzeug
 from flask import (
     Blueprint,
-    abort,
     current_app,
     flash,
     redirect,
@@ -20,13 +19,10 @@ from flask_login import current_user, login_required
 from urllib.parse import unquote
 from ..models import Callback, Notification, Service
 
+from ..helper import admin_required
+
 admin_blueprint = Blueprint("admin", __name__)
-
-
-@admin_blueprint.before_request
-def admin_required():
-    if not current_user.admin:
-        abort(403)
+admin_blueprint.before_request(admin_required)
 
 
 @admin_blueprint.route("/dashboard")

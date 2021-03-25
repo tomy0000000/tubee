@@ -1,17 +1,13 @@
 """API for Tasks"""
-from flask import Blueprint, abort, jsonify
-from flask_login import current_user, login_required
+from flask import Blueprint, jsonify
+from flask_login import login_required
 
 from .. import celery
+from ..helper import admin_required
 from ..tasks import renew_channels
 
 api_task_blueprint = Blueprint("api_task", __name__)
-
-
-@api_task_blueprint.before_request
-def admin_required():
-    if not current_user.admin:
-        abort(403)
+api_task_blueprint.before_request(admin_required)
 
 
 @api_task_blueprint.route("/list-all")

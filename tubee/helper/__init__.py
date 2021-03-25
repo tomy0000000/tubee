@@ -17,6 +17,11 @@ def try_parse_datetime(string):
         return None
 
 
+def admin_required(*args, **kwargs):
+    if not current_user.admin:
+        abort(403)
+
+
 def admin_required_decorator(func):
     """Restrict view function to admin-only
 
@@ -28,12 +33,11 @@ def admin_required_decorator(func):
     """
 
     @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if not current_user.admin:
-            abort(403)
+    def decorated_view_function(*args, **kwargs):
+        admin_required()
         return func(*args, **kwargs)
 
-    return decorated_function
+    return decorated_view_function
 
 
 def pushover_required(func):

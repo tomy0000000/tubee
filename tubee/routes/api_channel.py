@@ -6,8 +6,8 @@ import requests
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
-from ..helper import admin_required_decorator
 from ..models import Channel
+from ..helper import admin_required_decorator as admin_required
 from ..tasks import renew_channels
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
@@ -138,6 +138,7 @@ def unsubscribe(channel_id):
 
 @api_channel_blueprint.route("/<channel_id>/renew")
 @login_required
+@admin_required
 def renew(channel_id):
     """Renew Subscription Info, Both Hub and Info"""
     channel = Channel.query.filter_by(id=channel_id).first_or_404()
@@ -147,7 +148,7 @@ def renew(channel_id):
 
 @api_channel_blueprint.route("/<channel_id>/fetch-videos")
 @login_required
-@admin_required_decorator
+@admin_required
 def fetch_videos(channel_id):
     # TODO: deprecate this
     channel_item = Channel.query.filter_by(id=channel_id).first_or_404()

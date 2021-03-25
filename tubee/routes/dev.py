@@ -1,23 +1,12 @@
 """Routes for Developing/Testing"""
-from flask import (
-    Blueprint,
-    abort,
-    flash,
-    redirect,
-    render_template,
-    url_for,
-)
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
+from ..helper import admin_required
 from ..helper.youtube import fetch_video_metadata
 
 dev_blueprint = Blueprint("dev", __name__)
-
-
-@dev_blueprint.before_request
-def admin_required():
-    if not current_user.admin:
-        abort(403)
+dev_blueprint.before_request(admin_required)
 
 
 @dev_blueprint.route("/empty")
