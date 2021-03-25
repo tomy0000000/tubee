@@ -293,7 +293,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 
 [[package]]
 name = "dropbox"
-version = "11.4.1"
+version = "11.5.0"
 description = "Official Dropbox API Client"
 category = "main"
 optional = false
@@ -1325,9 +1325,9 @@ decorator = [
     {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 dropbox = [
-    {file = "dropbox-11.4.1-py2-none-any.whl", hash = "sha256:80c2630acc1ab4d57ea4f4e85570cb4493363184ebcffc638ed3f8cfbe258d39"},
-    {file = "dropbox-11.4.1-py3-none-any.whl", hash = "sha256:4474c553f5208e432e3d9bcd628ea5a66e731085ab1a3631e814c60bb29ac2ef"},
-    {file = "dropbox-11.4.1.tar.gz", hash = "sha256:7ba43384029424779a4b3ec8d5832362c5c0f37cd644be2fb87e2b30a569849e"},
+    {file = "dropbox-11.5.0-py2-none-any.whl", hash = "sha256:70b10e2d33bd5bd9bf62eecdfc34184849460dfbc9501637427c0c42b0898149"},
+    {file = "dropbox-11.5.0-py3-none-any.whl", hash = "sha256:c7cac60cfec1c77935bd5b2d3568d9e275185bc1e0fc5fa4deb51d72b6b3c14e"},
+    {file = "dropbox-11.5.0.tar.gz", hash = "sha256:e2e5043766c9b6e62ea1bc9481a761f660221750a7f00c676a448b8e7bea7d99"},
 ]
 flask = [
     {file = "Flask-1.1.2-py2.py3-none-any.whl", hash = "sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557"},
@@ -1432,6 +1432,8 @@ lxml = [
     {file = "lxml-4.6.3-cp27-cp27m-win_amd64.whl", hash = "sha256:8157dadbb09a34a6bd95a50690595e1fa0af1a99445e2744110e3dca7831c4ee"},
     {file = "lxml-4.6.3-cp27-cp27mu-manylinux1_i686.whl", hash = "sha256:7728e05c35412ba36d3e9795ae8995e3c86958179c9770e65558ec3fdfd3724f"},
     {file = "lxml-4.6.3-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:4bff24dfeea62f2e56f5bab929b4428ae6caba2d1eea0c2d6eb618e30a71e6d4"},
+    {file = "lxml-4.6.3-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:74f7d8d439b18fa4c385f3f5dfd11144bb87c1da034a466c5b5577d23a1d9b51"},
+    {file = "lxml-4.6.3-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:f90ba11136bfdd25cae3951af8da2e95121c9b9b93727b1b896e3fa105b2f586"},
     {file = "lxml-4.6.3-cp35-cp35m-win32.whl", hash = "sha256:f2380a6376dfa090227b663f9678150ef27543483055cc327555fb592c5967e2"},
     {file = "lxml-4.6.3-cp35-cp35m-win_amd64.whl", hash = "sha256:c4f05c5a7c49d2fb70223d0d5bcfbe474cf928310ac9fa6a7c6dddc831d0b1d4"},
     {file = "lxml-4.6.3-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:d2e35d7bf1c1ac8c538f88d26b396e73dd81440d59c1ef8522e1ea77b345ede4"},
