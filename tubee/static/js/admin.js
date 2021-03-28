@@ -24,7 +24,7 @@ update_progress = (status_url, progress_bar, message_box) => {
   });
 };
 
-api_with_progress = (event) => {
+function api_with_progress(event) {
   event.preventDefault();
   // send ajax POST request to start background job
   $.getJSON($(event.target).attr("data-api-endpoint")).done((data) => {
@@ -43,9 +43,9 @@ api_with_progress = (event) => {
     );
     setTimeout(update_progress, 2000, data.status, progress_bar, message_box);
   });
-};
+}
 
-api_get = (event) => {
+function api_get(event) {
   event.preventDefault();
   insert_spinner("#management", "primary");
   $.getJSON($(event.target).attr("data-api-endpoint")).done((data) => {
@@ -55,11 +55,11 @@ api_get = (event) => {
     // console.log(data);
     drop_spinner("#management");
   });
-};
+}
 
-load_tasks = (event) => {
-  insert_spinner("#celery-tasks", "primary");
-  let table = $("#celery-tasks > table > tbody");
+function load_tasks(event) {
+  insert_spinner("#celery_tasks", "primary");
+  let table = $("#celery_tasks > table > tbody");
   table.empty();
   $.getJSON($("#celery-table").attr("data-api-endpoint")).done((data) => {
     data.forEach((element) => {
@@ -84,9 +84,9 @@ load_tasks = (event) => {
       }
       table.append(row);
     });
-    drop_spinner("#celery-tasks");
+    drop_spinner("#celery_tasks");
   });
-};
+}
 
 $(document).ready(() => {
   $("#channel-renew-all").click(api_with_progress);
@@ -96,7 +96,7 @@ $(document).ready(() => {
   $("#management-tab").on("shown.bs.tab", (event) => {
     $("#management > .results").empty();
   });
-  $("#celery-tasks-tab").on("shown.bs.tab", load_tasks);
+  $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
   $.ajax($("#celery-table").attr("data-template-endpoint")).done((data) => {
     celery_task_template = $.parseHTML(data);
   });

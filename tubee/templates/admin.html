@@ -19,415 +19,48 @@
 <!-- prettier-ignore -->
 {% block content %}
 
+{% set tabs = {
+  "sitemap": "Sitemap",
+  "celery_tasks": "Celery Tasks",
+  "callbacks": "Callbacks",
+  "management": "Management",
+  "notifications": "Notifications",
+  "sys_runtime": "System Runtime",
+  "app_config": "Application Config",
+  "envs": "Environment Variables",
+} %}
+
 <!-- BEGIN TABS -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
+  {% for key, name in tabs.items() %}
   <li class="nav-item">
     <a
-      class="nav-link active"
-      id="sitemap-tab"
+      class="nav-link {{ 'active' if loop.first else '' }}"
+      id="{{ key }}-tab"
       data-toggle="tab"
-      href="#sitemap"
+      href="#{{ key }}"
       role="tab"
-      aria-controls="sitemap"
+      aria-controls="{{ key }}"
       aria-selected="false"
-      >Sitemap</a
+      >{{ name }}</a
     >
   </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="management-tab"
-      data-toggle="tab"
-      href="#management"
-      role="tab"
-      aria-controls="management"
-      aria-selected="false"
-      >Management</a
-    >
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="sys-runtime-tab"
-      data-toggle="tab"
-      href="#sys-runtime"
-      role="tab"
-      aria-controls="sys-runtime"
-      aria-selected="true"
-      >System Runtime</a
-    >
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="app-config-tab"
-      data-toggle="tab"
-      href="#app-config"
-      role="tab"
-      aria-controls="app-config"
-      aria-selected="false"
-      >Application Config</a
-    >
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="envs-tab"
-      data-toggle="tab"
-      href="#envs"
-      role="tab"
-      aria-controls="envs"
-      aria-selected="false"
-      >Environment Variables</a
-    >
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="callbacks-tab"
-      data-toggle="tab"
-      href="#callbacks"
-      role="tab"
-      aria-controls="callbacks"
-      aria-selected="false"
-      >Callbacks</a
-    >
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="notifications-tab"
-      data-toggle="tab"
-      href="#notifications"
-      role="tab"
-      aria-controls="notifications"
-      aria-selected="false"
-      >Notifications</a
-    >
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      id="celery-tasks-tab"
-      data-toggle="tab"
-      href="#celery-tasks"
-      role="tab"
-      aria-controls="celery-tasks"
-      aria-selected="false"
-      >Celery Tasks</a
-    >
-  </li>
+  {% endfor %}
 </ul>
 <!-- END TABS -->
 
 <!-- BEGIN TAB PAGES -->
 <div class="tab-content" id="admin-dashbaord-tab-content">
+  {% for key in tabs %}
   <div
-    class="tab-pane fade show active"
-    id="sitemap"
+    class="tab-pane fade {{ 'show active' if loop.first else '' }}"
+    id="{{ key }}"
     role="tabpanel"
-    aria-labelledby="sitemap-tab"
+    aria-labelledby="{{ key }}-tab"
   >
-    {% include 'admin_component/sitemap.html' %}
+    {% include 'component/admin_' + key + '.html' %}
   </div>
-  <div
-    class="tab-pane fade"
-    id="management"
-    role="tabpanel"
-    aria-labelledby="management-tab"
-  >
-    {% include "admin_component/management.html" %}
-  </div>
-
-  <div
-    class="tab-pane fade"
-    id="sys-runtime"
-    role="tabpanel"
-    aria-labelledby="sys-runtime-tab"
-  >
-    <!-- BEGIN SYS RUNTIME -->
-    <h1>System Runtime</h1>
-    <table class="table table-striped table-hover table-responsive">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col" class="align-middle">Key</th>
-          <th scope="col" class="align-middle">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" class="align-middle">OS Verion</th>
-          <td class="align-middle">{{ infos.os_version }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">Python Verion</th>
-          <td class="align-middle">{{ infos.python_version }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">Flask Verion</th>
-          <td class="align-middle">{{ infos.flask_version }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">Gunicorn Verion</th>
-          <td class="align-middle">{{ infos.gunicorn_version }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">Werkzeug Verion</th>
-          <td class="align-middle">{{ infos.werkzeug_version }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">Tubee Verion</th>
-          <td class="align-middle">{{ infos.tubee_version }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- END SYS RUNTIME -->
-  </div>
-
-  <div
-    class="tab-pane fade"
-    id="app-config"
-    role="tabpanel"
-    aria-labelledby="app-config-tab"
-  >
-    <!-- BEGIN APP CONFIG -->
-    <h1>Application Config</h1>
-    <table class="table table-striped table-hover table-responsive">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col" class="align-middle">Key</th>
-          <th scope="col" class="align-middle">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for key, val in infos.app_config.items() %}
-        <tr>
-          <th scope="row" class="align-middle">{{ key }}</th>
-          <td class="align-middle">{{ val }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- END APP CONFIG -->
-  </div>
-
-  <div
-    class="tab-pane fade"
-    id="envs"
-    role="tabpanel"
-    aria-labelledby="envs-tab"
-  >
-    <!-- BEGIN OS ENVS -->
-    <h1>Environment Variables</h1>
-    <table class="table table-striped table-hover table-responsive">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col" class="align-middle">Key</th>
-          <th scope="col" class="align-middle">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for key, val in infos.os_env.items() %}
-        <tr>
-          <th scope="row" class="align-middle">{{ key }}</th>
-          <td class="align-middle">{{ val }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- END OS ENVS -->
-  </div>
-
-  <div
-    class="tab-pane fade"
-    id="callbacks"
-    role="tabpanel"
-    aria-labelledby="callbacks-tab"
-  >
-    <!-- BEGIN CALLBACKS -->
-    <h1>Callbacks</h1>
-    <table class="table table-striped table-hover">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Received Datetime</th>
-          <th scope="col">Channel ID</th>
-          <th scope="col">Action Type</th>
-          <th scope="col">Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for callback in callbacks %}
-        <tr>
-          <th scope="row">{{ moment(callback.timestamp).format('lll') }}</th>
-          <td>{{ callback.channel_id }}</td>
-          <td>
-            {% if callback.type == "Hub Challenge" %}
-            <span class="badge badge-warning">{{ callback.type }}</span>
-            {% elif callback.type == "Hub Notification" %}
-            <span class="badge badge-success">{{ callback.type }}</span>
-            {% else %}
-            <span class="badge badge-danger">{{ callback.type }}</span>
-            {% endif %}
-          </td>
-          <td>{{ callback.infos }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- END CALLBACKS -->
-  </div>
-
-  <div
-    class="tab-pane fade"
-    id="notifications"
-    role="tabpanel"
-    aria-labelledby="notifications-tab"
-  >
-    <!-- BEGIN NOTIFICATIONS -->
-    <h1>Notifications</h1>
-    <!-- BEGIN SEND SECTION -->
-    <div>
-      <form method="POST" action="{{ url_for('admin.notification_push') }}">
-        <div class="form-group">
-          <label for="message">Message</label>
-          <input
-            type="text"
-            name="message"
-            class="form-control"
-            value="Test Message Body"
-          />
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="service"
-            id="service_pushover"
-            value="Pushover"
-          />
-          <label class="form-check-label" for="service_pushover"
-            >Pushover</label
-          >
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="service"
-            id="service_line_notify"
-            value="LineNotify"
-          />
-          <label class="form-check-label" for="service_line_notify"
-            >Line Notify</label
-          >
-        </div>
-        <input
-          class="btn btn-primary btn-lg m-2"
-          id="submit"
-          name="submit"
-          type="submit"
-          value="Send"
-        />
-      </form>
-    </div>
-    <!-- END SEND SECTION -->
-    <!-- BGEIN NOTIFICATION TABLE -->
-    <table class="table table-striped table-hover table-responsive-lg">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Sent Datetime</th>
-          <th scope="col">Title</th>
-          <th scope="col">Message</th>
-          <th scope="col">URL</th>
-          <th scope="col">Response</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for notification in notifications.items %}
-        <tr>
-          <th scope="row" class="align-middle" rowspan="2">
-            {% if notification.kwargs.image %}
-            <img
-              src="{{ notification.kwargs.image }}"
-              class="rounded"
-              width="200"
-            />
-            {% endif %}
-          </th>
-          <td class="align-middle">{{ notification.sent_datetime }}</td>
-          <td class="align-middle">{{ notification.kwargs.title }}</td>
-          <td class="align-middle">
-            <button
-              class="btn btn-primary"
-              type="button"
-              data-toggle="collapse"
-              data-target="#message_body{{ notification.id }}"
-              aria-expanded="false"
-              aria-controls="message_body{{ notification.id }}"
-            >
-              Show Message
-            </button>
-          </td>
-          <td class="align-middle">
-            <a href="{{ notification.kwargs.url }}"
-              >{{ notification.kwargs.url_title }}</a
-            >
-          </td>
-          <td class="align-middle">
-            {% if notification.response.status == 1 %}
-            <button
-              type="button"
-              class="btn btn-success response-btn"
-              data-container="body"
-              data-toggle="popover"
-              data-placement="right"
-              data-content="{{ notification.response.request }}"
-            >
-              OK
-              <span class="badge badge-light">1</span>
-            </button>
-            {% else %}
-            <button
-              type="button"
-              class="btn btn-danger response-btn"
-              data-container="body"
-              data-toggle="popover"
-              data-placement="right"
-              data-content="{{ notification.response.request }}"
-            >
-              Error
-              <span class="badge badge-light"
-                >{{ notification.response.status }}</span
-              >
-            </button>
-            {% endif %}
-          </td>
-        </tr>
-        <tr>
-          <td colspan="5" class="p-0">
-            <div
-              class="collapse message_bodies"
-              id="message_body{{ notification.id }}"
-            >
-              <pre>{{ notification.message }}</pre>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- END NOTIFICATION TABLE -->
-    <!-- END NOTIFICATIONS -->
-  </div>
-  <div
-    class="tab-pane fade"
-    id="celery-tasks"
-    role="tabpanel"
-    aria-labelledby="celery-tasks-tab"
-  >
-    {% include "admin_component/celery.html" %}
-  </div>
+  {% endfor %}
 </div>
 <!-- END TAB PAGES -->
 

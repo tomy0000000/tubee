@@ -7,7 +7,7 @@
     class="btn btn-secondary"
     data-api-endpoint="{{ url_for('api_channel.renew_all') }}"
   >
-    Renew all channel
+    Renew all channel (immediately)
   </button>
   <button
     type="button"
@@ -15,7 +15,7 @@
     class="btn btn-secondary"
     data-api-endpoint="{{ url_for('api_channel.renew_all', execution=-1) }}"
   >
-    Renew all channel (auto)
+    Reschedule renewal (one day before expire)
   </button>
   <button
     type="button"
@@ -23,7 +23,7 @@
     class="btn btn-secondary"
     data-api-endpoint="{{ url_for('api_channel.renew_all', execution=-2) }}"
   >
-    Renew all channel (random)
+    Reschedule renewal (random time)
   </button>
   <button
     type="button"

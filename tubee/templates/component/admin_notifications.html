@@ -1,0 +1,134 @@
+<!-- BEGIN NOTIFICATIONS -->
+<h1>Notifications</h1>
+<!-- BEGIN SEND SECTION -->
+<div>
+  <form method="POST" action="{{ url_for('admin.notification_push') }}">
+    <div class="form-group">
+      <label for="message">Message</label>
+      <input
+        type="text"
+        name="message"
+        class="form-control"
+        value="Test Message Body"
+      />
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="service"
+        id="service_pushover"
+        value="Pushover"
+      />
+      <label class="form-check-label" for="service_pushover">Pushover</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="service"
+        id="service_line_notify"
+        value="LineNotify"
+      />
+      <label class="form-check-label" for="service_line_notify"
+        >Line Notify</label
+      >
+    </div>
+    <input
+      class="btn btn-primary btn-lg m-2"
+      id="submit"
+      name="submit"
+      type="submit"
+      value="Send"
+    />
+  </form>
+</div>
+<!-- END SEND SECTION -->
+<!-- BGEIN NOTIFICATION TABLE -->
+<table class="table table-striped table-hover table-responsive-lg">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Sent Datetime</th>
+      <th scope="col">Title</th>
+      <th scope="col">Message</th>
+      <th scope="col">URL</th>
+      <th scope="col">Response</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for notification in notifications.items %}
+    <tr>
+      <th scope="row" class="align-middle" rowspan="2">
+        {% if notification.kwargs.image %}
+        <img
+          src="{{ notification.kwargs.image }}"
+          class="rounded"
+          width="200"
+        />
+        {% endif %}
+      </th>
+      <td class="align-middle">{{ notification.sent_datetime }}</td>
+      <td class="align-middle">{{ notification.kwargs.title }}</td>
+      <td class="align-middle">
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-toggle="collapse"
+          data-target="#message_body{{ notification.id }}"
+          aria-expanded="false"
+          aria-controls="message_body{{ notification.id }}"
+        >
+          Show Message
+        </button>
+      </td>
+      <td class="align-middle">
+        <a href="{{ notification.kwargs.url }}"
+          >{{ notification.kwargs.url_title }}</a
+        >
+      </td>
+      <td class="align-middle">
+        {% if notification.response.status == 1 %}
+        <button
+          type="button"
+          class="btn btn-success response-btn"
+          data-container="body"
+          data-toggle="popover"
+          data-placement="right"
+          data-content="{{ notification.response.request }}"
+        >
+          OK
+          <span class="badge badge-light">1</span>
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-danger response-btn"
+          data-container="body"
+          data-toggle="popover"
+          data-placement="right"
+          data-content="{{ notification.response.request }}"
+        >
+          Error
+          <span class="badge badge-light"
+            >{{ notification.response.status }}</span
+          >
+        </button>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5" class="p-0">
+        <div
+          class="collapse message_bodies"
+          id="message_body{{ notification.id }}"
+        >
+          <pre>{{ notification.message }}</pre>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- END NOTIFICATION TABLE -->
+<!-- END NOTIFICATIONS -->
