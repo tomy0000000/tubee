@@ -2,7 +2,6 @@
 import logging
 
 from . import celery
-
 from .models import Channel
 
 task_logger = logging.getLogger("tubee.task")
@@ -14,7 +13,9 @@ def renew_channels(self, channel_ids, next_countdown=-1):
     for index, channel_id in enumerate(channel_ids):
         channel = Channel.query.get(channel_id)
         if not channel:
-            task_logger.warning(f"<{channel_id}> Channel not found, skipped.")
+            task_logger.warning(
+                f"Task <renew_channel>: Channel '{channel_id}' not found, skipped."
+            )
             continue
         self.update_state(
             state="PROGRESS",

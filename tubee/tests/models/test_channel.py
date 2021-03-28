@@ -112,7 +112,10 @@ class ChannelModelTestCase(unittest.TestCase):
     ):
         self.init_channel()
         mocked_hub_details.return_value = {
-            "requests_url": "https://pubsubhubbub.appspot.com/subscription-details?hub.callback=https%3A%2F%2Ftest_host%2Fchannel%2FUCBR8-60-B28hp2BmDPdntcQ%2Fcallback&hub.topic=https%3A%2F%2Fwww.youtube.com%2Fxml%2Ffeeds%2Fvideos.xml%3Fchannel_id%3DUCBR8-60-B28hp2BmDPdntcQ",
+            "requests_url": "https://pubsubhubbub.appspot.com/subscription-details"
+            "?hub.callback=https%3A%2F%2Ftest_host%2Fchannel%2FUCBR8-60-B28hp2BmDPdntcQ"
+            "%2Fcallback&hub.topic=https%3A%2F%2Fwww.youtube.com%2Fxml%2Ffeeds"
+            "%2Fvideos.xml%3Fchannel_id%3DUCBR8-60-B28hp2BmDPdntcQ",
             "response_object": None,
             "state": "unverified",
             "stat": "0 delivery request(s) per second to localhost,\n      0% errors",
