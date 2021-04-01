@@ -1112,7 +1112,7 @@ locale = ["Babel (>=1.3)"]
 
 [[package]]
 name = "youtube-dl"
-version = "2021.3.31"
+version = "2021.4.1"
 description = "YouTube video downloader"
 category = "main"
 optional = false
@@ -1811,8 +1811,8 @@ wtforms = [
     {file = "WTForms-2.3.3.tar.gz", hash = "sha256:81195de0ac94fbc8368abbaf9197b88c4f3ffd6c2719b5bf5fc9da744f3d829c"},
 ]
 youtube-dl = [
-    {file = "youtube_dl-2021.3.31-py2.py3-none-any.whl", hash = "sha256:8f7cf300878dbdb63fed1c9c4d9d2d56bf4c7467260e0f0c1ade66c11647eebe"},
-    {file = "youtube_dl-2021.3.31.tar.gz", hash = "sha256:822be370d9c1bc63ec2ca9634fef1baf12db9c10d2b1f322401c0f1f9d35dcd2"},
+    {file = "youtube_dl-2021.4.1-py2.py3-none-any.whl", hash = "sha256:efbac0e19accccd36e597749a59b095e60439240c777bf1fa1e80ad00e5073dc"},
+    {file = "youtube_dl-2021.4.1.tar.gz", hash = "sha256:2715ca9fc4cd3c0eafa56cba9dfacc699fa6176ca083e903becaddd108d8db7b"},
 ]
 zipp = [
     {file = "zipp-3.4.0-py3-none-any.whl", hash = "sha256:102c24ef8f171fd729d46599845e95c7ab894a4cf45f5de11a44cc7444fb1108"},
