@@ -27,15 +27,16 @@ function unset_loading(button) {
   button.prop("disabled", false);
 }
 
-function insert_spinner(location, type) {
+function insert_spinner(location, type, small = false) {
   type = VALID_SPINNER_TYPE.includes(type) ? type : "primary";
+  let size = small ? "spinner-border-sm" : "";
   let spinner_id = Date.now();
   $(location)
     .append(
       $("<div>")
         .attr({
           id: spinner_id,
-          class: `spinner-border text-${type}`,
+          class: `spinner-border text-${type} ${size}`,
         })
         .append($("<span>").addClass("sr-only").text("Loading..."))
     )
@@ -45,6 +46,21 @@ function insert_spinner(location, type) {
 function drop_spinner(location) {
   let spinner_id = $(location).data("spinner-id");
   $(location).find(`#${spinner_id}`).remove();
+}
+
+function generate_callback_badge(status) {
+  const BADGE_TYPE_MAPPING = {
+    verified: "success",
+    expired: "danger",
+    unverified: "warning",
+    unsubscribed: "secondary",
+  };
+  let badge_type =
+    status in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[status] : "info";
+  let badge = $("<span></span>")
+    .addClass(`badge badge-${badge_type}`)
+    .text(status);
+  return badge;
 }
 
 function register_clipboard_items(selector) {

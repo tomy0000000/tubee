@@ -6,9 +6,9 @@ from uuid import uuid4
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
-from ..models import Channel
 from ..helper import admin_required_decorator as admin_required
 from ..helper.youtube import build_youtube_api
+from ..models import Callback, Channel
 from ..tasks import renew_channels
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
@@ -90,21 +90,15 @@ def renew_all():
             if expiration is None:
                 # Expiration is not available yet (Channel just init)
                 # Set ETA to four days later
-
-                # eta = datetime.now() + timedelta(days=4)
                 countdown = 60 * 60 * 24 * 4
             elif expiration > datetime.now() + timedelta(days=1):
                 # Expiration is more than one day
                 # Set ETA to one day before expiration
-
-                # eta = expiration - timedelta(days=1)
                 countdown = expiration - timedelta(days=1) - datetime.now()
                 countdown = countdown.total_seconds()
             else:
                 # Expiration is less than one day
                 # Set ETA to now
-
-                # eta = datetime.now()
                 countdown = 0
             if execution == -2 and countdown > 0:
                 countdown = randrange(int(countdown))
@@ -117,12 +111,25 @@ def renew_all():
     return jsonify(response)
 
 
+@api_channel_blueprint.route("/callbacks")
+@login_required
+@admin_required
+def callbacks_all():
+    days = int(request.args.to_dict().get("days", 3))
+    days_ago = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+    callbacks = Callback.query.filter(Callback.timestamp >= days_ago).order_by(
+        Callback.timestamp.desc()
+    )
+    response = list(map(dict, callbacks))
+    return jsonify(response)
+
+
 @api_channel_blueprint.route("/<channel_id>/status")
 @login_required
 def status(channel_id):
     """From Hub fetch Status"""
-    channel = Channel.query.filter_by(id=channel_id).first_or_404()
-    response = channel.update_hub_infos()
+    channel = Channel.query.get_or_404(channel_id)
+    response = channel.refresh()
     return jsonify(response)
 
 
@@ -140,21 +147,25 @@ def unsubscribe(channel_id):
     return jsonify(current_user.unbsubscribe(channel_id))
 
 
-@api_channel_blueprint.route("/<channel_id>/renew")
-@login_required
-@admin_required
-def renew(channel_id):
-    """Renew Subscription Info, Both Hub and Info"""
-    channel = Channel.query.filter_by(id=channel_id).first_or_404()
-    response = channel.renew(stringify=True)
-    return jsonify(response)
-
-
 @api_channel_blueprint.route("/<channel_id>/fetch-videos")
 @login_required
 @admin_required
 def fetch_videos(channel_id):
     # TODO: deprecate this
-    channel_item = Channel.query.filter_by(id=channel_id).first_or_404()
-    response = channel_item.fetch_videos()
+    channel = Channel.query.get_or_404(channel_id)
+    response = channel.fetch_videos()
+    return jsonify(response)
+
+
+@api_channel_blueprint.route("/<channel_id>/callbacks")
+@login_required
+@admin_required
+def callbacks(channel_id):
+    days = int(request.args.to_dict().get("days", 3))
+    channel = Channel.query.get_or_404(channel_id)
+    days_ago = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+    callbacks = channel.callbacks.filter(Callback.timestamp >= days_ago).order_by(
+        Callback.timestamp.desc()
+    )
+    response = list(map(dict, callbacks))
     return jsonify(response)

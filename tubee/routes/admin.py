@@ -2,6 +2,7 @@
 import os
 import platform
 import sys
+from urllib.parse import unquote
 
 import flask
 import gunicorn
@@ -16,10 +17,9 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-from urllib.parse import unquote
-from ..models import Callback, Notification, Service
 
 from ..helper import admin_required
+from ..models import Callback, Channel, Notification, Service
 
 admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)
@@ -28,6 +28,7 @@ admin_blueprint.before_request(admin_required)
 @admin_blueprint.route("/dashboard")
 @login_required
 def dashboard():
+    # Sitemap
     links = {}
     for rule in current_app.url_map.iter_rules():
         query = {arg: f"<{arg}>" for arg in rule.arguments}
@@ -43,6 +44,7 @@ def dashboard():
             continue
     for blueprint, rules in links.items():
         rules.sort(key=lambda x: x[1])
+    # System Runtime
     infos = {
         "os_version": platform.platform(),
         "python_version": sys.version,
@@ -53,16 +55,19 @@ def dashboard():
         "app_config": current_app.config,
         "os_env": os.environ,
     }
+    # Miscs
+    channels = Channel.query.all()
     callbacks = Callback.query.order_by(Callback.timestamp.desc()).all()
     notifications = Notification.query.order_by(
         Notification.sent_timestamp.desc()
     ).paginate()
     return render_template(
         "admin.html",
-        infos=infos,
         callbacks=callbacks,
-        notifications=notifications,
+        channels=channels,
+        infos=infos,
         links=links,
+        notifications=notifications,
     )
 
 

@@ -32,3 +32,15 @@ class Callback(db.Model):
 
     def __repr__(self):
         return f"<{self.channel_id}'s Callback {self.id}>"
+
+    def __iter__(self):
+        FIELD = [
+            "id",
+            "type",
+            "timestamp",
+            "infos",
+            "channel_id",
+            "video_id",
+        ]
+        for f in FIELD:
+            yield (f, getattr(self, f))
