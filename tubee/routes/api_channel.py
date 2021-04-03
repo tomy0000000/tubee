@@ -2,12 +2,13 @@ from datetime import datetime, timedelta
 from random import randrange
 from uuid import uuid4
 
-import requests
+# import requests
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
 from ..models import Channel
 from ..helper import admin_required_decorator as admin_required
+from ..helper.youtube import build_youtube_api
 from ..tasks import renew_channels
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
@@ -18,50 +19,53 @@ api_channel_blueprint = Blueprint("api_channel", __name__)
 def search():
     query = request.args.get("query")
 
-    URL = f"https://www.youtube.com/results?search_query={query}&sp=EgIQAg%253D%253D&pbj=1"
-    HEADERS = {
-        "x-youtube-client-name": "1",
-        "x-youtube-client-version": "2.20200915.04.01",
-    }
-    PATH = [
-        1,
-        "response",
-        "contents",
-        "twoColumnSearchResultsRenderer",
-        "primaryContents",
-        "sectionListRenderer",
-        "contents",
-        0,
-        "itemSectionRenderer",
-        "contents",
-    ]
-
-    contents = requests.get(URL, headers=HEADERS).json()
-    for key in PATH:
-        contents = contents[key]
+    #     URL = (
+    #         "https://www.youtube.com/results?"
+    #         f"search_query={query}&sp=EgIQAg%253D%253D&pbj=1"
+    #     )
+    #     HEADERS = {
+    #         "x-youtube-client-name": "1",
+    #         "x-youtube-client-version": "2.20200915.04.01",
+    #     }
+    #     PATH = [
+    #         1,
+    #         "response",
+    #         "contents",
+    #         "twoColumnSearchResultsRenderer",
+    #         "primaryContents",
+    #         "sectionListRenderer",
+    #         "contents",
+    #         0,
+    #         "itemSectionRenderer",
+    #         "contents",
+    #     ]
+    #
+    #     contents = requests.get(URL, headers=HEADERS).json()
+    #     for key in PATH:
+    #         contents = contents[key]
+    #     results = [
+    #         {
+    #             "title": item["channelRenderer"]["title"]["simpleText"],
+    #             "id": item["channelRenderer"]["channelId"],
+    #             "thumbnail": item["channelRenderer"]["thumbnail"]["thumbnails"][-1]["url"],
+    #         }
+    #         for item in contents
+    #     ]
+    response = (
+        build_youtube_api()
+        .search()
+        .list(part="snippet", maxResults=30, q=query, type="channel")
+        .execute()
+    )
+    results = response
     results = [
         {
-            "title": item["channelRenderer"]["title"]["simpleText"],
-            "id": item["channelRenderer"]["channelId"],
-            "thumbnail": item["channelRenderer"]["thumbnail"]["thumbnails"][-1]["url"],
+            "title": item["snippet"]["title"],
+            "id": item["snippet"]["channelId"],
+            "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
         }
-        for item in contents
+        for item in response["items"]
     ]
-    # response = (
-    #     build_youtube_api()
-    #     .search()
-    #     .list(part="snippet", maxResults=30, q=query, type="channel")
-    #     .execute()
-    # )
-    # results = response
-    # results = [
-    #     {
-    #         "title": item["snippet"]["title"],
-    #         "id": item["snippet"]["channelId"],
-    #         "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
-    #     }
-    #     for item in response["items"]
-    # ]
     return jsonify(results)
 
 
