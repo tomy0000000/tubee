@@ -45,7 +45,9 @@ def channel(channel_id):
     subscription = current_user.subscriptions.filter_by(
         channel_id=channel_id
     ).first_or_404()
-    videos = subscription.channel.videos.order_by(Video.uploaded_timestamp.desc())
+    videos = subscription.channel.videos.order_by(
+        Video.uploaded_timestamp.desc()
+    ).limit(20)
     return render_template(
         "channel.html",
         channel=subscription.channel,
