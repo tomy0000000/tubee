@@ -23,7 +23,9 @@
 {% include "action/modal_remove.html" %}
 
 <!-- BEGIN Video Thumbnails Carousel -->
-{% if videos %} {% set thumb_num = [videos.count(), 3]|min %}
+<!-- prettier-ignore -->
+{% if videos %}
+{% set thumb_num = [videos.count(), 3]|min %}
 <div class="bd-example">
   <div
     id="video-carousel"
@@ -121,6 +123,13 @@
       <p class="mb-0">{{ channel.id }}</p>
     </a>
     <p id="channel-description">{{ channel.infos.snippet.description }}</p>
+    {% for subscription_tag in subscription_tags %}
+    <a
+      href="{{ url_for('main.dashboard', tag=subscription_tag.tag.name) }}"
+      class="badge badge-info my-2"
+      >{{ subscription_tag.tag.name }}</a
+    >
+    {% endfor %}
     <form id="tag-form">
       {{ tag_form.csrf_token }} {{ tag_form.channel_id(value=channel.id) }}
       <div class="form-row">
@@ -129,11 +138,6 @@
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">#</span>
-              {% for subscription_tag in subscription_tags %}
-              <span class="input-group-text"
-                >{{ subscription_tag.tag.name }}</span
-              >
-              {% endfor %}
             </div>
             {{ tag_form.tag_name }}
           </div>
@@ -144,7 +148,7 @@
             type="button"
             data-api-endpoint="{{ url_for('api_tag.new') }}"
           >
-            Save
+            Add Tag
           </button>
         </div>
       </div>
@@ -153,226 +157,13 @@
     <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
     {% else %}
     <button type="button" class="btn btn-success btn-lg">Subscribe</button>
-    {% endif %} {% if current_user.admin %}
-    <button type="button" id="hub-reload-btn" class="btn btn-secondary btn-lg">
-      Reload Hub Status
-    </button>
     {% endif %}
   </div>
 </div>
 <!-- END Video Infos -->
 
+<!-- prettier-ignore -->
 {% include "action/table.html" %}
-
-<!-- BEGIN Hub Infos -->
-{% if current_user.admin %}
-<div
-  class="container mb-3"
-  id="status-grid"
-  data-api-endpoint="{{ url_for('api_channel.status', channel_id=channel.id, _external=True) }}"
->
-  <div class="row">
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              State
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="state"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Expiration
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="expiration"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Last Notification
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="last-notification"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Last Notification Error
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="last-notification-error"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Last Challenge
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="last-challenge"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Last Challenge Error
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="last-challenge-error"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Last Subscribe
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="last-subscribe"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-12 col-lg-6 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr>
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Last Unsubscribe
-            </th>
-            <td
-              class="align-middle border-top-0 hub-table-cell"
-              id="last-unsubscribe"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 px-0">
-      <table class="table h-100 mb-0">
-        <tbody>
-          <tr class="col-lg-third-one">
-            <th scope="row" class="table-dark align-middle border-top-0">
-              Stat
-            </th>
-            <td class="align-middle border-top-0 hub-table-cell" id="stat">
-              {#
-              <div class="spinner-border text-dark" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-              #}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-{% endif %}
-<!-- END Hub Infos -->
-
-<!-- BEGIN Video Table -->
-<table class="table table-striped table-hover">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col" class="align-middle"></th>
-      <th scope="col" class="align-middle">Title</th>
-      <th scope="col" class="align-middle">Published Datetime</th>
-      {% if current_user.admin %}
-      <th scope="col" class="align-middle">Callback</th>
-      {% endif %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for video in videos %}
-    <tr>
-      <th scope="row" class="video-thumbnails">
-        <img
-          src="{{ video.thumbnails.medium.url }}"
-          class="rounded vidoe-thumbnails"
-        />
-      </th>
-      <td class="align-middle video-title">
-        <a href="https://youtu.be/{{ video.id }}" target="_blank">
-          {{ video.name|safe }}
-        </a>
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ video.id }}"
-        >
-          <p>#{{ video.id }}</p>
-        </a>
-      </td>
-      <td class="align-middle">
-        {{ moment(video.uploaded_timestamp).format('lll') }}
-      </td>
-      {% if current_user.admin %}
-      <td class="align-middle">
-        <button type="button" class="btn btn-primary">
-          {% if video.callbacks.count() > 0 %} {{
-          moment(video.callbacks[0].timestamp).format('lll') }} {% else %}{%
-          endif %}
-          <span class="badge badge-light">{{ video.callbacks.count() }}</span>
-        </button>
-      </td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<!-- END Video Table -->
+{% include "component/channel_video_table.html" %}
 
 {% endblock %}

@@ -25,7 +25,11 @@
 {% include "action/modal_new.html" %}
 {% include "action/modal_edit.html" %}
 {% include "action/modal_remove.html" %}
-{% include "action/table.html" %}
+<!-- prettier-ignore -->
+<div class="jumbotron">
+  <h1 class="display-4">{{ tag }}</h1>
+  {% include "action/table.html" %}
+</div>
 {% endif %}
 
 <!-- BEGIN Subscription Table -->
@@ -34,11 +38,7 @@
     <tr>
       <th scope="col" class="align-middle"></th>
       <th scope="col" class="align-middle">Channel Name</th>
-      <th scope="col" class="align-middle">Recent Activity</th>
       <th scope="col" class="align-middle"></th>
-      {% if current_user.admin %}
-      <th scope="col" class="align-middle">Hub Status</th>
-      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -76,8 +76,15 @@
           </p>
         </a>
         {% endif %}
+        <!-- prettier-ignore -->
+        {% for subscription_tags in subscription.subscription_tags.all() %}
+        <a
+          href="{{ url_for('main.dashboard', tag=subscription_tags.tag.name) }}"
+          class="badge badge-info"
+          >{{ subscription_tags.tag.name }}</a
+        >
+        {% endfor %}
       </td>
-      <td class="align-middle"></td>
       <td class="align-middle">
         <button
           type="button"
@@ -87,25 +94,7 @@
         >
           Unsubscribe
         </button>
-        {% if current_user.admin %}
-        <button
-          class="btn btn-warning renew-btn"
-          type="button"
-          data-renew-url="{{ url_for('api_channel.renew', channel_id=subscription.channel_id) }}"
-        >
-          Renew
-        </button>
-        {% endif %}
       </td>
-      {% if current_user.admin %}
-      <td class="align-middle">
-        {{ badge(subscription.channel.hub_infos.state) }}
-        <br />
-        <span class="badge badge-warning"
-          >{{ moment(subscription.channel.expiration).fromNow() }}</span
-        >
-      </td>
-      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
