@@ -8,23 +8,39 @@
   <h1 id="headline" class="display-4">Welcome!</h1>
   <form id="" name="" class="needs-validation" method="POST" novalidate>
     {{ form.csrf_token }}
+    <!-- prettier-ignore -->
     <div class="form-group">
-      {{ form.username.label }} {% if form.username.errors|length > 0 %} {{
-      form.username(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in form.username.errors %} {{ error }} {% if not loop.last
-        %}<br />{% endif %} {% endfor %}
-      </div>
-      {% else %} {{ form.username(class="form-control") }} {% endif %}
+      {{ form.username.label }}
+      {% if form.username.errors|length > 0 %}
+        {{ form.username(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.username.errors %}
+            {{ error }}
+            {% if not loop.last %}
+              <br />
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.username(class="form-control") }}
+      {% endif %}
     </div>
+    <!-- prettier-ignore -->
     <div class="form-group">
-      {{ form.password.label }} {% if form.password.errors|length > 0 %} {{
-      form.password(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in form.password.errors %} {{ error }} {% if not loop.last
-        %}<br />{% endif %} {% endfor %}
-      </div>
-      {% else %} {{ form.password(class="form-control") }} {% endif %}
+      {{ form.password.label }}
+      {% if form.password.errors|length > 0 %}
+        {{ form.password(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.password.errors %}
+            {{ error }}
+            {% if not loop.last %}
+              <br />
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.password(class="form-control") }}
+      {% endif %}
     </div>
     {{ form.submit(class="btn btn-primary btn-lg m-2") }}
   </form>

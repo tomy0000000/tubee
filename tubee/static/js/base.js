@@ -65,7 +65,7 @@ function generate_callback_badge(status) {
 
 function register_clipboard_items(selector) {
   new ClipboardJS(selector);
-  $(selector)
+  $(`${selector} p`)
     .tooltip({
       placement: "right",
       title: "Copied!",

@@ -22,10 +22,6 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
-/* #subscribe-input:focus {
-    width: 400px;
-} */
-
 @media (min-width: 992px) {
   #username {
     margin-right: 1rem;

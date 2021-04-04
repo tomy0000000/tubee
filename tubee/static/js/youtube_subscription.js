@@ -73,19 +73,7 @@ load_more = () => {
       }
 
       // Initialize Clipboard JS
-      new ClipboardJS(".clipboard");
-      $(".clipboard")
-        .tooltip({
-          placement: "right",
-          title: "Copied!",
-          trigger: "click",
-        })
-        .on("mouseleave", function () {
-          $(this).tooltip("hide");
-        })
-        .on("click", (event) => {
-          event.preventDefault();
-        });
+      register_clipboard_items(".clipboard");
     })
     .fail((response_data) => {
       console.log("Oops! Something Went Wrong...");

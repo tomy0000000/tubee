@@ -121,8 +121,7 @@ def channel_callback(channel_id):
             video_file_url = None
 
         # List users and execute actions
-        for sub in Subscription.query.filter_by(channel_id=channel_id).all():
-            response[sub.username] = {}
+        for sub in channel_item.subscriptions:
             for action in sub.actions:
                 try:
                     results = action.execute(
@@ -136,13 +135,14 @@ def channel_callback(channel_id):
                         channel_name=channel_item.name,
                     )
                 except Exception as error:
-                    results = error
-                    current_app.logger.error(
-                        f"{sub.username}-{channel_id}-{action.id}: {error}"
-                    )
+                    results = {
+                        "error": error.__class__.__name__,
+                        "description": str(error),
+                    }
+                    current_app.logger.exception(f"{channel_id}-{action.id}: {error}")
                 else:
-                    current_app.logger.info(f"{sub.username}-{channel_id}-{action.id}")
-                response[sub.username][action.id] = str(results)
+                    current_app.logger.info(f"{channel_id}-{action.id}")
+                response[action.id] = results
         return jsonify(response)
 
 
