@@ -1,3 +1,7 @@
+[tool.isort]
+profile = "black"
+src_paths = ["tubee", "migrations"]
+
 [tool.poetry]
 name = "tubee"
 version = "0.1.0"
