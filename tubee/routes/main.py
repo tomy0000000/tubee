@@ -9,7 +9,7 @@ from .. import db
 from ..forms import ActionForm, TagForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
-from ..models import Callback, Channel, Subscription, SubscriptionTag, Tag, Video
+from ..models import Callback, Channel, SubscriptionTag, Tag, Video
 
 main_blueprint = Blueprint("main", __name__)
 

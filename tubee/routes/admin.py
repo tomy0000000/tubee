@@ -19,7 +19,7 @@ from flask import (
 from flask_login import current_user, login_required
 
 from ..helper import admin_required
-from ..models import Callback, Channel, Notification, Service
+from ..models import Callback, Channel, Notification
 
 admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)
@@ -56,7 +56,7 @@ def dashboard():
         "os_env": os.environ,
     }
     # Miscs
-    channels = Channel.query.all()
+    channels = Channel.query.order_by(Channel.name.asc()).all()
     callbacks = Callback.query.order_by(Callback.timestamp.desc()).all()
     notifications = Notification.query.order_by(
         Notification.sent_timestamp.desc()
@@ -96,7 +96,7 @@ def notification_push():
     if request.method == "POST":
         response = current_user.send_notification(
             "Test",
-            Service(request.form.get("service", "Pushover")),
+            "Pushover",
             message=request.form["message"],
         )
         flash(response, "success")

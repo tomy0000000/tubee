@@ -103,15 +103,12 @@ def notify_admin(initiator, service, **kwargs):
         **kwargs {dict} -- optional arguments passed to notification
 
     Returns:
-        dict -- Reponse from notification service
+        dict -- Response from notification service
     """
     from ..models.user import User
 
     admins = User.query.filter_by(admin=True).all()
     response = {}
     for admin in admins:
-        if admin.pushover:
-            response[admin.username] = admin.send_notification(
-                initiator, service, **kwargs
-            )
+        response[admin.username] = admin.send_notification(initiator, service, **kwargs)
     return response

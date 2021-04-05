@@ -1,7 +1,6 @@
 """Notification Model"""
 from datetime import datetime
 from enum import Enum
-from uuid import uuid4
 
 import requests
 from flask import current_app
@@ -47,7 +46,7 @@ class Notification(db.Model):
         initiator {str} -- function or task which fire this notification
         user_id {str} -- receiver's username
         user {user.User} -- receiver user object
-        service {notification.Service} -- service used to send notification
+        service {str} -- service used to send notification
         message {str} -- notification body
         kwargs {dict} -- other miscs of this notification
         sent_datetime {datetime.datetime} -- datetime when this object is created
@@ -78,9 +77,13 @@ class Notification(db.Model):
             message {str} -- message of Notification
             image_url {str} -- URL of the image
         """
-        self.initiator = initiator
         self.user = user
-        self.service = service if service is Service else Service(service)
+        self.service = Service(service)
+
+        # This step validate that the user has authorized the service
+        getattr(self.user, self.service.value.lower())
+
+        self.initiator = initiator
         self.message = kwargs.pop("message", None)
         self.kwargs = kwargs
         db.session.add(self)
@@ -117,10 +120,12 @@ class Notification(db.Model):
             raise AttributeError("Message is empty")
         if self.sent_timestamp:
             raise AttributeError("This Notification has already sent")
+
         if self.service is Service.Pushover:
             self.response = self._send_with_pushover()
         if self.service is Service.LineNotify:
             self.response = self._send_with_line_notify().json()
+
         self.sent_timestamp = datetime.utcnow()
         db.session.commit()
         current_app.logger.info(f"Notification <{self.id}>: Sent ({self.response})")

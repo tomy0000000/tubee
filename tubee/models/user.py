@@ -396,7 +396,7 @@ class User(UserMixin, db.Model):
             **kwargs {dict} -- optional arguments passed to notification
 
         Returns:
-            dict -- Reponse from notification service
+            dict -- Response from notification service
         """
         from . import Notification
 
