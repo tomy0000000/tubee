@@ -8,7 +8,7 @@ task_logger = logging.getLogger("tubee.task")
 
 
 @celery.task(bind=True)
-def renew_channels(self, channel_ids, next_countdown=-1):
+def channels_renew(self, channel_ids, next_countdown=-1):
     results = {}
     for index, channel_id in enumerate(channel_ids):
         channel = Channel.query.get(channel_id)
@@ -34,7 +34,7 @@ def renew_channels(self, channel_ids, next_countdown=-1):
         task_logger.info(f"<{channel_id}> information updated")
     channels_refresh.apply_async(args=[channel_ids], countdown=60)
     if next_countdown > 0:
-        renew_channels.apply_async(
+        channels_renew.apply_async(
             args=[channel_ids, next_countdown], countdown=next_countdown
         )
     return results

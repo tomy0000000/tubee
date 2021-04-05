@@ -45,7 +45,7 @@ class Channel(db.Model):
     )
 
     def __init__(self, channel_id):
-        from ..tasks import channels_fetch_videos, channels_refresh, renew_channels
+        from ..tasks import channels_fetch_videos, channels_refresh, channels_renew
 
         self.id = channel_id
         db.session.add(self)
@@ -66,7 +66,7 @@ class Channel(db.Model):
             countdown=60,
         )
         channels_fetch_videos.apply_async(args=[[channel_id]])
-        renew_channels.apply_async(args=[[channel_id], 345600], countdown=345600)
+        channels_renew.apply_async(args=[[channel_id], 345600], countdown=345600)
         self.activate()
 
     def __repr__(self):

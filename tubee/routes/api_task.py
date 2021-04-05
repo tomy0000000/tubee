@@ -4,7 +4,7 @@ from flask_login import login_required
 
 from .. import celery
 from ..helper import admin_required
-from ..tasks import renew_channels
+from ..tasks import channels_renew
 
 api_task_blueprint = Blueprint("api_task", __name__)
 api_task_blueprint.before_request(admin_required)
@@ -16,11 +16,13 @@ def list_all():
     worker_scheduled = celery.control.inspect().scheduled()
     if not worker_scheduled:
         return jsonify([])
+
     worker_revoked = celery.control.inspect().revoked()
     if worker_revoked:
         revoked_tasks = [task for worker in worker_revoked.values() for task in worker]
     else:
         revoked_tasks = []
+
     tasks = []
     for worker in worker_scheduled.values():
         for task in worker:
@@ -50,7 +52,7 @@ def remove_all():
 @api_task_blueprint.route("/<task_id>/status")
 @login_required
 def status(task_id):
-    task = renew_channels.AsyncResult(task_id)
+    task = channels_renew.AsyncResult(task_id)
     response = {
         "id": task.id,
         "status": task.status.title(),

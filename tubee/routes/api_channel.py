@@ -9,7 +9,7 @@ from flask_login import current_user, login_required
 from ..helper import admin_required_decorator as admin_required
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel
-from ..tasks import renew_channels
+from ..tasks import channels_renew
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
 
@@ -76,7 +76,7 @@ def renew_all():
     execution = int(request.args.to_dict().get("execution", 0))
     interval = 60 * 60 * 24 * 4
     if execution == 0:
-        task = renew_channels.apply_async(
+        task = channels_renew.apply_async(
             args=[[channel.id for channel in Channel.query.all()]]
         )
         response = {
@@ -102,7 +102,7 @@ def renew_all():
                 countdown = 0
             if execution == -2 and countdown > 0:
                 countdown = randrange(int(countdown))
-            task = renew_channels.apply_async(
+            task = channels_renew.apply_async(
                 args=[[channel.id], interval],
                 countdown=countdown,
                 task_id=f"renew_{channel.id}_{str(uuid4())[:8]}",

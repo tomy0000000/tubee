@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 
 from tubee import create_app, db
-from tubee.tasks import channels_fetch_videos, channels_refresh, renew_channels
+from tubee.tasks import channels_fetch_videos, channels_refresh, channels_renew
 
 
 class BasicsTestCase(unittest.TestCase):
@@ -30,12 +30,12 @@ class BasicsTestCase(unittest.TestCase):
 
     @mock.patch("tubee.tasks.channels_refresh")
     @mock.patch("tubee.tasks.Channel")
-    def test_tasks_renew_channels(self, mocked_channel, mocked_channels_refresh):
+    def test_tasks_channels_renew(self, mocked_channel, mocked_channels_refresh):
         mocked_channel.query.get.return_value = False
-        renew_channels(self.test_channel_ids)
+        channels_renew(self.test_channel_ids)
 
         mocked_channel.query.get.return_value = mock.MagicMock()
-        renew_channels(self.test_channel_ids)
+        channels_renew(self.test_channel_ids)
 
     @mock.patch("tubee.tasks.Channel")
     def test_channels_refresh(self, mocked_channel):

@@ -24,7 +24,7 @@ class UserModelTestCase(unittest.TestCase):
         self.app_context.pop()
 
     @mock.patch("tubee.models.channel.Channel.activate")
-    @mock.patch("tubee.tasks.renew_channels")
+    @mock.patch("tubee.tasks.channels_renew")
     @mock.patch("tubee.tasks.channels_fetch_videos")
     @mock.patch("tubee.tasks.channels_refresh")
     @mock.patch("tubee.models.channel.Channel.update")
@@ -33,7 +33,7 @@ class UserModelTestCase(unittest.TestCase):
         mocked_update,
         mocked_channels_refresh,
         mocked_channels_fetch_videos,
-        mocked_renew_channels,
+        mocked_channels_renew,
         mocked_activate,
     ):
         mocked_update.return_value = True
