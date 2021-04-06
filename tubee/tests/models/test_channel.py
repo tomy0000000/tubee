@@ -105,12 +105,28 @@ class ChannelModelTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             del self.test_channel.expiration
 
+    @mock.patch("tubee.helper.notify_admin")
     @mock.patch("tubee.models.channel.details")
     def test_channel_refresh(
         self,
         mocked_hub_details,
+        mocked_notify_admin,
     ):
         self.init_channel()
+        self.test_channel.hub_infos = {
+            "state": "verified",
+            "stat": "0 delivery request(s) per second to localhost,\n      0% errors",
+            "last_challenge": None,
+            "expiration": None,
+            "last_subscribe": "2020-01-01 10:30:00+00:00",
+            "last_unsubscribe": None,
+            "last_challenge_error": [
+                "2020-01-01 10:30:00+00:00",
+                "Bad response code 504",
+            ],
+            "last_notification_error": None,
+            "last_notification": None,
+        }
         mocked_hub_details.return_value = {
             "requests_url": "https://pubsubhubbub.appspot.com/subscription-details"
             "?hub.callback=https%3A%2F%2Ftest_host%2Fchannel%2FUCBR8-60-B28hp2BmDPdntcQ"
