@@ -34,7 +34,6 @@ def build_youtube_api(credentials=None):
     return build(
         current_app.config["YOUTUBE_API_SERVICE_NAME"],
         current_app.config["YOUTUBE_API_VERSION"],
-        cache_discovery=False,
         **kwargs
     )
 

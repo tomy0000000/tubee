@@ -217,8 +217,6 @@ class ChannelModelTestCase(unittest.TestCase):
     def test_channel_fetch_videos(self, mocked_youtube, mocked_video):
         self.init_channel()
 
-        with open(join(dirname(__file__), "../data", "youtube_api.json")) as file:
-            youtube_dicovery = file.read()
         with open(
             join(dirname(__file__), "../data", "youtube_fetch_videos_1.json")
         ) as file:
@@ -228,7 +226,6 @@ class ChannelModelTestCase(unittest.TestCase):
         ) as file:
             playlist_items_2 = file.read()
         responses = [
-            ({"status": "200"}, youtube_dicovery),
             ({"status": "200"}, playlist_items_1),
             ({"status": "200"}, playlist_items_2),
         ]
@@ -237,7 +234,6 @@ class ChannelModelTestCase(unittest.TestCase):
             self.app.config["YOUTUBE_API_SERVICE_NAME"],
             self.app.config["YOUTUBE_API_VERSION"],
             http=HttpMockSequence(responses),
-            cache_discovery=False,
             developerKey=self.app.config["YOUTUBE_API_DEVELOPER_KEY"],
         )
         mocked_video.query.get.side_effect = lambda x: bool(hash(x) % 2)
