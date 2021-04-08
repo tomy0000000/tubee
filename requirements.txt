@@ -582,9 +582,9 @@ werkzeug==1.0.1; (python_version >= "2.7" and python_full_version < "3.0.0") or 
 wtforms==2.3.3 \
     --hash=sha256:7b504fc724d0d1d4d5d5c114e778ec88c37ea53144683e084215eed5155ada4c \
     --hash=sha256:81195de0ac94fbc8368abbaf9197b88c4f3ffd6c2719b5bf5fc9da744f3d829c
-youtube-dl==2021.3.31 \
-    --hash=sha256:8f7cf300878dbdb63fed1c9c4d9d2d56bf4c7467260e0f0c1ade66c11647eebe \
-    --hash=sha256:822be370d9c1bc63ec2ca9634fef1baf12db9c10d2b1f322401c0f1f9d35dcd2
+youtube-dl==2021.4.7 \
+    --hash=sha256:5031125b13c92d23197adbe5d20f7a0a03befc510cabbfccb757703b7e35c140 \
+    --hash=sha256:34a034d9b2062e428710d4cd6365db7a64cd388e51a3f9ab74058179c95d8654
 zipp==3.4.0; python_version < "3.8" and python_version >= "3.6" \
     --hash=sha256:102c24ef8f171fd729d46599845e95c7ab894a4cf45f5de11a44cc7444fb1108 \
     --hash=sha256:ed5eee1974372595f9e416cc7bbeeb12335201d8081ca8a0743c954d4446e5cb
