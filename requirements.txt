@@ -193,12 +193,12 @@ flask==1.1.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (py
 google-api-core==1.26.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6" \
     --hash=sha256:4230ec764d48ca934fe69b85cc217e31e844e176f68df93e252acd55350e730b \
     --hash=sha256:002e44c533299aecd9dd265d200f9eacd9957cddd2c72e2cd1cb5cea127e972d
-google-api-python-client==2.0.2; python_version >= "3.6" \
-    --hash=sha256:48686cceb0dc8cb8b9ee1920ad7c0d9b499ef4fca0ca51c1c69f1e462a628011 \
-    --hash=sha256:b665afbb38df357222bac695e76f2ceb3c42346bfbfb64146061285e175c38d8
-google-auth-httplib2==0.0.4; python_version >= "3.6" \
-    --hash=sha256:8d092cc60fb16517b12057ec0bba9185a96e3b7169d86ae12eae98e645b7bc39 \
-    --hash=sha256:aeaff501738b289717fac1980db9711d77908a6c227f60e4aa1923410b43e2ee
+google-api-python-client==2.1.0; python_version >= "3.6" \
+    --hash=sha256:f9ac377efe69571aea1acc9e15760d4204aca23c4464eb63f963ae4defc95d97 \
+    --hash=sha256:921fe10cdff22d1f5b8af7473f9a298efb991fb6ea67dadd6c37fbecfb0575f4
+google-auth-httplib2==0.1.0; python_version >= "3.6" \
+    --hash=sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac \
+    --hash=sha256:31e49c36c6b5643b57e82617cb3e021e3e1d2df9da63af67252c02fa9c1f4a10
 google-auth-oauthlib==0.4.4; python_version >= "3.6" \
     --hash=sha256:09832c6e75032f93818edf1affe4746121d640c625a5bef9b5c96af676e98eee \
     --hash=sha256:0e92aacacfb94978de3b7972cf4b0f204c3cd206f74ddd0dc0b31e91164e6317
