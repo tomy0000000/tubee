@@ -4,8 +4,6 @@ services:
   celery:
     build:
       context: .
-      args:
-        INSTALL_DEV: "true"
     command:
       [
         "watchmedo",
