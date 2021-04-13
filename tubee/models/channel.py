@@ -160,7 +160,7 @@ class Channel(db.Model):
 
         self.hub_infos = results
         db.session.commit()
-        current_app.logger.info(f"Channel <{self.id}>: Hub info updated ({response})")
+        current_app.logger.info(f"Channel <{self.id}>: Hub info updated")
         return response
 
     def update(self):
@@ -185,9 +185,7 @@ class Channel(db.Model):
             self.infos = api_result["items"][0]
             self.name = self.infos["snippet"]["title"]
             db.session.commit()
-            current_app.logger.info(
-                f"Channel <{self.id}>: YouTube info updated ({self.infos})"
-            )
+            current_app.logger.info(f"Channel <{self.id}>: YouTube info updated")
             return self.infos
         except (YouTubeAPIError, KeyError) as error:
             # TODO: Parse API Error
@@ -246,5 +244,5 @@ class Channel(db.Model):
             else:
                 break
 
-        current_app.logger.info(f"Channel <{self.id}>: Video Fetched ({results})")
+        current_app.logger.info(f"Channel <{self.id}>: Video Fetched")
         return results

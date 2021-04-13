@@ -128,7 +128,7 @@ class Notification(db.Model):
 
         self.sent_timestamp = datetime.utcnow()
         db.session.commit()
-        current_app.logger.info(f"Notification <{self.id}>: Sent ({self.response})")
+        current_app.logger.info(f"Notification <{self.id}>: Sent")
         return self.response
 
     def _send_with_pushover(self):
