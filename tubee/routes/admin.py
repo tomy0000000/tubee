@@ -57,7 +57,7 @@ def dashboard():
     }
     # Miscs
     channels = Channel.query.order_by(Channel.name.asc()).all()
-    callbacks = Callback.query.order_by(Callback.timestamp.desc()).all()
+    callbacks = Callback.query.order_by(Callback.timestamp.desc()).limit(50)
     notifications = Notification.query.order_by(
         Notification.sent_timestamp.desc()
     ).paginate()
