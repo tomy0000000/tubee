@@ -71,10 +71,11 @@ def docker(context, development):
         command += "--file docker-compose.dev.yml".split()
         command.append("up")
         command += context.args
-        if subprocess.call(command) != 0:
-            raise RuntimeError("docker-compose failed")
-        sys.exit(subprocess.call(["flask", "run"]))
+        proc = subprocess.run(command)
+        if proc.returncode != 0:
+            sys.exit(1)
+        sys.exit(subprocess.run(["flask", "run"]).returncode)
     else:
         command.append("up")
         command += context.args
-        sys.exit(subprocess.call(command))
+        sys.exit(subprocess.run(command).returncode)

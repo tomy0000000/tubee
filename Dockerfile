@@ -9,7 +9,8 @@ WORKDIR /usr/src/tubee
 COPY . .
 
 # Install pip
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip poetry
 
 # Install Dependencies
-RUN pip install -r requirements.txt
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
