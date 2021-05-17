@@ -28,6 +28,9 @@ class Config:
     REMEMBER_COOKIE_SECURE = True
     CELERY_RESULT_BACKEND = "rpc://"
 
+    # Sentry
+    SENTRY_DSN = os.environ.get("SENTRY_DSN")
+
     # Pushover
     PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 

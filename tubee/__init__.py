@@ -1,8 +1,10 @@
 """Main Application of Tubee"""
 import json
 import logging.config
+import subprocess
 from os import path
 
+import sentry_sdk
 from authlib.integrations.flask_client import OAuth
 from celery import Celery
 from flask import Flask
@@ -11,10 +13,13 @@ from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
 
-__version__ = "dev_20210123"
+__version__ = subprocess.check_output(
+    ["git", "rev-parse", "--short", "HEAD"], text=True
+)
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -26,18 +31,33 @@ oauth = OAuth()
 
 
 def create_app(config_name, coverage=None):
+
+    # Load config
+    config_instance = config[config_name]
+
+    # Register Sentry
+    if config_instance.SENTRY_DSN:
+        sentry_sdk.init(
+            dsn=config_instance.SENTRY_DSN,
+            integrations=[FlaskIntegration()],
+            traces_sample_rate=1.0,
+            release=__version__,
+        )
+
+    # App Fundation
     app = Flask(__name__, instance_relative_config=True)
     app.version = __version__
-    app.config.from_object(config[config_name])
+    app.config.from_object(config_instance)
     external_config = path.join(app.instance_path, "logging.cfg")
     load_external = path.exists(external_config) and path.isfile(external_config)
     if load_external:
         with open(external_config) as json_file:
             logging.config.dictConfig(json.load(json_file))
 
+    # Database Initialization
     db.init_app(app)
     app.db = db
-    config[config_name].init_app(app)
+    config_instance.init_app(app)
 
     if coverage:
         app.coverage = coverage
@@ -45,6 +65,7 @@ def create_app(config_name, coverage=None):
     if load_external:
         app.logger.info("External Logging Config Loaded")
 
+    # Extensions Initialization
     bcrypt.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
@@ -52,6 +73,7 @@ def create_app(config_name, coverage=None):
     oauth.init_app(app)
     celery.conf.update(app.config)
 
+    # Extensions Settings
     login_manager.login_view = "user.login"
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
@@ -70,7 +92,11 @@ def create_app(config_name, coverage=None):
         ),
     )
 
+    # Reset all tasks
+    # remove_all_tasks()
+    # Blueprint Registration
     from . import commands, routes
+    from .tasks import remove_all_tasks
 
     app.shell_context_processor(commands.make_shell_context)
     app.cli.add_command(commands.deploy)
