@@ -93,10 +93,11 @@ def create_app(config_name, coverage=None):
     )
 
     # Reset all tasks
+    # from .tasks import remove_all_tasks
     # remove_all_tasks()
+
     # Blueprint Registration
     from . import commands, routes
-    from .tasks import remove_all_tasks
 
     app.shell_context_processor(commands.make_shell_context)
     app.cli.add_command(commands.deploy)
