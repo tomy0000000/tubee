@@ -143,7 +143,7 @@ class Channel(db.Model):
             elif isinstance(val[0], datetime):
                 results[key] = (str(val[0]), val[1])
 
-        if results["state"] != self.hub_infos["state"]:
+        if results["state"] != self.hub_infos.get("state"):
             from ..helper import notify_admin
 
             notify_admin(

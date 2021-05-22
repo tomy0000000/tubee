@@ -130,13 +130,13 @@ class Action(db.Model):
                     **parameters
                 ),
             )
-        if self.type is ActionType.Playlist:
+        elif self.type is ActionType.Playlist:
             results = self.user.insert_video_to_playlist(
                 parameters["video_id"],
                 playlist_id=self.details.get("playlist_id", None),
                 position=self.details.get("position", None),
             )
-        if self.type is ActionType.Download:
+        elif self.type is ActionType.Download:
             results = self.user.dropbox.files_save_url(
                 self.details.get("file_path", "/{video_title}.mp4").format(
                     **parameters
