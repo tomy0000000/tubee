@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,nova,flask,dotenv
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,nova,flask,dotenv
+# Created by https://www.toptal.com/developers/gitignore/api/flask,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=flask,dotenv
 
 ### dotenv ###
 .env
@@ -27,8 +27,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
 parts/
 sdist/
 var/
@@ -105,6 +103,9 @@ ipython_config.py
 #   install all needed dependencies.
 #Pipfile.lock
 
+# poetry
+#poetry.lock
+
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
 
@@ -116,7 +117,9 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.venv
+# .env
+.env/
+.venv/
 env/
 venv/
 ENV/
@@ -145,42 +148,16 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# operating system-related files
+# file properties cache/storage on macOS
+*.DS_Store
+# thumbnail cache on Windows
+Thumbs.db
+
 # profiling data
 .prof
 
-### macOS ###
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
 
-# Icon must end with two \r
-Icon
-
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-### nova ###
-.nova/*
-
-# End of https://www.toptal.com/developers/gitignore/api/macos,nova,flask,dotenv
+# End of https://www.toptal.com/developers/gitignore/api/flask,dotenv
 
 *.sqlite
-requirements.txt
