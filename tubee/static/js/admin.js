@@ -5,7 +5,9 @@ function build_formatted_JSON_tag(data) {
 }
 
 function channel_fill_status(responseData) {
-  $("#state").empty().append(generate_callback_badge(responseData.state));
+  $("#state")
+    .empty()
+    .append(generate_callback_status_badge(responseData.state));
   $("#expiration").text(responseData.expiration);
   $("#last-notification").text(responseData.last_notification);
   $("#last-notification-error").text(responseData.last_notification_error);
@@ -39,7 +41,7 @@ function channel_refresh(event) {
       button.empty().text("Refresh").attr({
         disabled: false,
       });
-      status.empty().append(generate_callback_badge(responseData.state));
+      status.empty().append(generate_callback_status_badge(responseData.state));
       expiration.empty().text(responseData.expiration);
     })
     .fail((responseData) => {

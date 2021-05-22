@@ -183,7 +183,8 @@ class User(UserMixin, db.Model):
         Validating credentials and save iff valid
 
         Arguments:
-            credentials {google.oauth2.credentials.Credentials} -- User's YouTube Credentials
+            credentials {google.oauth2.credentials.Credentials} -- User's YouTube
+                                                                   Credentials
 
         Raises:
             InvalidAction -- Raised when provided credentials is not valid

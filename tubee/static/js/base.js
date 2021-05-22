@@ -9,6 +9,12 @@ const VALID_SPINNER_TYPE = [
   "dark",
 ];
 
+const CLIPBOARD_SELECTOR = ".clipboard";
+
+// ---------------
+// Util Functions
+// ---------------
+
 function set_loading(button) {
   let spinner_id = Date.now();
   $(button)
@@ -48,7 +54,7 @@ function drop_spinner(location) {
   $(location).find(`#${spinner_id}`).remove();
 }
 
-function generate_callback_badge(status) {
+function generate_callback_status_badge(status) {
   const BADGE_TYPE_MAPPING = {
     verified: "success",
     expired: "danger",
@@ -63,9 +69,13 @@ function generate_callback_badge(status) {
   return badge;
 }
 
-function register_clipboard_items(selector) {
-  new ClipboardJS(selector);
-  $(`${selector} p`)
+// ---------------
+// Init Functions
+// ---------------
+
+function init_clipboard() {
+  new ClipboardJS(CLIPBOARD_SELECTOR);
+  $(`${CLIPBOARD_SELECTOR} p`)
     .tooltip({
       placement: "right",
       title: "Copied!",
@@ -78,6 +88,10 @@ function register_clipboard_items(selector) {
       event.preventDefault();
     });
 }
+
+// ---------------
+// Toolbar
+// ---------------
 
 function submit_subscribe(event) {
   // UI
@@ -133,9 +147,9 @@ function submit_subscribe(event) {
 }
 
 $(document).ready(() => {
-  register_clipboard_items(".clipboard");
-  $(".subscribe-submit").click(submit_subscribe);
+  init_clipboard();
 
+  $(".subscribe-submit").click(submit_subscribe);
   let channel_search_api = $("#subscribe-input").data("channel-api");
   $("#subscribe-input").autoComplete({
     resolverSettings: {

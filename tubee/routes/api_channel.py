@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from random import randrange
 from uuid import uuid4
 
-# import requests
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
@@ -18,39 +17,6 @@ api_channel_blueprint = Blueprint("api_channel", __name__)
 @login_required
 def search():
     query = request.args.get("query")
-
-    #     URL = (
-    #         "https://www.youtube.com/results?"
-    #         f"search_query={query}&sp=EgIQAg%253D%253D&pbj=1"
-    #     )
-    #     HEADERS = {
-    #         "x-youtube-client-name": "1",
-    #         "x-youtube-client-version": "2.20200915.04.01",
-    #     }
-    #     PATH = [
-    #         1,
-    #         "response",
-    #         "contents",
-    #         "twoColumnSearchResultsRenderer",
-    #         "primaryContents",
-    #         "sectionListRenderer",
-    #         "contents",
-    #         0,
-    #         "itemSectionRenderer",
-    #         "contents",
-    #     ]
-    #
-    #     contents = requests.get(URL, headers=HEADERS).json()
-    #     for key in PATH:
-    #         contents = contents[key]
-    #     results = [
-    #         {
-    #             "title": item["channelRenderer"]["title"]["simpleText"],
-    #             "id": item["channelRenderer"]["channelId"],
-    #             "thumbnail": item["channelRenderer"]["thumbnail"]["thumbnails"][-1]["url"],
-    #         }
-    #         for item in contents
-    #     ]
     response = (
         build_youtube_api()
         .search()

@@ -2,9 +2,8 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
 
-from .. import celery
 from ..helper import admin_required
-from ..tasks import channels_renew
+from ..tasks import channels_renew, list_all_tasks, remove_all_tasks
 
 api_task_blueprint = Blueprint("api_task", __name__)
 api_task_blueprint.before_request(admin_required)
@@ -13,39 +12,14 @@ api_task_blueprint.before_request(admin_required)
 @api_task_blueprint.route("/list-all")
 @login_required
 def list_all():
-    worker_scheduled = celery.control.inspect().scheduled()
-    if not worker_scheduled:
-        return jsonify([])
-
-    worker_revoked = celery.control.inspect().revoked()
-    if worker_revoked:
-        revoked_tasks = [task for worker in worker_revoked.values() for task in worker]
-    else:
-        revoked_tasks = []
-
-    tasks = []
-    for worker in worker_scheduled.values():
-        for task in worker:
-            task["active"] = bool(task["request"]["id"] not in revoked_tasks)
-            tasks.append(task)
+    tasks = list_all_tasks()
     return jsonify(tasks)
 
 
 @api_task_blueprint.route("/remove-all")
 @login_required
 def remove_all():
-    worker_tasks = celery.control.inspect().scheduled()
-    if not worker_tasks:
-        return jsonify(None)
-    results = {"removed": [], "error": {}}
-    for worker in worker_tasks.values():
-        for task in worker:
-            try:
-                task_id = task["request"]["id"]
-                celery.control.revoke(task_id)
-                results["removed"].append(task)
-            except Exception as error:
-                results["error"][task_id] = str(error)
+    results = remove_all_tasks()
     return jsonify(results)
 
 

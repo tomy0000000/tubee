@@ -1,6 +1,8 @@
 """Defines All Async Task for Celery"""
 import logging
 
+from flask import current_app
+
 from . import celery
 from .models import Channel
 
@@ -65,4 +67,40 @@ def channels_fetch_videos(channel_ids):
             continue
         results[channel_id] = channel.fetch_videos()
         task_logger.info(f"<{channel_id}> videos fetched: {len(results[channel_id])}")
+    return results
+
+
+def list_all_tasks():
+    worker_scheduled = celery.control.inspect().scheduled()
+    if not worker_scheduled:
+        return []
+
+    worker_revoked = celery.control.inspect().revoked()
+    if worker_revoked:
+        revoked_tasks = [task for worker in worker_revoked.values() for task in worker]
+    else:
+        revoked_tasks = []
+
+    tasks = []
+    for worker in worker_scheduled.values():
+        for task in worker:
+            task["active"] = bool(task["request"]["id"] not in revoked_tasks)
+            tasks.append(task)
+    return tasks
+
+
+def remove_all_tasks():
+    worker_tasks = celery.control.inspect().scheduled()
+    if not worker_tasks:
+        return None
+    results = {"removed": [], "error": {}}
+    for worker in worker_tasks.values():
+        for task in worker:
+            try:
+                task_id = task["request"]["id"]
+                celery.control.revoke(task_id)
+                results["removed"].append(task)
+            except Exception as error:
+                current_app.exception()
+                results["error"][task_id] = str(error)
     return results
