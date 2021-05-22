@@ -4,6 +4,7 @@ from .api_action import api_action_blueprint
 from .api_channel import api_channel_blueprint
 from .api_tag import api_tag_blueprint
 from .api_task import api_task_blueprint
+from .api_video import api_video_blueprint
 from .dev import dev_blueprint
 from .handler import handler_blueprint
 from .main import main_blueprint
@@ -18,6 +19,7 @@ blueprint_map = [
     ("/api/channel", api_channel_blueprint),
     ("/api/tag", api_tag_blueprint),
     ("/api/task", api_task_blueprint),
+    ("/api/video", api_video_blueprint),
     ("/dev", dev_blueprint),
     ("/user", user_blueprint),
 ]
@@ -29,6 +31,7 @@ __all__ = [
     api_channel_blueprint,
     api_tag_blueprint,
     api_task_blueprint,
+    api_video_blueprint,
     blueprint_map,
     dev_blueprint,
     handler_blueprint,
