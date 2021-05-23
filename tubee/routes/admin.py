@@ -60,7 +60,7 @@ def dashboard():
     callbacks = Callback.query.order_by(Callback.timestamp.desc()).limit(50)
     notifications = Notification.query.order_by(
         Notification.sent_timestamp.desc()
-    ).paginate()
+    ).limit(50)
     return render_template(
         "admin.html",
         callbacks=callbacks,

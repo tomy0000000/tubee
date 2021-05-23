@@ -3,44 +3,49 @@
 <!-- BEGIN SEND SECTION -->
 <div>
   <form method="POST" action="{{ url_for('admin.notification_push') }}">
-    <div class="form-group">
-      <label for="message">Message</label>
-      <input
-        type="text"
-        name="message"
-        class="form-control"
-        value="Test Message Body"
-      />
+    <div class="form-group row">
+      <label for="message" class="col-sm-2 col-form-label">Message</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="message" id="message" />
+      </div>
     </div>
-    <div class="form-check form-check-inline">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="service"
-        id="service_pushover"
-        value="Pushover"
-      />
-      <label class="form-check-label" for="service_pushover">Pushover</label>
+    <fieldset class="form-group row">
+      <legend class="col-form-label col-sm-2 float-sm-left pt-0">
+        Service
+      </legend>
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="service"
+            id="service_pushover"
+            value="Pushover"
+            checked
+          />
+          <label class="form-check-label" for="service_pushover">
+            Pushover
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="service"
+            id="service_line_notify"
+            value="LineNotify"
+          />
+          <label class="form-check-label" for="service_line_notify">
+            Line Notify
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
     </div>
-    <div class="form-check form-check-inline">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="service"
-        id="service_line_notify"
-        value="LineNotify"
-      />
-      <label class="form-check-label" for="service_line_notify"
-        >Line Notify</label
-      >
-    </div>
-    <input
-      class="btn btn-primary btn-lg m-2"
-      id="submit"
-      name="submit"
-      type="submit"
-      value="Send"
-    />
   </form>
 </div>
 <!-- END SEND SECTION -->
@@ -57,29 +62,27 @@
     </tr>
   </thead>
   <tbody>
-    {% for notification in notifications.items %}
+    {% for notification in notifications %}
     <tr>
-      <th scope="row" class="align-middle" rowspan="2">
-        {% if notification.kwargs.image %}
+      <th scope="row" class="align-middle">
+        {% if notification.kwargs.image_url %}
         <img
-          src="{{ notification.kwargs.image }}"
+          src="{{ notification.kwargs.image_url }}"
           class="rounded"
           width="200"
         />
         {% endif %}
       </th>
-      <td class="align-middle">{{ notification.sent_datetime }}</td>
+      <td class="align-middle">{{ notification.sent_timestamp }}</td>
       <td class="align-middle">{{ notification.kwargs.title }}</td>
       <td class="align-middle">
         <button
           class="btn btn-primary"
           type="button"
-          data-toggle="collapse"
-          data-target="#message_body{{ notification.id }}"
-          aria-expanded="false"
-          aria-controls="message_body{{ notification.id }}"
+          data-toggle="popover"
+          data-content="{{ notification.message }}"
         >
-          Show Message
+          Message
         </button>
       </td>
       <td class="align-middle">
@@ -115,16 +118,6 @@
           >
         </button>
         {% endif %}
-      </td>
-    </tr>
-    <tr>
-      <td colspan="5" class="p-0">
-        <div
-          class="collapse message_bodies"
-          id="message_body{{ notification.id }}"
-        >
-          <pre>{{ notification.message }}</pre>
-        </div>
       </td>
     </tr>
     {% endfor %}

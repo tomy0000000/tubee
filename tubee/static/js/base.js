@@ -89,6 +89,10 @@ function init_clipboard() {
     });
 }
 
+function init_popover() {
+  $('[data-toggle="popover"]').popover();
+}
+
 // ---------------
 // Toolbar
 // ---------------
@@ -148,6 +152,7 @@ function submit_subscribe(event) {
 
 $(document).ready(() => {
   init_clipboard();
+  init_popover();
 
   $(".subscribe-submit").click(submit_subscribe);
   let channel_search_api = $("#subscribe-input").data("channel-api");

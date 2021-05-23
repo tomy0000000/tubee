@@ -143,6 +143,7 @@ class Action(db.Model):
                 ),
                 parameters["video_file_url"],
             )
+            results = str(results)
         else:
             current_app.logger.info(f"Action <{self.id}>: Execute without valid type")
             raise RuntimeError("Invalid Action")
