@@ -1,7 +1,10 @@
 <!-- BEGIN Channel -->
+<h1>Channels</h1>
 <!-- prettier-ignore -->
 {% from "widgets/callback_badge.html" import badge %}
 {% include "component/admin_channel_status_modal.html" %}
+{% include "component/admin_channel_callback_modal.html" %}
+
 <table class="table table-striped table-hover table-responsive-lg">
   <thead class="thead-dark">
     <tr>
@@ -59,25 +62,21 @@
         </div>
       </td>
       <td class="align-middle">
-        {#
         <button
           type="button"
           class="btn btn-secondary"
           data-toggle="modal"
-          data-target="#channel-callbacks-modal"
+          data-target="#channel-callback-modal"
           data-name="{{ channel.name }}"
           data-endpoint="{{ url_for('api_channel.callbacks', channel_id=channel.id) }}"
         >
-          #}
           <span class="badge badge-success">
             {{ channel.callbacks.filter_by(type="Hub Notification").count() }}
           </span>
           <span class="badge badge-warning">
             {{ channel.callbacks.filter_by(type="Hub Challenge").count() }}
           </span>
-          {#
         </button>
-        #}
       </td>
     </tr>
     {% endfor %}

@@ -69,6 +69,20 @@ function generate_callback_status_badge(status) {
   return badge;
 }
 
+function generate_callback_type_badge(type) {
+  const BADGE_TYPE_MAPPING = {
+    "Hub Notification": "success",
+    "Hub Challenge": "warning",
+  };
+  let badge_type =
+    type in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[type] : "info";
+  let badge = $("<span></span>")
+    .addClass(`badge badge-${badge_type}`)
+    .text(type);
+  console.log(badge);
+  return badge;
+}
+
 // ---------------
 // Init Functions
 // ---------------

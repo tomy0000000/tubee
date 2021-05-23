@@ -18,6 +18,39 @@ function channel_fill_status(responseData) {
   $("#stat").text(responseData.stat);
 }
 
+function channel_fill_callback(responseData) {
+  let table_body = $("#channel-callback-table tbody");
+  for (let callback of responseData) {
+    let data_popover;
+    if (callback.type === "Hub Notification") {
+      data_popover = $("<button></button>")
+        .attr({
+          type: "button",
+          class: "btn btn-secondary",
+          "data-container": "body",
+          "data-toggle": "popover",
+          "data-content": callback.infos.data,
+        })
+        .text("Data")
+        .popover();
+    }
+    let row = $("<tr></tr>")
+      .append(
+        $("<th></th>")
+          .attr({ scope: "row", class: "align-middle" })
+          .text(callback.video_id)
+      )
+      .append($("<td></td>").addClass("align-middle").text(callback.timestamp))
+      .append(
+        $("<td></td>")
+          .addClass("align-middle")
+          .append(generate_callback_type_badge(callback.type))
+      )
+      .append($("<td></td>").addClass("align-middle").append(data_popover));
+    table_body.append(row);
+  }
+}
+
 function channel_refresh(event) {
   let button = $(event.target);
   let channel_row = button.parent().parent().parent();
@@ -80,6 +113,34 @@ function channel_get_status(event) {
       $("#last-subscribe").text("Error");
       $("#last-unsubscribe").text("Error");
       $("#stat").text("Error");
+    })
+    .always(() => {
+      spinner.hide();
+    });
+}
+
+function channel_get_callback(event) {
+  // Init
+  let modal = $(event.target);
+  let table = $("#channel-callback-table");
+  let spinner = $("#channel-callback-spinner");
+
+  let endpoint = $(event.relatedTarget).data("endpoint");
+  $("#channel-callback-modal-title").text($(event.relatedTarget).data("name"));
+
+  spinner.show();
+  table.hide();
+
+  $.ajax({
+    type: "get",
+    url: endpoint,
+  })
+    .done((responseData) => {
+      channel_fill_callback(responseData);
+      table.show();
+    })
+    .fail(() => {
+      console.log("Failed to load channel status");
     })
     .always(() => {
       spinner.hide();
@@ -194,6 +255,7 @@ $(document).ready(() => {
   });
   $(".btn-refresh").click(channel_refresh);
   $("#channel-status-modal").on("show.bs.modal", channel_get_status);
+  $("#channel-callback-modal").on("show.bs.modal", channel_get_callback);
   $("#channel-renew-all").click(api_with_progress);
   $("#channel-renew-all-schedule").click(api_get);
   $("#channel-renew-all-random").click(api_get);

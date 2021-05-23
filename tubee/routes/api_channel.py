@@ -127,11 +127,7 @@ def fetch_videos(channel_id):
 @login_required
 @admin_required
 def callbacks(channel_id):
-    days = int(request.args.to_dict().get("days", 3))
     channel = Channel.query.get_or_404(channel_id)
-    days_ago = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
-    callbacks = channel.callbacks.filter(Callback.timestamp >= days_ago).order_by(
-        Callback.timestamp.desc()
-    )
+    callbacks = channel.callbacks.limit(50)
     response = list(map(dict, callbacks))
     return jsonify(response)
