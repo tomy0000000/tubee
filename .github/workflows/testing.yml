@@ -1,7 +1,7 @@
 name: Test latest
 on: [push, pull_request]
 jobs:
-  build:
+  test-coverage:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -24,6 +24,7 @@ jobs:
       - name: Report coverage
         uses: codecov/codecov-action@v1
         with:
+          directory: htmlcov
           functionalities: html
       - name:
         run: |
