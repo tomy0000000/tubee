@@ -24,8 +24,3 @@ jobs:
           flask test --coverage
       - name: Report coverage
         uses: codecov/codecov-action@v1
-      - name:
-        run: |
-          pwd
-          ls -lha
-          ls -lha htmlcov
