@@ -12,6 +12,7 @@
     <a href="https://codecov.io/gh/tomy0000000/Tubee">
         <img src="https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf" alt="codecov">
     </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Ftomy0000000%2FTubee?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomy0000000%2FTubee.svg?type=shield"/></a>
     <a href="https://github.com/tomy0000000/Tubee/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/tomy0000000/Tubee.svg" alt="liscense">
     </a>
@@ -25,6 +26,9 @@
         <img src="https://img.shields.io/badge/code%20style-prettier-ff69b4.svg" alt="Code style: prettier">
     </a>
 </p>
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomy0000000%2FTubee.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftomy0000000%2FTubee?ref=badge_large)
 
 ## Overview
 
