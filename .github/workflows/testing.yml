@@ -9,7 +9,7 @@ jobs:
         python: [3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
@@ -23,3 +23,8 @@ jobs:
           poetry run flask test --coverage
       - name: Report coverage
         uses: codecov/codecov-action@v1
+        functionalities: html
+      - name:
+        run: |
+          pwd
+          ls -lh

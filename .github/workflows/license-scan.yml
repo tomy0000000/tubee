@@ -1,0 +1,23 @@
+name: License Scan
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Setup poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+      - name: Export requirements.txt
+        run: |
+          poetry export --dev -f requirements.txt --output requirements.txt
+      # FOSSA's API Key are meant to be exposed as to doc
+      - name: Scan license
+        uses: fossa-contrib/fossa-action@v1
+        with:
+          fossa-api-key: 2d7865a44aa575d857521faaee1a57f8
