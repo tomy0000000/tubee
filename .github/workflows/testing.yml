@@ -23,7 +23,8 @@ jobs:
           poetry run flask test --coverage
       - name: Report coverage
         uses: codecov/codecov-action@v1
-        functionalities: html
+        with:
+          functionalities: html
       - name:
         run: |
           pwd
