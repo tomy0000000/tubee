@@ -1,0 +1,26 @@
+name: Test latest
+on: [push, pull_request]
+jobs:
+  test-coverage:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry config virtualenvs.create false
+          poetry install --no-interaction --no-ansi
+      - name: Testing
+        run: |
+          flask test --coverage
+      - name: Report coverage
+        uses: codecov/codecov-action@v1
