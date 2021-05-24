@@ -1,0 +1,27 @@
+name: Test latest
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-focal
+    strategy:
+      matrix:
+        python: [3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Testing
+        run: |
+          poetry run flask test --coverage
+      - name: Report coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          codecov
