@@ -29,4 +29,5 @@ jobs:
       - name:
         run: |
           pwd
-          ls -lh
+          ls -lha
+          ls -lha htmlcov
