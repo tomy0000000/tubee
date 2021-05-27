@@ -301,7 +301,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 
 [[package]]
 name = "dropbox"
-version = "11.9.0"
+version = "11.10.0"
 description = "Official Dropbox API Client"
 category = "main"
 optional = false
@@ -1370,9 +1370,9 @@ decorator = [
     {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 dropbox = [
-    {file = "dropbox-11.9.0-py2-none-any.whl", hash = "sha256:9c5cfc092c49b38219854a4bac2898696a5714ef0189dcc6447246d2d89a198a"},
-    {file = "dropbox-11.9.0-py3-none-any.whl", hash = "sha256:81f07a7596f548bdc55abd116b534a2575f4239f1e5a9a24f15f9146453d34d4"},
-    {file = "dropbox-11.9.0.tar.gz", hash = "sha256:c778b67f1288d0074af48a3851aaff6bfc991817d3332f2d04fe974f0e10b33e"},
+    {file = "dropbox-11.10.0-py2-none-any.whl", hash = "sha256:801474ffc5e655694695c8ae404c1f942d5e2612af36bc37aeb9a331e51a25e6"},
+    {file = "dropbox-11.10.0-py3-none-any.whl", hash = "sha256:609a818987fc2cf25ce2d014bcace423685559e905256c06ac0191a1639e4f21"},
+    {file = "dropbox-11.10.0.tar.gz", hash = "sha256:c7d7232b1513528a24aacdd9ada2deaea6a1f9f9ad9507536f9238c9a7e64596"},
 ]
 flask = [
     {file = "Flask-1.1.4-py2.py3-none-any.whl", hash = "sha256:c34f04500f2cbbea882b1acb02002ad6fe6b7ffa64a6164577995657f50aed22"},
