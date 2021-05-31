@@ -1,5 +1,5 @@
 name: Test latest
-on: [push, pull_request]
+on: push
 jobs:
   test-coverage:
     runs-on: ubuntu-20.04
