@@ -25,7 +25,7 @@ class Subscription(db.Model):
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
-    subscription_tags = db.relationship(
+    _subscription_tags = db.relationship(
         "SubscriptionTag",
         back_populates="subscription",
         lazy="dynamic",
@@ -45,7 +45,7 @@ class Subscription(db.Model):
     def actions(self):
         return [
             action
-            for subscription_tag in self.subscription_tags
+            for subscription_tag in self._subscription_tags
             for action in subscription_tag.tag.actions
         ] + self._actions.all()
 
@@ -57,12 +57,24 @@ class Subscription(db.Model):
     def actions(self):
         raise ValueError("Actions should be modify using instance methods")
 
+    @property
+    def tags(self):
+        return [subscription_tag.tag for subscription_tag in self._subscription_tags]
+
+    @tags.setter
+    def tags(self, actions):
+        raise ValueError("Tags should be modify using instance methods")
+
+    @tags.deleter
+    def tags(self):
+        raise ValueError("Tags should be modify using instance methods")
+
     def add_tag(self, tag_name):
         tag = Tag.query.filter_by(name=tag_name, username=self.username).first()
         if not tag:
             tag = Tag(self.username, tag_name)
-        elif tag in self.subscription_tags:
-            raise InvalidAction(f"This channel is already tagged with {tag_name}")
+        elif tag in self.tags:
+            raise InvalidAction(f"Subscription is already tagged with {tag_name}")
         SubscriptionTag(self.username, self.channel_id, tag.id)
         return True
 

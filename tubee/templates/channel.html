@@ -123,11 +123,11 @@
       <p class="mb-0">{{ channel.id }}</p>
     </a>
     <p id="channel-description">{{ channel.infos.snippet.description }}</p>
-    {% for subscription_tag in subscription_tags %}
+    {% for tag in tags %}
     <a
-      href="{{ url_for('main.dashboard', tag=subscription_tag.tag.name) }}"
+      href="{{ url_for('main.dashboard', tag=tag.name) }}"
       class="badge badge-info my-2"
-      >{{ subscription_tag.tag.name }}</a
+      >{{ tag.name }}</a
     >
     {% endfor %}
     <form id="tag-form">

@@ -52,7 +52,7 @@ def channel(channel_id):
         "channel.html",
         channel=subscription.channel,
         actions=subscription.actions,
-        subscription_tags=subscription.subscription_tags,
+        tags=subscription.tags,
         action_form=ActionForm(),
         tag_form=TagForm(),
         videos=videos,

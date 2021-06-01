@@ -15,7 +15,7 @@ class SubscriptionTag(db.Model):
         ),
         {},
     )
-    subscription = db.relationship("Subscription", back_populates="subscription_tags")
+    subscription = db.relationship("Subscription", back_populates="_subscription_tags")
     tag = db.relationship("Tag", back_populates="subscription_tags")
 
     def __init__(self, username, channel_id, tag_id):

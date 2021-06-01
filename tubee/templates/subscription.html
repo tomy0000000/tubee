@@ -94,11 +94,11 @@
         </a>
         {% endif %}
         <!-- prettier-ignore -->
-        {% for subscription_tags in subscription.subscription_tags.all() %}
+        {% for tag in subscription.tags %}
         <a
-          href="{{ url_for('main.dashboard', tag=subscription_tags.tag.name) }}"
+          href="{{ url_for('main.dashboard', tag=tag.name) }}"
           class="badge badge-info"
-          >{{ subscription_tags.tag.name }}</a
+          >{{ tag.name }}</a
         >
         {% endfor %}
       </td>
