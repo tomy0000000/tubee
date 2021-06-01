@@ -32,6 +32,23 @@
 </div>
 {% endif %}
 
+<!-- BEGIN User Tags -->
+<div class="jumbotron">
+  <a href="{{ url_for('main.dashboard', tag=None) }}" class="btn btn-info m-1"
+    >Untagged</a
+  >
+  <!-- prettier-ignore -->
+  {% for tag in current_user.tags %}
+  <a
+    href="{{ url_for('main.dashboard', tag=tag.name) }}"
+    class="btn btn-info m-1"
+    role="button"
+    >{{ tag.name }}</a
+  >
+  {% endfor %}
+</div>
+<!-- END User Tags -->
+
 <!-- BEGIN Subscription Table -->
 <table class="table table-striped table-hover table-responsive-lg">
   <thead class="thead-dark">
