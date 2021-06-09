@@ -9,9 +9,6 @@
     <a href="https://github.com/tomy0000000/Tubee/actions/workflows/testing.yml">
         <img src="https://img.shields.io/github/workflow/status/tomy0000000/Tubee/Test%20latest?logo=GitHub%20Actions" alt="GitHub Workflow Status" />
     </a>
-    <a href="https://travis-ci.com/tomy0000000/Tubee">
-        <img src="https://img.shields.io/travis/com/tomy0000000/Tubee?logo=Travis" alt="Travis Build Status" />
-    </a>
     <a href="https://codecov.io/gh/tomy0000000/Tubee">
         <img src="https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf" alt="codecov" />
     </a>
