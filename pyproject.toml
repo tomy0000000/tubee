@@ -6,8 +6,12 @@ src_paths = ["tubee", "migrations"]
 name = "tubee"
 version = "0.1.0"
 description = "A Web Application for Monitoring New YouTube Videos"
-authors = ["Tomy Hsieh <tomy0000000@gmail.com>"]
 license = "MIT License"
+authors = ["Tomy Hsieh <tomy0000000@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/tomy0000000/Tubee"
+repository = "https://github.com/tomy0000000/Tubee"
+documentation = "https://github.com/tomy0000000/Tubee/wiki"
 
 [tool.poetry.dependencies]
 python = "^3.7"
