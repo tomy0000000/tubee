@@ -79,5 +79,9 @@ class Subscription(db.Model):
         return True
 
     def remove_tag(self, tag_name):
-        # TODO
-        pass
+        tag = Tag.query.filter_by(name=tag_name, username=self.username).first()
+        if not tag:
+            raise InvalidAction(f"Subscription is not tagged with {tag_name}")
+        db.session.delete(tag)
+        db.session.commit()
+        return True
