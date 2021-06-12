@@ -36,7 +36,7 @@ def create_app(config_name, coverage=None):
     config_instance = config[config_name]
 
     # Register Sentry
-    if config_instance.SENTRY_DSN:
+    if config_name == "production" and config_instance.SENTRY_DSN:
         sentry_sdk.init(
             dsn=config_instance.SENTRY_DSN,
             integrations=[FlaskIntegration()],
