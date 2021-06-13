@@ -1,9 +1,10 @@
 """Test Cases of Main Routes"""
 import unittest
-from unittest import mock
 
 from tubee import create_app, db
 from tubee.models import User
+
+# from unittest import mock
 
 
 class MainRoutesTestCase(unittest.TestCase):
