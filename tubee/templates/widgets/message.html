@@ -8,19 +8,26 @@
 <!-- MESSAGE -->
 {% if message_float %}
 <div id="message-wrapper">
-  {% endif %} {% for category, message in messages %} {% set category = category
-  if category in special_message_type else 'primary' %}
+  {% endif %}
+  <!-- prettier-ignore -->
+  {% for category, message in messages %}
+  {% set category = category if category in special_message_type else 'primary' %}
   <div
     id="main-alert"
     class="alert alert-{{ category }} alert-dismissible fade show"
     role="alert"
   >
     {{ message }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
   </div>
-  {% endfor %} {% if message_float %}
+  {% endfor %}
+  <!-- prettier-ignore -->
+  {% if message_float %}
 </div>
 {% endif %}
 <!-- END MESSAGE -->

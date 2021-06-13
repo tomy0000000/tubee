@@ -34,23 +34,25 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   {% for key, name in tabs.items() %}
   <li class="nav-item">
-    <a
+    <button
       class="nav-link {{ 'active' if loop.first else '' }}"
       id="{{ key }}-tab"
-      data-toggle="tab"
-      href="#{{ key }}"
+      data-bs-toggle="tab"
+      data-bs-target="#{{ key }}"
+      type="button"
       role="tab"
       aria-controls="{{ key }}"
-      aria-selected="false"
-      >{{ name }}</a
+      aria-selected="{{ 'true' if loop.first else 'false' }}"
     >
+      {{ name }}
+    </button>
   </li>
   {% endfor %}
 </ul>
 <!-- END TABS -->
 
 <!-- BEGIN TAB PAGES -->
-<div class="tab-content" id="admin-dashbaord-tab-content">
+<div id="admin-dashbaord-tab-content" class="tab-content">
   {% for key in tabs %}
   <div
     class="tab-pane fade {{ 'show active' if loop.first else '' }}"

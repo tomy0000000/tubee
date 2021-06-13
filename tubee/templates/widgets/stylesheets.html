@@ -1,54 +1,61 @@
 <!-- STYLESHEETS -->
 <!--
     This Widget loads different version of css file from CDN Based on flask config
-    * Bootstrap CSS 4.6.0
+    * Bootstrap CSS 5.0.1
     * Normalize CSS 8.0.1
-    * Font Awesome CSS 5.15.2
+    * Font Awesome CSS 5.15.3
     * Github Fork Ribbon CSS 0.2.3 (Dev and Test only)
 -->
 {% if config.DEBUG or config.TESTING %}
 <link
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.css"
-  integrity="sha512-Mg1KlCCytTmTBaDGnima6U63W48qG1y/PnRdYNj3nPQh3H6PVumcrKViACYJy58uQexRUrBqoADGz2p4CdmvYQ=="
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.css"
+  integrity="sha512-vxhcSRMDjtLpgTL/8uRKEjhCh8YyDER14SFb9cuceRmefufcZBweOJuQJ70JYRZiq+QhpaTM3zDw9YSOPbqtFQ=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
   integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.css"
-  integrity="sha512-9iWaz7iMchMkQOKA8K4Qpz6bpQRbhedFJB+MSdmJ5Nf4qIN1+5wOVnzg5BQs/mYH3sKtzY+DOgxiwMz8ZtMCsw=="
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css"
+  integrity="sha512-3icgkoIO5qm2D4bGSUkPqeQ96LS8+ukJC7Eqhl1H5B2OJMEnFqLmNDxXVmtV/eq5M65tTDkUYS/Q0P4gvZv+yA=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
   integrity="sha512-TktJbycEG5Van9KvrSHFUcYOKBroD7QCYkEe73HAutODCw9QTFcvF6fuxioYM1h6THNudK1GjVidazj6EslK4A=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 {% else %}
 <link
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
-  integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA=="
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"
+  integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
   integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-  integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 {% endif %}
 <!-- END STYLESHEETS -->

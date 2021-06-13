@@ -64,7 +64,7 @@ function generate_callback_status_badge(status) {
   let badge_type =
     status in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[status] : "info";
   let badge = $("<span></span>")
-    .addClass(`badge badge-${badge_type}`)
+    .addClass(`badge bg-${badge_type}`)
     .text(status);
   return badge;
 }
@@ -76,9 +76,7 @@ function generate_callback_type_badge(type) {
   };
   let badge_type =
     type in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[type] : "info";
-  let badge = $("<span></span>")
-    .addClass(`badge badge-${badge_type}`)
-    .text(type);
+  let badge = $("<span></span>").addClass(`badge bg-${badge_type}`).text(type);
   console.log(badge);
   return badge;
 }
@@ -104,7 +102,13 @@ function init_clipboard() {
 }
 
 function init_popover() {
-  $('[data-toggle="popover"]').popover();
+  // $('[data-toggle="popover"]').popover();
+  var popoverTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="popover"]')
+  );
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl);
+  });
 }
 
 // ---------------

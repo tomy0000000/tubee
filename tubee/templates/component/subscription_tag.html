@@ -1,0 +1,9 @@
+<div class="subscription-tags mb-2">
+  {% for tag in tags %}
+  <a
+    href="{{ url_for('main.dashboard', tag=tag.name) }}"
+    class="badge bg-secondary"
+    >{{ tag.name }}</a
+  >
+  {% endfor %}
+</div>

@@ -1,126 +1,117 @@
 <!-- STICKY NAVBAR -->
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a
-      id="navbar-main"
-      class="navbar-brand"
-      href="{{ url_for('main.dashboard', tag=False) }}"
-    >
-      <img
-        id="hero"
-        src="{{ url_for('static', filename='img/tubee_text.png') }}"
-        class="d-inline-block align-top"
-      />
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbars"
-      aria-controls="navbars"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbars">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item {{ 'active' if title == 'Subscriptions' }}">
-          <a class="nav-link" href="{{ url_for('main.dashboard', tag=False) }}">
-            Subscriptions {% if title == "Subscriptions" %}
-            <span class="sr-only">(current)</span>
-            {% endif %}
-          </a>
-        </li>
-        <li class="nav-item {{ 'active' if title == 'YouTube Subscription' }}">
-          <a class="nav-link" href="{{ url_for('main.youtube_subscription') }}">
-            Import {% if title == "YouTube Subscription" %}
-            <span class="sr-only">(current)</span>
-            {% endif %}
-          </a>
-        </li>
-        <li class="nav-item {{ 'active' if title == 'Latest Upload' }}">
-          <a class="nav-link" href="{{ url_for('main.latest') }}">
-            Latest Upload {% if title == "Latest Upload" %}
-            <span class="sr-only">(current)</span>
-            {% endif %}
-          </a>
-        </li>
-        {% if current_user.admin %}
-        <li class="nav-item {{'active' if title == 'Admin Dashboard' }}">
-          <a class="nav-link" href="{{ url_for('admin.dashboard') }}">
-            Admin {% if title == "Admin Dashboard" %}
-            <span class="sr-only">(current)</span>
-            {% endif %}
-          </a>
-        </li>
-        {% endif %}
-      </ul>
-      <ul class="navbar-nav">
-        {% if current_user.is_authenticated %}
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="dropdown_user"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            >{{ current_user.username }}</a
-          >
-          <div class="dropdown-menu" aria-labelledby="dropdown_user">
-            <a class="dropdown-item" href="{{ url_for('user.setting') }}"
-              >Setting</a
-            >
-            <a class="dropdown-item" href="{{ url_for('user.logout') }}"
-              >Logout</a
-            >
-          </div>
-        </li>
-        {% else %} {% if title == "Login" %}
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('user.login') }}">
-            Login
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('user.login') }}"> Login </a>
-        </li>
-        {% endif %} {% if title == "Register" %}
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('user.register') }}">
-            Register
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('user.register') }}">
-            Register
-          </a>
-        </li>
-        {% endif %} {% endif %}
-      </ul>
-      <form class="form-inline mx-2">
-        <input
-          id="subscribe-input"
-          class="form-control mr-sm-2"
-          type="text"
-          placeholder="Channel Name or ID"
-          aria-label="Channel Name or ID"
-          data-channel-api="{{ url_for('api_channel.search') }}"
+    <div class="container-fluid">
+      <a
+        id="navbar-main"
+        class="navbar-brand"
+        href="{{ url_for('main.dashboard', tag=False) }}"
+      >
+        <img
+          id="hero"
+          src="{{ url_for('static', filename='img/tubee_text.png') }}"
+          class="d-inline-block align-top"
         />
-        <button
-          id="navbar-subscribe-submit"
-          class="btn btn-success my-2 my-sm-0 subscribe-submit"
-          type="submit"
-          data-subscribe-api="{{ url_for('api_channel.subscribe', channel_id='<channel_id>') }}"
-        >
-          Subscribe
-        </button>
-      </form>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbars"
+        aria-controls="navbars"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbars">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link {{ 'active' if title == 'Subscriptions' }}"
+              href="{{ url_for('main.dashboard', tag=False) }}"
+            >
+              Subscriptions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link {{ 'active' if title == 'YouTube Subscription' }}"
+              href="{{ url_for('main.youtube_subscription') }}"
+            >
+              Import
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link {{ 'active' if title == 'Latest Upload' }}"
+              href="{{ url_for('main.latest') }}"
+            >
+              Latest Upload
+            </a>
+          </li>
+          {% if current_user.admin %}
+          <li class="nav-item">
+            <a
+              class="nav-link {{ 'active' if title == 'Admin Dashboard' }}"
+              href="{{ url_for('admin.dashboard') }}"
+            >
+              Admin
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dropdown_user"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              >{{ current_user.username }}</a
+            >
+            <div class="dropdown-menu" aria-labelledby="dropdown_user">
+              <a class="dropdown-item" href="{{ url_for('user.setting') }}"
+                >Setting</a
+              >
+              <a class="dropdown-item" href="{{ url_for('user.logout') }}"
+                >Logout</a
+              >
+            </div>
+          </li>
+          {% else %}
+          <li class="nav-item {{ 'active' if title == 'Login' }}">
+            <a class="nav-link" href="{{ url_for('user.login') }}">Login</a>
+          </li>
+          <li class="nav-item {{ 'active' if title == 'Register' }}">
+            <a class="nav-link" href="{{ url_for('user.register') }}"
+              >Register</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+        <form class="d-flex">
+          <input
+            id="subscribe-input"
+            class="form-control me-2"
+            type="text"
+            placeholder="Channel Name or ID"
+            aria-label="Channel Name or ID"
+            data-channel-api="{{ url_for('api_channel.search') }}"
+          />
+          <button
+            id="navbar-subscribe-submit"
+            class="btn btn-success my-2 my-sm-0 subscribe-submit"
+            type="submit"
+            data-subscribe-api="{{ url_for('api_channel.subscribe', channel_id='<channel_id>') }}"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
     </div>
   </nav>
 </header>

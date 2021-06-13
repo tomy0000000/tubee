@@ -12,46 +12,71 @@
 
 <!-- prettier-ignore -->
 {% block content %}
-<div class="jumbotron">
-  <h1 id="headline" class="display-4">Welcome!</h1>
-  <form id="" name="" class="needs-validation" method="POST" novalidate>
-    {{ form.csrf_token }}
-    <div class="form-group">
-      {{ form.username.label }} {% if form.username.errors|length > 0 %} {{
-      form.username(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in form.username.errors %} {{ error }} {% if not loop.last
-        %}<br />{% endif %} {% endfor %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 id="headline" class="display-5 fw-bold">Welcome!</h1>
+    <form id="" name="" class="needs-validation" method="POST" novalidate>
+      {{ form.csrf_token }}
+      <!-- prettier-ignore -->
+      <div class="mb-3">
+        {{ form.username.label }}
+        {% if form.username.errors|length > 0 %}
+          {{ form.username(class="form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.username.errors %}
+              {{ error }}
+              {% if not loop.last %}
+                <br />
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.username(class="form-control") }}
+        {% endif %}
+        <div id="usernameHint" class="form-text">
+          Upon registration, you agree to both
+          <a href="">Tubee</a>,
+          <a href="https://policies.google.com/privacy">Google</a>, and
+          <a href="https://www.youtube.com/static?template=terms">YouTube</a>'s
+          Terms of Service and Privacy Policy.
+        </div>
       </div>
-      {% else %} {{ form.username(class="form-control") }} {% endif %}
-      <small id="usernameHint" class="form-text text-muted">
-        Upon registration, you agree to both
-        <a href="">Tubee</a>,
-        <a href="https://policies.google.com/privacy">Google</a>, and
-        <a href="https://www.youtube.com/static?template=terms">YouTube</a>'s
-        Terms of Service and Privacy Policy.
-      </small>
-    </div>
-    <div class="form-group">
-      {{ form.password.label }} {% if form.password.errors|length > 0 %} {{
-      form.password(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in form.password.errors %} {{ error }} {% if not loop.last
-        %}<br />{% endif %} {% endfor %}
+      <!-- prettier-ignore -->
+      <div class="mb-3">
+        {{ form.password.label }}
+        {% if form.password.errors|length > 0 %}
+          {{ form.password(class="form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+              {{ error }}
+                {% if not loop.last %}
+                  <br />
+                {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.password(class="form-control") }}
+        {% endif %}
       </div>
-      {% else %} {{ form.password(class="form-control") }} {% endif %}
-    </div>
-    <div class="form-group">
-      {{ form.password_confirm.label }} {% if
-      form.password_confirm.errors|length > 0 %} {{
-      form.password_confirm(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in form.password_confirm.errors %} {{ error }} {% if not
-        loop.last %}<br />{% endif %} {% endfor %}
+      <!-- prettier-ignore -->
+      <div class="mb-3">
+        {{ form.password_confirm.label }}
+        {% if form.password_confirm.errors|length > 0 %}
+          {{ form.password_confirm(class="form-control is-invalid") }}
+          <div class="invalid-feedback">
+          {% for error in form.password_confirm.errors %}
+            {{ error }}
+            {% if not loop.last %}
+              <br />
+            {% endif %}
+          {% endfor %}
+          </div>
+        {% else %}
+          {{ form.password_confirm(class="form-control") }}
+        {% endif %}
       </div>
-      {% else %} {{ form.password_confirm(class="form-control") }} {% endif %}
-    </div>
-    {{ form.submit(class="btn btn-primary btn-lg m-2") }}
-  </form>
+      {{ form.submit(class="btn btn-primary btn-lg m-2") }}
+    </form>
+  </div>
 </div>
 {% endblock %}

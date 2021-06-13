@@ -4,199 +4,211 @@
 
 <!-- prettier-ignore -->
 {% block content %}
-<div class="jumbotron">
-  <h1 id="headline" class="display-4">Welcome!</h1>
-  <label for="username" class="col-form-label">Username</label>
-  <input
-    type="text"
-    class="form-control"
-    id="username"
-    value="{{ current_user.username }}"
-    readonly
-  />
-  <label for="password">Password</label>
-  <input
-    type="password"
-    class="form-control"
-    id="password"
-    aria-describedby="password-help"
-    value=".........."
-    readonly
-  />
-  <small id="passwordHelp" class="form-text text-muted">
-    To Change Password, Click
-    <a href=""> Here </a>
-  </small>
-  <label for="pushover-key" class="col-form-label">Pushover</label>
-  <div class="input-group">
-    {% if current_user.pushover_configured() %}
-    <input
-      type="password"
-      class="form-control"
-      id="pushover-key"
-      value=".........."
-      aria-describedby="pushover-revoke"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="#"
-        role="button"
-        id="pushover-revoke"
-        >Revoke</a
-      >
+
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 id="headline" class="display-5 fw-bold">Welcome!</h1>
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        value="{{ current_user.username }}"
+        readonly
+      />
     </div>
-    {% else %}
-    <input
-      type="text"
-      class="form-control"
-      id="pushover-key"
-      aria-describedby="pushover-validate"
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="#"
-        role="button"
-        id="pushover-validate"
-        >Validate</a
-      >
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        aria-describedby="password-help"
+        value=".........."
+        readonly
+      />
+      <div id="password-help" class="form-text">
+        To Change Password, Click <a href="#">Here</a>
+      </div>
     </div>
-    {% endif %}
-  </div>
-  <small id="pushover-key-help" class="form-text text-muted">
-    Get your user key by login in
-    <a href="https://pushover.net/" target="_blank">Pushover</a>
-  </small>
-  <label for="youtube-credentials" class="col-form-label"
-    >YouTube Account</label
-  >
-  <div class="input-group">
-    {% if current_user.youtube_configured() %}
-    <input
-      type="password"
-      class="form-control"
-      id="youtube-credentials"
-      value=".........."
-      aria-describedby="youtube-revoke"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="{{ url_for('user.setting_youtube_revoke') }}"
-        role="button"
-        id="youtube-revoke"
-        >Revoke</a
-      >
+
+    <div class="mb-3">
+      <label for="pushover-key" class="form-label">Pushover</label>
+      <div class="input-group">
+        {% if current_user.pushover_configured() %}
+        <input
+          type="password"
+          class="form-control"
+          id="pushover-key"
+          value=".........."
+          aria-label="Pushover Key"
+          aria-describedby="pushover-revoke"
+          readonly
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="pushover-revoke"
+        >
+          Revoke
+        </button>
+        {% else %}
+        <input
+          type="text"
+          class="form-control"
+          id="pushover-key"
+          aria-label="Pushover Key"
+          aria-describedby="pushover-validate"
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="pushover-validate"
+        >
+          Validate
+        </button>
+        {% endif %}
+      </div>
+      <div id="pushover-key-help" class="form-text">
+        Get your user key by login in
+        <a href="https://pushover.net/" target="_blank">Pushover</a>
+      </div>
     </div>
-    {% else %}
-    <input
-      type="text"
-      class="form-control"
-      id="youtube-credentials"
-      aria-describedby="youtube-authorize"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="{{ url_for('user.setting_youtube_authorize') }}"
-        role="button"
-        id="youtube-authorize"
-        >Authorize</a
+
+    <div class="mb-3">
+      <label for="youtube-credentials" class="form-label"
+        >YouTube Account</label
       >
+      <div class="input-group">
+        {% if current_user.youtube_configured() %}
+        <input
+          type="password"
+          class="form-control"
+          id="youtube-credentials"
+          value=".........."
+          aria-label="Youtube Revoke"
+          aria-describedby="youtube-credentials"
+          readonly
+        />
+        <a
+          class="btn btn-outline-secondary"
+          href="{{ url_for('user.setting_youtube_revoke') }}"
+          role="button"
+          id="youtube-revoke"
+          >Revoke</a
+        >
+        {% else %}
+        <input
+          type="text"
+          class="form-control"
+          id="youtube-credentials"
+          aria-label="Youtube Authorize"
+          aria-describedby="youtube-credentials"
+          readonly
+        />
+        <a
+          class="btn btn-outline-secondary"
+          href="{{ url_for('user.setting_youtube_authorize') }}"
+          role="button"
+          id="youtube-authorize"
+          >Authorize</a
+        >
+        {% endif %}
+      </div>
+      <div id="youtube-credentials-help" class="form-text">
+        You may also revoke access from
+        <a href="https://security.google.com/settings/security/permissions">
+          Google's security setting page
+        </a>
+      </div>
     </div>
-    {% endif %}
-  </div>
-  <small id="youtube-credentials-help" class="form-text text-muted">
-    You may also revoke access from
-    <a href="https://security.google.com/settings/security/permissions">
-      Google's security setting page
-    </a>
-  </small>
-  <label for="line-notify-credentials" class="col-form-label"
-    >Line Notify Account</label
-  >
-  <div class="input-group">
-    {% if current_user.line_notify_configured() %}
-    <input
-      type="password"
-      class="form-control"
-      id="line-notify-credentials"
-      value=".........."
-      aria-describedby="line-notify-revoke"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="{{ url_for('user.setting_line_notify_revoke') }}"
-        role="button"
-        id="line-notify-revoke"
-        >Revoke</a
+
+    <div class="mb-3">
+      <label for="line-notify-credentials" class="form-label"
+        >Line Notify Account</label
       >
+      <div class="input-group">
+        {% if current_user.line_notify_configured() %}
+        <input
+          type="password"
+          class="form-control"
+          id="line-notify-credentials"
+          value=".........."
+          aria-label="Line Notify Revoke"
+          aria-describedby="line-notify-credentials"
+          readonly
+        />
+        <a
+          class="btn btn-outline-secondary"
+          href="{{ url_for('user.setting_line_notify_revoke') }}"
+          role="button"
+          id="line-notify-revoke"
+          >Revoke</a
+        >
+        {% else %}
+        <input
+          type="text"
+          class="form-control"
+          id="line-notify-credentials"
+          aria-label="Line Notify Authorize"
+          aria-describedby="line-notify-credentials"
+          readonly
+        />
+        <a
+          class="btn btn-outline-secondary"
+          href="{{ url_for('user.setting_line_notify_authorize') }}"
+          role="button"
+          id="line-notify-authorize"
+          >Authorize</a
+        >
+        {% endif %}
+      </div>
     </div>
-    {% else %}
-    <input
-      type="text"
-      class="form-control"
-      id="line-notify-credentials"
-      aria-describedby="line-notify-authorize"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="{{ url_for('user.setting_line_notify_authorize') }}"
-        role="button"
-        id="line-notify-authorize"
-        >Authorize</a
+
+    <div class="mb-3">
+      <label for="dropbox-credentials" class="form-label"
+        >Dropbox Account</label
       >
+      <div class="input-group">
+        {% if current_user.dropbox_configured() %}
+        <input
+          type="password"
+          class="form-control"
+          id="dropbox-credentials"
+          value=".........."
+          aria-label="Dropbox Revoke"
+          aria-describedby="dropbox-credentials"
+          readonly
+        />
+        <a
+          class="btn btn-outline-secondary"
+          href="{{ url_for('user.setting_dropbox_revoke') }}"
+          role="button"
+          id="dropbox-revoke"
+          >Revoke</a
+        >
+        {% else %}
+        <input
+          type="text"
+          class="form-control"
+          id="dropbox-credentials"
+          aria-label="Dropbox Authorize"
+          aria-describedby="dropbox-credentials"
+          readonly
+        />
+        <a
+          class="btn btn-outline-secondary"
+          href="{{ url_for('user.setting_dropbox_authorize') }}"
+          role="button"
+          id="dropbox-authorize"
+          >Authorize</a
+        >
+        {% endif %}
+      </div>
     </div>
-    {% endif %}
-  </div>
-  <label for="dropbox-credentials" class="col-form-label"
-    >Dropbox Account</label
-  >
-  <div class="input-group">
-    {% if current_user.dropbox_configured() %}
-    <input
-      type="password"
-      class="form-control"
-      id="dropbox-credentials"
-      value=".........."
-      aria-describedby="dropbox-revoke"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="{{ url_for('user.setting_dropbox_revoke') }}"
-        role="button"
-        id="dropbox-revoke"
-        >Revoke</a
-      >
-    </div>
-    {% else %}
-    <input
-      type="text"
-      class="form-control"
-      id="dropbox-credentials"
-      aria-describedby="dropbox-authorize"
-      readonly
-    />
-    <div class="input-group-append">
-      <a
-        class="btn btn-outline-secondary"
-        href="{{ url_for('user.setting_dropbox_authorize') }}"
-        role="button"
-        id="dropbox-authorize"
-        >Authorize</a
-      >
-    </div>
-    {% endif %}
   </div>
 </div>
 {% endblock %}

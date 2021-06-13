@@ -1,0 +1,67 @@
+<!-- BEGIN Subscription Table -->
+{% if subscriptions %}
+
+<table class="table table-striped table-hover table-responsive-lg align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Channel Name</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for subscription in subscriptions %}
+    <tr>
+      <th scope="row" class="channel-thumbnails">
+        {% if subscription.channel.infos.snippet.thumbnails.high.url %}
+        <img
+          src="{{ subscription.channel.infos.snippet.thumbnails.high.url }}"
+          class="rounded-circle"
+        />
+        {% endif %}
+      </th>
+      <td class="channel-name">
+        <a
+          href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
+        >
+          <p>{{ subscription.channel.name }}</p>
+        </a>
+        <a
+          href="#"
+          class="text-muted clipboard"
+          data-clipboard-text="{{ subscription.channel_id }}"
+        >
+          <p>{{ subscription.channel_id }}</p>
+        </a>
+        {% if subscription.channel.infos.snippet.customUrl %}
+        <a
+          href="#"
+          class="text-muted clipboard"
+          data-clipboard-text="{{ subscription.channel.infos.snippet.customUrl }}"
+        >
+          <p>#{{ subscription.channel.infos.snippet.customUrl }}</p>
+        </a>
+        {% endif %}
+        <!-- prettier-ignore -->
+        {% set tags=subscription.tags %}
+        {% include "component/subscription_tag.html" %}
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger unsubscribe-btn"
+          data-channel-name="{{ subscription.channel.name }}"
+          data-api-endpoint="{{ url_for('api_channel.unsubscribe', channel_id=subscription.channel_id) }}"
+        >
+          Unsubscribe
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<div class="alert alert-secondary" role="alert">No subscription found.</div>
+{% endif %}
+<!-- END Subscription Table -->

@@ -5,24 +5,24 @@
 {% include "component/admin_channel_status_modal.html" %}
 {% include "component/admin_channel_callback_modal.html" %}
 
-<table class="table table-striped table-hover table-responsive-lg">
-  <thead class="thead-dark">
+<table class="table table-striped table-hover table-responsive-lg align-middle">
+  <thead class="table-dark">
     <tr>
-      <th scope="col" class="align-middle">Channel Name</th>
-      <th scope="col" class="align-middle">Status</th>
-      <th scope="col" class="align-middle">Expiration</th>
-      <th scope="col" class="align-middle">
-        <button type="button" id="btn-refresh-all" class="btn btn-warning">
+      <th scope="col">Channel Name</th>
+      <th scope="col">Status</th>
+      <th scope="col">Expiration</th>
+      <th scope="col">
+        <button id="btn-refresh-all" class="btn btn-warning">
           Refresh all
         </button>
       </th>
-      <th scope="col" class="align-middle">Callbacks</th>
+      <th scope="col">Callbacks</th>
     </tr>
   </thead>
   <tbody>
     {% for channel in channels %}
     <tr>
-      <th class="align-middle channel-name">
+      <th class="channel-name">
         <a href="{{ url_for('main.channel', channel_id=channel.id) }}">
           <p class="mb-0">{{ channel.name }}</p>
         </a>
@@ -33,14 +33,14 @@
           >{{ channel.id }}</a
         >
       </th>
-      <td class="align-middle status">{{ badge(channel.hub_infos.state) }}</td>
-      <td class="align-middle expiration">
+      <td class="status">{{ badge(channel.hub_infos.state) }}</td>
+      <td class="expiration">
         <p>{{ channel.expiration }}</p>
-        <span class="badge badge-warning"
+        <span class="badge bg-warning text-dark"
           >{{ moment(channel.expiration).fromNow() }}</span
         >
       </td>
-      <td class="align-middle">
+      <td>
         <div class="btn-group" role="group">
           <button
             type="button"
@@ -52,8 +52,8 @@
           <button
             type="button"
             class="btn btn-secondary"
-            data-toggle="modal"
-            data-target="#channel-status-modal"
+            data-bs-toggle="modal"
+            data-bs-target="#channel-status-modal"
             data-name="{{ channel.name }}"
             data-endpoint="{{ url_for('api_channel.status', channel_id=channel.id) }}"
           >
@@ -61,19 +61,19 @@
           </button>
         </div>
       </td>
-      <td class="align-middle">
+      <td>
         <button
           type="button"
           class="btn btn-secondary"
-          data-toggle="modal"
-          data-target="#channel-callback-modal"
+          data-bs-toggle="modal"
+          data-bs-target="#channel-callback-modal"
           data-name="{{ channel.name }}"
           data-endpoint="{{ url_for('api_channel.callbacks', channel_id=channel.id) }}"
         >
-          <span class="badge badge-success">
+          <span class="badge bg-success">
             {{ channel.callbacks.filter_by(type="Hub Notification").count() }}
           </span>
-          <span class="badge badge-warning">
+          <span class="badge bg-warning text-dark">
             {{ channel.callbacks.filter_by(type="Hub Challenge").count() }}
           </span>
         </button>

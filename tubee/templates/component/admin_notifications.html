@@ -1,7 +1,7 @@
 <!-- BEGIN NOTIFICATIONS -->
 <h1>Notifications</h1>
 <!-- BEGIN SEND SECTION -->
-<div>
+<div id="admin-notification-test" class="mb-3">
   <form method="POST" action="{{ url_for('admin.notification_push') }}">
     <div class="form-group row">
       <label for="message" class="col-sm-2 col-form-label">Message</label>
@@ -49,9 +49,10 @@
   </form>
 </div>
 <!-- END SEND SECTION -->
+
 <!-- BGEIN NOTIFICATION TABLE -->
-<table class="table table-striped table-hover table-responsive-lg">
-  <thead class="thead-dark">
+<table class="table table-striped table-hover table-responsive-lg align-middle">
+  <thead class="table-dark">
     <tr>
       <th scope="col"></th>
       <th scope="col">Sent Datetime</th>
@@ -64,7 +65,7 @@
   <tbody>
     {% for notification in notifications %}
     <tr>
-      <th scope="row" class="align-middle">
+      <th scope="row">
         {% if notification.kwargs.image_url %}
         <img
           src="{{ notification.kwargs.image_url }}"
@@ -73,47 +74,50 @@
         />
         {% endif %}
       </th>
-      <td class="align-middle">{{ notification.sent_timestamp }}</td>
-      <td class="align-middle">{{ notification.kwargs.title }}</td>
-      <td class="align-middle">
+      <td>{{ notification.sent_timestamp }}</td>
+      <td>{{ notification.kwargs.title }}</td>
+      <td>
         <button
           class="btn btn-primary"
           type="button"
-          data-toggle="popover"
-          data-content="{{ notification.message }}"
+          data-bs-toggle="popover"
+          data-bs-content="{{ notification.message }}"
+          data-bs-trigger="focus"
         >
           Message
         </button>
       </td>
-      <td class="align-middle">
+      <td>
         <a href="{{ notification.kwargs.url }}"
           >{{ notification.kwargs.url_title }}</a
         >
       </td>
-      <td class="align-middle">
+      <td>
         {% if notification.response.status == 1 %}
         <button
           type="button"
           class="btn btn-success response-btn"
-          data-container="body"
-          data-toggle="popover"
-          data-placement="right"
-          data-content="{{ notification.response.request }}"
+          data-bs-container="body"
+          data-bs-toggle="popover"
+          data-bs-placement="right"
+          data-bs-trigger="focus"
+          data-bs-content="{{ notification.response.request }}"
         >
           OK
-          <span class="badge badge-light">1</span>
+          <span class="badge bg-light text-dark">1</span>
         </button>
         {% else %}
         <button
           type="button"
           class="btn btn-danger response-btn"
-          data-container="body"
-          data-toggle="popover"
-          data-placement="right"
-          data-content="{{ notification.response.request }}"
+          data-bs-container="body"
+          data-bs-toggle="popover"
+          data-bs-placement="right"
+          data-bs-trigger="focus"
+          data-bs-content="{{ notification.response.request }}"
         >
           Error
-          <span class="badge badge-light"
+          <span class="badge bg-light text-dark"
             >{{ notification.response.status }}</span
           >
         </button>

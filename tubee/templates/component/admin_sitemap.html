@@ -1,11 +1,11 @@
 <!-- BEGIN SITE MAP -->
 <h1>Sitemap</h1>
-<table class="table table-hover table-responsive-lg">
-  <thead class="thead-dark">
+<table class="table table-hover table-responsive-lg align-middle">
+  <thead class="table-dark">
     <tr>
-      <th scope="col" class="align-middle">Blueprint</th>
-      <th scope="col" class="align-middle">Func</th>
-      <th scope="col" class="align-middle">Path</th>
+      <th scope="col">Blueprint</th>
+      <th scope="col">Func</th>
+      <th scope="col">Path</th>
     </tr>
   </thead>
   <tbody>
@@ -13,12 +13,10 @@
     url, endpoint in rules %}
     <tr>
       {% if loop.first %}
-      <th scope="row" class="align-middle" rowspan="{{ loop.length }}">
-        {{ blueprint }}
-      </th>
+      <th scope="row" rowspan="{{ loop.length }}">{{ blueprint }}</th>
       {% endif %}
-      <td class="align-middle"><a href="{{ url }}">{{ endpoint }}</a></td>
-      <td class="align-middle">{{ url }}</td>
+      <td><a href="{{ url }}" target="_blank">{{ endpoint }}</a></td>
+      <td>{{ url }}</td>
     </tr>
     {% endfor %} {% endfor %}
   </tbody>

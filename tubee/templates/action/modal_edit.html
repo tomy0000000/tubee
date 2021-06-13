@@ -3,22 +3,19 @@
   class="modal fade"
   id="edit-action-modal"
   tabindex="-1"
-  role="dialog"
   aria-labelledby="edit-action-modal-title"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="edit-action-modal-title">Edit Action</h5>
         <button
           type="button"
-          class="close"
-          data-dismiss="modal"
+          class="btn-close"
+          data-bs-dismiss="modal"
           aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+        />
       </div>
       <div class="modal-body">
         <div id="edit-loading-spinner" class="text-center">
@@ -40,26 +37,26 @@
           {% elif tag is defined %}
           {{ action_form.tag(value=tag) }}
           {% endif %}
-          <div class="form-group row">
+          <div class="row mb-3">
             {{ action_form.action_name.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ action_form.action_name }}</div>
           </div>
-          <div class="form-group row">
+          <div class="row mb-3">
             {{ action_form.action_type.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ action_form.action_type }}</div>
           </div>
           {% for field in action_form.notification %}
-          <div class="form-group row action-type-fields notification-fields">
+          <div class="row mb-3 action-type-fields notification-fields">
             {{ field.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ field }}</div>
           </div>
           {% endfor %}{% for field in action_form.playlist %}
-          <div class="form-group row action-type-fields playlist-fields">
+          <div class="row mb-3 action-type-fields playlist-fields">
             {{ field.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ field }}</div>
           </div>
           {% endfor %}{% for field in action_form.download %}
-          <div class="form-group row action-type-fields download-fields">
+          <div class="row mb-3 action-type-fields download-fields">
             {{ field.label(class="col-4 col-form-label") }}
             <div class="col-8">{{ field }}</div>
           </div>
@@ -68,7 +65,7 @@
         <!-- END Action Form -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cancel
         </button>
         <button class="btn btn-success submit-btn" type="button">Save</button>

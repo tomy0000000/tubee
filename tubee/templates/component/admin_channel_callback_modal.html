@@ -3,34 +3,31 @@
   class="modal fade"
   id="channel-callback-modal"
   tabindex="-1"
-  role="dialog"
   aria-labelledby="channel-callback-modal-title"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="channel-callback-modal-title"></h5>
         <button
           type="button"
-          class="close"
-          data-dismiss="modal"
+          class="btn-close"
+          data-bs-dismiss="modal"
           aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+        ></button>
       </div>
       <div class="modal-body">
         <div id="channel-callback-spinner" class="text-center">
           <div class="spinner-border text-success" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
         <table
           id="channel-callback-table"
           class="table table-striped table-hover"
         >
-          <thead class="thead-dark">
+          <thead class="table-dark">
             <tr>
               <th scope="col">Video ID</th>
               <th scope="col">Timestamp</th>
@@ -42,7 +39,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

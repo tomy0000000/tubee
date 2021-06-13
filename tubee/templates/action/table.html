@@ -1,6 +1,6 @@
 <!-- BEGIN Action Infos -->
-<table class="table table-striped table-hover">
-  <thead class="thead-dark">
+<table class="table table-striped table-hover align-middle">
+  <thead class="table-dark">
     <tr>
       <th scope="col">Name</th>
       <th scope="col">Type</th>
@@ -8,8 +8,8 @@
         <button
           type="button"
           class="btn btn-success"
-          data-toggle="modal"
-          data-target="#new-action-modal"
+          data-bs-toggle="modal"
+          data-bs-target="#new-action-modal"
         >
           New
         </button>
@@ -30,13 +30,13 @@
           <p class="mb-0">{{ action.id }}</p>
         </a>
       </th>
-      <td class="align-middle">{{ action.type.value }}</td>
-      <td class="align-middle">
+      <td>{{ action.type.value }}</td>
+      <td>
         <button
           type="button"
           class="btn btn-secondary"
-          data-toggle="modal"
-          data-target="#edit-action-modal"
+          data-bs-toggle="modal"
+          data-bs-target="#edit-action-modal"
           data-read-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
           data-edit-endpoint="{{ url_for('api_action.edit', action_id=action.id) }}"
         >
@@ -45,8 +45,8 @@
         <button
           type="button"
           class="btn btn-danger"
-          data-toggle="modal"
-          data-target="#remove-action-modal"
+          data-bs-toggle="modal"
+          data-bs-target="#remove-action-modal"
           data-action-name="{{ action.name }}"
           data-api-endpoint="{{ url_for('api_action.delete', action_id=action.id) }}"
         >

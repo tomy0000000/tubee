@@ -1,10 +1,10 @@
 <!-- BEGIN MANAGEMENT -->
 <h1>Management</h1>
-<div class="buttons">
+<div id="admin-management-buttons">
   <button
     type="button"
     id="channel-renew-all"
-    class="btn btn-secondary"
+    class="btn btn-secondary my-2"
     data-api-endpoint="{{ url_for('api_channel.renew_all') }}"
   >
     Renew all channel (immediately)
@@ -12,7 +12,7 @@
   <button
     type="button"
     id="channel-renew-all-schedule"
-    class="btn btn-secondary"
+    class="btn btn-secondary my-2"
     data-api-endpoint="{{ url_for('api_channel.renew_all', execution=-1) }}"
   >
     Reschedule renewal (one day before expire)
@@ -20,7 +20,7 @@
   <button
     type="button"
     id="channel-renew-all-random"
-    class="btn btn-secondary"
+    class="btn btn-secondary my-2"
     data-api-endpoint="{{ url_for('api_channel.renew_all', execution=-2) }}"
   >
     Reschedule renewal (random time)
@@ -28,19 +28,19 @@
   <button
     type="button"
     id="task-remove-all"
-    class="btn btn-secondary"
+    class="btn btn-secondary my-2"
     data-api-endpoint="{{ url_for('api_task.remove_all') }}"
   >
     Remove All Task
   </button>
   <a
-    class="btn btn-secondary"
+    class="btn btn-secondary my-2"
     href="{{ url_for('admin.raise_exception') }}"
     role="button"
     >Raise Exception</a
   >
   <a
-    class="btn btn-secondary"
+    class="btn btn-secondary my-2"
     href="{{ url_for('admin.test_logging') }}"
     role="button"
     >Test Logging</a

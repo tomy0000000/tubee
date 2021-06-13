@@ -27,9 +27,10 @@ function channel_fill_callback(responseData) {
         .attr({
           type: "button",
           class: "btn btn-secondary",
-          "data-container": "body",
-          "data-toggle": "popover",
-          "data-content": callback.infos.data,
+          "data-bs-container": "body",
+          "data-bs-toggle": "popover",
+          "data-bs-trigger": "focus",
+          "data-bs-content": callback.infos.data,
         })
         .text("Data")
         .popover();
@@ -224,24 +225,25 @@ function load_tasks(event) {
   table.empty();
   $.getJSON($("#celery-table").attr("data-api-endpoint")).done((data) => {
     data.forEach((element) => {
-      let row = $(celery_task_template).clone();
-      row
-        .find(".task-name")
-        .text(`${element.request.name}\n${element.request.id}`);
-      row
-        .find(".task-args")
-        .text(JSON.stringify(element.request.args, null, 2));
-      row.find(".task-eta").text(moment(element.eta).fromNow());
+      let row = celery_task_template.cloneNode(true);
+      let task_name_tag = `<p class="mb-0">${element.request.id}</p><p class="mb-0 text-muted">#${element.request.name}</p>`;
+      row.getElementsByClassName("task-name")[0].innerHTML = task_name_tag;
+      row.getElementsByClassName("task-args")[0].innerText = JSON.stringify(
+        element.request.args
+      );
+      row.getElementsByClassName("task-eta")[0].innerText = moment(
+        element.eta
+      ).fromNow();
+      let task_active_tag = row.getElementsByClassName("task-active")[0];
+      for (child of task_active_tag.childNodes) {
+        task_active_tag.removeChild(child);
+      }
       if (element.active) {
-        row
-          .find(".task-active")
-          .empty()
-          .append($("<span>").addClass("badge badge-success").text("Active"));
+        task_active_tag.innerHTML =
+          '<span class="badge bg-success">Active</span>';
       } else {
-        row
-          .find(".task-active")
-          .empty()
-          .append($("<span>").addClass("badge badge-danger").text("Revoked"));
+        task_active_tag.innerHTML =
+          '<span class="badge bg-danger">Revoked</span>';
       }
       table.append(row);
     });
@@ -265,6 +267,7 @@ $(document).ready(() => {
   });
   $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
   $.ajax($("#celery-table").attr("data-template-endpoint")).done((data) => {
-    celery_task_template = $.parseHTML(data);
+    celery_task_template = document.createElement("tr");
+    celery_task_template.innerHTML = data;
   });
 });

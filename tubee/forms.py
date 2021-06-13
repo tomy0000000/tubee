@@ -75,7 +75,7 @@ class NotificationActionForm(FlaskForm):
         validators=[DataRequired()],
         default="Pushover",
         choices=[(item.name, item.value) for item in Service],
-        render_kw={"class": "form-control"},
+        render_kw={"class": "form-select"},
     )
     message = StringField(
         "Message Body",
@@ -150,7 +150,7 @@ class ActionForm(FlaskForm):
         validators=[DataRequired()],
         default="Notification",
         choices=[(item.name, item.value) for item in ActionType],
-        render_kw={"class": "form-control"},
+        render_kw={"class": "form-select"},
     )
     channel_id = HiddenField("Channel ID")
     tag = HiddenField("Tag")

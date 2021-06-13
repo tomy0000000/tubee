@@ -5,9 +5,9 @@
 {% macro badge(context) %}
 
 {% if context in badge_type_mapping %}
-<span class="badge badge-{{ badge_type_mapping[context] }}">{{ context }}</span>
+<span class="badge bg-{{ badge_type_mapping[context] }}">{{ context }}</span>
 {% else %}
-<span class="badge badge-info">{{ context }}</span>
+<span class="badge bg-info">{{ context }}</span>
 {% endif %}
 
 <!-- prettier-ignore -->

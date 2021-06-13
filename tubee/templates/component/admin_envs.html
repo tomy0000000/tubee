@@ -1,17 +1,17 @@
 <!-- BEGIN OS ENVS -->
 <h1>Environment Variables</h1>
-<table class="table table-striped table-hover table-responsive">
-  <thead class="thead-dark">
+<table class="table table-striped table-hover table-responsive align-middle">
+  <thead class="table-dark">
     <tr>
-      <th scope="col" class="align-middle">Key</th>
-      <th scope="col" class="align-middle">Value</th>
+      <th scope="col">Key</th>
+      <th scope="col">Value</th>
     </tr>
   </thead>
   <tbody>
     {% for key, val in infos.os_env.items() %}
     <tr>
-      <th scope="row" class="align-middle">{{ key }}</th>
-      <td class="align-middle">{{ val }}</td>
+      <th scope="row">{{ key }}</th>
+      <td>{{ val }}</td>
     </tr>
     {% endfor %}
   </tbody>

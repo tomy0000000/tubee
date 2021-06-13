@@ -26,7 +26,7 @@ function reload_hub_status(event) {
       let badge_type =
         state in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[state] : "info";
       let badge = $("<span></span>")
-        .addClass(`badge badge-${badge_type}`)
+        .addClass(`badge bg-${badge_type}`)
         .text(state);
       $("#state").empty().append(badge);
 

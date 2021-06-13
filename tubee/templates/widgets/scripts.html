@@ -1,75 +1,90 @@
 <!-- SCRIPTS -->
 <!--
     This Widget loads different version of js file from CDN Based on flask config
-    * jQuery                    3.5.1
-    * Popper.js                 1.16.1
-    * Bootstrap JS              4.6.0
+    * jQuery                    3.6.0
+    * Popper.js                 2.9.2
+    * Bootstrap JS              5.0.1
     * moment.js                 2.29.1
-    * clipboard.js              2.0.6
+    * clipboard.js              2.0.8
     * bootstrap-autocomplete    2.3.7
 -->
 {% if config.DEBUG or config.TESTING %}
+
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"
-  integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+  integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.js"
-  integrity="sha512-vcBmgqryyZrNkwFk2uXK+nxoV8IDDdh2mi9X1EGUAkXRaVxjbc5t5so2O6JXOF5NIzGcjq+TQEaGLWHZKGoloA=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.js"
+  integrity="sha512-M40amBAeCw9I8KxDnJ4cQV8z8EBdAw+MD/zHy61tjdoc7UAhg/VTp2KsKRwzkJ7Lpmtfgg9QzUXRpbVRKLLFcQ=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js"
-  integrity="sha512-nw7zwODD4UD9u/C/CO+03s7jXvOZDomBNFX3oOq7Xv0stAyxsxhJzVlxsRTgH3AxK3sK2ijMQou2aSIaorp19g=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.js"
+  integrity="sha512-jrPfgwWrYtTfEO47P2AJWZqIpy3bLH6eyqrPWbaYvigUW1i0MxLEuM16JOm+IS6SAhFREKHfVn4cBA4NQ0Ntxg=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.js"
   integrity="sha512-STI3jX2gEOm2Z4JLWBX1XqsXzHLXmK9H+c94IBv3AfM/w2w3zQfP05EZ/Zi4P/uBajPi2SAmdFxQ1UWQtt7gsA=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.js"
-  integrity="sha512-tjW2dLIvxBrQWtbL7npJzlMVxznKMrkEJtRX5ztkEP6RC5oJdVkmAfFNHTSNrqv7++hAza+dvV4Bijf8rHeC0Q=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.js"
+  integrity="sha512-DtTYd1g6TRpxfYHg+o7hVopdDBafEPnLs81XFiu5rVLr3eamPxvnuJUhwF5w4Z2GJbA/vpE7emalj7pKjnMphQ=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.js"
   integrity="sha512-mnNRHMX9QlC9eIuZyQTOFVdqAa7fS6d1Y99zWpxAjhVMJvdY4WdznRN/Ln7hxBSpCwxs7xJy5uVhOOoNHY3SAQ=="
   crossorigin="anonymous"
 ></script>
+
 {% else %}
+
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-  integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
-  integrity="sha512-ubuT8Z88WxezgSqf3RLuNi5lmjstiJcyezx34yIU2gAHonIi27Na7atqzUZCOoY4CExaoFumzOsFQ2Ch+I/HCw=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+  integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
-  integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js"
+  integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
   integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"
-  integrity="sha512-hDWGyh+Iy4Mr9AHOzUP2+Y0iVPn/BwxxaoSleEjH/i1o4EVTF/sh0/A1Syii8PWOae+uPr+T/KHwynoebSuAhw=="
+  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"
+  integrity="sha512-sIqUEnRn31BgngPmHt2JenzleDDsXwYO+iyvQ46Mw6RL+udAUZj2n/u/PGY80NxRxynO7R9xIGx5LEzw4INWJQ=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 ></script>
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.min.js"
   integrity="sha512-B2TzfdZAYEaSbPKRtIfdmTmHKz+nt3pYHn0BuPl+uc5OP8ntPtbYVjAC00o6qrgwDwn4w357ZYQnnYaPdQV1xQ=="
   crossorigin="anonymous"
 ></script>
+
 {% endif %}
+
 <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 <!-- END SCRIPT -->
