@@ -28,10 +28,9 @@ class APIError(TubeeError):
         TubeeError
     """
 
-    def __init__(self, service, message, *args, error_type: str = None):
-        if isinstance(error_type, str):
-            error_type += " "
-        super().__init__(f"Error <{error_type}> from {service}: {message}")
+    def __init__(self, service: str, message: str, error_type: str = "", *args):
+        type_string = f"<{error_type}> " if error_type else ""
+        super().__init__(f"Error from {service}: {type_string}{message}", *args)
 
 
 class InvalidAction(UserError, ValueError):

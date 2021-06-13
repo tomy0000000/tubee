@@ -30,10 +30,13 @@ def status(task_id):
     response = {
         "id": task.id,
         "status": task.status.title(),
-        "current": task.result.get("current", 1),
-        "total": task.result.get("total", 1),
-        "channel_id": task.result.get("channel_id", None),
         "result": task.result,
         "traceback": task.traceback,
     }
+    if isinstance(task.result, Exception):
+        response["traceback"] = task.__dict__["_cache"]["traceback"]
+    else:
+        response["current"] = task.result.get("current", 1)
+        response["total"] = task.result.get("total", 1)
+        response["channel_id"] = task.result.get("channel_id", None)
     return jsonify(response)
