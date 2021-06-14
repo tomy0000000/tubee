@@ -15,7 +15,7 @@ class Video(db.Model):
     name = db.Column(db.String(128))
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
     uploaded_timestamp = db.Column(db.DateTime)
-    details = db.Column(db.JSON)
+    details = db.Column(db.JSON, nullable=False, default={})
     channel = db.relationship("Channel", back_populates="videos")
     callbacks = db.relationship(
         "Callback", back_populates="video", lazy="dynamic", cascade="all, delete-orphan"

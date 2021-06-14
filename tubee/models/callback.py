@@ -18,7 +18,7 @@ class Callback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(32))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    infos = db.Column(db.JSON)
+    infos = db.Column(db.JSON, nullable=False, default={})
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
     video_id = db.Column(db.String(32), db.ForeignKey("video.id"))
     channel = db.relationship("Channel", back_populates="callbacks")

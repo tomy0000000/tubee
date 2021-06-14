@@ -19,7 +19,7 @@ class Action(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), nullable=False)
     type = db.Column(db.Enum(ActionType), nullable=False)
-    details = db.Column(db.JSON)
+    details = db.Column(db.JSON, nullable=False, default={})
     username = db.Column(db.String(32), db.ForeignKey("user.username"), nullable=False)
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
     tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"))

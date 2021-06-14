@@ -35,9 +35,9 @@ class User(UserMixin, db.Model):
     _password_hash = db.Column(db.LargeBinary(128), nullable=False)
     admin = db.Column(db.Boolean, default=False)
     _pushover_key = db.Column(db.String(32))
-    _youtube_credentials = db.Column(db.JSON)
+    _youtube_credentials = db.Column(db.JSON, nullable=False, default={})
     _line_notify_credentials = db.Column(db.String(64))
-    _dropbox_credentials = db.Column(db.JSON)
+    _dropbox_credentials = db.Column(db.JSON, nullable=False, default={})
     notifications = db.relationship(
         "Notification",
         back_populates="user",

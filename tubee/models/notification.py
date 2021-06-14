@@ -59,9 +59,9 @@ class Notification(db.Model):
     username = db.Column(db.String(32), db.ForeignKey("user.username"))
     service = db.Column(db.Enum(Service))
     message = db.Column(db.Text)
-    kwargs = db.Column(db.JSON)
+    kwargs = db.Column(db.JSON, nullable=False, default={})
     sent_timestamp = db.Column(db.DateTime, index=True)
-    response = db.Column(db.JSON)
+    response = db.Column(db.JSON, nullable=False, default={})
     user = db.relationship("User", back_populates="notifications")
 
     def __init__(self, initiator, user, service, send=True, **kwargs):
