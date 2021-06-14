@@ -1,6 +1,6 @@
 """Channel Model"""
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import urlencode
 
 from flask import current_app, url_for
@@ -21,6 +21,7 @@ class Channel(db.Model):
     """
 
     __tablename__ = "channel"
+    RENEW_INTERVAL = int(timedelta(days=4).total_seconds())
     id = db.Column(db.String(32), primary_key=True)
     name = db.Column(db.String(128))
     active = db.Column(db.Boolean, default=False)
@@ -87,6 +88,29 @@ class Channel(db.Model):
     @expiration.deleter
     def expiration(self):
         raise ValueError("expiration can not be delete")
+
+    @property
+    def renewal(self):
+        expiration = self.expiration
+        tomorrow = datetime.now() + timedelta(days=1)
+        if expiration is None:
+            # Expiration is not available yet (Channel just init)
+            renewal = datetime.now() + timedelta(seconds=self.RENEW_INTERVAL)
+        elif expiration > tomorrow:
+            # Expiration is more than one day
+            renewal = expiration - timedelta(days=1)
+        else:
+            # Expiration is less than one day
+            renewal = datetime.now()
+        return renewal
+
+    @renewal.setter
+    def renewal(self, renewal):
+        raise ValueError("renewal can not be set")
+
+    @renewal.deleter
+    def renewal(self):
+        raise ValueError("renewal can not be delete")
 
     def activate(self):
         """Submitting hub Subscription, called when first user subscribe"""

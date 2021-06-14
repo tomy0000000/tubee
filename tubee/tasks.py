@@ -1,5 +1,9 @@
 """Defines All Async Task for Celery"""
 import logging
+from datetime import datetime
+from enum import Enum
+from random import randrange
+from uuid import uuid4
 
 from flask import current_app
 
@@ -7,6 +11,12 @@ from . import celery
 from .models import Channel
 
 task_logger = logging.getLogger("tubee.task")
+
+
+class RenewPolicy(Enum):
+    NOW = 0
+    ONE_DAY_BEFORE_EXPIRE = -1
+    RANDOM = -2
 
 
 @celery.task(bind=True)
@@ -104,3 +114,24 @@ def remove_all_tasks():
                 current_app.exception()
                 results["error"][task_id] = str(error)
     return results
+
+
+def issue_channel_renewal(channels):
+    task = channels_renew.apply_async(args=[[channel.id for channel in channels]])
+    return task
+
+
+def schedule_channel_renewal(channels, policy: RenewPolicy = RenewPolicy.RANDOM):
+    response = {}
+    for channel in channels:
+        countdown = int((channel.renewal - datetime.now()).total_seconds())
+        print(type(countdown))
+        if RenewPolicy(policy) is RenewPolicy.RANDOM and countdown > 0:
+            countdown = randrange(countdown)
+        task = channels_renew.apply_async(
+            args=[[channel.id], channel.RENEW_INTERVAL],
+            countdown=countdown,
+            task_id=f"renew_{channel.id}_{str(uuid4())[:8]}",
+        )
+        response[channel.id] = task.id
+    return response

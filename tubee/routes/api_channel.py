@@ -1,6 +1,4 @@
 from datetime import datetime, timedelta
-from random import randrange
-from uuid import uuid4
 
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
@@ -8,7 +6,7 @@ from flask_login import current_user, login_required
 from ..helper import admin_required_decorator as admin_required
 from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel
-from ..tasks import channels_renew
+from ..tasks import issue_channel_renewal, schedule_channel_renewal
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
 
@@ -38,42 +36,24 @@ def search():
 @api_channel_blueprint.route("/renew-all")
 @login_required
 def renew_all():
-    """Renew Subscription Info, Both Hub and Info"""
-    execution = int(request.args.to_dict().get("execution", 0))
-    interval = 60 * 60 * 24 * 4
-    if execution == 0:
-        task = channels_renew.apply_async(
-            args=[[channel.id for channel in Channel.query.all()]]
-        )
+    """
+    Renew Subscription Info, Both Hub and Info
+
+    policy:
+        NOW = 0
+        ONE_DAY_BEFORE_EXPIRE = -1
+        RANDOM = -2
+    """
+    policy = int(request.args.to_dict().get("execution", 0))
+    channels = Channel.query.all()
+    if policy == 0:
+        task = issue_channel_renewal(channels)
         response = {
             "id": task.id,
             "status": url_for("api_task.status", task_id=task.id),
         }
     else:
-        response = {}
-        for channel in Channel.query.all():
-            expiration = channel.expiration
-            if expiration is None:
-                # Expiration is not available yet (Channel just init)
-                # Set ETA to four days later
-                countdown = 60 * 60 * 24 * 4
-            elif expiration > datetime.now() + timedelta(days=1):
-                # Expiration is more than one day
-                # Set ETA to one day before expiration
-                countdown = expiration - timedelta(days=1) - datetime.now()
-                countdown = countdown.total_seconds()
-            else:
-                # Expiration is less than one day
-                # Set ETA to now
-                countdown = 0
-            if execution == -2 and countdown > 0:
-                countdown = randrange(int(countdown))
-            task = channels_renew.apply_async(
-                args=[[channel.id], interval],
-                countdown=countdown,
-                task_id=f"renew_{channel.id}_{str(uuid4())[:8]}",
-            )
-            response[channel.id] = task.id
+        response = schedule_channel_renewal(channels, policy=policy)
     return jsonify(response)
 
 
