@@ -6,9 +6,9 @@ import unittest
 import click
 from flask import current_app
 from flask.cli import AppGroup, with_appcontext
-from flask_migrate import upgrade
 
 from tubee import db, models
+from tubee.helper import setup_app
 
 docker_cli = AppGroup("docker", help="Run application with docker-compose.")
 
@@ -21,8 +21,7 @@ def make_shell_context():
 @with_appcontext
 def deploy():
     """Run deployment tasks."""
-    # migrate database to latest revision
-    upgrade()
+    setup_app()
 
 
 @click.command()
@@ -67,6 +66,7 @@ def test(run_converage):
 def docker(context, development):
     """Run Development Application"""
     command = ["docker-compose"]
+    setup_app()
     if development:
         command += "--file docker-compose.dev.yml".split()
         command.append("up")

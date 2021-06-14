@@ -92,10 +92,6 @@ def create_app(config_name, coverage=None):
         ),
     )
 
-    # Reset all tasks
-    # from .tasks import remove_all_tasks
-    # remove_all_tasks()
-
     # Blueprint Registration
     from . import commands, routes
 

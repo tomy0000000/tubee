@@ -8,6 +8,20 @@ from urllib.parse import urljoin, urlparse
 from dateutil import parser
 from flask import abort, request
 from flask_login import current_user
+from flask_migrate import upgrade
+
+
+def setup_app():
+    # Migrate database to latest revision
+    upgrade()
+
+    # Reschedule all tasks
+    from ..models import Channel
+    from ..tasks import remove_all_tasks, schedule_channel_renewal
+
+    channels = Channel.query.all()
+    remove_all_tasks()
+    schedule_channel_renewal(channels)
 
 
 def try_parse_datetime(string):
