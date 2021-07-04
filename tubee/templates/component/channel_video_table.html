@@ -5,9 +5,6 @@
       <th scope="col"></th>
       <th scope="col">Title</th>
       <th scope="col">Published Time</th>
-      {% if current_user.admin %}
-      <th scope="col">Callback</th>
-      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -29,18 +26,6 @@
         </a>
       </td>
       <td>{{ moment(video.uploaded_timestamp).format('lll') }}</td>
-      {% if current_user.admin %}
-      <td>
-        <button type="button" class="btn btn-primary">
-          {% if video.callbacks.count() > 0 %} {{
-          moment(video.callbacks[0].timestamp).format('lll') }} {% else %}{%
-          endif %}
-          <span class="badge bg-light text-dark"
-            >{{ video.callbacks.count() }}</span
-          >
-        </button>
-      </td>
-      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
