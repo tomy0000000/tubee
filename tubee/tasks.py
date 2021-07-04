@@ -125,7 +125,6 @@ def schedule_channel_renewal(channels, policy: RenewPolicy = RenewPolicy.RANDOM)
     response = {}
     for channel in channels:
         countdown = int((channel.renewal - datetime.now()).total_seconds())
-        print(type(countdown))
         if RenewPolicy(policy) is RenewPolicy.RANDOM and countdown > 0:
             countdown = randrange(countdown)
         task = channels_renew.apply_async(
