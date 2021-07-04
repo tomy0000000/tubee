@@ -66,7 +66,6 @@ def test(run_converage):
 def docker(context, development):
     """Run Development Application"""
     command = ["docker-compose"]
-    setup_app()
     if development:
         command += "--file docker-compose.dev.yml".split()
         command.append("up")
@@ -74,6 +73,8 @@ def docker(context, development):
         proc = subprocess.run(command)
         if proc.returncode != 0:
             sys.exit(1)
+        setup_app()
+        os.environ["FLASK_ENV"] = "development"
         sys.exit(subprocess.run(["flask", "run"]).returncode)
     else:
         command.append("up")
