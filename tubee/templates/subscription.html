@@ -32,14 +32,12 @@
   {% include "action/table.html" %}
 </div>
 
-{% elif tag is not none %}
+{% elif tag is false %}
 
 <!-- BEGIN User Tags -->
 <div class="p-3 mb-4 bg-dark rounded-3">
   <div class="container-fluid">
-    <a
-      href="{{ url_for('main.dashboard', tag=None) }}"
-      class="btn btn-light m-1"
+    <a href="{{ url_for('main.dashboard') }}" class="btn btn-light m-1"
       >Untagged</a
     >
     <!-- prettier-ignore -->
@@ -58,6 +56,12 @@
 {% endif %}
 
 <!-- prettier-ignore -->
-{% include "component/subscription_table.html" %}
+{% if subscriptions %}
+  {% include "subscription/table.html" %}
+  {% include "subscription/pagination.html" %}
+{% else %}
+<div class="alert alert-secondary" role="alert">No subscription found.</div>
+{% endif %}
 
+<!-- prettier-ignore -->
 {% endblock %}

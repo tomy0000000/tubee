@@ -20,22 +20,27 @@ main_blueprint = Blueprint("main", __name__)
 @login_required
 def dashboard(tag):
     """Showing Subscribed Channels with specified tag"""
+    page = request.args.get("page", 1, type=int)
     subscriptions = current_user.subscriptions.outerjoin(Channel).order_by(
         Channel.name.asc()
     )
     actions = None
-    if tag is not False:
+    if tag:
         subscriptions = (
             subscriptions.outerjoin(SubscriptionTag)
             .outerjoin(Tag)
             .filter(Tag.name == tag)
         )
         actions = current_user.actions.join(Tag).filter(Tag.name == tag)
+    pagination = subscriptions.paginate(
+        page, current_app.config["PAGINATE_COUNT"], False
+    )
     return render_template(
         "subscription.html",
-        actions=actions,
-        subscriptions=subscriptions.all(),
+        pagination=pagination,
+        subscriptions=pagination.items,
         tag=tag,
+        actions=actions,
         action_form=ActionForm(),
     )
 

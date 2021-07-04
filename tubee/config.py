@@ -26,6 +26,7 @@ class Config:
     }
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
     REMEMBER_COOKIE_SECURE = True
+    PAGINATE_COUNT = os.environ.get("PAGINATE_COUNT", 5)
     CELERY_RESULT_BACKEND = "rpc://"
 
     # Sentry
