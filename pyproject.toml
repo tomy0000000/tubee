@@ -41,7 +41,7 @@ python-dateutil = "*"
 python-dotenv = "*"
 requests = "*"
 youtube-dl = "*"
-sentry-sdk = {extras = ["flask"], version = "^1.1.0"}
+sentry-sdk = {extras = ["flask"], version = "^1.2.0"}
 
 [tool.poetry.dev-dependencies]
 argh = "*"
