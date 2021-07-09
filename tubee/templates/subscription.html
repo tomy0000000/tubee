@@ -26,14 +26,10 @@
 {% include "action/modal_new.html" %}
 {% include "action/modal_edit.html" %}
 {% include "action/modal_remove.html" %}
-<!-- prettier-ignore -->
-<div class="jumbotron">
-  <h1 class="display-4">{{ tag }}</h1>
-  {% include "action/table.html" %}
-</div>
+{% include "tag/title.html" %}
+{% include "action/table.html" %}
 
 {% elif tag is false %}
-
 <!-- BEGIN User Tags -->
 <div class="p-3 mb-4 bg-dark rounded-3">
   <div class="container-fluid">
@@ -52,7 +48,6 @@
   </div>
 </div>
 <!-- END User Tags -->
-
 {% endif %}
 
 <!-- prettier-ignore -->

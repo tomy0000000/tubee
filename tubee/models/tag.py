@@ -25,3 +25,8 @@ class Tag(db.Model):
         self.name = tag_name
         db.session.add(self)
         db.session.commit()
+
+    def rename(self, new_name):
+        """Rename the tag"""
+        self.name = new_name
+        db.session.commit()

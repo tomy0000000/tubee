@@ -57,6 +57,17 @@ class TagForm(FlaskForm):
     channel_id = HiddenField("Channel ID", validators=[DataRequired()])
 
 
+class TagRenameForm(FlaskForm):
+    """Tag Form for editing subscription tag"""
+
+    tag_name = HiddenField("Tag", validators=[DataRequired(), Length(max=32)])
+    new_tag_name = StringField(
+        "New Tag",
+        validators=[DataRequired(), Length(max=32)],
+        render_kw={"class": "form-control-lg"},
+    )
+
+
 class ActionKwargsForm(FlaskForm):
     """Keyword Arguments for Actions"""
 

@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
-from ..forms import ActionForm, TagForm
+from ..forms import ActionForm, TagForm, TagRenameForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
 from ..models import Callback, Channel, SubscriptionTag, Tag, Video
@@ -26,6 +26,7 @@ def dashboard(tag):
     )
     actions = None
     if tag:
+        Tag.query.filter_by(name=tag).first_or_404()
         subscriptions = (
             subscriptions.outerjoin(SubscriptionTag)
             .outerjoin(Tag)
@@ -42,6 +43,7 @@ def dashboard(tag):
         tag=tag,
         actions=actions,
         action_form=ActionForm(),
+        tag_rename_form=TagRenameForm(),
     )
 
 

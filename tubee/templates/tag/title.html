@@ -1,0 +1,78 @@
+<div id="title-container" class="row align-items-center">
+  <div id="title-block" class="col">
+    <h1 class="display-4">
+      {{ tag }}
+      <button type="button" class="btn btn-primary btn-title-edit">
+        <i class="fas fa-edit"></i>
+      </button>
+    </h1>
+  </div>
+  <div id="tag-rename-form-block" class="col d-none">
+    <form
+      id="tag-rename-form"
+      class="row gx-3"
+      data-api-endpoint="{{ url_for('api_tag.rename') }}"
+    >
+      <!-- prettier-ignore -->
+      {{ tag_rename_form.csrf_token }}
+      {{ tag_rename_form.tag_name(value=tag) }}
+      <div class="col-auto">
+        <!-- prettier-ignore -->
+        <div class="input-group">
+          {{ tag_rename_form.new_tag_name(value=tag) }}
+          <button class="btn btn-outline-danger btn-title-edit" type="button">Cancel</button>
+          <button class="btn btn-outline-primary btn-submit" type="submit">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  #title-container {
+    height: 250px;
+  }
+</style>
+
+<script>
+  function register_toggle_edit() {
+    let edit_buttons = document.getElementsByClassName("btn-title-edit");
+    for (let btn of edit_buttons) {
+      btn.addEventListener("click", () => {
+        let title = document.getElementById("title-block");
+        let form = document.getElementById("tag-rename-form-block");
+        title.classList.toggle("d-none");
+        form.classList.toggle("d-none");
+      });
+    }
+  }
+
+  function register_rename_form_submit() {
+    let form = document.getElementById("tag-rename-form");
+    form.onsubmit = async (event) => {
+      event.preventDefault();
+      let api_endpoint = form.dataset.apiEndpoint;
+      let response = await fetch(api_endpoint, {
+        method: "POST",
+        body: new FormData(form),
+      });
+      let result = await response.json();
+      if (!result.success) {
+        alert("Rename failed");
+      } else {
+        window.location.href = result.redirect;
+      }
+    };
+  }
+
+  function ready() {
+    register_toggle_edit();
+    register_rename_form_submit();
+  }
+
+  if (document.readyState != "loading") {
+    ready();
+  } else {
+    document.addEventListener("DOMContentLoaded", ready);
+  }
+</script>
