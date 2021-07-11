@@ -9,8 +9,10 @@
     </tr>
   </thead>
   <tbody>
-    {% for item in links|dictsort %} {% set blueprint, rules = item %} {% for
-    url, endpoint in rules %}
+    <!-- prettier-ignore -->
+    {% for item in links|dictsort %}
+      {% set blueprint, rules = item %}
+      {% for url, endpoint in rules %}
     <tr>
       {% if loop.first %}
       <th scope="row" rowspan="{{ loop.length }}">{{ blueprint }}</th>
@@ -18,7 +20,9 @@
       <td><a href="{{ url }}" target="_blank">{{ endpoint }}</a></td>
       <td>{{ url }}</td>
     </tr>
-    {% endfor %} {% endfor %}
+    <!-- prettier-ignore -->
+    {% endfor %}
+    {% endfor %}
   </tbody>
 </table>
 <!-- END SITE MAP -->

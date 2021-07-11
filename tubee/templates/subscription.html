@@ -23,9 +23,6 @@
 
 {% if tag %}
 
-{% include "action/modal_new.html" %}
-{% include "action/modal_edit.html" %}
-{% include "action/modal_remove.html" %}
 {% include "tag/title.html" %}
 {% include "action/table.html" %}
 
@@ -51,6 +48,8 @@
 {% endif %}
 
 <!-- prettier-ignore -->
+{% set pagination = subscription_pagination %}
+{% set subscriptions = pagination.items %}
 {% if subscriptions %}
   {% include "subscription/table.html" %}
   {% include "subscription/pagination.html" %}

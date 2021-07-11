@@ -2,6 +2,7 @@
 
 <!-- prettier-ignore -->
 {% extends "base.html" %}
+{% set channel = subscription.channel %}
 {% set title = channel.name %}
 
 <!-- prettier-ignore -->
@@ -16,16 +17,14 @@
 
 <!-- prettier-ignore -->
 {% block script %}
-<!-- prettier-ignore -->
 <script src="{{ url_for('static', filename='js/channel.js') }}"></script>
 <script src="{{ url_for('static', filename='js/action.js') }}"></script>
-{{ tag.script() }} {% endblock %}
+<!-- prettier-ignore -->
+{{ tag.script() }}
+{% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
-{% include "action/modal_new.html" %}
-{% include "action/modal_edit.html" %}
-{% include "action/modal_remove.html" %}
 
 <!-- BEGIN Video Thumbnails Carousel -->
 <!-- prettier-ignore -->
@@ -136,12 +135,14 @@
           <p class="mb-0">{{ channel.id }}</p>
         </a>
         <p id="channel-description">{{ channel.infos.snippet.description }}</p>
-        {{ tag.content(tags, channel) }}
+        {{ tag.content(subscription.tags, channel) }}
         <form id="tag-form" class="row gx-3">
-          {{ tag_form.csrf_token }} {{ tag_form.channel_id(value=channel.id) }}
+          <!-- prettier-ignore -->
+          {{ tag_form.csrf_token }}
+          {{ tag_form.channel_id(value=channel.id) }}
           <div class="col-auto">
-            {{ tag_form.tag_name.label(class="visually-hidden", for="tag_name")
-            }}
+            <!-- prettier-ignore -->
+            {{ tag_form.tag_name.label(class="visually-hidden", for="tag_name") }}
             <div class="input-group">
               <div class="input-group-text">#</div>
               {{ tag_form.tag_name }}
@@ -169,6 +170,7 @@
 <!-- END Channel Infos -->
 
 <!-- prettier-ignore -->
+{% set actions = subscription.actions %}
 {% include "action/table.html" %}
 {% include "component/channel_video_table.html" %}
 

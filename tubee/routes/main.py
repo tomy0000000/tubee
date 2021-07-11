@@ -45,8 +45,7 @@ def dashboard(tag):
     )
     return render_template(
         "subscription.html",
-        pagination=pagination,
-        subscriptions=pagination.items,
+        subscription_pagination=pagination,
         tag=tag,
         actions=actions,
         action_form=ActionForm(),
@@ -64,9 +63,7 @@ def channel(channel_id):
     ).limit(20)
     return render_template(
         "channel.html",
-        channel=subscription.channel,
-        actions=subscription.actions,
-        tags=subscription.tags,
+        subscription=subscription,
         action_form=ActionForm(),
         tag_form=TagForm(),
         videos=videos,
