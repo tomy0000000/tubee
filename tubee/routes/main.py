@@ -24,15 +24,22 @@ def dashboard(tag):
     subscriptions = current_user.subscriptions.outerjoin(Channel).order_by(
         Channel.name.asc()
     )
-    actions = None
+
+    # Check if provided tag exists
     if tag:
         Tag.query.filter_by(name=tag).first_or_404()
+
+    # Filter subscritions by tag, including tag or untagged
+    actions = None
+    if tag is not False:
         subscriptions = (
             subscriptions.outerjoin(SubscriptionTag)
             .outerjoin(Tag)
             .filter(Tag.name == tag)
         )
         actions = current_user.actions.join(Tag).filter(Tag.name == tag)
+
+    # Paginate subscriptions
     pagination = subscriptions.paginate(
         page, current_app.config["PAGINATE_COUNT"], False
     )
