@@ -26,6 +26,23 @@ class Tag(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def __repr__(self):
+        return f"<{self.username}'s Tag: {self.name}>"
+
+    @property
+    def form(self):
+        from ..forms import TagForm
+
+        return TagForm(hidden_mode=True)
+
+    @form.setter
+    def form(self, form):
+        raise ValueError("Form can't be modify")
+
+    @form.deleter
+    def form(self):
+        raise ValueError("Form can't be modify")
+
     def rename(self, new_name):
         """Rename the tag"""
         self.name = new_name

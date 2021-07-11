@@ -34,16 +34,3 @@ def rename():
         "redirect": url_for("main.dashboard", tag=form.new_tag_name.data),
     }
     return jsonify(results)
-
-
-@api_tag_blueprint.route("/remove", methods=["POST"])
-@login_required
-def remove():
-    form = TagForm()
-    if not form.validate_on_submit():
-        abort(403)
-    subscription = current_user.subscriptions.filter_by(
-        channel_id=form.channel_id.data
-    ).first_or_404()
-    response = subscription.remove_tag(form.tag_name.data)
-    return jsonify(str(response))

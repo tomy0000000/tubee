@@ -1,3 +1,5 @@
+{% import "subscription/tag.html" as tag %}
+
 <!-- BEGIN Subscription Table -->
 <table class="table table-striped table-hover table-responsive-lg align-middle">
   <thead class="table-dark">
@@ -41,8 +43,7 @@
         </a>
         {% endif %}
         <!-- prettier-ignore -->
-        {% set tags=subscription.tags %}
-        {% include "subscription/tag.html" %}
+        {{ tag.content(subscription.tags, subscription.channel) }}
       </td>
       <td>
         <button
@@ -59,3 +60,7 @@
   </tbody>
 </table>
 <!-- END Subscription Table -->
+
+<!-- prettier-ignore -->
+{{ tag.style() }}
+{{ tag.script() }}

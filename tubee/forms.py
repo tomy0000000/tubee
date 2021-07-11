@@ -9,6 +9,7 @@ from wtforms.fields import (
     SubmitField,
 )
 from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.widgets import HiddenInput
 
 from .models import ActionType, Service
 
@@ -55,6 +56,12 @@ class TagForm(FlaskForm):
         render_kw={"class": "form-control"},
     )
     channel_id = HiddenField("Channel ID", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        hidden_mode = kwargs.pop("hidden_mode", False)
+        super().__init__(*args, **kwargs)
+        if hidden_mode:
+            self.tag_name.widget = HiddenInput()
 
 
 class TagRenameForm(FlaskForm):

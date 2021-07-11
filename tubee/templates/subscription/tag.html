@@ -1,9 +1,79 @@
+{% macro content(tags, channel) -%}
 <div class="subscription-tags mb-2">
+  <!-- prettier-ignore -->
   {% for tag in tags %}
-  <a
-    href="{{ url_for('main.dashboard', tag=tag.name) }}"
-    class="badge bg-secondary"
-    >{{ tag.name }}</a
-  >
+  {% set form = tag.form %}
+  <span class="badge rounded-pill bg-secondary">
+    <form class="untag-form">
+      <!-- prettier-ignore -->
+      {{ form.csrf_token }}
+      {{ form.tag_name(value=tag.name) }}
+      {{ form.channel_id(value=channel.id) }}
+      {{ tag.name }}
+      <i
+        class="fas fa-times-circle form-btn"
+        data-tag-name="{{ tag.name }}"
+        data-channel-name="{{ channel.name }}"
+        data-api-endpoint="{{ url_for('api_subscription.untag') }}"
+      ></i>
+    </form>
+  </span>
   {% endfor %}
 </div>
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro style() -%}
+<style>
+  .subscription-tags i:hover {
+    cursor: pointer;
+  }
+</style>
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro script() -%}
+<script>
+  function register_untag_forms() {
+    let forms = document.getElementsByClassName("untag-form");
+    console.log(forms);
+    for (form of forms) {
+      let btn = form.getElementsByClassName("form-btn")[0];
+      let data = new FormData(form);
+      btn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        let tag_name = btn.dataset.tagName;
+        let channel_name = btn.dataset.channelName;
+        let api_endpoint = btn.dataset.apiEndpoint;
+        if (!confirm(`Remove tag "${tag_name}" from "${channel_name}"?`)) {
+          return;
+        }
+        let response = await fetch(api_endpoint, {
+          method: "POST",
+          body: data,
+        }).catch((error) => {
+          alert("Remove failed");
+          console.log(error);
+          return;
+        });
+        let result = await response.json();
+        if (!result.success) {
+          alert("Remove failed");
+        } else {
+          window.location.reload();
+        }
+      });
+    }
+  }
+
+  function ready() {
+    register_untag_forms();
+  }
+
+  if (document.readyState != "loading") {
+    ready();
+  } else {
+    document.addEventListener("DOMContentLoaded", ready);
+  }
+</script>
+{%- endmacro %}

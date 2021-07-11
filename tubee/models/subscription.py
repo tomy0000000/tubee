@@ -78,10 +78,12 @@ class Subscription(db.Model):
         SubscriptionTag(self.username, self.channel_id, tag.id)
         return True
 
-    def remove_tag(self, tag_name):
-        tag = Tag.query.filter_by(name=tag_name, username=self.username).first()
-        if not tag:
-            raise InvalidAction(f"Subscription is not tagged with {tag_name}")
-        db.session.delete(tag)
+    def untag(self, tag_id):
+        subscription_tag = SubscriptionTag.query.filter_by(
+            username=self.username, channel_id=self.channel_id, tag_id=tag_id
+        ).first()
+        if not subscription_tag:
+            raise InvalidAction("subscription_tag not found")
+        db.session.delete(subscription_tag)
         db.session.commit()
         return True

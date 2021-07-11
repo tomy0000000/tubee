@@ -1,3 +1,5 @@
+{% import "subscription/tag.html" as tag %}
+
 <!-- prettier-ignore -->
 {% extends "base.html" %}
 {% set title = channel.name %}
@@ -8,13 +10,16 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='css/channel.css') }}"
 />
+<!-- prettier-ignore -->
+{{ tag.style() }}
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block script %}
+<!-- prettier-ignore -->
 <script src="{{ url_for('static', filename='js/channel.js') }}"></script>
 <script src="{{ url_for('static', filename='js/action.js') }}"></script>
-{% endblock %}
+{{ tag.script() }} {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
@@ -131,7 +136,7 @@
           <p class="mb-0">{{ channel.id }}</p>
         </a>
         <p id="channel-description">{{ channel.infos.snippet.description }}</p>
-        {% include "subscription/tag.html" %}
+        {{ tag.content(tags, channel) }}
         <form id="tag-form" class="row gx-3">
           {{ tag_form.csrf_token }} {{ tag_form.channel_id(value=channel.id) }}
           <div class="col-auto">
