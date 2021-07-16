@@ -378,7 +378,7 @@ Flask-SQLAlchemy = ">=1.0"
 
 [[package]]
 name = "flask-moment"
-version = "1.0.1"
+version = "1.0.2"
 description = "Formatting of dates and times in Flask templates using moment.js."
 category = "main"
 optional = false
@@ -1405,8 +1405,8 @@ flask-migrate = [
     {file = "Flask_Migrate-3.0.1-py2.py3-none-any.whl", hash = "sha256:df9043d2050df3c0e0f6313f6b529b62c837b6033c20335e9d0b4acdf2c40e23"},
 ]
 flask-moment = [
-    {file = "Flask-Moment-1.0.1.tar.gz", hash = "sha256:ab2bea04201992370b00acc2db759836e5687f045a2785abdd73979a8f0e78a6"},
-    {file = "Flask_Moment-1.0.1-py3-none-any.whl", hash = "sha256:f2515366d535a85cbae7d5baba04789e9fc0217e879adef6b151fe7d6eedc497"},
+    {file = "Flask-Moment-1.0.2.tar.gz", hash = "sha256:1faf8fea08080d2396f0c878b92bd0429635977a8f96c553a0d43f15fd8d0213"},
+    {file = "Flask_Moment-1.0.2-py3-none-any.whl", hash = "sha256:cce7c4f39fcf0732bb62a07fbf6cc6305ab5700272fd1c5743c0c0968450a469"},
 ]
 flask-shell-ipython = [
     {file = "flask-shell-ipython-0.4.1.tar.gz", hash = "sha256:fb3b390f4dc03d7a960c62c5b51ce4deca19ceff77e4db3d4670012adc529ebd"},
