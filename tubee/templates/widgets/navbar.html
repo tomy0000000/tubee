@@ -5,7 +5,7 @@
       <a
         id="navbar-main"
         class="navbar-brand"
-        href="{{ url_for('main.dashboard', tag=False) }}"
+        href="{{ url_for('main.dashboard', tag_name=False) }}"
       >
         <img
           id="hero"
@@ -29,7 +29,7 @@
           <li class="nav-item">
             <a
               class="nav-link {{ 'active' if title == 'Subscriptions' }}"
-              href="{{ url_for('main.dashboard', tag=False) }}"
+              href="{{ url_for('main.dashboard', tag_name=False) }}"
             >
               Subscriptions
             </a>

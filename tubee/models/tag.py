@@ -1,4 +1,6 @@
 """Tag Model"""
+from flask import current_app
+
 from .. import db
 
 
@@ -30,20 +32,46 @@ class Tag(db.Model):
         return f"<{self.username}'s Tag: {self.name}>"
 
     @property
-    def form(self):
+    def remove_form(self):
         from ..forms import TagForm
 
         return TagForm(hidden_mode=True)
 
-    @form.setter
-    def form(self, form):
+    @remove_form.setter
+    def remove_form(self, form):
         raise ValueError("Form can't be modify")
 
-    @form.deleter
-    def form(self):
+    @remove_form.deleter
+    def remove_form(self):
+        raise ValueError("Form can't be modify")
+
+    @property
+    def untag_form(self):
+        from ..forms import TagSubscriptionForm
+
+        return TagSubscriptionForm(hidden_mode=True)
+
+    @untag_form.setter
+    def untag_form(self, form):
+        raise ValueError("Form can't be modify")
+
+    @untag_form.deleter
+    def untag_form(self):
         raise ValueError("Form can't be modify")
 
     def rename(self, new_name):
         """Rename the tag"""
         self.name = new_name
         db.session.commit()
+
+    def delete(self):
+        """Delete the tag"""
+        action_id = self.id
+        try:
+            db.session.delete(self)
+            db.session.commit()
+            current_app.logger.info(f"Tag <{action_id}>: Remove")
+            return True
+        except Exception:
+            current_app.logger.exception(f"Tag <{action_id}>: Remove failed")
+            return False

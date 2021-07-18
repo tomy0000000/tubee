@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
-from ..forms import ActionForm, TagForm, TagRenameForm
+from ..forms import ActionForm, TagRenameForm, TagSubscriptionForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
 from ..models import Callback, Channel, SubscriptionTag, Tag, Video
@@ -14,11 +14,11 @@ from ..models import Callback, Channel, SubscriptionTag, Tag, Video
 main_blueprint = Blueprint("main", __name__)
 
 
-@main_blueprint.route("/", defaults={"tag": False})
-@main_blueprint.route("/untagged", defaults={"tag": None})
-@main_blueprint.route("/tag/<tag>")
+@main_blueprint.route("/", defaults={"tag_name": False})
+@main_blueprint.route("/untagged", defaults={"tag_name": None})
+@main_blueprint.route("/tag/<tag_name>")
 @login_required
-def dashboard(tag):
+def dashboard(tag_name):
     """Showing Subscribed Channels with specified tag"""
     page = request.args.get("page", 1, type=int)
     subscriptions = current_user.subscriptions.outerjoin(Channel).order_by(
@@ -26,18 +26,17 @@ def dashboard(tag):
     )
 
     # Check if provided tag exists
-    if tag:
-        Tag.query.filter_by(name=tag).first_or_404()
+    tag = Tag.query.filter_by(name=tag_name).first_or_404() if tag_name else None
 
     # Filter subscritions by tag, including tag or untagged
     actions = None
-    if tag is not False:
+    if tag_name is not False:
         subscriptions = (
             subscriptions.outerjoin(SubscriptionTag)
             .outerjoin(Tag)
-            .filter(Tag.name == tag)
+            .filter(Tag.name == tag_name)
         )
-        actions = current_user.actions.join(Tag).filter(Tag.name == tag)
+        actions = current_user.actions.join(Tag).filter(Tag.name == tag_name)
 
     # Paginate subscriptions
     pagination = subscriptions.paginate(
@@ -46,6 +45,7 @@ def dashboard(tag):
     return render_template(
         "subscription.html",
         subscription_pagination=pagination,
+        tag_name=tag_name,
         tag=tag,
         actions=actions,
         action_form=ActionForm(),
@@ -65,7 +65,7 @@ def channel(channel_id):
         "channel.html",
         subscription=subscription,
         action_form=ActionForm(),
-        tag_form=TagForm(),
+        tag_form=TagSubscriptionForm(),
         videos=videos,
     )
 

@@ -55,13 +55,18 @@ class TagForm(FlaskForm):
         validators=[DataRequired(), Length(max=32)],
         render_kw={"class": "form-control"},
     )
-    channel_id = HiddenField("Channel ID", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         hidden_mode = kwargs.pop("hidden_mode", False)
         super().__init__(*args, **kwargs)
         if hidden_mode:
             self.tag_name.widget = HiddenInput()
+
+
+class TagSubscriptionForm(TagForm):
+    """Tag Form for editing subscription tag"""
+
+    channel_id = HiddenField("Channel ID", validators=[DataRequired()])
 
 
 class TagRenameForm(FlaskForm):

@@ -2,7 +2,7 @@
 <div class="subscription-tags mb-2">
   <!-- prettier-ignore -->
   {% for tag in tags %}
-  {% set form = tag.form %}
+  {% set form = tag.untag_form %}
   <span class="badge rounded-pill bg-secondary">
     <form class="untag-form">
       <!-- prettier-ignore -->
@@ -36,7 +36,6 @@
 <script>
   function register_untag_forms() {
     let forms = document.getElementsByClassName("untag-form");
-    console.log(forms);
     for (form of forms) {
       let btn = form.getElementsByClassName("form-btn")[0];
       let data = new FormData(form);

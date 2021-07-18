@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, jsonify
 from flask_login import current_user, login_required
 
-from tubee.forms import TagForm
+from tubee.forms import TagSubscriptionForm
 
 api_subscription_blueprint = Blueprint("api_subscription", __name__)
 
@@ -10,7 +10,7 @@ api_subscription_blueprint = Blueprint("api_subscription", __name__)
 @login_required
 def untag():
     """Remove a tag from subscription"""
-    form = TagForm(hidden_mode=True)
+    form = TagSubscriptionForm(hidden_mode=True)
     if not form.validate_on_submit():
         abort(403)
 

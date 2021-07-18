@@ -69,7 +69,7 @@ class Subscription(db.Model):
     def tags(self):
         raise ValueError("Tags should be modify using instance methods")
 
-    def add_tag(self, tag_name):
+    def tag(self, tag_name):
         tag = Tag.query.filter_by(name=tag_name, username=self.username).first()
         if not tag:
             tag = Tag(self.username, tag_name)
