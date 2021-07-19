@@ -1,7 +1,7 @@
 <div id="title-container" class="row align-items-center">
   <div id="title-block" class="col">
     <h1 class="display-4">
-      {{ tag_name }}
+      {{ tag.name }}
       <button type="button" class="btn btn-primary btn-title-edit">
         <i class="fas fa-edit"></i>
       </button>
@@ -29,11 +29,11 @@
     >
       <!-- prettier-ignore -->
       {{ tag_rename_form.csrf_token }}
-      {{ tag_rename_form.tag_name(value=tag) }}
+      {{ tag_rename_form.tag_name(value=tag.name) }}
       <div class="col-auto">
         <!-- prettier-ignore -->
         <div class="input-group">
-          {{ tag_rename_form.new_tag_name(value=tag) }}
+          {{ tag_rename_form.new_tag_name(value=tag.name, class="form-control-lg") }}
           <button class="btn btn-outline-danger btn-title-edit" type="button">Cancel</button>
           <button class="btn btn-outline-primary btn-submit" type="submit">Save</button>
         </div>

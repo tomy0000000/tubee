@@ -34,26 +34,39 @@
           {% endif %}
           <div class="row mb-3">
             {{ action_form.action_name.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ action_form.action_name }}</div>
+            <div class="col-8">
+              {{ action_form.action_name(class_="form-control") }}
+            </div>
           </div>
           <div class="row mb-3">
             {{ action_form.action_type.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ action_form.action_type }}</div>
+            <div class="col-8">
+              {{ action_form.action_type(class_="form-select") }}
+            </div>
           </div>
           {% for field in action_form.notification %}
           <div class="row mb-3 action-type-fields notification-fields">
             {{ field.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ field }}</div>
+            <!-- prettier-ignore -->
+            {% if "SelectField" in field.__class__.__name__ %}
+            <div class="col-8">{{ field(class_="form-select") }}</div>
+            {% else %}
+            <div class="col-8">{{ field(class_="form-control") }}</div>
+            {% endif %}
           </div>
-          {% endfor %}{% for field in action_form.playlist %}
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% for field in action_form.playlist %}
           <div class="row mb-3 action-type-fields playlist-fields">
             {{ field.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ field }}</div>
+            <div class="col-8">{{ field(class_="form-control") }}</div>
           </div>
-          {% endfor %}{% for field in action_form.download %}
+          {% endfor %}
+          <!-- prettier-ignore -->
+          {% for field in action_form.download %}
           <div class="row mb-3 action-type-fields download-fields">
             {{ field.label(class="col-4 col-form-label") }}
-            <div class="col-8">{{ field }}</div>
+            <div class="col-8">{{ field(class_="form-control") }}</div>
           </div>
           {% endfor %}
         </form>

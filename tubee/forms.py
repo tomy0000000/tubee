@@ -48,12 +48,11 @@ class RegisterForm(FlaskForm):
 
 
 class TagForm(FlaskForm):
-    """Tag Form for editing subscription tag"""
+    """Base Tag Form, also for removing tag"""
 
     tag_name = StringField(
         "Tag",
         validators=[DataRequired(), Length(max=32)],
-        render_kw={"class": "form-control"},
     )
 
     def __init__(self, *args, **kwargs):
@@ -70,13 +69,12 @@ class TagSubscriptionForm(TagForm):
 
 
 class TagRenameForm(FlaskForm):
-    """Tag Form for editing subscription tag"""
+    """Tag Form for renaming tag"""
 
     tag_name = HiddenField("Tag", validators=[DataRequired(), Length(max=32)])
     new_tag_name = StringField(
         "New Tag",
         validators=[DataRequired(), Length(max=32)],
-        render_kw={"class": "form-control-lg"},
     )
 
 
@@ -96,39 +94,32 @@ class NotificationActionForm(FlaskForm):
     service = SelectField(
         "Notification Service",
         validators=[DataRequired()],
-        default="Pushover",
         choices=[(item.name, item.value) for item in Service],
-        render_kw={"class": "form-select"},
     )
     message = StringField(
         "Message Body",
         default="{video_title}",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
     title = StringField(
         "Message Title",
         default="New from {channel_name}",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
     url = StringField(
         "URL",
         default="https://www.youtube.com/watch?v={video_id}",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
     url_title = StringField(
         "URL Title",
         default="{video_title}",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
     image_url = StringField(
         "Image URL",
         default="{video_thumbnails}",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
 
 
@@ -142,7 +133,6 @@ class PlaylistActionForm(FlaskForm):
         "Playlist ID",
         default="WL",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
 
 
@@ -156,7 +146,6 @@ class DownloadActionForm(FlaskForm):
         "File Path",
         default="/{video_title}.mp4",
         validators=[DataRequired()],
-        render_kw={"class": "form-control"},
     )
 
 
@@ -166,14 +155,11 @@ class ActionForm(FlaskForm):
     action_name = StringField(
         "Name",
         validators=[DataRequired(), Length(max=32)],
-        render_kw={"class": "form-control"},
     )
     action_type = SelectField(
         "Type",
         validators=[DataRequired()],
-        default="Notification",
         choices=[(item.name, item.value) for item in ActionType],
-        render_kw={"class": "form-select"},
     )
     channel_id = HiddenField("Channel ID")
     tag = HiddenField("Tag")
