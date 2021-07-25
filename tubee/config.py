@@ -94,8 +94,8 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ["DATABASE_URL"]
-    BROKER_URL = os.environ["BROKER_URL"]
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    BROKER_URL = os.environ.get("BROKER_URL")
 
     @classmethod
     def init_app(cls, app):
