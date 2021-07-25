@@ -7,7 +7,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
-    """Universal Config"""
+    """Base Config"""
 
     DEBUG = False
     TESTING = False
@@ -53,7 +53,6 @@ class Config:
     # PubSubHubBub
     HUB_GOOGLE_HUB = "https://pubsubhubbub.appspot.com"
     HUB_YOUTUBE_TOPIC = "https://www.youtube.com/xml/feeds/videos.xml?"
-    # HUB_RECEIVE_DOMAIN = os.environ.get("HUB_RECEIVE_DOMAIN", SERVER_NAME)
 
     @staticmethod
     def init_app(app):
@@ -65,8 +64,8 @@ class DevelopmentConfig(Config):
 
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DEV_DATABASE_URL"
-    ) or "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
+        "DEV_DATABASE_URL", f"sqlite:///{os.path.join(basedir, 'data.sqlite')}"
+    )
 
     BROKER_URL = os.environ.get("DEV_BROKER_URL")
 
@@ -95,10 +94,8 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL"
-    ) or "sqlite:///" + os.path.join(basedir, "data.sqlite")
-    BROKER_URL = os.environ.get("BROKER_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ["DATABASE_URL"]
+    BROKER_URL = os.environ["BROKER_URL"]
 
     @classmethod
     def init_app(cls, app):
@@ -107,40 +104,9 @@ class ProductionConfig(Config):
         app.logger.info("Production Config Loaded")
 
 
-# class UnixConfig(ProductionConfig):
-#     @classmethod
-#     def init_app(cls, app):
-#         ProductionConfig.init_app(app)
-
-#         # log to syslog
-#         from logging.handlers import SysLogHandler
-
-#         syslog_handler = SysLogHandler()
-#         syslog_handler.setLevel(logging.INFO)
-#         logging.addHandler(syslog_handler)
-
-
-# class DockerConfig(ProductionConfig):
-#     @classmethod
-#     def init_app(cls, app):
-#         ProductionConfig.init_app(app)
-
-#         # log to stderr
-#         logging.info("Docker Config Loaded")
-
-
-# class DockerDevelopmentConfig(DevelopmentConfig):
-#     @classmethod
-#     def init_app(cls, app):
-#         DevelopmentConfig.init_app(app)
-
-
 config = {
     "default": DevelopmentConfig,
     "development": DevelopmentConfig,
     "testing": TestingConfig,
     "production": ProductionConfig,
-    # "unix": UnixConfig,
-    # "docker": DockerConfig,
-    # "docker-dev": DockerDevelopmentConfig,
 }

@@ -2,29 +2,38 @@ version: "3.8"
 
 services:
   tubee:
-    command: "gunicorn --config instance/gunicorn.conf.py app:app"
+    command: "./docker-entrypoint.sh"
+    container_name: "tubee_app"
     depends_on:
-      - "celery"
-      - "rabbitmq"
       - "postgres"
+      - "celery"
     env_file:
       - "instance/production.env"
     environment:
       FLASK_ENV: "production"
     image: "tomy0000000/tubee"
+    networks:
+      - "postgres_tunnel"
+      - "rabbitmq_tunnel"
+    ports:
+      - "5000:5000"
     restart: "always"
     volumes:
-      - "application:/usr/src/tubee"
       - "./logs:/usr/src/tubee/logs"
+  postgres:
+    container_name: "tubee_db"
+    env_file:
+      - "instance/production.env"
+    image: "postgres:12-alpine"
+    networks:
+      - "postgres_tunnel"
+    restart: "always"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
   celery:
     command:
-      [
-        "celery",
-        "--app=celery_worker.celery",
-        "worker",
-        "--loglevel=info",
-        "--statedb=/usr/src/tubee/instance/celery/%n.state",
-      ]
+      ["celery", "--app=celery_worker.celery", "worker", "--loglevel=info"]
+    container_name: "tubee_celery"
     depends_on:
       - "rabbitmq"
     env_file:
@@ -37,38 +46,20 @@ services:
     restart: "always"
     volumes:
       - "./logs:/usr/src/tubee/logs"
-      - "application:/usr/src/tubee"
   rabbitmq:
+    container_name: "tubee_rabbitmq"
     hostname: "tubee-rabbitmq"
-    image: "rabbitmq:latest"
+    image: "rabbitmq:3.8"
     networks:
       - "rabbitmq_tunnel"
     restart: "always"
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
-  postgres:
-    image: "postgres:12-alpine"
-    env_file:
-      - "instance/production.env"
-    restart: "always"
-    volumes:
-      - "postgres_data:/var/lib/postgresql/data"
-  nginx:
-    image: "tomy0000000/nginx:1.17-1.2"
-    depends_on:
-      - "tubee"
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: "always"
-    volumes:
-      - "./instance/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
-      - "application:/usr/share/nginx/tubee"
 
 networks:
+  postgres_tunnel:
   rabbitmq_tunnel:
 
 volumes:
-  application:
-  rabbitmq_data:
   postgres_data:
+  rabbitmq_data:

@@ -1,9 +1,16 @@
 version: "3.8"
 
 services:
+  postgres:
+    container_name: "tubee_db"
+    env_file:
+      - ".env"
+    image: "postgres:12-alpine"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
   celery:
-    build:
-      context: .
     command:
       [
         "watchmedo",
@@ -16,34 +23,27 @@ services:
         "--app=celery_worker.celery",
         "worker",
         "--loglevel=info",
-        "--statedb=/usr/src/tubee/instance/celery/%n.state",
       ]
+    container_name: "tubee_celery"
     depends_on:
       - "rabbitmq"
-    image: "tomy0000000/tubee"
     env_file:
       - ".env"
     environment:
       FLASK_ENV: "development"
+    image: "tomy0000000/tubee"
     network_mode: "host"
     volumes:
       - ".:/usr/src/tubee"
   rabbitmq:
+    container_name: "tubee_rabbitmq"
     hostname: "tubee-rabbitmq"
-    image: "rabbitmq:latest"
+    image: "rabbitmq:3.8"
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
-  postgres:
-    env_file:
-      - ".env"
-    image: "postgres:12-alpine"
-    ports:
-      - "5432:5432"
-    volumes:
-      - "postgres_data:/var/lib/postgresql/data"
 
 volumes:
   rabbitmq_data:
