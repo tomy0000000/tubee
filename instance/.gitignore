@@ -1,6 +1,7 @@
 *
 !.gitignore
+!docker-compose.override.yml
 !gunicorn.conf.py
-!logging.cfg
 !logging_celery.cfg
-!nginx.conf
+!logging.cfg
+!production.template.env

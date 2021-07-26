@@ -16,7 +16,7 @@ services:
       - "postgres_tunnel"
       - "rabbitmq_tunnel"
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     restart: "always"
     volumes:
       - "./logs:/usr/src/tubee/logs"

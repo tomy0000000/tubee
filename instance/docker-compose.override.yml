@@ -1,0 +1,5 @@
+version: "3.8"
+
+services:
+  postgres:
+    entrypoint: ["echo", "Builtin postgres database disabled"]
