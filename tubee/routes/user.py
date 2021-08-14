@@ -21,8 +21,8 @@ from flask_login import current_user, login_required, login_user, logout_user
 from .. import oauth
 from ..exceptions import APIError
 from ..forms import LoginForm, RegisterForm
-from ..helper import dropbox, is_safe_url, youtube
 from ..models import User
+from ..utils import dropbox, is_safe_url, youtube
 
 user_blueprint = Blueprint("user", __name__)
 

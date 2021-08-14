@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
 
-from ..helper import admin_required_decorator as admin_required
 from ..models import Video
+from ..utils import admin_required_decorator as admin_required
 
 api_video_blueprint = Blueprint("api_video", __name__)
 

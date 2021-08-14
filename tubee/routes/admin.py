@@ -18,8 +18,8 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from ..helper import admin_required
 from ..models import Callback, Channel, Notification
+from ..utils import admin_required
 
 admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)

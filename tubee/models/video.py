@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from dateutil import parser
 
 from .. import db
-from ..helper.youtube import build_youtube_api
+from ..utils.youtube import build_youtube_api
 
 
 class Video(db.Model):

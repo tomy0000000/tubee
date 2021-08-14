@@ -2,8 +2,8 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
 
-from ..helper import admin_required
 from ..tasks import channels_renew, list_all_tasks, remove_all_tasks
+from ..utils import admin_required
 
 api_task_blueprint = Blueprint("api_task", __name__)
 api_task_blueprint.before_request(admin_required)

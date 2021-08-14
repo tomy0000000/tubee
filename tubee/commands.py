@@ -8,7 +8,7 @@ from flask import current_app
 from flask.cli import AppGroup, with_appcontext
 
 from tubee import db, models
-from tubee.helper import setup_app
+from tubee.utils import setup_app
 
 docker_cli = AppGroup("docker", help="Run application with docker-compose.")
 

@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import login_required
 
-from ..helper import admin_required_decorator as admin_required
-from ..helper.youtube import build_youtube_api
 from ..models import Callback, Channel
 from ..tasks import issue_channel_renewal, schedule_channel_renewal
+from ..utils import admin_required_decorator as admin_required
+from ..utils.youtube import build_youtube_api
 
 api_channel_blueprint = Blueprint("api_channel", __name__)
 

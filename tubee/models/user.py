@@ -11,7 +11,7 @@ from pushover_complete import PushoverAPI
 
 from .. import bcrypt, db, login_manager, oauth
 from ..exceptions import APIError, InvalidAction, ServiceNotAuth
-from ..helper import youtube
+from ..utils import youtube
 
 
 @login_manager.user_loader

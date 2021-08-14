@@ -8,9 +8,9 @@ from googleapiclient.errors import Error as YouTubeAPIError
 
 from .. import db
 from ..exceptions import APIError, InvalidAction
-from ..helper import try_parse_datetime
-from ..helper.hub import details, subscribe, unsubscribe
-from ..helper.youtube import build_youtube_api
+from ..utils import try_parse_datetime
+from ..utils.hub import details, subscribe, unsubscribe
+from ..utils.youtube import build_youtube_api
 
 
 class Channel(db.Model):
@@ -168,7 +168,7 @@ class Channel(db.Model):
                 results[key] = (str(val[0]), val[1])
 
         if results["state"] != self.hub_infos.get("state"):
-            from ..helper import notify_admin
+            from ..utils import notify_admin
 
             notify_admin(
                 "channel-refresh",

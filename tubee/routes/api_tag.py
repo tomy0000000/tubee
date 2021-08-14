@@ -1,5 +1,4 @@
-from flask import Blueprint, abort, jsonify
-from flask.helpers import url_for
+from flask import Blueprint, abort, jsonify, url_for
 from flask_login import current_user, login_required
 
 from ..forms import TagForm, TagRenameForm

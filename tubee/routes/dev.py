@@ -2,8 +2,8 @@
 from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
-from ..helper import admin_required
-from ..helper.youtube import fetch_video_metadata
+from ..utils import admin_required
+from ..utils.youtube import fetch_video_metadata
 
 dev_blueprint = Blueprint("dev", __name__)
 dev_blueprint.before_request(admin_required)

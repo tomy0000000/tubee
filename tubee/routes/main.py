@@ -7,9 +7,9 @@ from flask_login import current_user, login_required
 
 from .. import db
 from ..forms import ActionForm, SubscriptionTagForm, TagRenameForm
-from ..helper import youtube_required
-from ..helper.youtube import fetch_video_metadata
 from ..models import Callback, Channel, SubscriptionTag, Tag, Video
+from ..utils import youtube_required
+from ..utils.youtube import fetch_video_metadata
 
 main_blueprint = Blueprint("main", __name__)
 
