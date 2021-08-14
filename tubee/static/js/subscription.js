@@ -2,25 +2,34 @@ function unsubscribe(event) {
   let unsubscribe_btn = $(event.target);
   let loaded_div = $("<div>").load(
     "static/component/channel_unsubscribe.html",
-    function () {
-      let channel_name = unsubscribe_btn.data("channel-name");
-      let api_endpoint = unsubscribe_btn.data("api-endpoint");
+    () => {
+      const channel_id = unsubscribe_btn.data("channel-id");
+      const channel_name = unsubscribe_btn.data("channel-name");
+      const api_endpoint = unsubscribe_btn.data("api-endpoint");
       $(".modal-body").text(
         `Are you sure you want to unsubscribe to ${channel_name}?`
       );
       $("#unsubscribe-modal")
         .modal("show")
-        .on("hidden.bs.modal", function (event) {
+        .on("hidden.bs.modal", () => {
           loaded_div.remove();
         });
-      $("#confirm-btn").on("click", function () {
-        $.get(api_endpoint).done(function (data) {
-          if (Boolean(data)) {
-            location.reload();
-          } else {
-            alert("Unsubscribe Failed, Try Again");
-          }
-        });
+      $("#confirm-btn").on("click", async function () {
+        let form = new FormData(
+          document.getElementById(`${channel_id}-unsubscribe-form`)
+        );
+        const [results, error] = await catch_error(
+          fetch(api_endpoint, {
+            method: "POST",
+            body: form,
+          })
+        );
+
+        if (error || !results.ok) {
+          alert("Unsubscribe Failed, Try Again");
+        } else {
+          location.reload();
+        }
       });
     }
   );

@@ -93,20 +93,15 @@
           </li>
           {% endif %}
         </ul>
-        <form class="d-flex">
-          <input
-            id="subscribe-input"
-            class="form-control me-2"
-            type="text"
-            placeholder="Channel Name or ID"
-            aria-label="Channel Name or ID"
-            data-channel-api="{{ url_for('api_channel.search') }}"
-          />
+        <form id="navbar-subscribe-form" class="d-flex">
+          <!-- prettier-ignore -->
+          {{ subscription_form.csrf_token }}
+          {{ subscription_form.channel_id(**{"class": "form-control me-2", "placeholder": "Channel Name or ID", "aria-label": "Channel Name or ID", "data-channel-api": url_for('api_channel.search')}) }}
           <button
             id="navbar-subscribe-submit"
             class="btn btn-success my-2 my-sm-0 subscribe-submit"
             type="submit"
-            data-subscribe-api="{{ url_for('api_channel.subscribe', channel_id='<channel_id>') }}"
+            data-subscribe-api="{{ url_for('api_subscription.add') }}"
           >
             Subscribe
           </button>

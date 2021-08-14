@@ -15,6 +15,16 @@ const CLIPBOARD_SELECTOR = ".clipboard";
 // Util Functions
 // ---------------
 
+async function catch_error(fetch_obj) {
+  try {
+    const data = await fetch_obj;
+    return [data, null];
+  } catch (error) {
+    console.error(error);
+    return [null, error];
+  }
+}
+
 function set_loading(button) {
   let spinner_id = Date.now();
   $(button)
@@ -115,7 +125,7 @@ function init_popover() {
 // Toolbar
 // ---------------
 
-function submit_subscribe(event) {
+async function submit_subscribe(event) {
   // UI
   let icon = $("<span>").attr({
     class: "spinner-border spinner-border-sm mr-1",
@@ -126,46 +136,36 @@ function submit_subscribe(event) {
   $(event.currentTarget).prop("disabled", true).empty().append(icon, text);
 
   // API
-  let is_navbar =
+  let form = new FormData(document.getElementById("navbar-subscribe-form"));
+  const is_navbar =
     $(event.currentTarget).attr("id") === "navbar-subscribe-submit"; // false for youtube subscription
-  let api_endpoint = $("#navbar-subscribe-submit").data("subscribe-api");
-  let channel_id = is_navbar
-    ? $("#subscribe-input").val()
-    : $(event.currentTarget).data("channel-id");
-  api_endpoint = api_endpoint.replace(encodeURI("<channel_id>"), channel_id);
-  $.ajax({
-    type: "GET",
-    url: api_endpoint,
-    success: (response) => {
-      if (response) {
-        if (is_navbar) {
-          location.href = $("#navbar-main").attr("href");
-        } else {
-          icon.remove();
-          $(event.currentTarget).prepend(
-            $("<i>").addClass("fas fa-check mr-1")
-          );
-          text.text("Done!");
-          console.log(response);
-        }
-      } else {
-        alert("Something went wrong");
-        if (is_navbar) {
-          location.reload();
-        } else {
-          $(event.currentTarget)
-            .removeClass("btn-success")
-            .addClass("btn-danger");
-          icon.remove();
-          $(event.currentTarget).prepend(
-            $("<i>").addClass("fas fa-times mr-1")
-          );
-          text.text("Error");
-          console.log(response);
-        }
-      }
-    },
-  });
+  const api_endpoint = $("#navbar-subscribe-submit").data("subscribe-api");
+  const [results, error] = await catch_error(
+    fetch(api_endpoint, {
+      method: "POST",
+      body: form,
+    })
+  );
+
+  if (error || !results.ok) {
+    alert("Something went wrong");
+    if (is_navbar) {
+      // location.reload();
+    } else {
+      $(event.currentTarget).removeClass("btn-success").addClass("btn-danger");
+      icon.remove();
+      $(event.currentTarget).prepend($("<i>").addClass("fas fa-times mr-1"));
+      text.text("Error");
+    }
+  }
+
+  if (is_navbar) {
+    location.href = $("#navbar-main").attr("href");
+  } else {
+    icon.remove();
+    $(event.currentTarget).prepend($("<i>").addClass("fas fa-check mr-1"));
+    text.text("Done!");
+  }
 }
 
 $(document).ready(() => {
@@ -173,8 +173,8 @@ $(document).ready(() => {
   init_popover();
 
   $(".subscribe-submit").click(submit_subscribe);
-  let channel_search_api = $("#subscribe-input").data("channel-api");
-  $("#subscribe-input").autoComplete({
+  let channel_search_api = $("#channel_id").data("channel-api");
+  $("#channel_id").autoComplete({
     resolverSettings: {
       url: channel_search_api,
       queryKey: "query",

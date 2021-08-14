@@ -46,11 +46,17 @@
         {{ tag.content(subscription.tags, subscription.channel) }}
       </td>
       <td>
+        <form id="{{ subscription.channel_id }}-unsubscribe-form">
+          <!-- prettier-ignore -->
+          {{ subscription.remove_form.csrf_token }}
+          {{ subscription.remove_form.channel_id }}
+        </form>
         <button
           type="button"
           class="btn btn-danger unsubscribe-btn"
+          data-channel-id="{{ subscription.channel_id }}"
           data-channel-name="{{ subscription.channel.name }}"
-          data-api-endpoint="{{ url_for('api_channel.unsubscribe', channel_id=subscription.channel_id) }}"
+          data-api-endpoint="{{ url_for('api_subscription.remove') }}"
         >
           Unsubscribe
         </button>

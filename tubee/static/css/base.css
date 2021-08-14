@@ -17,7 +17,7 @@ body {
   z-index: 1;
 }
 
-#subscribe-input {
+#channel_id {
   width: 300px;
   transition: all 0.2s ease-in-out;
 }

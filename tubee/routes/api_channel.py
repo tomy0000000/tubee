@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, jsonify, request, url_for
-from flask_login import current_user, login_required
+from flask_login import login_required
 
 from ..helper import admin_required_decorator as admin_required
 from ..helper.youtube import build_youtube_api
@@ -77,20 +77,6 @@ def status(channel_id):
     channel = Channel.query.get_or_404(channel_id)
     response = channel.refresh()
     return jsonify(response)
-
-
-@api_channel_blueprint.route("/<channel_id>/subscribe")
-@login_required
-def subscribe(channel_id):
-    """Subscribe to a Channel"""
-    return jsonify(current_user.subscribe_to(channel_id))
-
-
-@api_channel_blueprint.route("/<channel_id>/unsubscribe")
-@login_required
-def unsubscribe(channel_id):
-    """Unsubscribe to a Channel"""
-    return jsonify(current_user.unbsubscribe(channel_id))
 
 
 @api_channel_blueprint.route("/<channel_id>/fetch-videos")

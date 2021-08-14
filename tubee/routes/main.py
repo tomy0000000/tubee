@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
-from ..forms import ActionForm, TagRenameForm, TagSubscriptionForm
+from ..forms import ActionForm, SubscriptionTagForm, TagRenameForm
 from ..helper import youtube_required
 from ..helper.youtube import fetch_video_metadata
 from ..models import Callback, Channel, SubscriptionTag, Tag, Video
@@ -65,7 +65,7 @@ def channel(channel_id):
         "channel.html",
         subscription=subscription,
         action_form=ActionForm(),
-        tag_form=TagSubscriptionForm(),
+        tag_form=SubscriptionTagForm(),
         videos=videos,
     )
 

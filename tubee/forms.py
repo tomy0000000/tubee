@@ -47,8 +47,20 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
+class SubscriptionForm(FlaskForm):
+    """Basic Subscription Form, for adding and removing subscription"""
+
+    channel_id = StringField("Channel ID", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        channel_id_hidden = kwargs.pop("channel_id_hidden", False)
+        super().__init__(*args, **kwargs)
+        if channel_id_hidden:
+            self.channel_id.widget = HiddenInput()
+
+
 class TagForm(FlaskForm):
-    """Base Tag Form, also for removing tag"""
+    """Basic Tag Form, for removing tag"""
 
     tag_name = StringField(
         "Tag",
@@ -56,16 +68,19 @@ class TagForm(FlaskForm):
     )
 
     def __init__(self, *args, **kwargs):
-        hidden_mode = kwargs.pop("hidden_mode", False)
+        tag_name_hidden = kwargs.pop("tag_name_hidden", False)
         super().__init__(*args, **kwargs)
-        if hidden_mode:
+        if tag_name_hidden:
             self.tag_name.widget = HiddenInput()
 
 
-class TagSubscriptionForm(TagForm):
+class SubscriptionTagForm(SubscriptionForm, TagForm):
     """Tag Form for editing subscription tag"""
 
-    channel_id = HiddenField("Channel ID", validators=[DataRequired()])
+    def __init__(self, *args, **kwargs):
+        if "channel_id_hidden" not in kwargs:
+            kwargs["channel_id_hidden"] = True
+        super().__init__(*args, **kwargs)
 
 
 class TagRenameForm(FlaskForm):

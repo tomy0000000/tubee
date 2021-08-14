@@ -35,7 +35,7 @@ class Tag(db.Model):
     def remove_form(self):
         from ..forms import TagForm
 
-        return TagForm(hidden_mode=True)
+        return TagForm(tag_name_hidden=True)
 
     @remove_form.setter
     def remove_form(self, form):
@@ -47,9 +47,9 @@ class Tag(db.Model):
 
     @property
     def untag_form(self):
-        from ..forms import TagSubscriptionForm
+        from ..forms import SubscriptionTagForm
 
-        return TagSubscriptionForm(hidden_mode=True)
+        return SubscriptionTagForm(tag_name_hidden=True)
 
     @untag_form.setter
     def untag_form(self, form):

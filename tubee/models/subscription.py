@@ -69,6 +69,22 @@ class Subscription(db.Model):
     def tags(self):
         raise ValueError("Tags should be modify using instance methods")
 
+    @property
+    def remove_form(self):
+        from ..forms import SubscriptionForm
+
+        form = SubscriptionForm(channel_id_hidden=True)
+        form.channel_id.data = self.channel_id
+        return form
+
+    @remove_form.setter
+    def remove_form(self, form):
+        raise ValueError("Form can't be modify")
+
+    @remove_form.deleter
+    def remove_form(self):
+        raise ValueError("Form can't be modify")
+
     def tag(self, tag_name):
         tag = Tag.query.filter_by(name=tag_name, username=self.username).first()
         if not tag:
