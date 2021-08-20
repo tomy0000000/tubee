@@ -105,7 +105,7 @@ class ChannelModelTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             del self.test_channel.expiration
 
-    @mock.patch("tubee.helper.notify_admin")
+    @mock.patch("tubee.utils.notify_admin")
     @mock.patch("tubee.models.channel.details")
     def test_channel_refresh(
         self,

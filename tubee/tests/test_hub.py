@@ -1,11 +1,11 @@
-"""Test Cases of helper.hub"""
+"""Test Cases of utils.hub"""
 import unittest
 import uuid
 from os.path import dirname, join
 from unittest import mock
 from urllib.parse import urljoin
 
-from tubee.helper import hub
+from tubee.utils import hub
 
 GOOGLE_HUB = "https://pubsubhubbub.appspot.com/"
 TEST_CALLBACK_URL = "https://tubee.tubee/channel/UCBR8-60-B28hp2BmDPdntcQ/callback"
@@ -42,22 +42,20 @@ class HubPackageTestCase(unittest.TestCase):
         pass
 
     @mock.patch(
-        "tubee.helper.hub._formal_post_request", side_effect=mock_subscribe_request
+        "tubee.utils.hub._formal_post_request", side_effect=mock_subscribe_request
     )
     def test_hub_subscribe(self, mocked_func):
         results = hub.subscribe(GOOGLE_HUB, TEST_CALLBACK_URL, TEST_TOPIC)
         self.assertTrue(results.success)
 
     @mock.patch(
-        "tubee.helper.hub._formal_post_request", side_effect=mock_subscribe_request
+        "tubee.utils.hub._formal_post_request", side_effect=mock_subscribe_request
     )
     def test_hub_unsubscribe(self, mocked_func):
         results = hub.unsubscribe(GOOGLE_HUB, TEST_CALLBACK_URL, TEST_TOPIC)
         self.assertTrue(results.success)
 
-    @mock.patch(
-        "tubee.helper.hub._formal_get_request", side_effect=mock_details_request
-    )
+    @mock.patch("tubee.utils.hub._formal_get_request", side_effect=mock_details_request)
     def test_hub_details(self, mocked_func):
         results = hub.details(GOOGLE_HUB, TEST_CALLBACK_URL, TEST_TOPIC)
         DETAILS_FIELDS = [
