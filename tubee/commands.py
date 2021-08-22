@@ -53,6 +53,19 @@ def test(run_converage):
     sys.exit(not results.wasSuccessful())
 
 
+@click.command()
+@click.argument("username")
+@with_appcontext
+def admin(username):
+    """Grant user as admin."""
+    user = models.User.query.get(username)
+    if not user:
+        raise ValueError(f"User <{username}> not found.")
+    user.admin = True
+    db.session.commit()
+    click.echo(f"User <{username}> is now an admin.")
+
+
 @docker_cli.command(
     "up", context_settings=dict(ignore_unknown_options=True, allow_extra_args=True)
 )

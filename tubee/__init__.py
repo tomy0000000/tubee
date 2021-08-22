@@ -101,6 +101,7 @@ def create_app(config_name, coverage=None):
     # CLI Commands
     app.cli.add_command(commands.deploy)
     app.cli.add_command(commands.test)
+    app.cli.add_command(commands.admin)
     app.cli.add_command(commands.docker_cli)
 
     # Inject Subscription Form in Navbar for all views

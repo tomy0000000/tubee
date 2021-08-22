@@ -63,9 +63,10 @@ class User(UserMixin, db.Model):
     #     #     # #      #    # #    # #    # #    # #        #   #    # #    # #    #
     #      #####  ###### #    #  ####   ####  #    # ######   #   #    #  ####  #####
 
-    def __init__(self, username, password, **kwargs):
+    def __init__(self, username, password, admin=False, **kwargs):
         self.username = username
         self.password = password
+        self.admin = admin
         db.session.add(self)
         db.session.commit()
         current_app.logger.info(f"User <{self.username}>: Create")

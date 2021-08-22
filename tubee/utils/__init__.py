@@ -2,6 +2,8 @@
 
 Some Misc Functions used in this app
 """
+import secrets
+import string
 from functools import wraps
 from urllib.parse import urljoin, urlparse
 
@@ -15,6 +17,20 @@ def setup_app():
     # Migrate database to latest revision
     upgrade()
     current_app.logger.info("Database migrated")
+
+    from ..models.user import User
+
+    # Create an admin user if none exists
+    if not User.query.filter_by(admin=True).first():
+        # Create a random password
+        alphabet = string.ascii_letters + string.digits
+        password = "".join(secrets.choice(alphabet) for i in range(20))
+
+        User(username="admin", password=password, admin=True)
+        current_app.db.session.commit()
+        current_app.logger.info("Admin created automatically:")
+        current_app.logger.info("Username: admin")
+        current_app.logger.info(f"Password: {password}")
 
     # Reschedule all tasks
     from ..models import Channel
