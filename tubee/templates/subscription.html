@@ -1,4 +1,5 @@
 <!-- prettier-ignore -->
+{% import 'action/table.html' as action_table with context %}
 {% from "widgets/callback_badge.html" import badge %}
 
 {% extends "base.html" %}
@@ -15,6 +16,8 @@
 <!-- prettier-ignore -->
 {% block script %}
 <script src="{{ url_for('static', filename='js/subscription.js') }}"></script>
+<!-- prettier-ignore -->
+{{ action_table.script() }}
 {% endblock %}
 
 <!-- prettier-ignore -->
@@ -23,7 +26,7 @@
 {% if tag_name %}
 
 {% include "tag/title.html" %}
-{% include "action/table.html" %}
+{{ action_table.content(actions) }}
 
 {% elif tag_name is false %}
 <!-- BEGIN User Tags -->

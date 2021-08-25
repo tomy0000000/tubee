@@ -1,3 +1,5 @@
+<!-- prettier-ignore -->
+{% import 'action/table.html' as action_table with context %}
 {% import "subscription/tag.html" as tag %}
 
 <!-- prettier-ignore -->
@@ -19,6 +21,7 @@
 {% block script %}
 <script src="{{ url_for('static', filename='js/channel.js') }}"></script>
 <!-- prettier-ignore -->
+{{ action_table.script() }}
 {{ tag.script() }}
 {% endblock %}
 
@@ -169,8 +172,7 @@
 <!-- END Channel Infos -->
 
 <!-- prettier-ignore -->
-{% set actions = subscription.actions %}
-{% include "action/table.html" %}
+{{ action_table.content(subscription.actions) }}
 {% include "component/channel_video_table.html" %}
 
 {% endblock %}
