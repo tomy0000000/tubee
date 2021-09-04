@@ -40,7 +40,7 @@ def create_app(config_name, coverage=None):
         sentry_sdk.init(
             dsn=config_instance.SENTRY_DSN,
             integrations=[FlaskIntegration()],
-            traces_sample_rate=1.0,
+            traces_sample_rate=0.2,
             release=__version__,
         )
 
