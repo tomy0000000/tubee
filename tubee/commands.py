@@ -29,12 +29,11 @@ def deploy():
     "--coverage/--no-coverage",
     "run_converage",
     default=False,
-    help="Run tests under code coverage.",
 )
 @with_appcontext
-def test(run_converage):
-    """Run the unit tests."""
-    if run_converage and not os.environ.get("FLASK_COVERAGE"):
+def test(converage):
+    """Run the unit tests (with or withour coverage)."""
+    if converage and not os.environ.get("FLASK_COVERAGE"):
         os.environ["FLASK_COVERAGE"] = "1"
         sys.exit(subprocess.call(sys.argv))
 
@@ -44,12 +43,12 @@ def test(run_converage):
     if os.environ.get("FLASK_COVERAGE"):
         current_app.coverage.stop()
         current_app.coverage.save()
-        print("Coverage Summary:")
+        click.echo("Coverage Summary:")
         current_app.coverage.report()
         covdir = os.path.join(os.path.dirname(__file__), "..", "htmlcov")
         covdir_abs = os.path.abspath(covdir)
         current_app.coverage.html_report(directory=covdir_abs)
-        print(f"HTML version: file://{covdir_abs}/index.html")
+        click.echo(f"HTML version: file://{covdir_abs}/index.html")
     sys.exit(not results.wasSuccessful())
 
 
@@ -73,11 +72,10 @@ def admin(username):
     "--dev/--prod",
     "development",
     default=True,
-    help="Application mode.  [default: dev]",
 )
 @click.pass_context
 def docker(context, development):
-    """Run Development Application"""
+    """Activate docker environment"""
     command = ["docker-compose"]
     if development:
         command += "--file docker-compose.dev.yml".split()

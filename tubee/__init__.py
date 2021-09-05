@@ -63,7 +63,7 @@ def create_app(config_name, coverage=None):
         app.coverage = coverage
 
     if load_external:
-        app.logger.info("External Logging Config Loaded")
+        app.logger.debug("External Logging Config Loaded")
 
     # Extensions Initialization
     bcrypt.init_app(app)

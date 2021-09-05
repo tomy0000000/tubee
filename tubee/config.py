@@ -74,7 +74,7 @@ class DevelopmentConfig(Config):
         Config.init_app(app)
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
         app.logger.setLevel(logging.DEBUG)
-        app.logger.info("Development Config Loaded")
+        app.logger.debug("Development Config Loaded")
 
 
 class TestingConfig(Config):
@@ -101,7 +101,7 @@ class ProductionConfig(Config):
     def init_app(cls, app):
         Config.init_app(app)
         app.logger.setLevel(logging.INFO)
-        app.logger.info("Production Config Loaded")
+        app.logger.debug("Production Config Loaded")
 
 
 config = {
