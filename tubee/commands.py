@@ -27,13 +27,13 @@ def deploy():
 @click.command()
 @click.option(
     "--coverage/--no-coverage",
-    "run_converage",
+    "coverage",
     default=False,
 )
 @with_appcontext
-def test(converage):
+def test(coverage):
     """Run the unit tests (with or withour coverage)."""
-    if converage and not os.environ.get("FLASK_COVERAGE"):
+    if coverage and not os.environ.get("FLASK_COVERAGE"):
         os.environ["FLASK_COVERAGE"] = "1"
         sys.exit(subprocess.call(sys.argv))
 
