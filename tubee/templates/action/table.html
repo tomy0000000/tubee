@@ -9,6 +9,7 @@
       <th scope="col">Name</th>
       <th scope="col">Type</th>
       <th scope="col">
+        {% if not show_scope %}
         <button
           type="button"
           class="btn btn-success"
@@ -17,6 +18,7 @@
         >
           New
         </button>
+        {% endif %}
       </th>
     </tr>
   </thead>
@@ -28,21 +30,17 @@
       <th>
         <!-- prettier-ignore -->
         {% if action.channel_id %}
-        <p class="my-auto">
-          Channel:
-          <a href="{{ url_for('main.channel', channel_id=action.channel_id) }}"
-            >{{ action.channel.name }}</a
-          >
-        </p>
+        <p class="my-auto">Channel</p>
+        <a href="{{ url_for('main.channel', channel_id=action.channel_id) }}"
+          >{{ action.channel.name }}</a
+        >
         {% endif %}
         <!-- prettier-ignore -->
         {% if action.tag_id %}
-        <p class="my-auto">
-          Tag:
-          <a href="{{ url_for('main.dashboard', tag_name=action.tag.name) }}"
-            >{{ action.tag.name }}</a
-          >
-        </p>
+        <p class="my-auto">Tag</p>
+        <a href="{{ url_for('main.dashboard', tag_name=action.tag.name) }}"
+          >{{ action.tag.name }}</a
+        >
         {% endif %}
       </th>
       {% endif %}
@@ -87,7 +85,9 @@
 <!-- END Action Infos -->
 
 <!-- prettier-ignore -->
+{% if not show_scope %}
 {% include "action/modal_new.html" %}
+{% endif %}
 {% include "action/modal_edit.html" %}
 {% include "action/modal_remove.html" %}
 {%- endmacro %}

@@ -53,6 +53,12 @@ def dashboard(tag_name):
     )
 
 
+@main_blueprint.route("/actions/")
+def actions():
+    actions = current_user.actions.all()
+    return render_template("actions.html", actions=actions, action_form=ActionForm())
+
+
 @main_blueprint.route("/channel/<channel_id>")
 def channel(channel_id):
     subscription = current_user.subscriptions.filter_by(
