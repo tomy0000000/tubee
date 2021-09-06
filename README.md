@@ -10,14 +10,16 @@
         <img src="https://img.shields.io/github/workflow/status/tomy0000000/Tubee/Test%20latest?logo=GitHub%20Actions" alt="GitHub Workflow Status" />
     </a>
     <a href="https://codecov.io/gh/tomy0000000/Tubee">
-        <img src="https://codecov.io/gh/tomy0000000/Tubee/branch/master/graph/badge.svg?token=j6pUVAg2Wf" alt="codecov" />
+        <img src="https://codecov.io/gh/tomy0000000/Tubee/branch/main/graph/badge.svg?token=j6pUVAg2Wf" alt="codecov" />
     </a>
+    <br>
     <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Ftomy0000000%2FTubee?ref=badge_shield">
         <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomy0000000%2FTubee.svg?type=shield" alt="LICENSE scan status" />
     </a>
-    <a href="https://github.com/tomy0000000/Tubee/blob/master/LICENSE">
+    <a href="https://github.com/tomy0000000/Tubee/blob/main/LICENSE">
         <img src="https://img.shields.io/github/license/tomy0000000/Tubee.svg" alt="MIT liscense" />
     </a>
+    <br>
     <a href="https://github.com/psf/black">
         <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black" />
     </a>
