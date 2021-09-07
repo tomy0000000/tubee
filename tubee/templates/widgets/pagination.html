@@ -1,0 +1,62 @@
+{% macro content(pagination) -%}
+<!-- prettier-ignore -->
+{% set page_from = [pagination.page-5, 1]|max %}
+{% set page_to = [pagination.page+5, pagination.pages]|min %}
+<!-- BEGIN Pagination -->
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <li class="page-item {{ 'disabled' if not pagination.has_prev }}">
+      <a
+        class="page-link"
+        href="{{ url_for(request.endpoint, page=pagination.prev_num, **request.view_args) }}"
+        aria-label="Previous"
+      >
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    {% if page_from != 1 %}
+    <li class="page-item disabled">
+      <a class="page-link">...</a>
+    </li>
+    {% endif %}
+
+    <!-- prettier-ignore -->
+    {% for page in range(page_from, page_to+1) %}
+    <li class="page-item {{ 'active' if pagination.page == page }}">
+      <a
+        class="page-link"
+        href="{{ url_for(request.endpoint, page=page, **request.view_args) }}"
+        >{{ page }}</a
+      >
+    </li>
+    {% endfor %}
+
+    <!-- prettier-ignore -->
+    {% if page_to != pagination.pages %}
+    <li class="page-item disabled">
+      <a class="page-link">...</a>
+    </li>
+    {% endif %}
+
+    <li class="page-item {{ 'disabled' if not pagination.has_next }}">
+      <a
+        class="page-link"
+        href="{{ url_for(request.endpoint, page=pagination.next_num, **request.view_args) }}"
+        aria-label="Next"
+      >
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<!-- END Pagination -->
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro style() -%}
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro script() -%}
+{%- endmacro %}
