@@ -36,6 +36,14 @@
           </li>
           <li class="nav-item">
             <a
+              class="nav-link {{ 'active' if title == 'Tags' }}"
+              href="{{ url_for('main.tags') }}"
+            >
+              Tags
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
               class="nav-link {{ 'active' if title == 'Actions' }}"
               href="{{ url_for('main.actions') }}"
             >

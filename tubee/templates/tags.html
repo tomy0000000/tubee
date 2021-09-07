@@ -1,0 +1,81 @@
+<!-- prettier-ignore -->
+{% extends "base.html" %}
+{% set title = "Tags" %}
+
+<!-- prettier-ignore -->
+{% block style %}
+<style>
+  .tags-channel-thumbnails {
+    height: 3rem;
+  }
+</style>
+{% endblock %}
+
+<!-- prettier-ignore -->
+{% block script %}
+{% endblock %}
+
+<!-- prettier-ignore -->
+{% block content %}
+
+<!-- BEGIN Tag Grid -->
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <!-- prettier-ignore -->
+  {% for tag in tags %}
+  <div class="col">
+    <div class="card">
+      <div
+        class="card-header d-flex align-items-center justify-content-between"
+      >
+        <a
+          href="{{ url_for('main.dashboard', tag_name=tag.name) }}"
+          class="stretched-link"
+        >
+          <h5 class="card-title m-0">{{ tag.name }}</h5>
+        </a>
+        <span class="badge bg-secondary rounded-pill"
+          >{{ tag.subscription_tags.count() }}</span
+        >
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for subscription_tag in tag.subscription_tags %}
+        <li class="list-group-item">
+          <!-- prettier-ignore -->
+          {% if subscription_tag.subscription.channel.infos.snippet.thumbnails.high.url %}
+          <!-- prettier-ignore -->
+          <img
+            src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.high.url }}"
+            class="tags-channel-thumbnails rounded-circle"
+          />
+          {% endif %}
+          <a
+            href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
+            class="stretched-link p-2"
+          >
+            {{ subscription_tag.subscription.channel.name }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="col">
+    <div class="card">
+      <div
+        class="card-header d-flex align-items-center justify-content-between"
+      >
+        <a
+          href="{{ url_for('main.dashboard', tag_name=None) }}"
+          class="stretched-link"
+        >
+          <h5 class="card-title m-0">Untagged</h5>
+        </a>
+      </div>
+      <ul class="list-group list-group-flush"></ul>
+    </div>
+  </div>
+</div>
+<!-- END Tag Grid -->
+
+{% endblock %}

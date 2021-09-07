@@ -15,8 +15,8 @@ main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/", defaults={"tag_name": False})
-@main_blueprint.route("/untagged", defaults={"tag_name": None})
-@main_blueprint.route("/tag/<tag_name>")
+@main_blueprint.route("/subscriptions/", defaults={"tag_name": None})
+@main_blueprint.route("/subscriptions/<tag_name>")
 @login_required
 def dashboard(tag_name):
     """Showing Subscribed Channels with specified tag"""
@@ -57,6 +57,12 @@ def dashboard(tag_name):
 def actions():
     actions = current_user.actions.all()
     return render_template("actions.html", actions=actions, action_form=ActionForm())
+
+
+@main_blueprint.route("/tags/")
+def tags():
+    tags = current_user.tags.all()
+    return render_template("tags.html", tags=tags)
 
 
 @main_blueprint.route("/channel/<channel_id>")
