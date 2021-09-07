@@ -1,0 +1,99 @@
+{% import "subscription/tag.html" as tag %}
+
+<!-- prettier-ignore -->
+{% macro content(channel) -%}
+<!-- BEGIN Channel Infos -->
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <div class="row">
+      <div class="col-3">
+        <img
+          src="{{ channel.infos.snippet.thumbnails.high.url }}"
+          class="w-100 rounded-circle"
+          alt="Thumbnails of {{ channel.name }}"
+        />
+      </div>
+      <div class="col">
+        <h3 class="mt-0">{{ channel.name }}</h3>
+        {% if channel.infos.snippet.customUrl %}
+        <button class="btn btn-sm youtube-btn">
+          <a
+            href="https://www.youtube.com/{{ channel.infos.snippet.customUrl }}"
+            target="_blank"
+            class="text-decoration-none"
+          >
+            <i class="fab fa-youtube"></i>
+            Open In YouTube
+          </a>
+        </button>
+        <a
+          href="#"
+          class="text-muted clipboard"
+          data-clipboard-text="{{ channel.infos.snippet.customUrl }}"
+        >
+          <p class="mb-0">#{{ channel.infos.snippet.customUrl }}</p>
+        </a>
+        {% else %}
+        <button class="btn btn-sm youtube-btn">
+          <a
+            href="https://www.youtube.com/channel/{{ channel.id }}"
+            target="_blank"
+            class="text-decoration-none"
+          >
+            <i class="fab fa-youtube"></i>
+            Open In YouTube
+          </a>
+        </button>
+        {% endif %}
+        <a
+          href="#"
+          class="text-muted clipboard"
+          data-clipboard-text="{{ channel.id }}"
+        >
+          <p class="mb-0">{{ channel.id }}</p>
+        </a>
+        <p id="channel-description">{{ channel.infos.snippet.description }}</p>
+        {{ tag.content(subscription.tags, channel) }}
+        <form id="tag-form" class="row gx-3">
+          <!-- prettier-ignore -->
+          {{ tag_form.csrf_token }}
+          {{ tag_form.channel_id(value=channel.id) }}
+          <div class="col-auto">
+            <!-- prettier-ignore -->
+            {{ tag_form.tag_name.label(class="visually-hidden", for="tag_name") }}
+            <div class="input-group">
+              <div class="input-group-text">#</div>
+              {{ tag_form.tag_name(class="form-control") }}
+            </div>
+          </div>
+          <div class="col-auto">
+            <button
+              class="btn btn-primary mb-2 submit-btn"
+              type="button"
+              data-api-endpoint="{{ url_for('api_subscription.tag') }}"
+            >
+              Add Tag
+            </button>
+          </div>
+        </form>
+        {% if current_user.is_subscribing(channel) %}
+        <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
+        {% else %}
+        <button type="button" class="btn btn-success btn-lg">Subscribe</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Channel Infos -->
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro style() -%}
+{{ tag.style() }}
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro script() -%}
+{{ tag.script() }}
+{%- endmacro %}

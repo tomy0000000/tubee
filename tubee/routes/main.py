@@ -64,15 +64,17 @@ def channel(channel_id):
     subscription = current_user.subscriptions.filter_by(
         channel_id=channel_id
     ).first_or_404()
-    videos = subscription.channel.videos.order_by(
-        Video.uploaded_timestamp.desc()
-    ).limit(20)
+
+    # Paginate videos
+    page = request.args.get("page", 1, type=int)
+    videos = subscription.channel.videos.order_by(Video.uploaded_timestamp.desc())
+    pagination = videos.paginate(page, current_app.config["PAGINATE_COUNT"], False)
     return render_template(
         "channel.html",
         subscription=subscription,
         action_form=ActionForm(),
         tag_form=SubscriptionTagForm(),
-        videos=videos,
+        video_pagination=pagination,
     )
 
 

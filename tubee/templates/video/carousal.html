@@ -1,0 +1,64 @@
+{% macro content(videos) -%}
+<!-- BEGIN Video Thumbnails Carousel -->
+{% set thumb_num = [videos | length, 3]|min %}
+<div
+  id="video-carousel"
+  class="carousel slide carousel-fade"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-indicators">
+    <button
+      data-bs-target="#video-carousel"
+      data-bs-slide-to="0"
+      class="active"
+    ></button>
+    {% for i in range(1, thumb_num) %}
+    <button
+      data-bs-target="#video-carousel"
+      data-bs-slide-to="{{ i }}"
+    ></button>
+    {% endfor %}
+  </div>
+  <div class="carousel-inner">
+    {% for video in videos[:thumb_num] %}
+    <div class="carousel-item {{ 'active' if loop.first else '' }}">
+      <img
+        src="{{ video.thumbnails.maxres.url }}"
+        class="d-block w-100"
+        alt="{{ video.name }}"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>{{ video.name }}</h5>
+        <p>{{ video.details.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#video-carousel"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    data-bs-target="#video-carousel"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- END Video Thumbnails Carousel -->
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro style() -%}
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro script() -%}
+{%- endmacro %}

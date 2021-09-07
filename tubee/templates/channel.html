@@ -1,6 +1,8 @@
 <!-- prettier-ignore -->
 {% import 'action/table.html' as action_table with context %}
-{% import "subscription/tag.html" as tag %}
+{% import 'channel/info.html' as channel_info with context %}
+{% import 'video/carousal.html' as video_carousal with context %}
+{% import 'video/table.html' as video_table with context %}
 
 <!-- prettier-ignore -->
 {% extends "base.html" %}
@@ -14,7 +16,10 @@
   href="{{ url_for('static', filename='css/channel.css') }}"
 />
 <!-- prettier-ignore -->
-{{ tag.style() }}
+{{ action_table.style() }}
+{{ channel_info.style() }}
+{{ video_carousal.style() }}
+{{ video_table.style() }}
 {% endblock %}
 
 <!-- prettier-ignore -->
@@ -22,157 +27,16 @@
 <script src="{{ url_for('static', filename='js/channel.js') }}"></script>
 <!-- prettier-ignore -->
 {{ action_table.script() }}
-{{ tag.script() }}
+{{ channel_info.script() }}
+{{ video_carousal.script() }}
+{{ video_table.script() }}
 {% endblock %}
 
-<!-- prettier-ignore -->
 {% block content %}
-
-<!-- BEGIN Video Thumbnails Carousel -->
-<!-- prettier-ignore -->
-{% if videos %}
-{% set thumb_num = [videos.count(), 3]|min %}
-<div
-  id="video-carousel"
-  class="carousel slide carousel-fade"
-  data-bs-ride="carousel"
->
-  <div class="carousel-indicators">
-    <button
-      data-bs-target="#video-carousel"
-      data-bs-slide-to="0"
-      class="active"
-    ></button>
-    {% for i in range(1, thumb_num) %}
-    <button
-      data-bs-target="#video-carousel"
-      data-bs-slide-to="{{ i }}"
-    ></button>
-    {% endfor %}
-  </div>
-  <div class="carousel-inner">
-    {% for video in videos[:thumb_num] %}
-    <div class="carousel-item {{ 'active' if loop.first else '' }}">
-      <img
-        src="{{ video.thumbnails.maxres.url }}"
-        class="d-block w-100"
-        alt="{{ video.name }}"
-      />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>{{ video.name }}</h5>
-        <p>{{ video.details.description }}</p>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  <button
-    class="carousel-control-prev"
-    type="button"
-    data-bs-target="#video-carousel"
-    data-bs-slide="prev"
-  >
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button
-    class="carousel-control-next"
-    data-bs-target="#video-carousel"
-    data-bs-slide="next"
-  >
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
+{% if video_pagination.items %}
+  {{ video_carousal.content(video_pagination.items) }}
 {% endif %}
-<!-- END Video Thumbnails Carousel -->
-
-<!-- BEGIN Channel Infos -->
-<div class="p-5 mb-4 bg-light rounded-3">
-  <div class="container-fluid py-5">
-    <div class="row">
-      <div class="col-3">
-        <img
-          src="{{ channel.infos.snippet.thumbnails.high.url }}"
-          class="w-100 rounded-circle"
-          alt="Thumbnails of {{ channel.name }}"
-        />
-      </div>
-      <div class="col">
-        <h3 class="mt-0">{{ channel.name }}</h3>
-        {% if channel.infos.snippet.customUrl %}
-        <button class="btn btn-sm youtube-btn">
-          <a
-            href="https://www.youtube.com/{{ channel.infos.snippet.customUrl }}"
-            target="_blank"
-            class="text-decoration-none"
-          >
-            <i class="fab fa-youtube"></i>
-            Open In YouTube
-          </a>
-        </button>
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ channel.infos.snippet.customUrl }}"
-        >
-          <p class="mb-0">#{{ channel.infos.snippet.customUrl }}</p>
-        </a>
-        {% else %}
-        <button class="btn btn-sm youtube-btn">
-          <a
-            href="https://www.youtube.com/channel/{{ channel.id }}"
-            target="_blank"
-            class="text-decoration-none"
-          >
-            <i class="fab fa-youtube"></i>
-            Open In YouTube
-          </a>
-        </button>
-        {% endif %}
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ channel.id }}"
-        >
-          <p class="mb-0">{{ channel.id }}</p>
-        </a>
-        <p id="channel-description">{{ channel.infos.snippet.description }}</p>
-        {{ tag.content(subscription.tags, channel) }}
-        <form id="tag-form" class="row gx-3">
-          <!-- prettier-ignore -->
-          {{ tag_form.csrf_token }}
-          {{ tag_form.channel_id(value=channel.id) }}
-          <div class="col-auto">
-            <!-- prettier-ignore -->
-            {{ tag_form.tag_name.label(class="visually-hidden", for="tag_name") }}
-            <div class="input-group">
-              <div class="input-group-text">#</div>
-              {{ tag_form.tag_name(class="form-control") }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <button
-              class="btn btn-primary mb-2 submit-btn"
-              type="button"
-              data-api-endpoint="{{ url_for('api_subscription.tag') }}"
-            >
-              Add Tag
-            </button>
-          </div>
-        </form>
-        {% if current_user.is_subscribing(channel) %}
-        <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
-        {% else %}
-        <button type="button" class="btn btn-success btn-lg">Subscribe</button>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</div>
-<!-- END Channel Infos -->
-
-<!-- prettier-ignore -->
+{{ channel_info.content(channel) }}
 {{ action_table.content(subscription.actions) }}
-{% include "component/channel_video_table.html" %}
-
+{{ video_table.content(video_pagination.items) }}
 {% endblock %}
