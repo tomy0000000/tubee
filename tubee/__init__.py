@@ -13,6 +13,7 @@ from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from jinja2 import StrictUndefined
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
@@ -121,6 +122,7 @@ def create_app(config_name, coverage=None):
     app.register_blueprint(routes.api_video_blueprint, url_prefix="/api/video")
     app.register_blueprint(routes.user_blueprint, url_prefix="/user")
     if app.debug:
+        app.jinja_env.undefined = StrictUndefined
         app.register_blueprint(routes.dev_blueprint, url_prefix="/dev")
     else:
         app.register_blueprint(routes.handler_blueprint)

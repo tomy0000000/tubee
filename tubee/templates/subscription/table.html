@@ -33,7 +33,7 @@
         >
           <p>{{ subscription.channel_id }}</p>
         </a>
-        {% if subscription.channel.infos.snippet.customUrl %}
+        {% if subscription.channel.infos.snippet.customUrl is defined %}
         <a
           href="#"
           class="text-muted clipboard"

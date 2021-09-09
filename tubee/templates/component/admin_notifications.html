@@ -66,7 +66,7 @@
     {% for notification in notifications %}
     <tr>
       <th scope="row">
-        {% if notification.kwargs.image_url %}
+        {% if notification.kwargs.image_url is defined %}
         <img
           src="{{ notification.kwargs.image_url }}"
           class="rounded"
@@ -74,8 +74,13 @@
         />
         {% endif %}
       </th>
-      <td>{{ notification.sent_timestamp }}</td>
-      <td>{{ notification.kwargs.title }}</td>
+      <td>
+        <!-- prettier-ignore -->
+        {{ notification.sent_timestamp if notification.sent_timestamp is defined }}
+      </td>
+      <td>
+        {{ notification.kwargs.title if notification.kwargs.title is defined }}
+      </td>
       <td>
         <button
           class="btn btn-primary"
@@ -88,35 +93,30 @@
         </button>
       </td>
       <td>
-        <a href="{{ notification.kwargs.url }}"
-          >{{ notification.kwargs.url_title }}</a
-        >
+        {% if notification.kwargs.url is defined %}
+        <a href="{{ notification.kwargs.url }}">
+          <!-- prettier-ignore -->
+          {% if notification.kwargs.url_title is defined %}
+          {{ notification.kwargs.url_title }}
+          {% else %}
+          {{ notification.kwargs.url }}
+          {% endif %}
+        </a>
+        {% endif %}
       </td>
       <td>
-        {% if notification.response.status == 1 %}
+        <!-- prettier-ignore -->
+        {% if notification.response is defined and notification.response.status is defined %}
         <button
           type="button"
-          class="btn btn-success response-btn"
+          class="btn {{ 'btn-success' if notification.response.status == 1 else 'btn-danger' }} response-btn"
           data-bs-container="body"
           data-bs-toggle="popover"
           data-bs-placement="right"
           data-bs-trigger="focus"
-          data-bs-content="{{ notification.response.request }}"
+          data-bs-content="{{ notification.response.request if notification.response.request is defined }}"
         >
-          OK
-          <span class="badge bg-light text-dark">1</span>
-        </button>
-        {% else %}
-        <button
-          type="button"
-          class="btn btn-danger response-btn"
-          data-bs-container="body"
-          data-bs-toggle="popover"
-          data-bs-placement="right"
-          data-bs-trigger="focus"
-          data-bs-content="{{ notification.response.request }}"
-        >
-          Error
+          {{ 'OK' if notification.response.status == 1 else 'Error' }}
           <span class="badge bg-light text-dark"
             >{{ notification.response.status }}</span
           >

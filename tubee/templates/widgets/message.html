@@ -6,7 +6,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <!-- MESSAGE -->
-{% if message_float %}
+{% if message_float is defined and message_float is true %}
 <div id="message-wrapper">
   {% endif %}
   <!-- prettier-ignore -->
@@ -27,7 +27,7 @@
   </div>
   {% endfor %}
   <!-- prettier-ignore -->
-  {% if message_float %}
+  {% if message_float is defined and message_float is true %}
 </div>
 {% endif %}
 <!-- END MESSAGE -->
