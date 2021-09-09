@@ -63,6 +63,7 @@ class Tag(db.Model):
         """Rename the tag"""
         self.name = new_name
         db.session.commit()
+        return True
 
     def delete(self):
         """Delete the tag"""

@@ -37,7 +37,7 @@ def dashboard(tag_name):
             .outerjoin(Tag)
             .filter(Tag.name == tag_name)
         )
-        actions = current_user.actions.join(Tag).filter(Tag.name == tag_name)
+        actions = current_user.actions.join(Tag).filter(Tag.name == tag_name).all()
 
     # Paginate subscriptions
     page = request.args.get("page", 1, type=int)
