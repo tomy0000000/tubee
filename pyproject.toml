@@ -1,3 +1,7 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.isort]
 profile = "black"
 src_paths = ["tubee", "migrations"]
@@ -14,7 +18,7 @@ repository = "https://github.com/tomy0000000/Tubee"
 documentation = "https://github.com/tomy0000000/Tubee/wiki"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 Authlib = "*"
 Flask = "*"
 Flask-Bcrypt = "*"
@@ -51,7 +55,11 @@ flask-shell-ipython = "*"
 pyyaml = "*"
 rope = "*"
 watchdog = "*"
+flake8 = "^3.9.2"
+black = "^21.8b0"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pyright]
+include = ["tubee"]
+exclude = [
+    "**/__pycache__",
+]

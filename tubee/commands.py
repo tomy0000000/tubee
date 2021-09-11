@@ -2,15 +2,14 @@ import os
 import subprocess
 import sys
 import unittest
+from pathlib import Path
 
 import click
 from flask import current_app
-from flask.cli import AppGroup, with_appcontext
+from flask.cli import with_appcontext
 
 from tubee import db, models
 from tubee.utils import setup_app
-
-docker_cli = AppGroup("docker", help="Run application with docker-compose.")
 
 
 def make_shell_context():
@@ -35,7 +34,7 @@ def test(coverage):
     """Run the unit tests (with or withour coverage)."""
     if coverage and not os.environ.get("FLASK_COVERAGE"):
         os.environ["FLASK_COVERAGE"] = "1"
-        sys.exit(subprocess.call(sys.argv))
+        sys.exit(subprocess.call([sys.executable, "-m", "flask"] + sys.argv[1:]))
 
     tests = unittest.TestLoader().discover("tubee/tests")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
@@ -43,12 +42,17 @@ def test(coverage):
     if os.environ.get("FLASK_COVERAGE"):
         current_app.coverage.stop()
         current_app.coverage.save()
+
         click.echo("Coverage Summary:")
         current_app.coverage.report()
-        covdir = os.path.join(os.path.dirname(__file__), "..", "htmlcov")
-        covdir_abs = os.path.abspath(covdir)
-        current_app.coverage.html_report(directory=covdir_abs)
-        click.echo(f"HTML version: file://{covdir_abs}/index.html")
+
+        html_covdir = Path.cwd().joinpath("htmlcov")
+        current_app.coverage.html_report(directory=str(html_covdir))
+        click.echo(f"HTML version: {html_covdir.joinpath('index.html').as_uri()}")
+
+        xml_cov = Path.cwd().joinpath("coverage.xml")
+        current_app.coverage.xml_report(outfile=xml_cov)
+        click.echo(f"XML version: {xml_cov.as_uri()}")
     sys.exit(not results.wasSuccessful())
 
 
@@ -63,31 +67,3 @@ def admin(username):
     user.admin = True
     db.session.commit()
     click.echo(f"User <{username}> is now an admin.")
-
-
-@docker_cli.command(
-    "up", context_settings=dict(ignore_unknown_options=True, allow_extra_args=True)
-)
-@click.option(
-    "--dev/--prod",
-    "development",
-    default=True,
-)
-@click.pass_context
-def docker(context, development):
-    """Activate docker environment"""
-    command = ["docker-compose"]
-    if development:
-        command += "--file docker-compose.dev.yml".split()
-        command.append("up")
-        command += context.args
-        proc = subprocess.run(command)
-        if proc.returncode != 0:
-            sys.exit(1)
-        setup_app()
-        os.environ["FLASK_ENV"] = "development"
-        sys.exit(subprocess.run(["flask", "run"]).returncode)
-    else:
-        command.append("up")
-        command += context.args
-        sys.exit(subprocess.run(command).returncode)

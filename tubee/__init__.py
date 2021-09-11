@@ -103,7 +103,6 @@ def create_app(config_name, coverage=None):
     app.cli.add_command(commands.deploy)
     app.cli.add_command(commands.test)
     app.cli.add_command(commands.admin)
-    app.cli.add_command(commands.docker_cli)
 
     # Inject Subscription Form in Navbar for all views
     app.context_processor(lambda: dict(subscription_form=SubscriptionForm()))

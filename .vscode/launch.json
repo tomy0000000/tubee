@@ -1,0 +1,25 @@
+{
+  // https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flask App",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "args": ["run"],
+      "env": {
+        "FLASK_APP": "app.py",
+        "FLASK_ENV": "development"
+      },
+      "preLaunchTask": "Launch Dev Components",
+      "postDebugTask": "Shut Down Dev Components",
+      "serverReadyAction": {
+        "pattern": "Running on http://127.0.0.1:([0-9]+)/",
+        "uriFormat": "http://127.0.0.1:%s",
+        "action": "openExternally"
+      },
+      "jinja": true
+    }
+  ]
+}
