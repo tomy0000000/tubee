@@ -15,15 +15,6 @@ const CLIPBOARD_SELECTOR = ".clipboard";
 // Util Functions
 // ---------------
 
-async function catch_error(fetch_obj) {
-  try {
-    const data = await fetch_obj;
-    return [data, null];
-  } catch (error) {
-    console.error(error);
-    return [null, error];
-  }
-}
 /**
  * @param {String} HTML representing any number of sibling elements
  * @return {NodeList|Element} A list of elements or a single element
@@ -188,45 +179,16 @@ function init_popover() {
 
 async function submit_subscribe(event) {
   // UI
-  let icon = $("<span>").attr({
-    class: "spinner-border spinner-border-sm mr-1",
-    role: "status",
-    "aria-hidden": true,
-  });
-  let text = $("<span>").addClass("aria-hidden").text("Loading...");
-  $(event.currentTarget).prop("disabled", true).empty().append(icon, text);
+  new_btn_set_loading(event.target);
 
   // API
-  let form = new FormData(document.getElementById("navbar-subscribe-form"));
-  const is_navbar =
-    $(event.currentTarget).attr("id") === "navbar-subscribe-submit"; // false for youtube subscription
-  const api_endpoint = $("#navbar-subscribe-submit").data("subscribe-api");
-  const [results, error] = await catch_error(
-    fetch(api_endpoint, {
-      method: "POST",
-      body: form,
-    })
-  );
+  const api_endpoint = document.getElementById("navbar-subscribe-submit")
+    .dataset.subscribeApi;
+  let form = document.getElementById("navbar-subscribe-form");
+  await fetch_post_form(api_endpoint, form);
 
-  if (error || !results.ok) {
-    alert("Something went wrong");
-    if (is_navbar) {
-      // location.reload();
-    } else {
-      $(event.currentTarget).removeClass("btn-success").addClass("btn-danger");
-      icon.remove();
-      $(event.currentTarget).prepend($("<i>").addClass("fas fa-times mr-1"));
-      text.text("Error");
-    }
-  }
-
-  if (is_navbar) {
-    location.href = $("#navbar-main").attr("href");
-  } else {
-    icon.remove();
-    $(event.currentTarget).prepend($("<i>").addClass("fas fa-check mr-1"));
-    text.text("Done!");
-  }
+  // Redirect
+  location.href = $("#navbar-main").attr("href");
 }
 
 $(document).ready(() => {
@@ -234,6 +196,7 @@ $(document).ready(() => {
   init_popover();
 
   $(".subscribe-submit").click(submit_subscribe);
+
   let channel_search_api = $("#channel_id").data("channel-api");
   $("#channel_id").autoComplete({
     resolverSettings: {

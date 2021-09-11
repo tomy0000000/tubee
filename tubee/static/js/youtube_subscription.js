@@ -1,85 +1,107 @@
 var row_template;
+const table = document.getElementById("subscription-table");
+const spinner = document.getElementById("loading-spinner");
 
-$(document).ready(() => {
-  // Load row template
-  let template_endpoint = $("#subscription-table").attr(
-    "data-channel-row-endpoint"
-  );
-  $.ajax(template_endpoint).done((raw_text) => {
-    row_template = $.parseHTML(raw_text);
-    load_more();
-  });
-  $("#subscription-table").one("load-more", load_more);
-});
+async function subscribe_in_import(event) {
+  // UI
+  const button = event.target;
+  new_btn_set_loading(button);
 
-$(window).scroll(() => {
-  console.log("scroll Event Captured");
-  let trigger_loading_row = $("#subscription-table tr:eq(-10)");
-  let hT = trigger_loading_row.offset().top,
-    hH = trigger_loading_row.outerHeight(),
-    wH = $(window).height(),
-    wS = $(this).scrollTop();
-  if (wS > hT + hH - wH) {
-    $("#subscription-table").trigger("load-more");
+  const api_endpoint = document.getElementById("navbar-subscribe-submit")
+    .dataset.subscribeApi;
+  let form = document.getElementById("navbar-subscribe-form");
+  form.channel_id.value = button.dataset.channelId;
+
+  try {
+    await fetch_post_form(api_endpoint, form);
+  } catch (error) {
+    new_btn_unset_loading(button);
+    button.classList = ["btn-danger"];
+    button.innerText = "Error";
   }
-});
 
-build_row = (channel) => {
-  let row = $(row_template).clone();
-  row
-    .find(".channel-thumbnails")
-    .attr("src", channel.snippet.thumbnails.medium.url);
-  row.find(".channel-name").text(channel.snippet.title);
-  row
-    .find(".channel-id-a")
-    .attr("data-clipboard-text", channel.snippet.resourceId.channelId);
-  row.find(".channel-id-p").text(channel.snippet.resourceId.channelId);
-  if (!channel.snippet.subscribed) {
-    row.find(".channel-subscribed").append(
-      $("<button>", {
-        class: "btn btn-success subscribe-submit",
-        type: "button",
-        "data-channel-id": channel.snippet.resourceId.channelId,
-      })
-        .text("Subscribe")
-        .appendTo(row.find(".channel-subscribed"))
-    );
+  new_btn_unset_loading(button);
+  button.disabled = true;
+  button.innerText = "Subscribed";
+}
+
+function build_row(snippet) {
+  let row = row_template.cloneNode(true);
+  let channel_id = snippet.resourceId.channelId;
+  row.querySelector(".channel-thumbnails").src = snippet.thumbnails.medium.url;
+  row.querySelector(".channel-name").innerText = snippet.title;
+  row.querySelector(".channel-id-a").dataset.clipboardText = channel_id;
+  row.querySelector(".channel-id-p").innerText = channel_id;
+  if (!snippet.subscribed) {
+    let button = html_to_elements(`
+      <button
+        class="btn btn-success subscribe-submit"
+        type="button"
+        data-channel-id="${snippet.resourceId.channelId}"
+      >
+        Subscribe
+      </button>
+    `);
+    button.addEventListener("click", subscribe_in_import);
+    row.querySelector(".channel-subscribed").appendChild(button);
   }
   return row;
-};
+}
 
-load_more = () => {
-  $("#loading-spinner").show();
-  let api_endpoint = $("#subscription-table").attr("data-api-endpoint");
-  let page_token = $("#subscription-table").attr("data-next-page-token");
-  $.getJSON(api_endpoint, {
-    page_token: page_token,
-  })
-    .done((response_data) => {
-      // Build row for each channel
-      response_data.items.forEach((channel) => {
-        $("#subscription-table tbody").append(build_row(channel));
-        // build_row(channel).appendTo("#subscription-table tbody");
-      });
-      $(".subscribe-submit").click(submit_subscribe);
-
-      // Store nextPageToken to table
-      if ("nextPageToken" in response_data) {
-        $("#subscription-table").attr(
-          "data-next-page-token",
-          response_data.nextPageToken
-        );
-        $("#subscription-table").one("load-more", load_more);
+async function load_more() {
+  spinner.style.display = "block";
+  let api_endpoint = table.dataset.apiEndpoint;
+  let params = table.dataset.nextPageToken
+    ? {
+        page_token: table.dataset.nextPageToken,
       }
+    : {};
 
-      // Initialize Clipboard JS
-      register_clipboard_items(".clipboard");
-    })
-    .fail((response_data) => {
-      console.log("Oops! Something Went Wrong...");
-    })
-    .always((response_data) => {
-      console.log("Request Sent");
-      $("#loading-spinner").hide();
+  // Get subscriptions
+  try {
+    var response = await fetch_simple_get(api_endpoint, params);
+  } catch (error) {
+    spinner.style.display = "none";
+  }
+
+  // Build row for each channel
+  response.items.forEach((channel) => {
+    let row = build_row(channel.snippet);
+    table.getElementsByTagName("tbody")[0].appendChild(row);
+  });
+
+  // Store nextPageToken to table
+  if (response.nextPageToken) {
+    table.dataset.nextPageToken = response.nextPageToken;
+    table.addEventListener("load-more", load_more, {
+      once: true,
     });
-};
+  }
+
+  // Unload spinner
+  spinner.style.display = "none";
+
+  // Initialize Clipboard JS
+  init_clipboard();
+}
+
+// Load more on scroll
+window.addEventListener("scroll", (event) => {
+  let trigger_row = table.querySelector("tr:nth-last-child(10)");
+  let rect = trigger_row.getBoundingClientRect();
+  if (rect.bottom <= window.innerHeight) {
+    var loading_event = new CustomEvent("load-more");
+    table.dispatchEvent(loading_event);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", async (event) => {
+  // Load row template
+  const template_endpoint = table.dataset.channelRowEndpoint;
+  row_template = html_to_elements(
+    await fetch_simple_get(template_endpoint, {}, true)
+  );
+
+  // Load first page
+  load_more();
+});
