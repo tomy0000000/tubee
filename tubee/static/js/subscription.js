@@ -15,21 +15,9 @@ function unsubscribe(event) {
           loaded_div.remove();
         });
       $("#confirm-btn").on("click", async function () {
-        let form = new FormData(
-          document.getElementById(`${channel_id}-unsubscribe-form`)
-        );
-        const [results, error] = await catch_error(
-          fetch(api_endpoint, {
-            method: "POST",
-            body: form,
-          })
-        );
-
-        if (error || !results.ok) {
-          alert("Unsubscribe Failed, Try Again");
-        } else {
-          location.reload();
-        }
+        let form = document.getElementById(`${channel_id}-unsubscribe-form`);
+        await fetch_post_form(api_endpoint, form);
+        location.reload();
       });
     }
   );

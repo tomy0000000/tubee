@@ -24,6 +24,67 @@ async function catch_error(fetch_obj) {
     return [null, error];
   }
 }
+/**
+ * @param {String} HTML representing any number of sibling elements
+ * @return {NodeList|Element} A list of elements or a single element
+ */
+function html_to_elements(html) {
+  let template = document.createElement("template");
+  template.innerHTML = html.trim();
+  if (template.content.childNodes.length > 1) {
+    return template.content.childNodes;
+  } else {
+    return template.content.firstChild;
+  }
+}
+
+async function fetch_simple_get(endpoint, params = {}, text = false) {
+  const query_string = new URLSearchParams(params);
+  const url = `${endpoint}?${query_string}`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    alert(`Error: ${response.statusText}`);
+    throw new Error(response.statusText);
+  }
+
+  if (text) {
+    return await response.text();
+  } else {
+    return await response.json();
+  }
+}
+
+async function fetch_post_form(endpoint, form, text = false) {
+  const response = await fetch(endpoint, {
+    method: "POST",
+    body: new FormData(form),
+  });
+  if (!response.ok) {
+    alert(`Error: ${response.statusText}`);
+    throw new Error(response.statusText);
+  }
+
+  if (text) {
+    return await response.text();
+  } else {
+    return await response.json();
+  }
+}
+
+function new_btn_set_loading(button) {
+  button.disabled = true;
+  const spinner = html_to_elements(
+    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+  );
+  button.appendChild(spinner);
+}
+
+function new_btn_unset_loading(button) {
+  button.disabled = false;
+  let spinner = button.querySelector(".spinner-border");
+  button.removeChild(spinner);
+}
 
 function set_loading(button) {
   let spinner_id = Date.now();
