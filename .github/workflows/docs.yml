@@ -1,11 +1,8 @@
 name: Docs (Docker Hub)
 
 on:
-  push:
-    paths:
-      - "README.md"
-    branches:
-      - "main"
+  release:
+    types: [published]
 
 jobs:
   update-docker-hub-readme:

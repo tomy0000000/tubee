@@ -10,7 +10,7 @@ on:
 
 jobs:
   flake8:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -19,11 +19,11 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flake8
 
-      - name: Testing
+      - name: Linting
         run: |
           flake8 tubee
