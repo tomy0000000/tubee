@@ -8,16 +8,18 @@ on:
 
 jobs:
   scan:
+    name: License Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install poetry
@@ -29,7 +31,7 @@ jobs:
           poetry export --dev -f requirements.txt --output requirements.txt
 
       # FOSSA's API Key are meant to be exposed as to doc
-      - name: Scan license
+      - name: Scan License
         uses: fossa-contrib/fossa-action@v1
         with:
           fossa-api-key: 2d7865a44aa575d857521faaee1a57f8
