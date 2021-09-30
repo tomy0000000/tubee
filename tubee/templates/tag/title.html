@@ -101,15 +101,9 @@
     });
   }
 
-  function ready() {
+  document.addEventListener("DOMContentLoaded", () => {
     register_toggle_edit();
     register_rename_form_submit();
     register_remove_tag();
-  }
-
-  if (document.readyState != "loading") {
-    ready();
-  } else {
-    document.addEventListener("DOMContentLoaded", ready);
-  }
+  });
 </script>

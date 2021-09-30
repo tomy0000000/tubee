@@ -39,6 +39,7 @@
 
 <!-- prettier-ignore -->
 {% if subscription_pagination.items %}
+  {% set subscriptions = subscription_pagination.items %}
   {% include "subscription/table.html" %}
   {{ pagination.content(subscription_pagination) }}
 {% else %}
