@@ -19,6 +19,7 @@ services:
       - "127.0.0.1:5000:5000"
     restart: "always"
     volumes:
+      - "./instance:/usr/src/tubee/instance"
       - "./logs:/usr/src/tubee/logs"
   postgres:
     container_name: "tubee_db"
@@ -45,6 +46,7 @@ services:
       - "rabbitmq_tunnel"
     restart: "always"
     volumes:
+      - "./instance:/usr/src/tubee/instance"
       - "./logs:/usr/src/tubee/logs"
   rabbitmq:
     container_name: "tubee_rabbitmq"

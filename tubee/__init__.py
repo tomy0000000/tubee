@@ -18,9 +18,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
 
-__version__ = subprocess.check_output(
-    ["git", "rev-parse", "--short", "HEAD"], text=True
-)
+VERSION = "0.9.0"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -29,6 +27,16 @@ login_manager = LoginManager()
 migrate = Migrate()
 moment = Moment()
 oauth = OAuth()
+
+
+def get_git_revision_short_hash():
+    """Get short git revision hash"""
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], text=True
+        ).strip()
+    except subprocess.CalledProcessError:
+        return None
 
 
 def create_app(config_name, coverage=None):
@@ -42,12 +50,12 @@ def create_app(config_name, coverage=None):
             dsn=config_instance.SENTRY_DSN,
             integrations=[FlaskIntegration()],
             traces_sample_rate=0.2,
-            release=__version__,
+            release=VERSION,
         )
 
     # App Fundation
     app = Flask(__name__, instance_relative_config=True)
-    app.version = __version__
+    app.version = f"{VERSION} ({get_git_revision_short_hash()})"
     app.config.from_object(config_instance)
     external_config = path.join(app.instance_path, "logging.cfg")
     load_external = path.exists(external_config) and path.isfile(external_config)
