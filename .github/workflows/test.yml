@@ -1,4 +1,4 @@
-name: Test & Build
+name: Test, Build, Deploy
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
       - "tubee/**"
       - "app.py"
       - "celery_worker.py"
+      - "pyproject.toml"
+      - "poetry.lock"
   pull_request:
   workflow_dispatch:
 
@@ -38,10 +40,62 @@ jobs:
       - name: Report coverage
         uses: codecov/codecov-action@v1
 
+  style:
+    name: Lint Style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Linting
+        run: |
+          flake8 tubee
+
+  license:
+    name: License Scan
+    runs-on: ubuntu-latest
+    if: ${{ github.event_path == 'pyproject.toml' || github.event_path == 'poetry.lock' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry config virtualenvs.create false
+          poetry install --no-interaction --no-ansi
+
+      - name: Export requirements.txt
+        run: |
+          poetry export --dev -f requirements.txt --output requirements.txt
+
+      # FOSSA's API Key are meant to be exposed as to doc
+      - name: Scan License
+        uses: fossa-contrib/fossa-action@v1
+        with:
+          fossa-api-key: 2d7865a44aa575d857521faaee1a57f8
+
   build:
     name: Build and Push Image
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test, style, license]
+    if: ${{ github.event_name != 'pull_request' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -86,6 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Beta
     needs: build
+    if: ${{ github.event_name != 'pull_request' }}
     steps:
       - name: SSH and execute deployment
         uses: appleboy/ssh-action@master
