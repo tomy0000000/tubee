@@ -150,7 +150,9 @@ jobs:
           port: ${{ secrets.PORT }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          script_stop: true
           script: |
+            cd tubee-beta
             docker pull tomy0000000/tubee:edge
             docker-compose up --detach
             docker network connect nginx_default tubee_app_beta
