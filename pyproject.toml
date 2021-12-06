@@ -56,7 +56,7 @@ pyyaml = "*"
 rope = "*"
 watchdog = "*"
 flake8 = "^4.0.1"
-black = "^21.11b1"
+black = "^21.12b0"
 
 [tool.pyright]
 include = ["tubee"]
