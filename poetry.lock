@@ -1236,7 +1236,7 @@ email = ["email-validator"]
 
 [[package]]
 name = "youtube-dl"
-version = "2021.6.6"
+version = "2021.12.17"
 description = "YouTube video downloader"
 category = "main"
 optional = false
@@ -2004,6 +2004,6 @@ wtforms = [
     {file = "WTForms-3.0.0.tar.gz", hash = "sha256:4abfbaa1d529a1d0ac927d44af8dbb9833afd910e56448a103f1893b0b176886"},
 ]
 youtube-dl = [
-    {file = "youtube_dl-2021.6.6-py2.py3-none-any.whl", hash = "sha256:263e04d53fb8ba3dfbd246ad09b7d388e896c132a20cc770c26ee7684de050ac"},
-    {file = "youtube_dl-2021.6.6.tar.gz", hash = "sha256:cb2d3ee002158ede783e97a82c95f3817594df54367ea6a77ce5ceea4772f0ab"},
+    {file = "youtube_dl-2021.12.17-py2.py3-none-any.whl", hash = "sha256:f1336d5de68647e0364a47b3c0712578e59ec76f02048ff5c50ef1c69d79cd55"},
+    {file = "youtube_dl-2021.12.17.tar.gz", hash = "sha256:bc59e86c5d15d887ac590454511f08ce2c47698d5a82c27bfe27b5d814bbaed2"},
 ]
