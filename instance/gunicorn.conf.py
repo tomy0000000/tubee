@@ -1,6 +1,4 @@
-import multiprocessing
-
-workers = multiprocessing.cpu_count() * 2 + 1
+workers = 4
 forwarded_allow_ips = "*"
 accesslog = "-"
 errorlog = "-"
