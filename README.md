@@ -5,7 +5,7 @@
     <br>
     <img width="150" src="tubee/static/img/tubee_text.png">
     <br>
-    <img src="https://img.shields.io/badge/python-3.7+-blue.svg?logo=python" alt="Python Version" />
+    <img src="https://img.shields.io/badge/python-3.9-blue.svg?logo=python" alt="Python Version" />
     <a href="https://github.com/tomy0000000/Tubee/actions/workflows/testing.yml">
         <img src="https://img.shields.io/github/workflow/status/tomy0000000/Tubee/Test%20latest?logo=GitHub%20Actions" alt="GitHub Workflow Status" />
     </a>
