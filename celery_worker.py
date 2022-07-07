@@ -2,9 +2,9 @@ import json
 import logging
 from os.path import exists, isfile, join
 
+from app import app
 from celery.signals import after_setup_logger
 
-from app import app
 from tubee import celery
 
 # Push flask context for celery
