@@ -1,7 +1,6 @@
 """Main Application of Tubee"""
 import json
 import logging.config
-import subprocess
 from os import path
 
 import sentry_sdk
@@ -29,16 +28,6 @@ moment = Moment()
 oauth = OAuth()
 
 
-def get_git_revision_short_hash():
-    """Get short git revision hash"""
-    try:
-        return subprocess.check_output(
-            ["git", "rev-parse", "--short", "HEAD"], text=True
-        ).strip()
-    except subprocess.CalledProcessError:
-        return None
-
-
 def create_app(config_name, coverage=None):
 
     # Load config
@@ -55,7 +44,7 @@ def create_app(config_name, coverage=None):
 
     # App Fundation
     app = Flask(__name__, instance_relative_config=True)
-    app.version = f"{VERSION} ({get_git_revision_short_hash()})"
+    app.version = VERSION
     app.config.from_object(config_instance)
     external_config = path.join(app.instance_path, "logging.cfg")
     load_external = path.exists(external_config) and path.isfile(external_config)
