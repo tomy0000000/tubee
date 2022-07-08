@@ -17,7 +17,6 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from ..models import Callback, Channel, Notification
 from ..utils import admin_required, build_sitemap
 
 admin_blueprint = Blueprint("admin", __name__)
@@ -38,20 +37,7 @@ def dashboard():
         "app_config": current_app.config,
         "os_env": os.environ,
     }
-    # Miscs
-    channels = Channel.query.order_by(Channel.name.asc()).all()
-    callbacks = Callback.query.order_by(Callback.timestamp.desc()).limit(50)
-    notifications = Notification.query.order_by(
-        Notification.sent_timestamp.desc()
-    ).limit(50)
-    return render_template(
-        "admin.html",
-        callbacks=callbacks,
-        channels=channels,
-        infos=infos,
-        links=links,
-        notifications=notifications,
-    )
+    return render_template("admin.html", infos=infos, links=links)
 
 
 @admin_blueprint.route("/raise-exception")
