@@ -5,10 +5,11 @@ from os.path import exists, isfile, join
 from app import app
 from celery.signals import after_setup_logger
 
-from tubee import celery
+from tubee import celery  # noqa: F401
 
 # Push flask context for celery
 app.app_context().push()
+
 
 # Setup celery logging config
 @after_setup_logger.connect
