@@ -16,6 +16,7 @@ from jinja2 import StrictUndefined
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
+from tubee.utils import build_sitemap
 
 VERSION = "0.9.1"
 
@@ -102,6 +103,7 @@ def create_app(config_name, coverage=None):
     app.cli.add_command(commands.admin)
 
     # Inject Subscription Form in Navbar for all views
+    app.context_processor(lambda: dict(sitemap=build_sitemap()))
     app.context_processor(lambda: dict(subscription_form=SubscriptionForm()))
 
     # Blueprint Registration

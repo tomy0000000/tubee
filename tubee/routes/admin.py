@@ -2,7 +2,6 @@
 import os
 import platform
 import sys
-from urllib.parse import unquote
 
 import flask
 import gunicorn
@@ -19,7 +18,7 @@ from flask import (
 from flask_login import current_user, login_required
 
 from ..models import Callback, Channel, Notification
-from ..utils import admin_required
+from ..utils import admin_required, build_sitemap
 
 admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)
@@ -28,23 +27,7 @@ admin_blueprint.before_request(admin_required)
 @admin_blueprint.route("/dashboard")
 @login_required
 def dashboard():
-    # Sitemap
-    links = {}
-    for rule in current_app.url_map.iter_rules():
-        query = {arg: f"<{arg}>" for arg in rule.arguments}
-        url = url_for(rule.endpoint, **query)
-        try:
-            blueprint, endpoint = rule.endpoint.split(".")
-            url = unquote(url)
-            if blueprint in links:
-                links[blueprint].append((url, rule.endpoint))
-            else:
-                links[blueprint] = [(url, rule.endpoint)]
-        except ValueError:
-            continue
-    for blueprint, rules in links.items():
-        rules.sort(key=lambda x: x[1])
-    # System Runtime
+    links = build_sitemap()
     infos = {
         "os_version": platform.platform(),
         "python_version": sys.version,

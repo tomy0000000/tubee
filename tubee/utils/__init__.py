@@ -5,10 +5,10 @@ Some Misc Functions used in this app
 import secrets
 import string
 from functools import wraps
-from urllib.parse import urljoin, urlparse
+from urllib.parse import unquote, urljoin, urlparse
 
 from dateutil import parser
-from flask import abort, current_app, request
+from flask import abort, current_app, request, url_for
 from flask_login import current_user
 from flask_migrate import upgrade
 
@@ -49,6 +49,33 @@ def try_parse_datetime(string):
         return parser.parse(string).replace(tzinfo=None)
     except (ValueError, TypeError):
         return None
+
+
+def build_sitemap():
+    """Build Sitemap
+
+    Builds a sitemap of all endpoints in the app
+
+    Returns:
+        str -- Sitemap
+    """
+
+    links = {}
+    for rule in current_app.url_map.iter_rules():
+        query = {arg: f"<{arg}>" for arg in rule.arguments}
+        url = url_for(rule.endpoint, **query)
+        try:
+            blueprint, endpoint = rule.endpoint.split(".")
+            url = unquote(url)
+            if blueprint in links:
+                links[blueprint].append((url, rule.endpoint))
+            else:
+                links[blueprint] = [(url, rule.endpoint)]
+        except ValueError:
+            continue
+    for blueprint, rules in links.items():
+        rules.sort(key=lambda x: x[1])
+    return links
 
 
 def admin_required(*args, **kwargs):
