@@ -1,6 +1,7 @@
 from .admin import admin_blueprint
 from .api import api_blueprint
 from .api_action import api_action_blueprint
+from .api_admin import api_admin_blueprint
 from .api_channel import api_channel_blueprint
 from .api_subscription import api_subscription_blueprint
 from .api_tag import api_tag_blueprint
@@ -16,6 +17,7 @@ blueprint_map = [
     ("", main_blueprint),
     ("/admin", admin_blueprint),
     ("/api", api_blueprint),
+    ("/api/admin", api_admin_blueprint),
     ("/api/action", api_action_blueprint),
     ("/api/channel", api_channel_blueprint),
     ("/api/subscription", api_subscription_blueprint),
@@ -29,6 +31,7 @@ blueprint_map = [
 __all__ = [
     admin_blueprint,
     api_blueprint,
+    api_admin_blueprint,
     api_action_blueprint,
     api_channel_blueprint,
     api_subscription_blueprint,

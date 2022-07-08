@@ -51,7 +51,11 @@
 <!-- END SEND SECTION -->
 
 <!-- BGEIN NOTIFICATION TABLE -->
-<table class="table table-striped table-hover table-responsive-lg align-middle">
+<table
+  id="notifications-table"
+  class="table table-striped table-hover table-responsive-lg align-middle"
+  data-template-endpoint="{{ url_for('static', filename='component/admin_notification_row.html') }}"
+>
   <thead class="table-dark">
     <tr>
       <th scope="col"></th>
@@ -62,70 +66,7 @@
       <th scope="col">Response</th>
     </tr>
   </thead>
-  <tbody>
-    {% for notification in notifications %}
-    <tr>
-      <th scope="row">
-        {% if notification.kwargs.image_url is defined %}
-        <img
-          src="{{ notification.kwargs.image_url }}"
-          class="rounded"
-          width="200"
-        />
-        {% endif %}
-      </th>
-      <td>
-        <!-- prettier-ignore -->
-        {{ notification.sent_timestamp if notification.sent_timestamp is defined }}
-      </td>
-      <td>
-        {{ notification.kwargs.title if notification.kwargs.title is defined }}
-      </td>
-      <td>
-        <button
-          class="btn btn-primary"
-          type="button"
-          data-bs-toggle="popover"
-          data-bs-content="{{ notification.message }}"
-          data-bs-trigger="focus"
-        >
-          Message
-        </button>
-      </td>
-      <td>
-        {% if notification.kwargs.url is defined %}
-        <a href="{{ notification.kwargs.url }}">
-          <!-- prettier-ignore -->
-          {% if notification.kwargs.url_title is defined %}
-          {{ notification.kwargs.url_title }}
-          {% else %}
-          {{ notification.kwargs.url }}
-          {% endif %}
-        </a>
-        {% endif %}
-      </td>
-      <td>
-        <!-- prettier-ignore -->
-        {% if notification.response is defined and notification.response.status is defined %}
-        <button
-          type="button"
-          class="btn {{ 'btn-success' if notification.response.status == 1 else 'btn-danger' }} response-btn"
-          data-bs-container="body"
-          data-bs-toggle="popover"
-          data-bs-placement="right"
-          data-bs-trigger="focus"
-          data-bs-content="{{ notification.response.request if notification.response.request is defined }}"
-        >
-          {{ 'OK' if notification.response.status == 1 else 'Error' }}
-          <span class="badge bg-light text-dark"
-            >{{ notification.response.status }}</span
-          >
-        </button>
-        {% endif %}
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
+  <tbody></tbody>
 </table>
 <!-- END NOTIFICATION TABLE -->
 <!-- END NOTIFICATIONS -->

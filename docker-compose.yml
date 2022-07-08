@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   tubee:
     command: "./docker-entrypoint.sh"
@@ -15,6 +13,8 @@ services:
     networks:
       - "postgres_tunnel"
       - "rabbitmq_tunnel"
+    ports:
+      - "5000:5000"
     restart: "always"
     volumes:
       - "./instance:/usr/src/tubee/instance"

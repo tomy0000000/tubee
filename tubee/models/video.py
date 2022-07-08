@@ -1,4 +1,6 @@
 """Video Model"""
+from dataclasses import dataclass
+from datetime import datetime
 from urllib.parse import urljoin
 
 from dateutil import parser
@@ -7,8 +9,15 @@ from .. import db
 from ..utils.youtube import build_youtube_api
 
 
+@dataclass
 class Video(db.Model):
     """Videos of Subscribed Channel"""
+
+    id: str
+    name: str
+    channel_id: str
+    uploaded_timestamp: datetime
+    details: dict
 
     __tablename__ = "video"
     id = db.Column(db.String(16), primary_key=True)

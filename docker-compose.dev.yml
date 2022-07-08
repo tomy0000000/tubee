@@ -1,38 +1,57 @@
-version: "3.8"
-
 services:
+  tubee:
+    build: .
+    command:
+      - "watchmedo"
+      - "auto-restart"
+      - "--directory=./"
+      - "--pattern=*.py"
+      - "--recursive"
+      - "--"
+      - "flask"
+      - "run"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8000"
+      - "--no-reload"
+    container_name: "tubee_app"
+    depends_on:
+      - "postgres"
+      - "celery"
+    env_file:
+      - "instance/development.env"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ".:/usr/src/tubee"
   postgres:
     container_name: "tubee_db"
     env_file:
-      - ".env"
+      - "instance/development.env"
     image: "postgres:12-alpine"
     ports:
       - "5432:5432"
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
   celery:
+    build: .
     command:
-      [
-        "watchmedo",
-        "auto-restart",
-        "--directory=./",
-        "--pattern=*.py",
-        "--recursive",
-        "--",
-        "celery",
-        "--app=celery_worker.celery",
-        "worker",
-        "--loglevel=info",
-      ]
+      - "watchmedo"
+      - "auto-restart"
+      - "--directory=./"
+      - "--pattern=*.py"
+      - "--recursive"
+      - "--"
+      - "celery"
+      - "--app=celery_worker.celery"
+      - "worker"
+      - "--loglevel=info"
     container_name: "tubee_celery"
     depends_on:
       - "rabbitmq"
     env_file:
-      - ".env"
-    environment:
-      FLASK_ENV: "development"
-    image: "tomy0000000/tubee"
-    network_mode: "host"
+      - "instance/development.env"
     volumes:
       - ".:/usr/src/tubee"
   rabbitmq:

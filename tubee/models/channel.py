@@ -1,5 +1,6 @@
 """Channel Model"""
 import json
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 
@@ -13,12 +14,21 @@ from ..utils.hub import details, subscribe, unsubscribe
 from ..utils.youtube import build_youtube_api
 
 
+@dataclass
 class Channel(db.Model):
     """
     update:        Update metadata from YouTube API
     refresh:       Refresh subscription status from Hub
     subscribe:     Subscribe callback from Hub
     """
+
+    id: str
+    name: str
+    active: bool
+    infos: dict
+    hub_infos: dict
+    subscribe_timestamp: datetime
+    unsubscribe_timestamp: datetime
 
     __tablename__ = "channel"
     RENEW_INTERVAL = int(timedelta(days=4).total_seconds())
