@@ -1,4 +1,5 @@
 """Action Model"""
+from dataclasses import dataclass
 from enum import Enum
 
 from flask import current_app
@@ -12,8 +13,17 @@ class ActionType(Enum):
     Download = "Download"
 
 
+@dataclass
 class Action(db.Model):
     """Action to Perform when new video uploaded"""
+
+    id: str
+    name: str
+    type: ActionType
+    details: dict
+    username: str
+    channel_id: str
+    tag_id: int
 
     __tablename__ = "action"
     id = db.Column(db.Integer, primary_key=True)

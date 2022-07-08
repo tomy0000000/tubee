@@ -1,5 +1,6 @@
 """User Model"""
 import json
+from dataclasses import dataclass
 
 import dropbox
 import requests
@@ -20,6 +21,7 @@ def load_user(username):
     return User.query.get(username)
 
 
+@dataclass
 class User(UserMixin, db.Model):
     """
     username                username for identification (Max:30)
@@ -29,6 +31,9 @@ class User(UserMixin, db.Model):
     youtube_credentials     access credentials to YouTube Service
     subscriptions           User's Subscription to YouTube Channels
     """
+
+    username: str
+    admin: bool
 
     __tablename__ = "user"
     username = db.Column(db.String(32), primary_key=True)
