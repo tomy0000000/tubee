@@ -19,7 +19,7 @@ def callbacks():
 
 @api_admin_blueprint.route("/notifications")
 def notifications():
-    notifications = Notification.query.order_by(
-        Notification.sent_timestamp.desc()
-    ).limit(50)
+    notifications = (
+        Notification.query.order_by(Notification.sent_timestamp.desc()).limit(50).all()
+    )
     return jsonify(notifications)

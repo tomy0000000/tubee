@@ -142,9 +142,9 @@ function generate_callback_status_badge(status) {
   };
   let badge_type =
     status in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[status] : "info";
-  let badge = $("<span></span>")
-    .addClass(`badge bg-${badge_type}`)
-    .text(status);
+  let badge = document.createElement("span");
+  badge.classList.add("badge", `bg-${badge_type}`, "text-dark");
+  badge.innerText = status;
   return badge;
 }
 

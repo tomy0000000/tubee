@@ -10,7 +10,7 @@ from pushover_complete import PushoverAPI
 from .. import db
 
 
-class Service(Enum):
+class Service(str, Enum):
     Pushover = "Pushover"
     LineNotify = "Line Notify"
 

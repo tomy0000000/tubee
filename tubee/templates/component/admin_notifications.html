@@ -50,4 +50,23 @@
 </div>
 <!-- END SEND SECTION -->
 
+<!-- BGEIN NOTIFICATION TABLE -->
+<table
+  id="notifications-table"
+  class="table table-striped table-hover table-responsive-lg align-middle"
+  data-template-endpoint="{{ url_for('static', filename='component/admin_notification_row.html') }}"
+>
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Sent Datetime</th>
+      <th scope="col">Title</th>
+      <th scope="col">Message</th>
+      <th scope="col">URL</th>
+      <th scope="col">Response</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<!-- END NOTIFICATION TABLE -->
 <!-- END NOTIFICATIONS -->
