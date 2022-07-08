@@ -2,6 +2,10 @@ body {
   padding-top: 5rem;
 }
 
+pre {
+  white-space: pre-wrap;
+}
+
 .line {
   display: inline-block;
 }

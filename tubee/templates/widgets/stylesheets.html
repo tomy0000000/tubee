@@ -1,25 +1,16 @@
 <!-- STYLESHEETS -->
 <!--
     This Widget loads different version of css file from CDN Based on flask config
-    * Bootstrap CSS 5.0.1
-    * Normalize CSS 8.0.1
+    * Bootstrap CSS 5.2.0-beta1
     * Font Awesome CSS 5.15.3
     * Github Fork Ribbon CSS 0.2.3 (Dev and Test only)
 -->
 {% if config.DEBUG or config.TESTING %}
 <link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.css"
-  integrity="sha512-vxhcSRMDjtLpgTL/8uRKEjhCh8YyDER14SFb9cuceRmefufcZBweOJuQJ70JYRZiq+QhpaTM3zDw9YSOPbqtFQ=="
+  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
   crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
-  integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"

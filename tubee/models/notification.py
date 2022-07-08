@@ -1,4 +1,5 @@
 """Notification Model"""
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
@@ -9,7 +10,7 @@ from pushover_complete import PushoverAPI
 from .. import db
 
 
-class Service(Enum):
+class Service(str, Enum):
     Pushover = "Pushover"
     LineNotify = "Line Notify"
 
@@ -38,6 +39,7 @@ VALID_ARGS = {
 }
 
 
+@dataclass
 class Notification(db.Model):
     """An Object which describe a Notification for a specific user
 
@@ -52,6 +54,15 @@ class Notification(db.Model):
         sent_datetime {datetime.datetime} -- datetime when this object is created
         response {dict} -- server response when notification is sent
     """
+
+    id: int
+    initiator: str
+    username: str
+    service: Service
+    message: str
+    kwargs: dict
+    sent_timestamp: datetime
+    response: dict
 
     __tablename__ = "notification"
     id = db.Column(db.Integer, primary_key=True)

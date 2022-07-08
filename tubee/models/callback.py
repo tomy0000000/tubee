@@ -1,4 +1,5 @@
 """Callback Model"""
+from dataclasses import dataclass
 from datetime import datetime
 
 from flask import current_app
@@ -6,6 +7,7 @@ from flask import current_app
 from .. import db
 
 
+@dataclass
 class Callback(db.Model):
     """
     id            Unique ID
@@ -13,6 +15,13 @@ class Callback(db.Model):
     timestamp     The timestamp when this callback was received
     infos         Details of the request context
     """
+
+    id: int
+    type: str
+    timestamp: datetime
+    infos: dict
+    channel_id: str
+    video_id: str
 
     __tablename__ = "callback"
     id = db.Column(db.Integer, primary_key=True)

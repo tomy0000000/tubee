@@ -1,4 +1,5 @@
 """Subscription Model"""
+from dataclasses import dataclass
 from datetime import datetime
 
 from .. import db
@@ -7,8 +8,14 @@ from .subscription_tag import SubscriptionTag
 from .tag import Tag
 
 
+@dataclass
 class Subscription(db.Model):
     """Relationship between User and Channel"""
+
+    username: str
+    channel_id: str
+    subscribe_timestamp: datetime
+    unsubscribe_timestamp: datetime
 
     __tablename__ = "subscription"
     username = db.Column(

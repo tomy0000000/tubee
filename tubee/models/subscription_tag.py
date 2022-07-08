@@ -1,9 +1,16 @@
 """SubscriptionTag Model"""
+from dataclasses import dataclass
+
 from .. import db
 
 
+@dataclass
 class SubscriptionTag(db.Model):
     """Relationship between Subscription and Tag"""
+
+    username: str
+    channel_id: str
+    tag_id: int
 
     __tablename__ = "subscription_tag"
     username = db.Column(db.String(32), primary_key=True)

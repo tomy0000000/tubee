@@ -1,66 +1,81 @@
-let celery_task_template;
+//
+// Util Functions
+//
 
 function build_formatted_JSON_tag(data) {
   return $("<pre></pre>").text(JSON.stringify(data, null, 4));
 }
 
-function channel_fill_status(responseData) {
-  $("#state")
-    .empty()
-    .append(generate_callback_status_badge(responseData.state));
-  $("#expiration").text(responseData.expiration);
-  $("#last-notification").text(responseData.last_notification);
-  $("#last-notification-error").text(responseData.last_notification_error);
-  $("#last-challenge").text(responseData.last_challenge);
-  $("#last-challenge-error").text(responseData.last_challenge_error);
-  $("#last-subscribe").text(responseData.last_subscribe);
-  $("#last-unsubscribe").text(responseData.last_unsubscribe);
-  $("#stat").text(responseData.stat);
-}
+// Channel Tab
+function load_channels(event) {
+  insert_spinner("#channels", "primary");
+  let table = $("#channels > table > tbody");
+  table.empty();
+  let channel_template;
+  $.ajax($("#channels-table").attr("data-template-endpoint"))
+    .done((data) => {
+      channel_template = document.createElement("tr");
+      channel_template.innerHTML = data;
+    })
+    .fail((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      $.getJSON(build_url("api_admin.channel"))
+        .done((data) => {
+          data.forEach((element) => {
+            let row = channel_template.cloneNode(true);
 
-function channel_fill_callback(responseData) {
-  let table_body = $("#channel-callback-table tbody");
-  for (let callback of responseData) {
-    let data_popover;
-    if (callback.type === "Hub Notification") {
-      data_popover = $("<button></button>")
-        .attr({
-          type: "button",
-          class: "btn btn-secondary",
-          "data-bs-container": "body",
-          "data-bs-toggle": "popover",
-          "data-bs-trigger": "focus",
-          "data-bs-content": callback.infos.data,
+            row.dataset.channelId = element.id;
+            row.getElementsByClassName("channel-name")[0].innerText =
+              element.name;
+            row
+              .getElementsByClassName("channel-name")[0]
+              .parentElement.setAttribute(
+                "href",
+                build_url("main.channel", { channel_id: element.id })
+              );
+            row.getElementsByClassName("channel-id")[0].innerText = element.id;
+            row.getElementsByClassName(
+              "channel-id"
+            )[0].parentElement.dataset.clipboardText = element.id;
+
+            let status = row.getElementsByClassName("channel-status")[0];
+            status.innerHTML = "";
+            status.appendChild(
+              generate_callback_status_badge(element.hub_infos.state)
+            );
+
+            row.getElementsByClassName("channel-expiration")[0].innerText =
+              element.expiration;
+            row.getElementsByClassName(
+              "channel-expiration-badge"
+            )[0].innerText = moment(element.expiration).fromNow();
+            table.append(row);
+          });
+          init_clipboard();
+          $(".btn-refresh").click(channel_refresh);
         })
-        .text("Data")
-        .popover();
-    }
-    let row = $("<tr></tr>")
-      .append(
-        $("<th></th>")
-          .attr({ scope: "row", class: "align-middle" })
-          .text(callback.video_id)
-      )
-      .append($("<td></td>").addClass("align-middle").text(callback.timestamp))
-      .append(
-        $("<td></td>")
-          .addClass("align-middle")
-          .append(generate_callback_type_badge(callback.type))
-      )
-      .append($("<td></td>").addClass("align-middle").append(data_popover));
-    table_body.append(row);
-  }
+        .fail((data) => {
+          console.log(data);
+        });
+    })
+    .fail((data) => {
+      console.log(data);
+    })
+    .always(() => {
+      drop_spinner("#channels");
+    });
 }
 
 function channel_refresh(event) {
   let button = $(event.target);
-  let channel_row = button.parent().parent().parent();
-  let status = channel_row.find(".status");
+  let channel_row = button.parent().parent();
+  let status = channel_row.find(".channel-status");
   let expiration = channel_row.find(".expiration");
+  const channel_id = channel_row.data("channel-id");
 
-  button.empty().attr({
-    disabled: true,
-  });
+  button.empty().attr({ disabled: true });
   status.empty();
   expiration.empty();
   insert_spinner(button, "secondary", true);
@@ -69,7 +84,7 @@ function channel_refresh(event) {
 
   $.ajax({
     type: "get",
-    url: button.data("endpoint"),
+    url: build_url("api_channel.status", { channel_id: channel_id }),
   })
     .done((responseData) => {
       button.empty().text("Refresh").attr({
@@ -80,71 +95,6 @@ function channel_refresh(event) {
     })
     .fail((responseData) => {
       button.parent().empty().text(responseData);
-    });
-}
-
-function channel_get_status(event) {
-  // Init
-  let modal = $(event.target);
-  let table = $("#channel-status-table");
-  let spinner = $("#channel-status-spinner");
-
-  let endpoint = $(event.relatedTarget).data("endpoint");
-  $("#channel-status-modal-title").text($(event.relatedTarget).data("name"));
-
-  spinner.show();
-  table.hide();
-
-  $.ajax({
-    type: "get",
-    url: endpoint,
-  })
-    .done((responseData) => {
-      channel_fill_status(responseData);
-      table.show();
-    })
-    .fail(() => {
-      console.log("Failed to load channel status");
-      $("#state").text("Error");
-      $("#expiration").text("Error");
-      $("#last-notification").text("Error");
-      $("#last-notification-error").text("Error");
-      $("#last-challenge").text("Error");
-      $("#last-challenge-error").text("Error");
-      $("#last-subscribe").text("Error");
-      $("#last-unsubscribe").text("Error");
-      $("#stat").text("Error");
-    })
-    .always(() => {
-      spinner.hide();
-    });
-}
-
-function channel_get_callback(event) {
-  // Init
-  let modal = $(event.target);
-  let table = $("#channel-callback-table");
-  let spinner = $("#channel-callback-spinner");
-
-  let endpoint = $(event.relatedTarget).data("endpoint");
-  $("#channel-callback-modal-title").text($(event.relatedTarget).data("name"));
-
-  spinner.show();
-  table.hide();
-
-  $.ajax({
-    type: "get",
-    url: endpoint,
-  })
-    .done((responseData) => {
-      channel_fill_callback(responseData);
-      table.show();
-    })
-    .fail(() => {
-      console.log("Failed to load channel status");
-    })
-    .always(() => {
-      spinner.hide();
     });
 }
 
@@ -223,6 +173,11 @@ function load_tasks(event) {
   insert_spinner("#celery_tasks", "primary");
   let table = $("#celery_tasks > table > tbody");
   table.empty();
+  let celery_task_template;
+  $.ajax($("#celery-table").attr("data-template-endpoint")).done((data) => {
+    celery_task_template = document.createElement("tr");
+    celery_task_template.innerHTML = data;
+  });
   $.getJSON($("#celery-table").attr("data-api-endpoint")).done((data) => {
     data.forEach((element) => {
       let row = celery_task_template.cloneNode(true);
@@ -251,23 +206,105 @@ function load_tasks(event) {
   });
 }
 
+function empty_results(event) {
+  $("#management > .results").empty();
+}
+
+function load_notifications(event) {
+  insert_spinner("#notifications", "primary");
+  let table = $("#notifications > table > tbody");
+  table.empty();
+  let notification_template;
+  $.ajax($("#notifications-table").attr("data-template-endpoint"))
+    .done((data) => {
+      notification_template = document.createElement("tr");
+      notification_template.innerHTML = data;
+    })
+    .fail((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      $.getJSON(build_url("api_admin.notifications"))
+        .done((data) => {
+          data.forEach((element) => {
+            let row = notification_template.cloneNode(true);
+            if (element.kwargs.image_url) {
+              const image_tag = document.createElement("img");
+              image_tag.src = element.kwargs.image_url;
+              image_tag.className = "rounded";
+              image_tag.setAttribute("width", 200);
+              row.getElementsByClassName("image")[0].appendChild(image_tag);
+            }
+
+            row.getElementsByClassName("sent-timestamp")[0].innerText =
+              element.sent_timestamp;
+            row.getElementsByClassName("title")[0].innerText =
+              element.kwargs.title;
+            row.getElementsByClassName("message")[0].dataset.bsContent =
+              element.message;
+            new bootstrap.Popover(row.getElementsByClassName("message")[0]);
+
+            if (element.kwargs.url) {
+              const url_tag = document.createElement("a");
+              url_tag.href = element.kwargs.url;
+              url_tag.innerText = element.kwargs.url_title
+                ? element.kwargs.url_title
+                : element.kwargs.url;
+              row.getElementsByClassName("url")[0].appendChild(url_tag);
+            }
+
+            if (element.response && element.response.status) {
+              const button_tag = document.createElement("button");
+              button_tag.setAttribute("type", "button_tag");
+              button_tag.classList.add("response-btn", "btn");
+              button_tag.classList.add(
+                element.response.status === 1 ? "btn-success" : "btn-danger"
+              );
+              button_tag.setAttribute("data-bs-container", "body");
+              button_tag.setAttribute("data-bs-toggle", "popover");
+              button_tag.setAttribute("data-bs-placement", "right");
+              button_tag.setAttribute("data-bs-trigger", "focus");
+              button_tag.setAttribute(
+                "data-bs-content",
+                element.response.request
+              );
+              button_tag.innerText =
+                element.response.status === 1 ? "OK" : "Error";
+              const status_badge = document.createElement("span");
+              status_badge.classList.add("badge", "bg-light", "text-dark");
+              status_badge.innerText = element.response.status;
+              button_tag.appendChild(status_badge);
+              row.getElementsByClassName("response")[0].appendChild(button_tag);
+              new bootstrap.Popover(button_tag);
+            }
+            table.append(row);
+          });
+        })
+        .fail((data) => {
+          console.log(data);
+        });
+    })
+    .fail((data) => {
+      console.log(data);
+    })
+    .always(() => {
+      drop_spinner("#notifications");
+    });
+}
+
 $(document).ready(() => {
+  // Tab activate
+  $("#channels-tab").on("shown.bs.tab", load_channels);
+  $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
+  $("#management-tab").on("shown.bs.tab", empty_results);
+  $("#notifications-tab").on("shown.bs.tab", load_notifications);
+  // Channel page
   $("#btn-refresh-all").click(() => {
     $(".btn-refresh").click();
   });
-  $(".btn-refresh").click(channel_refresh);
-  $("#channel-status-modal").on("show.bs.modal", channel_get_status);
-  $("#channel-callback-modal").on("show.bs.modal", channel_get_callback);
+  // Management page
   $("#channel-renew-all").click(api_with_progress);
   $("#channel-renew-all-schedule").click(api_get);
   $("#channel-renew-all-random").click(api_get);
   $("#task-remove-all").click(api_get);
-  $("#management-tab").on("shown.bs.tab", (event) => {
-    $("#management > .results").empty();
-  });
-  $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
-  $.ajax($("#celery-table").attr("data-template-endpoint")).done((data) => {
-    celery_task_template = document.createElement("tr");
-    celery_task_template.innerHTML = data;
-  });
 });

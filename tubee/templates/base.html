@@ -17,7 +17,10 @@
     {% block style %}{% endblock %}
     <!-- END PAGE CSS -->
   </head>
-  <body class="d-flex flex-column h-100">
+  <body
+    class="d-flex flex-column h-100"
+    data-sitemap="{{ sitemap|tojson|forceescape }}"
+  >
     {% include "widgets/navbar.html" %}
     <main role="main" class="flex-grow-1">
       <!-- CONTAINER -->

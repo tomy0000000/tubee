@@ -30,9 +30,10 @@ def status(task_id):
     response = {
         "id": task.id,
         "status": task.status.title(),
-        "result": task.result,
+        "result": str(task.result),
         "traceback": task.traceback,
     }
+    print(f"{response=}")
     if isinstance(task.result, Exception):
         response["traceback"] = task.__dict__["_cache"]["traceback"]
     else:

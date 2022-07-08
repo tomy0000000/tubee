@@ -1,11 +1,18 @@
 """Tag Model"""
+from dataclasses import dataclass
+
 from flask import current_app
 
 from .. import db
 
 
+@dataclass
 class Tag(db.Model):
     """Tag for grouping subscriptions"""
+
+    id: int
+    username: str
+    name: str
 
     __tablename__ = "tag"
     id = db.Column(db.Integer, primary_key=True)
