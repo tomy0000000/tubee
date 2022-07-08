@@ -21,11 +21,6 @@ pre {
   z-index: 1;
 }
 
-#channel_id {
-  width: 300px;
-  transition: all 0.2s ease-in-out;
-}
-
 @media (min-width: 992px) {
   #username {
     margin-right: 1rem;
