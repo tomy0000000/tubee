@@ -1,5 +1,4 @@
 """Channel Model"""
-import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
@@ -176,22 +175,6 @@ class Channel(db.Model):
                 results[key] = str(val)
             elif isinstance(val[0], datetime):
                 results[key] = (str(val[0]), val[1])
-
-        if results["state"] != self.hub_infos.get("state"):
-            from ..utils import notify_admin
-
-            notify_admin(
-                "channel-refresh",
-                "Pushover",
-                title=f"Channel {self.name} <{self.id}> missed subscription renewal",
-                message="\n".join(
-                    [
-                        json.dumps(results, indent=4),
-                        json.dumps(self.hub_infos, indent=4),
-                    ]
-                ),
-            )
-
         self.hub_infos = results
         db.session.commit()
         current_app.logger.info(f"Channel <{self.id}>: Hub info updated")
