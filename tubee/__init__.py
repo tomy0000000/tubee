@@ -110,6 +110,7 @@ def create_app(config_name, coverage=None):
     app.register_blueprint(routes.main_blueprint)
     app.register_blueprint(routes.admin_blueprint, url_prefix="/admin")
     app.register_blueprint(routes.api_blueprint, url_prefix="/api")
+    app.register_blueprint(routes.api_admin_blueprint, url_prefix="/api/admin")
     app.register_blueprint(routes.api_action_blueprint, url_prefix="/api/action")
     app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
     app.register_blueprint(
