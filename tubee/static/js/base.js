@@ -166,18 +166,18 @@ function generate_callback_type_badge(type) {
 
 function init_clipboard() {
   new ClipboardJS(CLIPBOARD_SELECTOR);
-  $(`${CLIPBOARD_SELECTOR} p`)
-    .tooltip({
+  const elements = document.querySelectorAll(`${CLIPBOARD_SELECTOR} p`);
+  const tooltipList = [...elements].map((element) => {
+    const tooltip = new bootstrap.Tooltip(element, {
       placement: "right",
       title: "Copied!",
       trigger: "click",
-    })
-    .on("mouseleave", function () {
-      $(this).tooltip("hide");
-    })
-    .on("click", (event) => {
-      event.preventDefault();
     });
+    element.addEventListener("mouseleave", (event) => {
+      tooltip.hide();
+    });
+    return tooltip;
+  });
 }
 
 function init_popover() {
