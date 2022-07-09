@@ -7,7 +7,15 @@ from flask_login import current_user, login_required
 
 from .. import db
 from ..forms import ActionForm, SubscriptionTagForm, TagRenameForm
-from ..models import Callback, Channel, SubscriptionTag, Tag, Video
+from ..models import (
+    Callback,
+    Channel,
+    Subscription,
+    SubscriptionTag,
+    Tag,
+    Video,
+    VideoCheck,
+)
 from ..utils import youtube_required
 from ..utils.youtube import fetch_video_metadata
 
@@ -182,12 +190,15 @@ def youtube_subscription():
 @main_blueprint.route("/latest")
 @login_required
 def latest():
-    one_day_ago = datetime.utcnow() - timedelta(days=1)
-    latest_video = Video.query.filter(Video.uploaded_timestamp > one_day_ago)
-    user_subscribed_channels = [
-        subscription.channel for subscription in current_user.subscriptions
-    ]
-    filtered_video = [
-        video for video in latest_video if video.channel in user_subscribed_channels
-    ]
-    return render_template("latest.html", videos=filtered_video)
+    last_30_days = datetime.utcnow() - timedelta(days=30)
+    queried_row = (
+        db.session.query(Subscription, Video, VideoCheck)
+        .outerjoin(Video, Subscription.channel_id == Video.channel_id)
+        .outerjoin(VideoCheck, VideoCheck.video_id == Video.id)
+        .where(Video.uploaded_timestamp > last_30_days)
+        .where(VideoCheck.checked.is_(None) | VideoCheck.checked.is_(False))
+        .order_by(Video.uploaded_timestamp.desc())
+        .all()
+    )
+    videos = [row["Video"] for row in queried_row]
+    return render_template("latest.html", videos=videos)

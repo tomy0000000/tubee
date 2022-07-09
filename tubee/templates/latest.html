@@ -12,10 +12,15 @@
 
 <!-- prettier-ignore -->
 {% block script %}
+<script src="{{ url_for('static', filename='js/latest.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
+{% if videos %}
+<button class="all-checked-btn btn btn-success mb-2">
+  Mark all as Checked
+</button>
 <table class="table table-striped table-hover align-middle">
   <thead class="table-dark">
     <tr>
@@ -26,7 +31,7 @@
   </thead>
   <tbody>
     {% for video in videos %}
-    <tr>
+    <tr class="video-row" data-video-id="{{ video.id }}">
       <th scope="row" class="video-thumbnails">
         <img
           src="{{ video.details.thumbnails.medium.url }}"
@@ -50,4 +55,9 @@
     {% endfor %}
   </tbody>
 </table>
+{% else %}
+<div class="alert alert-secondary" role="alert">No new videos found.</div>
+{% endif %}
+
+<!-- prettier-ignore -->
 {% endblock %}
