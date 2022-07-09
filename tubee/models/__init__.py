@@ -12,3 +12,4 @@ from .subscription_tag import SubscriptionTag
 from .tag import Tag
 from .user import User
 from .video import Video
+from .video_check import VideoCheck
