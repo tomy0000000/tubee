@@ -18,7 +18,10 @@
 <!-- prettier-ignore -->
 {% block content %}
 {% if videos %}
-<button class="all-checked-btn btn btn-success mb-2">
+<button
+  class="all-checked-btn btn btn-success mb-2"
+  onclick="mark_all_as_checked(event)"
+>
   Mark all as Checked
 </button>
 <table class="table table-striped table-hover align-middle">
