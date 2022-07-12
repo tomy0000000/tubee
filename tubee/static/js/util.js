@@ -2,7 +2,7 @@
 // Spinner
 // --------------------
 
-$.fn.addLoadingSpinner = ({ type = "primary", small = false }) => {
+$.fn.addLoadingSpinner = function ({ type = "primary", small = false }) {
   const VALID_SPINNER_TYPE = [
     "primary",
     "secondary",
@@ -31,7 +31,7 @@ $.fn.addLoadingSpinner = ({ type = "primary", small = false }) => {
   return this;
 };
 
-$.fn.dropLoadingSpinner = () => {
+$.fn.dropLoadingSpinner = function () {
   let spinner_id = this.data("spinner-id");
   if (spinner_id) {
     this.find(`#${spinner_id}`).remove();
@@ -43,19 +43,31 @@ $.fn.dropLoadingSpinner = () => {
 // Button Methods
 // --------------------
 
-$.fn.buttonToggleLoading = () => {
-  this.empty()
-    .attr({ disabled: true })
-    .addLoadingSpinner({ type: "secondary", small: true });
-  return this;
+$.fn.buttonCallGetApi = function () {
+  const api = this.data("api");
+  const path_params = this.data("path-params");
+  const query_params = this.data("query-params");
+  const url = build_url(api, path_params, query_params);
+
+  this.buttonToggleState({ state: "loading" });
+  $.ajax({ type: "get", url })
+    .done((responseData) => {
+      this.buttonToggleState({ state: "success" });
+    })
+    .fail((responseData) => {
+      this.buttonToggleState({ state: "fail", error: responseData });
+    });
 };
 
-$.fn.buttonToggleSuccess = () => {
-  this.empty().text("Done").dropLoadingSpinner();
-  return this;
-};
-
-$.fn.buttonToggleFail = (error) => {
-  this.empty().text(error).dropLoadingSpinner();
+$.fn.buttonToggleState = function ({ state, error }) {
+  if (state === "loading") {
+    this.empty()
+      .attr({ disabled: true })
+      .addLoadingSpinner({ type: "secondary", small: true });
+  } else if (state === "success") {
+    this.empty().text("Done").dropLoadingSpinner();
+  } else if (state === "fail") {
+    this.empty().text(error).dropLoadingSpinner();
+  }
   return this;
 };
