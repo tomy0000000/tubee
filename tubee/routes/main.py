@@ -200,5 +200,5 @@ def latest():
         .order_by(Video.uploaded_timestamp.desc())
         .all()
     )
-    videos = [row["Video"] for row in queried_row]
-    return render_template("latest.html", videos=videos)
+    video_ids = [row["Video"].id for row in queried_row]
+    return render_template("latest.html", rows=queried_row, video_ids=video_ids)

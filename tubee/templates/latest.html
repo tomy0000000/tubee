@@ -16,7 +16,7 @@
 
 <!-- prettier-ignore -->
 {% block content %}
-{% if videos %}
+{% if rows %}
 <button
   class="btn btn-success mb-2"
   data-api="api_video.mark_as_checked"
@@ -31,30 +31,46 @@
       <th scope="col"></th>
       <th scope="col">Title</th>
       <th scope="col">Published Datetime</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
-    {% for video in videos %}
-    <tr class="video-row" data-video-id="{{ video.id }}">
+    {% for row in rows %}
+    <tr class="video-row" data-video-id="{{ row.Video.id }}">
       <th scope="row" class="video-thumbnails">
         <img
-          src="{{ video.details.thumbnails.medium.url }}"
+          src="{{ row.Video.details.thumbnails.medium.url }}"
           class="rounded vidoe-thumbnails"
         />
       </th>
       <td class="video-title">
-        <a href="https://youtu.be/{{ video.id }}" target="_blank">
-          {{ video.name }}
+        <a href="https://youtu.be/{{ row.Video.id }}" target="_blank">
+          {{ row.Video.name }}
         </a>
         <a
           href="#"
           class="text-muted clipboard"
-          data-clipboard-text="{{ video.id }}"
+          data-clipboard-text="{{ row.Video.id }}"
         >
-          <p>#{{ video.id }}</p>
+          <p>#{{ row.Video.id }}</p>
         </a>
       </td>
       <td>{{ moment(video.uploaded_timestamp).format('lll') }}</td>
+      <td>
+        <div class="btn-group" role="group" aria-label="Video Actions">
+          {% for action in row.Subscription.actions %}
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-api="api_video.execute_action"
+            data-path-params="{{ dict(video_id=row.Video.id, action_id=action.id) | tojson | forceescape }}"
+            onclick="$(this).buttonCallGetApi()"
+          >
+            {{ action.name }}
+          </button>
+          {% endfor %}
+        </div>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
