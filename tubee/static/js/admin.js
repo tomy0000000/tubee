@@ -47,10 +47,10 @@ function load_channels(event) {
             );
 
             row.getElementsByClassName("channel-expiration")[0].innerText =
-              element.expiration;
+              element.hub_infos.expiration;
             row.getElementsByClassName(
               "channel-expiration-badge"
-            )[0].innerText = moment(element.expiration).fromNow();
+            )[0].innerText = moment(element.hub_infos.expiration).fromNow();
             table.append(row);
           });
           init_clipboard();

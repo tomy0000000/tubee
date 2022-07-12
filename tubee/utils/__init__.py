@@ -151,25 +151,3 @@ def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
-
-
-def notify_admin(initiator, service, **kwargs):
-    """Send Notification to all Admin
-
-    A Temporary function used to notify admin
-
-    Arguments:
-        initiator {str} -- Action or reason that trigger this notification
-        service {str or notification.Service} -- Service used to send notification
-        **kwargs {dict} -- optional arguments passed to notification
-
-    Returns:
-        dict -- Response from notification service
-    """
-    from ..models.user import User
-
-    admins = User.query.filter_by(admin=True).all()
-    response = {}
-    for admin in admins:
-        response[admin.username] = admin.send_notification(initiator, service, **kwargs)
-    return response
