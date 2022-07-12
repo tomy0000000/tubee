@@ -116,7 +116,7 @@ function drop_spinner(location) {
   $(location).find(`#${spinner_id}`).remove();
 }
 
-function build_url(endpoint, path_params = {}) {
+function build_url(endpoint, path_params = {}, query_params = {}) {
   const raw_sitemap = JSON.parse(document.body.dataset.sitemap);
   const key_based_sitemap = {};
   Object.keys(raw_sitemap).forEach((blueprint) => {
@@ -129,6 +129,9 @@ function build_url(endpoint, path_params = {}) {
   Object.keys(path_params).forEach((key) => {
     url = url.replace(`<${key}>`, path_params[key]);
   });
+
+  const params = $.param(query_params);
+  url = `${url}?${params}`;
 
   return url;
 }
