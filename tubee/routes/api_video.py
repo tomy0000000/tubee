@@ -16,6 +16,14 @@ def update_infos(video_id):
     return jsonify(response)
 
 
+@api_video_blueprint.route("/<video_id>/execute/<action_id>")
+@login_required
+def execute_action(video_id, action_id):
+    video = Video.query.get_or_404(video_id, "Video not found")
+    response = video.execute_action(action_id)
+    return jsonify(response)
+
+
 @api_video_blueprint.route("/mark_as_checked")
 @login_required
 def mark_as_checked():
