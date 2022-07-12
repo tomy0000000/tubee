@@ -2,8 +2,6 @@ name: Test, Build, Deploy
 
 on:
   push:
-    branches:
-      - main
     paths:
       - "tubee/**"
       - "app.py"
@@ -76,6 +74,7 @@ jobs:
     needs: [test, license]
     if: |
       always()
+      && (github.github.ref_name == 'main')
       && (github.event_name != 'pull_request')
       && (needs.test.result == 'success')
       && (needs.license.result == 'success' || needs.license.result == 'skipped')
@@ -121,9 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Beta
     needs: build
-    if: |
-      always()
-      && (github.event_name != 'pull_request')
+    if: needs.build.result == 'success'
     steps:
       - name: SSH and execute deployment
         uses: appleboy/ssh-action@master
