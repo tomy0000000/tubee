@@ -15,37 +15,6 @@ const CLIPBOARD_SELECTOR = ".clipboard";
 // Util Functions
 // ---------------
 
-/**
- * @param {String} HTML representing any number of sibling elements
- * @return {NodeList|Element} A list of elements or a single element
- */
-function html_to_elements(html) {
-  let template = document.createElement("template");
-  template.innerHTML = html.trim();
-  if (template.content.childNodes.length > 1) {
-    return template.content.childNodes;
-  } else {
-    return template.content.firstChild;
-  }
-}
-
-async function fetch_simple_get(endpoint, params = {}, text = false) {
-  const query_string = new URLSearchParams(params);
-  const url = `${endpoint}?${query_string}`;
-
-  const response = await fetch(url);
-  if (!response.ok) {
-    alert(`Error: ${response.statusText}`);
-    throw new Error(response.statusText);
-  }
-
-  if (text) {
-    return await response.text();
-  } else {
-    return await response.json();
-  }
-}
-
 async function fetch_post_form(endpoint, form, text = false) {
   const response = await fetch(endpoint, {
     method: "POST",
@@ -61,20 +30,6 @@ async function fetch_post_form(endpoint, form, text = false) {
   } else {
     return await response.json();
   }
-}
-
-function new_btn_set_loading(button) {
-  button.disabled = true;
-  const spinner = html_to_elements(
-    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
-  );
-  button.appendChild(spinner);
-}
-
-function new_btn_unset_loading(button) {
-  button.disabled = false;
-  let spinner = button.querySelector(".spinner-border");
-  button.removeChild(spinner);
 }
 
 function set_loading(button) {
@@ -199,13 +154,12 @@ function init_popover() {
 
 async function submit_subscribe(event) {
   // UI
-  new_btn_set_loading(event.target);
+  $(event.target).buttonToggleState({ state: "loading" });
 
   // API
-  const api_endpoint = document.getElementById("navbar-subscribe-submit")
-    .dataset.subscribeApi;
+  const url = build_url($("#navbar-subscribe-submit").data("api"));
   let form = document.getElementById("navbar-subscribe-form");
-  await fetch_post_form(api_endpoint, form);
+  await fetch_post_form(url, form);
 
   // Redirect
   location.href = $("#navbar-main").attr("href");
