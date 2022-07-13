@@ -55,7 +55,7 @@
           <p>#{{ row.Video.id }}</p>
         </a>
       </td>
-      <td>{{ moment(video.uploaded_timestamp).format('lll') }}</td>
+      <td>{{ moment(row.Video.uploaded_timestamp).format('lll') }}</td>
       <td>
         <div class="btn-group" role="group" aria-label="Video Actions">
           {% for action in row.Subscription.actions %}
