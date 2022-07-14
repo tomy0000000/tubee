@@ -1,38 +1,28 @@
-from flask import Blueprint, abort, jsonify
+from flask import Blueprint, abort, jsonify, request
 from flask_login import current_user, login_required
 
-from tubee.forms import SubscriptionForm, SubscriptionTagForm
+from tubee.forms import SubscriptionTagForm
 
 api_subscription_blueprint = Blueprint("api_subscription", __name__)
 
 
-@api_subscription_blueprint.route("/add", methods=["POST"])
+@api_subscription_blueprint.post("/")
 @login_required
-def add():
-    """Add a new subscription"""
-    form = SubscriptionForm()
-    if not form.validate_on_submit():
-        abort(403)
-
-    results = current_user.subscribe_to(form.channel_id.data)
-    response = {"success": results}
-    return jsonify(response)
+def create():
+    """Add Subscription"""
+    channel_id = request.get_json().get("channel_id")
+    return jsonify(current_user.subscribe(channel_id))
 
 
-@api_subscription_blueprint.route("/remove", methods=["POST"])
+@api_subscription_blueprint.delete("/")
 @login_required
-def remove():
-    """Remove a new subscription"""
-    form = SubscriptionForm(channel_id_hidden=True)
-    if not form.validate_on_submit():
-        abort(403)
-
-    results = current_user.unbsubscribe(form.channel_id.data)
-    response = {"success": results}
-    return jsonify(response)
+def delete():
+    """Remove subscription"""
+    channel_id = request.get_json().get("channel_id")
+    return jsonify(current_user.unbsubscribe(channel_id))
 
 
-@api_subscription_blueprint.route("/tag", methods=["POST"])
+@api_subscription_blueprint.post("/tag")
 @login_required
 def tag():
     """Add a tag to subscription"""

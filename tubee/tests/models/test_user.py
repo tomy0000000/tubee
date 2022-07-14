@@ -85,7 +85,7 @@ class UserModelTestCase(unittest.TestCase):
     @mock.patch("tubee.models.Subscription")
     @mock.patch("tubee.models.user.User.is_subscribing")
     @mock.patch("tubee.models.Channel")
-    def test_subscribe_to(
+    def test_subscribe(
         self, mocked_channel, mocked_is_subscribing, mocked_subscription
     ):
         u = User(username=self.test_username, password=self.test_user_password)
@@ -93,9 +93,9 @@ class UserModelTestCase(unittest.TestCase):
         mocked_channel.query.get.return_value = mock.MagicMock(id=self.test_channel_id)
         mocked_is_subscribing.return_value = True
         with self.assertRaises(InvalidAction):
-            u.subscribe_to(self.test_channel_id)
+            u.subscribe(self.test_channel_id)
 
         mocked_channel.query.get.return_value = None
         mocked_is_subscribing.return_value = False
-        u.subscribe_to(self.test_channel_id)
+        u.subscribe(self.test_channel_id)
         mocked_channel.assert_called()

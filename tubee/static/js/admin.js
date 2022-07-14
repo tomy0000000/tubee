@@ -21,7 +21,7 @@ function load_channels(event) {
       console.log(data);
     })
     .then(() => {
-      $.getJSON(build_url("api_admin.channel"))
+      $.getJSON(buildURL("api_admin.channel"))
         .done((data) => {
           data.forEach((element) => {
             let row = channel_template.cloneNode(true);
@@ -33,7 +33,7 @@ function load_channels(event) {
               .getElementsByClassName("channel-name")[0]
               .parentElement.setAttribute(
                 "href",
-                build_url("main.channel", { channel_id: element.id })
+                buildURL("main.channel", { channel_id: element.id })
               );
             row.getElementsByClassName("channel-id")[0].innerText = element.id;
             row.getElementsByClassName(
@@ -84,7 +84,7 @@ function channel_refresh(event) {
 
   $.ajax({
     type: "get",
-    url: build_url("api_channel.status", { channel_id: channel_id }),
+    url: buildURL("api_channel.status", { channel_id: channel_id }),
   })
     .done((responseData) => {
       button.empty().text("Refresh").attr({
@@ -224,7 +224,7 @@ function load_notifications(event) {
       console.log(data);
     })
     .then(() => {
-      $.getJSON(build_url("api_admin.notifications"))
+      $.getJSON(buildURL("api_admin.notifications"))
         .done((data) => {
           data.forEach((element) => {
             let row = notification_template.cloneNode(true);

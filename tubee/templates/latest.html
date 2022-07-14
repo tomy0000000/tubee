@@ -19,9 +19,10 @@
 {% if rows %}
 <button
   class="btn btn-success mb-2"
+  onclick="$(this).buttonAPI()"
   data-api="api_video.mark_as_checked"
+  data-api-method="GET"
   data-query-params="{{ dict(video_ids=video_ids | join(',')) | tojson | forceescape }}"
-  onclick="$(this).buttonCallGetApi()"
 >
   Mark all as Checked
 </button>
@@ -62,9 +63,10 @@
           <button
             type="button"
             class="btn btn-primary"
+            onclick="$(this).buttonAPI()"
             data-api="api_video.execute_action"
+            data-api-method="GET"
             data-path-params="{{ dict(video_id=row.Video.id, action_id=action.id) | tojson | forceescape }}"
-            onclick="$(this).buttonCallGetApi()"
           >
             {{ action.name }}
           </button>

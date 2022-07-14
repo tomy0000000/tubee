@@ -92,7 +92,6 @@ def create_app(config_name, coverage=None):
     )
 
     from . import commands, routes
-    from .forms import SubscriptionForm
 
     # Expose db instance and models in shell for testing
     app.shell_context_processor(commands.make_shell_context)
@@ -102,9 +101,8 @@ def create_app(config_name, coverage=None):
     app.cli.add_command(commands.test)
     app.cli.add_command(commands.admin)
 
-    # Inject Subscription Form in Navbar for all views
+    # Inject global variable for all views
     app.context_processor(lambda: dict(sitemap=build_sitemap()))
-    app.context_processor(lambda: dict(subscription_form=SubscriptionForm()))
 
     # Blueprint Registration
     app.register_blueprint(routes.main_blueprint)

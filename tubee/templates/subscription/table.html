@@ -47,19 +47,21 @@
       </td>
       <td>
         <form id="{{ subscription.channel_id }}-unsubscribe-form">
-          <!-- prettier-ignore -->
-          {{ subscription.remove_form.csrf_token }}
-          {{ subscription.remove_form.channel_id }}
+          <input
+            type="hidden"
+            name="channel_id"
+            value="{{ subscription.channel_id }}"
+          />
+          <button
+            class="btn btn-danger"
+            onclick="$(this).buttonAPI()"
+            data-api="api_subscription.delete"
+            data-api-method="DELETE"
+            data-form-id="{{ subscription.channel_id }}-unsubscribe-form"
+          >
+            Unsubscribe
+          </button>
         </form>
-        <button
-          type="button"
-          class="btn btn-danger unsubscribe-btn"
-          data-channel-id="{{ subscription.channel_id }}"
-          data-channel-name="{{ subscription.channel.name }}"
-          data-api-endpoint="{{ url_for('api_subscription.remove') }}"
-        >
-          Unsubscribe
-        </button>
       </td>
     </tr>
     {% endfor %}

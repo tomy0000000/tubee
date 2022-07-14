@@ -4,13 +4,23 @@
   // --------------------
 
   $.fn.isInViewport = function () {
-    var elementTop = $(this).offset().top;
-    var elementBottom = elementTop + $(this).outerHeight();
+    // Check if the element is in the viewport
+    let elementTop = $(this).offset().top;
+    let elementBottom = elementTop + $(this).outerHeight();
 
-    var viewportTop = $(window).scrollTop();
-    var viewportBottom = viewportTop + $(window).height();
+    let viewportTop = $(window).scrollTop();
+    let viewportBottom = viewportTop + $(window).height();
 
     return elementBottom > viewportTop && elementTop < viewportBottom;
+  };
+
+  $.fn.serializeObject = function () {
+    let object = {};
+    const array = this.serializeArray();
+    $.map(array, (pair) => {
+      object[pair.name] = pair.value;
+    });
+    return object;
   };
 
   // --------------------
@@ -31,25 +41,25 @@
     type = type.toLowerCase();
     type = VALID_SPINNER_TYPE.includes(type) ? type : "primary";
     let size = small ? "spinner-border-sm" : "";
-    let spinner_id = Date.now(); // This id is used to drop the spinner later
+    let spinnerId = Date.now(); // This id is used to drop the spinner later
 
-    const spinner_span = $("<span>")
+    const spinnerSpan = $("<span>")
       .addClass("visually-hidden")
       .text("Loading...");
-    const spinner_container = $("<div>")
-      .attr("id", spinner_id)
+    const spinnerContainer = $("<div>")
+      .attr("id", spinnerId)
       .attr("role", "status")
       .addClass(["spinner-border", `text-${type}`, size])
-      .append(spinner_span);
+      .append(spinnerSpan);
 
-    this.append(spinner_container).data({ "spinner-id": spinner_id });
+    this.append(spinnerContainer).data({ "spinner-id": spinnerId });
     return this;
   };
 
   $.fn.dropLoadingSpinner = function () {
-    let spinner_id = this.data("spinner-id");
-    if (spinner_id) {
-      this.find(`#${spinner_id}`).remove();
+    let spinnerId = this.data("spinner-id");
+    if (spinnerId) {
+      this.find(`#${spinnerId}`).remove();
     }
     return this;
   };
@@ -58,14 +68,19 @@
   // Button Methods
   // --------------------
 
-  $.fn.buttonCallGetApi = function () {
+  $.fn.buttonAPI = function () {
     const api = this.data("api");
-    const path_params = this.data("path-params");
-    const query_params = this.data("query-params");
-    const url = build_url(api, path_params, query_params);
+    const method = this.data("api-method");
+    const formId = this.data("form-id");
+    const pathParams = this.data("path-params");
+    const queryParams = this.data("query-params");
+
+    const url = buildURL(api, pathParams, queryParams);
+    const form_data = formId ? $(`#${formId}`).serializeObject() : {};
+    const data = JSON.stringify(form_data);
 
     this.buttonToggleState({ state: "loading" });
-    $.ajax({ type: "get", url })
+    $.ajax({ url, method, data, contentType: "application/json" })
       .done((responseData) => {
         this.buttonToggleState({ state: "success" });
       })

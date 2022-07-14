@@ -6,8 +6,8 @@ async function subscribe_in_import(event) {
   const button = $(event.target);
   button.buttonToggleState({ state: "loading" });
 
-  const url = build_url($("#navbar-subscribe-submit").data("api"));
-  let form = document.getElementById("navbar-subscribe-form");
+  const url = buildURL($("#navbar-subscribe-submit").data("api"));
+  let form = document.getElementById("subscribe-form");
   form.channel_id.value = button.data("channel-id");
 
   try {
@@ -40,7 +40,7 @@ function build_row(snippet) {
 
 function load_more(event) {
   const spinner = $("#loading-spinner");
-  const url = build_url(table.data("api"));
+  const url = buildURL(table.data("api"));
   const params = { page_token: table.data("next-page-token") };
   spinner.show();
 

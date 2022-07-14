@@ -71,7 +71,7 @@ function drop_spinner(location) {
   $(location).find(`#${spinner_id}`).remove();
 }
 
-function build_url(endpoint, path_params = {}, query_params = {}) {
+function buildURL(endpoint, path_params = {}, query_params = {}) {
   const raw_sitemap = JSON.parse(document.body.dataset.sitemap);
   const key_based_sitemap = {};
   Object.keys(raw_sitemap).forEach((blueprint) => {
@@ -148,28 +148,9 @@ function init_popover() {
   });
 }
 
-// ---------------
-// Toolbar
-// ---------------
-
-async function submit_subscribe(event) {
-  // UI
-  $(event.target).buttonToggleState({ state: "loading" });
-
-  // API
-  const url = build_url($("#navbar-subscribe-submit").data("api"));
-  let form = document.getElementById("navbar-subscribe-form");
-  await fetch_post_form(url, form);
-
-  // Redirect
-  location.href = $("#navbar-main").attr("href");
-}
-
 $(document).ready(() => {
   init_clipboard();
   init_popover();
-
-  $(".subscribe-submit").click(submit_subscribe);
 
   let channel_search_api = $("#channel_id").data("channel-api");
   $("#channel_id").autoComplete({
