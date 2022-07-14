@@ -1,24 +1,21 @@
-from flask import Blueprint, abort, jsonify, url_for
+from flask import Blueprint, abort, jsonify, request, url_for
 from flask_login import current_user, login_required
 
-from ..forms import TagForm, TagRenameForm
+from ..forms import TagForm
 from ..models import Tag
 
 api_tag_blueprint = Blueprint("api_tag", __name__)
 
 
-@api_tag_blueprint.route("/rename", methods=["POST"])
+@api_tag_blueprint.patch("/<tag_id>")
 @login_required
-def rename():
-    form = TagRenameForm()
-    if not form.validate_on_submit():
+def update(tag_id):
+    """Update Tag"""
+    tag = Tag.query.get_or_404(tag_id)
+    if tag.username != current_user.username:
         abort(403)
-    tag = Tag.query.filter_by(name=form.tag_name.data).first_or_404()
-    response = {
-        "success": tag.rename(form.new_tag_name.data),
-        "redirect": url_for("main.dashboard", tag_name=form.new_tag_name.data),
-    }
-    return jsonify(response)
+    result = tag.rename(request.get_json().get("name"))
+    return jsonify(result)
 
 
 @api_tag_blueprint.route("/remove", methods=["POST"])

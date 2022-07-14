@@ -92,7 +92,7 @@
   $.fn.buttonToggleState = function ({ state, error }) {
     if (state === "loading") {
       this.empty()
-        .attr({ disabled: true })
+        .prop("disabled", true)
         .addLoadingSpinner({ type: "secondary", small: true });
     } else if (state === "success") {
       this.empty().text("Done").dropLoadingSpinner();

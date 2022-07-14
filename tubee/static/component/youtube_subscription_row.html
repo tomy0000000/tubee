@@ -8,5 +8,18 @@
       <p class="id-text mb-0"></p>
     </a>
   </td>
-  <td class="subscribed"></td>
+  <td class="subscribe">
+    <form>
+      <input type="hidden" name="channel_id" />
+      <button
+        class="btn-subscribe btn btn-success"
+        onclick="$(this).buttonAPI()"
+        data-api="api_subscription.create"
+        data-api-method="POST"
+        data-form-id="{{ subscription.channel_id }}-subscribe-form"
+      >
+        Subscribe
+      </button>
+    </form>
+  </td>
 </tr>

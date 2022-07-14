@@ -22,20 +22,29 @@
     </h1>
   </div>
   <div id="tag-rename-form-block" class="col d-none">
-    <form
-      id="tag-rename-form"
-      class="row gx-3"
-      data-api-endpoint="{{ url_for('api_tag.rename') }}"
-    >
-      <!-- prettier-ignore -->
-      {{ tag_rename_form.csrf_token }}
-      {{ tag_rename_form.tag_name(value=tag.name) }}
+    <form id="rename-form" class="row gx-3">
       <div class="col-auto">
-        <!-- prettier-ignore -->
         <div class="input-group">
-          {{ tag_rename_form.new_tag_name(value=tag.name, class="form-control-lg") }}
-          <button class="btn btn-outline-danger btn-title-edit" type="button">Cancel</button>
-          <button class="btn btn-outline-primary btn-submit" type="submit">Save</button>
+          <input
+            type="text"
+            name="name"
+            class="form-control-lg"
+            value="{{ tag.name }}"
+            required
+          />
+          <button class="btn btn-outline-danger btn-title-edit" type="button">
+            Cancel
+          </button>
+          <button
+            class="btn btn-outline-primary btn-submit"
+            onclick="$(this).buttonAPI()"
+            data-api="api_tag.update"
+            data-api-method="PATCH"
+            data-form-id="rename-form"
+            data-path-params="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
+          >
+            Save
+          </button>
         </div>
       </div>
     </form>
@@ -59,24 +68,6 @@
         form.classList.toggle("d-none");
       });
     }
-  }
-
-  function register_rename_form_submit() {
-    let form = document.getElementById("tag-rename-form");
-    form.onsubmit = async (event) => {
-      event.preventDefault();
-      let api_endpoint = form.dataset.apiEndpoint;
-      let response = await fetch(api_endpoint, {
-        method: "POST",
-        body: new FormData(form),
-      });
-      let result = await response.json();
-      if (!result.success) {
-        alert("Rename failed");
-      } else {
-        window.location.href = result.redirect;
-      }
-    };
   }
 
   function register_remove_tag() {
@@ -103,7 +94,6 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     register_toggle_edit();
-    register_rename_form_submit();
     register_remove_tag();
   });
 </script>

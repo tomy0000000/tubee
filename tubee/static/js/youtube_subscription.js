@@ -1,24 +1,6 @@
 var row_template;
 const table = $("#subscription-table");
 
-async function subscribe_in_import(event) {
-  // UI
-  const button = $(event.target);
-  button.buttonToggleState({ state: "loading" });
-
-  const url = buildURL($("#navbar-subscribe-submit").data("api"));
-  let form = document.getElementById("subscribe-form");
-  form.channel_id.value = button.data("channel-id");
-
-  try {
-    await fetch_post_form(url, form);
-  } catch (error) {
-    button.buttonToggleState({ state: "fail", error: error.message });
-  }
-
-  button.buttonToggleState({ state: "success" });
-}
-
 function build_row(snippet) {
   const row = row_template.clone();
   const channel_id = snippet.resourceId.channelId;
@@ -26,14 +8,13 @@ function build_row(snippet) {
   row.find(".name").text(snippet.title);
   row.find(".id-anchor").data("clipboard-text", channel_id);
   row.find(".id-text").text(channel_id);
-  if (!snippet.subscribed) {
-    const button = $("<button>")
-      .addClass(["subscribe-submit", "btn", "btn-success"])
-      .attr("type", "button")
-      .data("channel-id", channel_id)
-      .text("Subscribe")
-      .on("click", subscribe_in_import);
-    row.find(".subscribed").append(button);
+  if (snippet.subscribed) {
+    row.find(".subscribe").empty();
+  } else {
+    const section = row.find(".subscribe");
+    section.children("form").attr("id", `${channel_id}-subscribe-form`);
+    section.find("input").val(channel_id);
+    section.find("button").data("form-id", `${channel_id}-subscribe-form`);
   }
   return row;
 }

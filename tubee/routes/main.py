@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
-from ..forms import ActionForm, SubscriptionTagForm, TagRenameForm
+from ..forms import ActionForm
 from ..models import (
     Callback,
     Channel,
@@ -58,7 +58,6 @@ def dashboard(tag_id):
         tag=tag,
         actions=actions,
         action_form=ActionForm(),
-        tag_rename_form=TagRenameForm(),
     )
 
 
@@ -88,7 +87,6 @@ def channel(channel_id):
         "channel.html",
         subscription=subscription,
         action_form=ActionForm(),
-        tag_form=SubscriptionTagForm(),
         video_pagination=pagination,
     )
 

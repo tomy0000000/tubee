@@ -55,22 +55,30 @@
         <p id="channel-description">{{ channel.infos.snippet.description }}</p>
         {{ tag.content(subscription.tags, channel) }}
         <form id="tag-form" class="row gx-3">
-          <!-- prettier-ignore -->
-          {{ tag_form.csrf_token }}
-          {{ tag_form.channel_id(value=channel.id) }}
           <div class="col-auto">
-            <!-- prettier-ignore -->
-            {{ tag_form.tag_name.label(class="visually-hidden", for="tag_name") }}
             <div class="input-group">
               <div class="input-group-text">#</div>
-              {{ tag_form.tag_name(class="form-control") }}
+              <input
+                type="text"
+                name="tag_name"
+                class="form-control"
+                required
+              />
+              <input
+                type="hidden"
+                name="channel_id"
+                value="{{ channel.id }}"
+                required
+              />
             </div>
           </div>
           <div class="col-auto">
             <button
-              class="btn btn-primary mb-2 submit-btn"
-              type="button"
-              data-api-endpoint="{{ url_for('api_subscription.tag') }}"
+              class="btn btn-primary mb-2"
+              onclick="$(this).buttonAPI()"
+              data-api="api_subscription.tag_create"
+              data-api-method="POST"
+              data-form-id="tag-form"
             >
               Add Tag
             </button>

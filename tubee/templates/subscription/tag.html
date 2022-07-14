@@ -2,19 +2,22 @@
 <div class="subscription-tags mb-2">
   <!-- prettier-ignore -->
   {% for tag in tags %}
-  {% set form = tag.untag_form %}
   <span class="badge rounded-pill bg-secondary">
-    <form class="untag-form">
-      <!-- prettier-ignore -->
-      {{ form.csrf_token }}
-      {{ form.tag_name(value=tag.name) }}
-      {{ form.channel_id(value=channel.id) }}
+    <form id="untag-form-{{ tag.id }}">
+      <input type="hidden" name="tag_id" value="{{ tag.id }}" required />
+      <input
+        type="hidden"
+        name="channel_id"
+        value="{{ channel.id }}"
+        required
+      />
       {{ tag.name }}
       <i
         class="fas fa-times-circle form-btn"
-        data-tag-name="{{ tag.name }}"
-        data-channel-name="{{ channel.name }}"
-        data-api-endpoint="{{ url_for('api_subscription.untag') }}"
+        onclick="$(this).buttonAPI()"
+        data-api="api_subscription.tag_delete"
+        data-api-method="DELETE"
+        data-form-id="untag-form-{{ tag.id }}"
       ></i>
     </form>
   </span>
@@ -33,38 +36,4 @@
 
 <!-- prettier-ignore -->
 {% macro script() -%}
-<script>
-  function register_untag_forms() {
-    let forms = document.getElementsByClassName("untag-form");
-    for (form of forms) {
-      let btn = form.getElementsByClassName("form-btn")[0];
-      let data = new FormData(form);
-      btn.addEventListener("click", async (event) => {
-        event.preventDefault();
-        let tag_name = btn.dataset.tagName;
-        let channel_name = btn.dataset.channelName;
-        let api_endpoint = btn.dataset.apiEndpoint;
-        if (!confirm(`Remove tag "${tag_name}" from "${channel_name}"?`)) {
-          return;
-        }
-        let response = await fetch(api_endpoint, {
-          method: "POST",
-          body: data,
-        }).catch((error) => {
-          alert("Remove failed");
-          console.log(error);
-          return;
-        });
-        let result = await response.json();
-        if (!result.success) {
-          alert("Remove failed");
-        } else {
-          window.location.reload();
-        }
-      });
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", register_untag_forms);
-</script>
 {%- endmacro %}
