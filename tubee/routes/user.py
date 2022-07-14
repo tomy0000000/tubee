@@ -32,14 +32,14 @@ def register():
     """User Register"""
     if current_user.is_authenticated:
         flash("You've already logined!", "success")
-        return redirect(url_for("main.dashboard", tag_name=False))
+        return redirect(url_for("main.dashboard", tag_id=False))
     form = RegisterForm()
     if form.validate_on_submit():
         exist_user = User.query.get(form.username.data)
         if not exist_user:
             new_user = User(form.username.data, form.password.data)
             login_user(new_user)
-            return redirect(url_for("main.dashboard", tag_name=False))
+            return redirect(url_for("main.dashboard", tag_id=False))
         flash("The Username is Taken", "warning")
     return render_template("register.html", form=form)
 
@@ -49,7 +49,7 @@ def login():
     """User Login"""
     if current_user.is_authenticated:
         flash("You've already logined!", "success")
-        return redirect(url_for("main.dashboard", tag_name=False))
+        return redirect(url_for("main.dashboard", tag_id=False))
     form = LoginForm()
     if form.validate_on_submit():
         query_user = User.query.get(form.username.data)
@@ -58,7 +58,7 @@ def login():
             redirect_url = request.args.get("next")
             if redirect_url and is_safe_url(redirect_url):
                 return redirect(redirect_url)
-            return redirect(url_for("main.dashboard", tag_name=False))
+            return redirect(url_for("main.dashboard", tag_id=False))
         flash("Invalid username or password.", "warning")
     return render_template("login.html", form=form)
 

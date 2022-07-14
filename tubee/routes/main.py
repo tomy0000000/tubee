@@ -22,11 +22,11 @@ from ..utils.youtube import fetch_video_metadata
 main_blueprint = Blueprint("main", __name__)
 
 
-@main_blueprint.route("/", defaults={"tag_name": False})
-@main_blueprint.route("/subscriptions/", defaults={"tag_name": None})
-@main_blueprint.route("/subscriptions/<tag_name>")
+@main_blueprint.route("/", defaults={"tag_id": False})
+@main_blueprint.route("/subscriptions/", defaults={"tag_id": None})
+@main_blueprint.route("/subscriptions/<tag_id>")
 @login_required
-def dashboard(tag_name):
+def dashboard(tag_id):
     """Showing Subscribed Channels with specified tag"""
 
     # Fetching all subscribed channels
@@ -35,17 +35,17 @@ def dashboard(tag_name):
     )
 
     # Check if provided tag exists
-    tag = Tag.query.filter_by(name=tag_name).first_or_404() if tag_name else None
+    tag = Tag.query.get_or_404(tag_id, "Tag not found") if tag_id else None
 
     # Filter subscritions by tag, including tag or untagged
     actions = None
-    if tag_name is not False:
+    if tag_id is not False:
         subscriptions = (
             subscriptions.outerjoin(SubscriptionTag)
             .outerjoin(Tag)
-            .filter(Tag.name == tag_name)
+            .filter(Tag.id == tag_id)
         )
-        actions = current_user.actions.join(Tag).filter(Tag.name == tag_name).all()
+        actions = current_user.actions.join(Tag).filter(Tag.id == tag_id).all()
 
     # Paginate subscriptions
     page = request.args.get("page", 1, type=int)

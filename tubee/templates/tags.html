@@ -28,7 +28,7 @@
         class="card-header d-flex align-items-center justify-content-between"
       >
         <a
-          href="{{ url_for('main.dashboard', tag_name=tag.name) }}"
+          href="{{ url_for('main.dashboard', tag_id=tag.id) }}"
           class="stretched-link"
         >
           <h5 class="card-title m-0">{{ tag.name }}</h5>
@@ -66,7 +66,7 @@
         class="card-header d-flex align-items-center justify-content-between"
       >
         <a
-          href="{{ url_for('main.dashboard', tag_name=None) }}"
+          href="{{ url_for('main.dashboard', tag_id=None) }}"
           class="stretched-link"
         >
           <h5 class="card-title m-0">Untagged</h5>

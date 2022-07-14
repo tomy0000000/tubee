@@ -38,7 +38,7 @@
         <!-- prettier-ignore -->
         {% if action.tag_id %}
         <p class="my-auto">Tag</p>
-        <a href="{{ url_for('main.dashboard', tag_name=action.tag.name) }}"
+        <a href="{{ url_for('main.dashboard', tag_id=action.tag.id) }}"
           >{{ action.tag.name }}</a
         >
         {% endif %}

@@ -30,6 +30,6 @@ def remove():
     tag = current_user.tags.filter_by(name=form.tag_name.data).first_or_404()
     response = {
         "success": tag.delete(),
-        "redirect": url_for("main.dashboard", tag_name=False),
+        "redirect": url_for("main.dashboard", tag_id=False),
     }
     return jsonify(response)
