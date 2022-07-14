@@ -38,20 +38,6 @@ class Tag(db.Model):
     def __repr__(self):
         return f"<{self.username}'s Tag: {self.name}>"
 
-    @property
-    def remove_form(self):
-        from ..forms import TagForm
-
-        return TagForm(tag_name_hidden=True)
-
-    @remove_form.setter
-    def remove_form(self, form):
-        raise ValueError("Form can't be modify")
-
-    @remove_form.deleter
-    def remove_form(self):
-        raise ValueError("Form can't be modify")
-
     def rename(self, new_name):
         """Rename the tag"""
         self.name = new_name

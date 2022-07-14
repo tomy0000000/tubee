@@ -1,7 +1,6 @@
-from flask import Blueprint, abort, jsonify, request, url_for
+from flask import Blueprint, abort, jsonify, request
 from flask_login import current_user, login_required
 
-from ..forms import TagForm
 from ..models import Tag
 
 api_tag_blueprint = Blueprint("api_tag", __name__)
@@ -18,15 +17,8 @@ def update(tag_id):
     return jsonify(result)
 
 
-@api_tag_blueprint.route("/remove", methods=["POST"])
+@api_tag_blueprint.delete("/<tag_id>")
 @login_required
-def remove():
-    form = TagForm(tag_name_hidden=True)
-    if not form.validate_on_submit():
-        abort(403)
-    tag = current_user.tags.filter_by(name=form.tag_name.data).first_or_404()
-    response = {
-        "success": tag.delete(),
-        "redirect": url_for("main.dashboard", tag_id=False),
-    }
-    return jsonify(response)
+def delete(tag_id):
+    tag = current_user.tags.filter_by(id=tag_id).first_or_404()
+    return jsonify(tag.delete())

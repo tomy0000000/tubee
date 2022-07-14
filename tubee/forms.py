@@ -9,7 +9,6 @@ from wtforms.fields import (
     SubmitField,
 )
 from wtforms.validators import DataRequired, EqualTo, Length
-from wtforms.widgets import HiddenInput
 
 from .models import ActionType, Service
 
@@ -45,29 +44,6 @@ class RegisterForm(FlaskForm):
         ],
     )
     submit = SubmitField("Register")
-
-
-# TODO: deprecate this form
-class TagForm(FlaskForm):
-    """Basic Tag Form, for removing tag"""
-
-    tag_name = StringField(
-        "Tag",
-        validators=[DataRequired(), Length(max=32)],
-    )
-
-    def __init__(self, *args, **kwargs):
-        tag_name_hidden = kwargs.pop("tag_name_hidden", False)
-        super().__init__(*args, **kwargs)
-        if tag_name_hidden:
-            self.tag_name.widget = HiddenInput()
-
-
-class ActionKwargsForm(FlaskForm):
-    """Keyword Arguments for Actions"""
-
-    keyword = StringField("keyword", validators=[DataRequired()])
-    value = StringField("value", validators=[DataRequired()])
 
 
 class NotificationActionForm(FlaskForm):

@@ -20,6 +20,17 @@
 {% block script %}
 {{ action_table.script() }}
 {{ pagination.script() }}
+<script>
+  $(document).ready(() => {
+    $(".btn-title-edit").each(function () {
+      $(this).click((event) => {
+        event.preventDefault();
+        $("#title-block").toggle();
+        $("#rename-block").toggle();
+      });
+    });
+  });
+</script>
 {% endblock %}
 
 <!-- prettier-ignore -->
