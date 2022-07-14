@@ -15,23 +15,6 @@ const CLIPBOARD_SELECTOR = ".clipboard";
 // Util Functions
 // ---------------
 
-async function fetch_post_form(endpoint, form, text = false) {
-  const response = await fetch(endpoint, {
-    method: "POST",
-    body: new FormData(form),
-  });
-  if (!response.ok) {
-    alert(`Error: ${response.statusText}`);
-    throw new Error(response.statusText);
-  }
-
-  if (text) {
-    return await response.text();
-  } else {
-    return await response.json();
-  }
-}
-
 function set_loading(button) {
   let spinner_id = Date.now();
   $(button)

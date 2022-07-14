@@ -6,12 +6,10 @@
 {% set title = "Actions" %}
 
 <!-- prettier-ignore -->
-{% block style %}
-{% endblock %}
-
-<!-- prettier-ignore -->
 {% block script %}
-{{ action_table.script() }}
+<script src="{{ url_for('static', filename='js/action_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal_edit.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal_remove.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->

@@ -5,3 +5,7 @@
 .channel-name {
   margin-bottom: 0;
 }
+
+#title-container {
+  height: 250px;
+}

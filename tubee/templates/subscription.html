@@ -12,25 +12,25 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='css/subscription.css') }}"
 />
+{% if subscription_pagination.items %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/subscription_tag.css') }}"
+/>
 <!-- prettier-ignore -->
-{{ pagination.style() }}
+{% endif %}
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block script %}
-{{ action_table.script() }}
-{{ pagination.script() }}
-<script>
-  $(document).ready(() => {
-    $(".btn-title-edit").each(function () {
-      $(this).click((event) => {
-        event.preventDefault();
-        $("#title-block").toggle();
-        $("#rename-block").toggle();
-      });
-    });
-  });
-</script>
+{% if tag %}
+<script src="{{ url_for('static', filename='js/tag_title.js') }}"></script>
+{% if actions %}
+<script src="{{ url_for('static', filename='js/action_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal_new.js') }}"></script>
+<!-- prettier-ignore -->
+{% endif %}
+{% endif %}
 {% endblock %}
 
 <!-- prettier-ignore -->

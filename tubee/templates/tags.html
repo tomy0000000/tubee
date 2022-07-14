@@ -4,15 +4,10 @@
 
 <!-- prettier-ignore -->
 {% block style %}
-<style>
-  .tags-channel-thumbnails {
-    height: 3rem;
-  }
-</style>
-{% endblock %}
-
-<!-- prettier-ignore -->
-{% block script %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/tags.css') }}"
+/>
 {% endblock %}
 
 <!-- prettier-ignore -->

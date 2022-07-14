@@ -16,23 +16,19 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='css/channel.css') }}"
 />
-<!-- prettier-ignore -->
-{{ action_table.style() }}
-{{ channel_info.style() }}
-{{ video_carousal.style() }}
-{{ video_table.style() }}
-{{ pagination.style() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/subscription_tag.css') }}"
+/>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block script %}
-{{ action_table.script() }}
-{{ channel_info.script() }}
-{{ video_carousal.script() }}
-{{ video_table.script() }}
-{{ pagination.script() }}
+<script src="{{ url_for('static', filename='js/action_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal_new.js') }}"></script>
 {% endblock %}
 
+<!-- prettier-ignore -->
 {% block content %}
 {% if video_pagination.items %}
   {{ video_carousal.content(video_pagination.items) }}
