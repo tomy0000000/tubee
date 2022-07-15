@@ -41,7 +41,7 @@ def register():
             login_user(new_user)
             return redirect(url_for("main.dashboard", tag_id=False))
         flash("The Username is Taken", "warning")
-    return render_template("register.html", form=form)
+    return render_template("user/register.html", form=form)
 
 
 @user_blueprint.route("/login", methods=["GET", "POST"])
@@ -60,7 +60,7 @@ def login():
                 return redirect(redirect_url)
             return redirect(url_for("main.dashboard", tag_id=False))
         flash("Invalid username or password.", "warning")
-    return render_template("login.html", form=form)
+    return render_template("user/login.html", form=form)
 
 
 @user_blueprint.route("/logout", methods=["GET"])
@@ -76,7 +76,7 @@ def logout():
 @login_required
 def setting():
     """User Setting Page"""
-    return render_template("setting.html")
+    return render_template("user/setting.html")
 
 
 @user_blueprint.route("/setting/youtube/authorize")

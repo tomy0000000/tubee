@@ -1,5 +1,6 @@
 """The Main Routes"""
 from datetime import datetime, timedelta
+from typing import Union
 
 import bs4
 from flask import Blueprint, current_app, jsonify, render_template, request
@@ -23,10 +24,10 @@ main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/", defaults={"tag_id": False})
-@main_blueprint.route("/subscriptions/", defaults={"tag_id": None})
-@main_blueprint.route("/subscriptions/<tag_id>")
+@main_blueprint.route("/subscription/", defaults={"tag_id": None})
+@main_blueprint.route("/subscription/<tag_id>")
 @login_required
-def dashboard(tag_id):
+def dashboard(tag_id: Union[int, bool]):
     """Showing Subscribed Channels with specified tag"""
 
     # Fetching all subscribed channels
@@ -53,7 +54,7 @@ def dashboard(tag_id):
         page, current_app.config["PAGINATE_COUNT"], False
     )
     return render_template(
-        "subscription.html",
+        "subscription/main.html",
         subscription_pagination=pagination,
         tag=tag,
         actions=actions,
@@ -61,16 +62,25 @@ def dashboard(tag_id):
     )
 
 
-@main_blueprint.route("/actions/")
-def actions():
+@main_blueprint.route("/subscription/youtube")
+@login_required
+@youtube_required
+def youtube_subscription():
+    return render_template("subscription/youtube.html")
+
+
+@main_blueprint.route("/action/")
+def action():
     actions = current_user.actions.all()
-    return render_template("actions.html", actions=actions, action_form=ActionForm())
+    return render_template(
+        "action/main.html", actions=actions, action_form=ActionForm()
+    )
 
 
-@main_blueprint.route("/tags/")
+@main_blueprint.route("/tag/")
 def tags():
     tags = current_user.tags.all()
-    return render_template("tags.html", tags=tags)
+    return render_template("tag/main.html", tags=tags)
 
 
 @main_blueprint.route("/channel/<channel_id>")
@@ -84,7 +94,7 @@ def channel(channel_id):
     videos = subscription.channel.videos.order_by(Video.uploaded_timestamp.desc())
     pagination = videos.paginate(page, current_app.config["PAGINATE_COUNT"], False)
     return render_template(
-        "channel.html",
+        "channel/main.html",
         subscription=subscription,
         action_form=ActionForm(),
         video_pagination=pagination,
@@ -178,16 +188,9 @@ def channel_callback(channel_id):
         return jsonify(response)
 
 
-@main_blueprint.route("/youtube/subscription")
+@main_blueprint.route("/video")
 @login_required
-@youtube_required
-def youtube_subscription():
-    return render_template("youtube_subscription.html")
-
-
-@main_blueprint.route("/latest")
-@login_required
-def latest():
+def video():
     last_30_days = datetime.utcnow() - timedelta(days=30)
     queried_row = (
         db.session.query(Subscription, Video, VideoCheck)
@@ -199,4 +202,4 @@ def latest():
         .all()
     )
     video_ids = [row["Video"].id for row in queried_row]
-    return render_template("latest.html", rows=queried_row, video_ids=video_ids)
+    return render_template("video/main.html", rows=queried_row, video_ids=video_ids)

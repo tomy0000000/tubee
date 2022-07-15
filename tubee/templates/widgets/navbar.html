@@ -45,7 +45,7 @@
           <li class="nav-item">
             <a
               class="nav-link {{ 'active' if title == 'Actions' }}"
-              href="{{ url_for('main.actions') }}"
+              href="{{ url_for('main.action') }}"
             >
               Actions
             </a>
@@ -60,10 +60,10 @@
           </li>
           <li class="nav-item">
             <a
-              class="nav-link {{ 'active' if title == 'Latest Upload' }}"
-              href="{{ url_for('main.latest') }}"
+              class="nav-link {{ 'active' if title == 'Videos' }}"
+              href="{{ url_for('main.video') }}"
             >
-              Latest Upload
+              Videos
             </a>
           </li>
           {% if current_user.admin is defined and current_user.admin %}
