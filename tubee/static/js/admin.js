@@ -13,7 +13,7 @@ function load_channels(event) {
   table.empty();
   let channel_template;
   const url = buildURL("static", {
-    filename: "component/admin_channel_row.html",
+    filename: "component/admin/channel_table_row.html",
   });
   $.ajax(url)
     .done((data) => {
@@ -182,7 +182,7 @@ function load_tasks(event) {
   table.empty();
   let celery_task_template;
   $.ajax(
-    buildURL("static", { filename: "component/admin_celery_task.html" })
+    buildURL("static", { filename: "component/admin/celery_table_row.html" })
   ).done((data) => {
     celery_task_template = document.createElement("tr");
     celery_task_template.innerHTML = data;
@@ -225,7 +225,9 @@ function load_notifications(event) {
   table.empty();
   let notification_template;
   $.ajax(
-    buildURL("static", { filename: "component/admin_notification_row.html" })
+    buildURL("static", {
+      filename: "component/admin/notification_table_row.html",
+    })
   )
     .done((data) => {
       notification_template = document.createElement("tr");

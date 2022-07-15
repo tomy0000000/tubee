@@ -65,6 +65,32 @@
   };
 
   // --------------------
+  // Confirm Modal
+  // --------------------
+
+  $.fn.confirm = function (event, message) {
+    event.preventDefault();
+    const button = $(event.target);
+    const modalPath = buildURL("static", {
+      filename: "component/confirm_modal.html",
+    });
+    $("#hidden-container").load(modalPath, function () {
+      const modal = $("#confirm-modal");
+      const modalMessage = message
+        ? `Are your sure you want to ${message}?`
+        : "Are you sure?";
+      modal.find(".modal-body").text(modalMessage);
+      modal.find(".btn-confirm").click(function () {
+        modal.modal("hide");
+        const callback = button.data("callback");
+        button[callback]();
+      });
+      modal.modal("show");
+    });
+    return this;
+  };
+
+  // --------------------
   // Button Methods
   // --------------------
 

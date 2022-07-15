@@ -85,7 +85,19 @@
           </div>
         </form>
         {% if current_user.is_subscribing(channel) %}
-        <button type="button" class="btn btn-danger btn-lg">Unsubscribe</button>
+        <form id="unsubscribe-form">
+          <input type="hidden" name="channel_id" value="{{ channel.id }}" />
+          <button
+            class="btn btn-danger btn-lg"
+            onclick="$(this).confirm(event, 'unsubscribe from {{ channel.name }}')"
+            data-callback="buttonAPI"
+            data-api="api_subscription.delete"
+            data-api-method="DELETE"
+            data-form-id="unsubscribe-form"
+          >
+            Unsubscribe
+          </button>
+        </form>
         {% else %}
         <button type="button" class="btn btn-success btn-lg">Subscribe</button>
         {% endif %}

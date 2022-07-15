@@ -9,8 +9,6 @@ const VALID_SPINNER_TYPE = [
   "dark",
 ];
 
-const CLIPBOARD_SELECTOR = ".clipboard";
-
 // ---------------
 // Util Functions
 // ---------------
@@ -106,62 +104,24 @@ function generate_callback_type_badge(type) {
 // ---------------
 
 function init_clipboard() {
+  const CLIPBOARD_SELECTOR = ".clipboard";
   new ClipboardJS(CLIPBOARD_SELECTOR);
-  const elements = document.querySelectorAll(`${CLIPBOARD_SELECTOR} p`);
-  const tooltipList = [...elements].map((element) => {
-    const tooltip = new bootstrap.Tooltip(element, {
+  $(`${CLIPBOARD_SELECTOR} p`)
+    .tooltip({
       placement: "right",
       title: "Copied!",
       trigger: "click",
+    })
+    .mouseleave(function () {
+      $(this).tooltip("hide");
     });
-    element.addEventListener("mouseleave", (event) => {
-      tooltip.hide();
-    });
-    return tooltip;
-  });
 }
 
 function init_popover() {
-  // $('[data-toggle="popover"]').popover();
-  var popoverTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="popover"]')
-  );
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl);
-  });
+  $('[data-toggle="popover"]').popover();
 }
 
 $(document).ready(() => {
   init_clipboard();
   init_popover();
-
-  const url = buildURL("api_channel.search");
-  $("#channel_id").autoComplete({
-    resolverSettings: {
-      url,
-      queryKey: "query",
-      requestThrottling: 1000,
-    },
-    formatResult: (item) => {
-      return {
-        value: item.id,
-        text: item.id,
-        html: [
-          $("<div>")
-            .addClass("d-flex align-items-center")
-            .append(
-              $("<div>").append(
-                $("<img>")
-                  .attr({
-                    class: "rounded-circle",
-                    src: item.thumbnail,
-                  })
-                  .css("height", "2rem")
-              ),
-              $("<div>").append($("<p>").addClass("mb-0 ml-2").text(item.title))
-            ),
-        ],
-      };
-    },
-  });
 });

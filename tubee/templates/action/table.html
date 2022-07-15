@@ -68,10 +68,11 @@
         <button
           type="button"
           class="btn btn-danger"
-          data-bs-toggle="modal"
-          data-bs-target="#remove-action-modal"
-          data-action-id="{{ action.id }}"
-          data-action-name="{{ action.name }}"
+          onclick="$(this).confirm(event, 'remove action {{ action.name }}')"
+          data-callback="buttonAPI"
+          data-api="api_action.delete"
+          data-api-method="DELETE"
+          data-path-params="{{ dict(action_id=action.id) | tojson | forceescape }}"
         >
           Remove
         </button>
@@ -88,5 +89,4 @@
 {% include "action/modal_new.html" %}
 {% endif %}
 {% include "action/modal_edit.html" %}
-{% include "action/modal_remove.html" %}
 {%- endmacro %}

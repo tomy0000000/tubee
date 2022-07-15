@@ -33,7 +33,7 @@ def action(action_id):
     )
 
 
-@api_action_blueprint.route("/<action_id>", methods=["DELETE"])
+@api_action_blueprint.delete("/<action_id>")
 @login_required
 def delete(action_id):
     action = Action.query.filter_by(

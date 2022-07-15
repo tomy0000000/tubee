@@ -52,7 +52,7 @@ function load_more(event) {
 $(document).ready((event) => {
   // Load row template
   const url = buildURL("static", {
-    filename: "component/youtube_subscription_row.html",
+    filename: "component/youtube_subscription/table_row.html",
   });
   $.get(url).done((data) => {
     row_template = $(data);
