@@ -75,6 +75,7 @@ def build_sitemap():
             continue
     for blueprint, rules in links.items():
         rules.sort(key=lambda x: x[1])
+    links["static"] = [("/static/<filename>", "static")]
     return links
 
 

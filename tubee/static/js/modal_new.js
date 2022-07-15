@@ -1,22 +1,15 @@
 function send_new_action_request(event) {
   // Init
   event.preventDefault();
-  let button = $(event.target);
-  let api_endpoint = button.data("api-endpoint");
-  let data = $("#new-action-form").serializeArray();
+  const button = $(event.target);
+  const url = buildURL("api_action.new");
+  const data = $("#new-action-form").serializeArray();
 
   // Appearance
   set_loading(button);
 
   // Request
-  $.post({
-    type: "POST",
-    url: api_endpoint,
-    data: data,
-    success: (requestData) => {
-      console.log(requestData);
-    },
-  })
+  $.post({ url, data })
     .done((responseData) => {
       if (Boolean(responseData)) {
         $("#new-action-modal").modal("hide");

@@ -36,9 +36,10 @@ function load_remove_modal(event) {
   // Init
   let modal = $(event.target);
   let submit_button = modal.find(".submit-btn");
-  let api_endpoint = $(event.relatedTarget).data("api-endpoint");
-  let action_name = $(event.relatedTarget).data("action-name");
-  submit_button.data("api-endpoint", api_endpoint);
+  const action_id = $(event.relatedTarget).data("action-id");
+  const action_name = $(event.relatedTarget).data("action-name");
+  const url = buildURL("api_action.delete", { action_id });
+  submit_button.data("api-endpoint", url);
 
   // Appearance
   modal.find(".remove-action-save-spinner").hide();

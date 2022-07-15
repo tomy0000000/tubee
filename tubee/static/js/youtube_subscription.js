@@ -51,7 +51,9 @@ function load_more(event) {
 
 $(document).ready((event) => {
   // Load row template
-  const url = table.data("channel-row-endpoint");
+  const url = buildURL("static", {
+    filename: "component/youtube_subscription_row.html",
+  });
   $.get(url).done((data) => {
     row_template = $(data);
   });

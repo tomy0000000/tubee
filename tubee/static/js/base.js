@@ -135,10 +135,10 @@ $(document).ready(() => {
   init_clipboard();
   init_popover();
 
-  let channel_search_api = $("#channel_id").data("channel-api");
+  const url = buildURL("api_channel.search");
   $("#channel_id").autoComplete({
     resolverSettings: {
-      url: channel_search_api,
+      url,
       queryKey: "query",
       requestThrottling: 1000,
     },

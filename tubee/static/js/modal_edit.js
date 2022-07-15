@@ -77,8 +77,9 @@ function load_edit_modal(event) {
   // Init
   let button = $("#edit-action-modal").find(".submit-btn");
   let action_type_input = $("#edit-action-modal").find("#action_type");
-  let read_endpoint = $(event.relatedTarget).data("read-endpoint");
-  let edit_endpoint = $(event.relatedTarget).data("edit-endpoint");
+  const action_id = $(event.relatedTarget).data("action-id");
+  let read_endpoint = buildURL("api_action.action", { action_id });
+  let edit_endpoint = buildURL("api_action.edit", { action_id });
   button.data("edit-endpoint", edit_endpoint);
 
   // Appearance

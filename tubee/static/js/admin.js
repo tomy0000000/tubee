@@ -12,7 +12,10 @@ function load_channels(event) {
   let table = $("#channels > table > tbody");
   table.empty();
   let channel_template;
-  $.ajax($("#channels-table").attr("data-template-endpoint"))
+  const url = buildURL("static", {
+    filename: "component/admin_channel_row.html",
+  });
+  $.ajax(url)
     .done((data) => {
       channel_template = document.createElement("tr");
       channel_template.innerHTML = data;
@@ -139,7 +142,8 @@ function update_progress(status_url, progress_bar, message_box) {
 function api_with_progress(event) {
   event.preventDefault();
   // send ajax POST request to start background job
-  $.getJSON($(event.target).attr("data-api-endpoint")).done((data) => {
+  const url = buildURL("api_channel.renew_all");
+  $.getJSON(url).done((data) => {
     let progress_bar = $("<div>")
       .attr({
         class: "progress-bar",
@@ -160,7 +164,10 @@ function api_with_progress(event) {
 function api_get(event) {
   event.preventDefault();
   insert_spinner("#management", "primary");
-  $.getJSON($(event.target).attr("data-api-endpoint")).done((data) => {
+  const api = $(event.target).data("api");
+  const pathParams = this.data("path-params");
+  const url = buildURL(api, pathParams);
+  $.getJSON(url).done((data) => {
     $("#management > .results").append(
       $("<pre>").text(JSON.stringify(data, null, 2))
     );
@@ -174,11 +181,13 @@ function load_tasks(event) {
   let table = $("#celery_tasks > table > tbody");
   table.empty();
   let celery_task_template;
-  $.ajax($("#celery-table").attr("data-template-endpoint")).done((data) => {
+  $.ajax(
+    buildURL("static", { filename: "component/admin_celery_task.html" })
+  ).done((data) => {
     celery_task_template = document.createElement("tr");
     celery_task_template.innerHTML = data;
   });
-  $.getJSON($("#celery-table").attr("data-api-endpoint")).done((data) => {
+  $.getJSON(buildURL("api_task.list_all")).done((data) => {
     data.forEach((element) => {
       let row = celery_task_template.cloneNode(true);
       let task_name_tag = `<p class="mb-0">${element.request.id}</p><p class="mb-0 text-muted">#${element.request.name}</p>`;
@@ -215,7 +224,9 @@ function load_notifications(event) {
   let table = $("#notifications > table > tbody");
   table.empty();
   let notification_template;
-  $.ajax($("#notifications-table").attr("data-template-endpoint"))
+  $.ajax(
+    buildURL("static", { filename: "component/admin_notification_row.html" })
+  )
     .done((data) => {
       notification_template = document.createElement("tr");
       notification_template.innerHTML = data;

@@ -61,8 +61,7 @@
           class="btn btn-secondary"
           data-bs-toggle="modal"
           data-bs-target="#edit-action-modal"
-          data-read-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
-          data-edit-endpoint="{{ url_for('api_action.edit', action_id=action.id) }}"
+          data-action-id="{{ action.id }}"
         >
           Edit
         </button>
@@ -71,8 +70,8 @@
           class="btn btn-danger"
           data-bs-toggle="modal"
           data-bs-target="#remove-action-modal"
+          data-action-id="{{ action.id }}"
           data-action-name="{{ action.name }}"
-          data-api-endpoint="{{ url_for('api_action.delete', action_id=action.id) }}"
         >
           Remove
         </button>
