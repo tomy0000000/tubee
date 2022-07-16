@@ -1,3 +1,4 @@
+from .action import action_blueprint
 from .admin import admin_blueprint
 from .api import api_blueprint
 from .api_action import api_action_blueprint
@@ -15,6 +16,7 @@ from .user import user_blueprint
 blueprint_map = [
     ("", handler_blueprint),
     ("", main_blueprint),
+    ("/action", action_blueprint),
     ("/admin", admin_blueprint),
     ("/api", api_blueprint),
     ("/api/admin", api_admin_blueprint),
@@ -29,6 +31,7 @@ blueprint_map = [
 ]
 
 __all__ = [
+    action_blueprint,
     admin_blueprint,
     api_blueprint,
     api_admin_blueprint,

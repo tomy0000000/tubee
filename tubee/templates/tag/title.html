@@ -1,109 +1,45 @@
 <div id="title-container" class="row align-items-center">
-  <div id="title-block" class="col">
+  <div class="rename-blocks col">
     <h1 class="display-4">
       {{ tag.name }}
-      <button type="button" class="btn btn-primary btn-title-edit">
+      <button class="btn-title-edit btn btn-primary">
         <i class="fas fa-edit"></i>
       </button>
-      {% set form = tag.remove_form %}
-      <button type="button" class="btn btn-danger" id="btn-tag-remove">
+      <button
+        class="btn btn-danger"
+        onclick="$(this).buttonAPI()"
+        data-api="api_tag.delete"
+        data-api-method="DELETE"
+        data-path-params="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
+      >
         <i class="fas fa-trash"></i>
       </button>
-      <form
-        id="tag-remove-form"
-        class="row gx-3"
-        data-tag-name="{{ tag.name }}"
-        data-api-endpoint="{{ url_for('api_tag.remove') }}"
-      >
-        <!-- prettier-ignore -->
-        {{ form.csrf_token }}
-        {{ form.tag_name(value=tag.name) }}
-      </form>
     </h1>
   </div>
-  <div id="tag-rename-form-block" class="col d-none">
-    <form
-      id="tag-rename-form"
-      class="row gx-3"
-      data-api-endpoint="{{ url_for('api_tag.rename') }}"
-    >
-      <!-- prettier-ignore -->
-      {{ tag_rename_form.csrf_token }}
-      {{ tag_rename_form.tag_name(value=tag.name) }}
+  <div class="rename-blocks col" style="display: none">
+    <form id="rename-form" class="row gx-3">
       <div class="col-auto">
-        <!-- prettier-ignore -->
         <div class="input-group">
-          {{ tag_rename_form.new_tag_name(value=tag.name, class="form-control-lg") }}
-          <button class="btn btn-outline-danger btn-title-edit" type="button">Cancel</button>
-          <button class="btn btn-outline-primary btn-submit" type="submit">Save</button>
+          <input
+            type="text"
+            name="name"
+            class="form-control-lg"
+            value="{{ tag.name }}"
+            required
+          />
+          <button class="btn-title-edit btn btn-outline-danger">Cancel</button>
+          <button
+            class="btn btn-outline-primary"
+            onclick="$(this).buttonAPI()"
+            data-api="api_tag.update"
+            data-api-method="PATCH"
+            data-form-id="rename-form"
+            data-path-params="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
+          >
+            Save
+          </button>
         </div>
       </div>
     </form>
   </div>
 </div>
-
-<style>
-  #title-container {
-    height: 250px;
-  }
-</style>
-
-<script>
-  function register_toggle_edit() {
-    let edit_buttons = document.getElementsByClassName("btn-title-edit");
-    for (let btn of edit_buttons) {
-      btn.addEventListener("click", () => {
-        let title = document.getElementById("title-block");
-        let form = document.getElementById("tag-rename-form-block");
-        title.classList.toggle("d-none");
-        form.classList.toggle("d-none");
-      });
-    }
-  }
-
-  function register_rename_form_submit() {
-    let form = document.getElementById("tag-rename-form");
-    form.onsubmit = async (event) => {
-      event.preventDefault();
-      let api_endpoint = form.dataset.apiEndpoint;
-      let response = await fetch(api_endpoint, {
-        method: "POST",
-        body: new FormData(form),
-      });
-      let result = await response.json();
-      if (!result.success) {
-        alert("Rename failed");
-      } else {
-        window.location.href = result.redirect;
-      }
-    };
-  }
-
-  function register_remove_tag() {
-    let remove_button = document.getElementById("btn-tag-remove");
-    let form = document.getElementById("tag-remove-form");
-    remove_button.addEventListener("click", async () => {
-      let tag_name = form.dataset.tagName;
-      if (!confirm(`Are you sure you want to remove <${tag_name}> tag?`)) {
-        return;
-      }
-      let api_endpoint = form.dataset.apiEndpoint;
-      let response = await fetch(api_endpoint, {
-        method: "POST",
-        body: new FormData(form),
-      });
-      let result = await response.json();
-      if (!result.success) {
-        alert("Remove failed");
-      } else {
-        window.location.href = result.redirect;
-      }
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    register_toggle_edit();
-    register_rename_form_submit();
-    register_remove_tag();
-  });
-</script>

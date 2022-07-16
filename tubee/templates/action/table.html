@@ -1,20 +1,31 @@
-{% macro content(actions, show_scope=False) -%}
+{% macro content(actions, channel_id=None, tag_id=None) -%}
 <!-- BEGIN Action Infos -->
 <table class="table table-striped table-hover align-middle">
   <thead class="table-dark">
     <tr>
-      {% if show_scope %}
+      {% if not channel_id and not tag_id %}
       <th scope="col">Scope</th>
       {% endif %}
       <th scope="col">Name</th>
       <th scope="col">Type</th>
       <th scope="col">
-        {% if not show_scope %}
+        {% if channel_id %}
         <button
           type="button"
           class="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#new-action-modal"
+          onclick="$(this).actionModal()"
+          data-channel-id="{{ channel_id }}"
+        >
+          New
+        </button>
+        {% endif %}
+        <!-- prettier-ignore -->
+        {% if tag_id %}
+        <button
+          type="button"
+          class="btn btn-success"
+          onclick="$(this).actionModal()"
+          data-tag-id="{{ tag_id }}"
         >
           New
         </button>
@@ -26,7 +37,7 @@
     {% for action in actions %}
     <!-- BEGIN Action Row -->
     <tr>
-      {% if show_scope %}
+      {% if not channel_id and not tag_id %}
       <th>
         <!-- prettier-ignore -->
         {% if action.channel_id %}
@@ -38,7 +49,7 @@
         <!-- prettier-ignore -->
         {% if action.tag_id %}
         <p class="my-auto">Tag</p>
-        <a href="{{ url_for('main.dashboard', tag_name=action.tag.name) }}"
+        <a href="{{ url_for('main.dashboard', tag_id=action.tag.id) }}"
           >{{ action.tag.name }}</a
         >
         {% endif %}
@@ -59,20 +70,19 @@
         <button
           type="button"
           class="btn btn-secondary"
-          data-bs-toggle="modal"
-          data-bs-target="#edit-action-modal"
-          data-read-endpoint="{{ url_for('api_action.action', action_id=action.id) }}"
-          data-edit-endpoint="{{ url_for('api_action.edit', action_id=action.id) }}"
+          onclick="$(this).actionModal()"
+          data-action-id="{{ action.id }}"
         >
           Edit
         </button>
         <button
           type="button"
           class="btn btn-danger"
-          data-bs-toggle="modal"
-          data-bs-target="#remove-action-modal"
-          data-action-name="{{ action.name }}"
-          data-api-endpoint="{{ url_for('api_action.delete', action_id=action.id) }}"
+          onclick="$(this).confirm(event, 'remove action {{ action.name }}')"
+          data-callback="buttonAPI"
+          data-api="api_action.delete"
+          data-api-method="DELETE"
+          data-path-params="{{ dict(action_id=action.id) | tojson | forceescape }}"
         >
           Remove
         </button>
@@ -83,34 +93,4 @@
   </tbody>
 </table>
 <!-- END Action Infos -->
-
-<!-- prettier-ignore -->
-{% if not show_scope %}
-{% include "action/modal_new.html" %}
-{% endif %}
-{% include "action/modal_edit.html" %}
-{% include "action/modal_remove.html" %}
-{%- endmacro %}
-
-<!-- prettier-ignore -->
-{% macro style() -%}
-{%- endmacro %}
-
-{% macro script() -%}
-<!-- BEGIN Action Model Util Scripts -->
-<script>
-  function refresh_action_fields(type) {
-    $(".action-type-fields").hide();
-    if (type === "Notification") {
-      $(".notification-fields").show();
-    } else if (type === "Playlist") {
-      $(".playlist-fields").show();
-    } else if (type === "Download") {
-      $(".download-fields").show();
-    } else {
-      console.log("Unknown Type");
-    }
-  }
-</script>
-<!-- END Action Model Util Scripts -->
 {%- endmacro %}

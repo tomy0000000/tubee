@@ -5,7 +5,7 @@
       <a
         id="navbar-main"
         class="navbar-brand"
-        href="{{ url_for('main.dashboard', tag_name=False) }}"
+        href="{{ url_for('main.dashboard', tag_id=False) }}"
       >
         <img
           id="hero"
@@ -29,7 +29,7 @@
           <li class="nav-item">
             <a
               class="nav-link {{ 'active' if title == 'Subscriptions' }}"
-              href="{{ url_for('main.dashboard', tag_name=False) }}"
+              href="{{ url_for('main.dashboard', tag_id=False) }}"
             >
               Subscriptions
             </a>
@@ -45,7 +45,7 @@
           <li class="nav-item">
             <a
               class="nav-link {{ 'active' if title == 'Actions' }}"
-              href="{{ url_for('main.actions') }}"
+              href="{{ url_for('main.action') }}"
             >
               Actions
             </a>
@@ -60,10 +60,10 @@
           </li>
           <li class="nav-item">
             <a
-              class="nav-link {{ 'active' if title == 'Latest Upload' }}"
-              href="{{ url_for('main.latest') }}"
+              class="nav-link {{ 'active' if title == 'Videos' }}"
+              href="{{ url_for('main.video') }}"
             >
-              Latest Upload
+              Videos
             </a>
           </li>
           {% if current_user.admin is defined and current_user.admin %}
@@ -109,15 +109,22 @@
           </li>
           {% endif %}
         </ul>
-        <form id="navbar-subscribe-form" class="d-flex">
-          <!-- prettier-ignore -->
-          {{ subscription_form.csrf_token }}
-          {{ subscription_form.channel_id(**{"class": "form-control me-2", "placeholder": "Channel Name or ID", "aria-label": "Channel Name or ID", "data-channel-api": url_for('api_channel.search')}) }}
+        <form id="subscribe-form" class="d-flex">
+          <input
+            type="text"
+            id="channel_id"
+            name="channel_id"
+            class="form-control me-2"
+            placeholder="Channel Name or ID"
+            aria-label="Channel Name or ID"
+            required
+          />
           <button
-            id="navbar-subscribe-submit"
-            class="btn btn-success my-2 my-sm-0 subscribe-submit"
-            type="submit"
-            data-subscribe-api="{{ url_for('api_subscription.add') }}"
+            class="btn btn-success my-2 my-sm-0"
+            onclick="$(this).buttonAPI()"
+            data-api="api_subscription.create"
+            data-api-method="POST"
+            data-form-id="subscribe-form"
           >
             Subscribe
           </button>

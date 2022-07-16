@@ -1,0 +1,181 @@
+<div
+  class="action-form-modal modal fade"
+  tabindex="-1"
+  aria-labelledby="action-form-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        {% if action is defined %}
+        <h5 class="modal-title" id="action-form-title">Edit Action</h5>
+        {% else %}
+        <h5 class="modal-title" id="action-form-title">New Action</h5>
+        {% endif %}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        />
+      </div>
+      <div class="modal-body">
+        <form id="action-form" class="needs-validation">
+          <!-- prettier-ignore -->
+          {{ form.csrf_token }}
+
+          {% if action is defined %}
+            {% if action.channel is defined %}
+              {{ form.channel_id(value=action.channel_id) }}
+            {% elif action.tag_id is defined %}
+              {{ form.tag_id(value=action.tag_id) }}
+            {% endif %}
+          {% else %}
+            {{ form.channel_id() }}
+            {{ form.tag_id() }}
+          {% endif %}
+
+          <div class="row mb-3">
+            <label class="col-4 col-form-label" for="action_name">Name</label>
+            <div class="col-8">
+              {% if action is defined %}
+              <input
+                type="text"
+                id="action_name"
+                name="action_name"
+                class="form-control"
+                maxlength="32"
+                value="{{ action.name }}"
+                required
+              />
+              {% else %}
+              <input
+                type="text"
+                id="action_name"
+                name="action_name"
+                class="form-control"
+                maxlength="32"
+                required
+              />
+              {% endif %}
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-4 col-form-label" for="action_type">Type</label>
+            <div class="col-8">
+              <select
+                id="action_type"
+                name="action_type"
+                class="form-select"
+                onchange="$(this).parents('form').refresh_field();"
+                required
+              >
+                <!-- prettier-ignore -->
+                {% for choice in form.action_type.choices %}
+                {% if action is defined and action.type|string == 'ActionType.'+choice[1] %}
+                <option value="{{ choice[1] }}" selected>
+                  {{ choice[0] }}
+                </option>
+                {% else %}
+                <!-- prettier-ignore -->
+                <option value="{{ choice[1] }}">
+                  {{ choice[0] }}
+                </option>
+                <!-- prettier-ignore -->
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- prettier-ignore -->
+          {% for sub_form in ["notification", "playlist", "download"] %}
+          {% for field in form[sub_form] %}
+          <div class="action-type-fields {{ sub_form }}-fields row mb-3">
+            <label class="col-4 col-form-label" for="{{ field.label.field_id }}"
+              >{{ field.label.text }}</label
+            >
+            <!-- prettier-ignore -->
+            {% if field.type == "SelectField" %}
+            <div class="col-8">
+              <select
+                class="form-select"
+                id="{{ field.id }}"
+                name="{{ field.name }}"
+                required
+              >
+                <!-- prettier-ignore -->
+                {% for choice in field.choices %}
+                  {% if action is defined and action.details[field.short_name] is defined and action.details[field.short_name] | string == choice[1] %}
+                <option value="{{ choice[1] }}" selected>
+                  {{ choice[0] }}
+                </option>
+                {% else %}
+                <option value="{{ choice[1] }}">{{ choice[0] }}</option>
+                <!-- prettier-ignore -->
+                {% endif %}
+                  {% endfor %}
+              </select>
+            </div>
+            {% else %}
+            <div class="col-8">
+              <!-- prettier-ignore -->
+              {% if action is defined and action.details[field.short_name] is defined %}
+              <input
+                type="text"
+                id="{{ field.id }}"
+                name="{{ field.name }}"
+                class="form-control"
+                value="{{ action.details[field.short_name] }}"
+                required
+              />
+              {% else %}
+              <input
+                type="text"
+                id="{{ field.id }}"
+                name="{{ field.name }}"
+                class="form-control"
+                value="{{ field.default if field.default else '' }}"
+                required
+              />
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          <!-- prettier-ignore -->
+          {% endfor %}
+          {% endfor %}
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        {% if action is defined %}
+        <button
+          type="button"
+          class="btn btn-success"
+          onclick="$(this).buttonAPI()"
+          data-api="api_action.update"
+          data-api-method="PATCH"
+          data-form-id="action-form"
+          data-path-params="{{ dict(action_id=action.id) | tojson | forceescape }}"
+        >
+          Save
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-success"
+          onclick="$(this).buttonAPI()"
+          data-api="api_action.create"
+          data-api-method="POST"
+          data-form-id="action-form"
+        >
+          Create
+        </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

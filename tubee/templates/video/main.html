@@ -1,27 +1,16 @@
 <!-- prettier-ignore -->
 {% extends "base.html" %}
-{% set title = "Latest Upload" %}
-{#
-{% set alert = "Hello World" %}
-{% set alert_type = "primary" %}
-#}
-
-<!-- prettier-ignore -->
-{% block style %}
-{% endblock %}
-
-<!-- prettier-ignore -->
-{% block script %}
-{% endblock %}
+{% set title = "Videos" %}
 
 <!-- prettier-ignore -->
 {% block content %}
 {% if rows %}
 <button
   class="btn btn-success mb-2"
+  onclick="$(this).buttonAPI()"
   data-api="api_video.mark_as_checked"
+  data-api-method="GET"
   data-query-params="{{ dict(video_ids=video_ids | join(',')) | tojson | forceescape }}"
-  onclick="$(this).buttonCallGetApi()"
 >
   Mark all as Checked
 </button>
@@ -62,9 +51,10 @@
           <button
             type="button"
             class="btn btn-primary"
+            onclick="$(this).buttonAPI()"
             data-api="api_video.execute_action"
+            data-api-method="GET"
             data-path-params="{{ dict(video_id=row.Video.id, action_id=action.id) | tojson | forceescape }}"
-            onclick="$(this).buttonCallGetApi()"
           >
             {{ action.name }}
           </button>

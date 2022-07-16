@@ -341,10 +341,12 @@ class User(UserMixin, db.Model):
             channel_id = channel
         return self.subscriptions.filter_by(channel_id=channel_id).first() is not None
 
-    def subscribe_to(self, channel_id):
+    def subscribe(self, channel_id):
         """Create Subscription Relationship"""
         from . import Channel, Subscription
 
+        if not channel_id:
+            raise InvalidAction("Invalid Channel ID")
         channel = Channel.query.get(channel_id)
         if not channel:
             channel = Channel(channel_id)

@@ -1,7 +1,11 @@
-.channel-thumbnails img {
-  width: 8rem;
+#title-container {
+  height: 250px;
 }
 
-.channel-name {
-  margin-bottom: 0;
+.alert a:hover {
+  cursor: pointer;
+}
+
+.channel-thumbnails img {
+  width: 8rem;
 }
