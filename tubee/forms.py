@@ -9,7 +9,6 @@ from wtforms.fields import (
     SubmitField,
 )
 from wtforms.validators import DataRequired, EqualTo, Length
-from wtforms.widgets import HiddenInput
 
 from .models import ActionType, Service
 
@@ -45,59 +44,6 @@ class RegisterForm(FlaskForm):
         ],
     )
     submit = SubmitField("Register")
-
-
-class SubscriptionForm(FlaskForm):
-    """Basic Subscription Form, for adding and removing subscription"""
-
-    channel_id = StringField("Channel ID", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        channel_id_hidden = kwargs.pop("channel_id_hidden", False)
-        super().__init__(*args, **kwargs)
-        if channel_id_hidden:
-            self.channel_id.widget = HiddenInput()
-
-
-class TagForm(FlaskForm):
-    """Basic Tag Form, for removing tag"""
-
-    tag_name = StringField(
-        "Tag",
-        validators=[DataRequired(), Length(max=32)],
-    )
-
-    def __init__(self, *args, **kwargs):
-        tag_name_hidden = kwargs.pop("tag_name_hidden", False)
-        super().__init__(*args, **kwargs)
-        if tag_name_hidden:
-            self.tag_name.widget = HiddenInput()
-
-
-class SubscriptionTagForm(SubscriptionForm, TagForm):
-    """Tag Form for editing subscription tag"""
-
-    def __init__(self, *args, **kwargs):
-        if "channel_id_hidden" not in kwargs:
-            kwargs["channel_id_hidden"] = True
-        super().__init__(*args, **kwargs)
-
-
-class TagRenameForm(FlaskForm):
-    """Tag Form for renaming tag"""
-
-    tag_name = HiddenField("Tag", validators=[DataRequired(), Length(max=32)])
-    new_tag_name = StringField(
-        "New Tag",
-        validators=[DataRequired(), Length(max=32)],
-    )
-
-
-class ActionKwargsForm(FlaskForm):
-    """Keyword Arguments for Actions"""
-
-    keyword = StringField("keyword", validators=[DataRequired()])
-    value = StringField("value", validators=[DataRequired()])
 
 
 class NotificationActionForm(FlaskForm):
@@ -146,7 +92,6 @@ class PlaylistActionForm(FlaskForm):
 
     playlist_id = StringField(
         "Playlist ID",
-        default="WL",
         validators=[DataRequired()],
     )
 
@@ -177,20 +122,16 @@ class ActionForm(FlaskForm):
         choices=[(item.name, item.value) for item in ActionType],
     )
     channel_id = HiddenField("Channel ID")
-    tag = HiddenField("Tag")
+    tag_id = HiddenField("Tag ID")
     notification = FormField(NotificationActionForm)
     playlist = FormField(PlaylistActionForm)
     download = FormField(DownloadActionForm)
 
     def validate(self):
-        if not self.channel_id.data and not self.tag.data:
+        if not self.channel_id.data and not self.tag_id.data:
             return False
-        if self.action_type.data == "Notification" and not self.notification.validate(
-            self
-        ):
-            return False
-        if self.action_type.data == "Playlist" and not self.playlist.validate(self):
-            return False
-        if self.action_type.data == "Download" and not self.download.validate(self):
+        action_type = self.action_type.data.lower()
+        sub_form = getattr(self, action_type)
+        if not sub_form.validate(sub_form):
             return False
         return True

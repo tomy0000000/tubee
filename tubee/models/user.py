@@ -341,10 +341,12 @@ class User(UserMixin, db.Model):
             channel_id = channel
         return self.subscriptions.filter_by(channel_id=channel_id).first() is not None
 
-    def subscribe_to(self, channel_id):
+    def subscribe(self, channel_id):
         """Create Subscription Relationship"""
         from . import Channel, Subscription
 
+        if not channel_id:
+            raise InvalidAction("Invalid Channel ID")
         channel = Channel.query.get(channel_id)
         if not channel:
             channel = Channel(channel_id)
@@ -409,3 +411,21 @@ class User(UserMixin, db.Model):
 
         ntf = Notification(initiator, self, service, **kwargs)
         return ntf.response
+
+    def mark_video_as_checked(self, video_id):
+        """Mark video as checked"""
+        from . import Video, VideoCheck
+
+        video = Video.query.get(video_id)
+        if not video:
+            raise InvalidAction(f"Video {video_id} doesn't exist")
+        video_check = VideoCheck.query.get((self.username, video_id))
+        if video_check:
+            video_check.checked = True
+            db.session.commit()
+        else:
+            video_check = VideoCheck(self.username, video_id)
+        current_app.logger.info(
+            f"User <{self.username}> marked Video <{video_id}> as checked"
+        )
+        return video_check

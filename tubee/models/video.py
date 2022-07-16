@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 from dateutil import parser
 
 from .. import db
-from ..utils.youtube import build_youtube_api
+from ..utils.youtube import build_youtube_api, fetch_video_metadata
 
 
 @dataclass
@@ -77,6 +77,10 @@ class Video(db.Model):
     def thumbnails(self):
         raise ValueError("thumbnails can not be delete")
 
+    @property
+    def video_file_url(self):
+        return fetch_video_metadata(self.id).get("url")
+
     def _process_details(self):
         self.name = self.details["title"]
         self.uploaded_timestamp = parser.parse(self.details["publishedAt"])
@@ -95,3 +99,16 @@ class Video(db.Model):
         # TODO: Parse API Error
         except Exception as error:
             return error
+
+    def execute_action(self, action_id):
+        """Execute Action on Video"""
+        from . import Action
+
+        return Action.query.get_or_404(action_id, "Action not found").execute(
+            video_id=self.id,
+            video_title=self.name,
+            video_description=self.details["description"],
+            video_thumbnails=self.details["thumbnails"]["medium"]["url"],
+            video_file_url=self.video_file_url,
+            channel_name=self.channel.name,
+        )

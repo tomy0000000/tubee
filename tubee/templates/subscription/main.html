@@ -12,16 +12,22 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='css/subscription.css') }}"
 />
+{% if subscription_pagination.items %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/subscription_tag.css') }}"
+/>
 <!-- prettier-ignore -->
-{{ pagination.style() }}
+{% endif %}
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block script %}
-<script src="{{ url_for('static', filename='js/subscription.js') }}"></script>
+{% if tag %}
+<script src="{{ url_for('static', filename='js/tag_title.js') }}"></script>
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 <!-- prettier-ignore -->
-{{ action_table.script() }}
-{{ pagination.script() }}
+{% endif %}
 {% endblock %}
 
 <!-- prettier-ignore -->
@@ -30,9 +36,18 @@
 {% if tag %}
 {% include "tag/title.html" %}
 {% if actions %}
-{{ action_table.content(actions) }}
+{{ action_table.content(actions, tag_id=tag.id) }}
 {% else %}
-<div class="alert alert-secondary" role="alert">No action found.</div>
+<div class="alert alert-secondary" role="alert">
+  No action found.
+  <a
+    class="fw-bold text-dark text-decoration-underline"
+    onclick="$(this).actionModal()"
+    data-tag-id="{{ tag.id }}"
+  >
+    Create one now.
+  </a>
+</div>
 {% endif %}
 <!-- prettier-ignore -->
 {% endif %}

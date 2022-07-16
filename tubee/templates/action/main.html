@@ -6,15 +6,12 @@
 {% set title = "Actions" %}
 
 <!-- prettier-ignore -->
-{% block style %}
-{% endblock %}
-
-<!-- prettier-ignore -->
 {% block script %}
-{{ action_table.script() }}
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal_edit.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
-{{ action_table.content(actions, show_scope=True) }}
+{{ action_table.content(actions) }}
 {% endblock %}

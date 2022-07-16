@@ -1,64 +1,50 @@
-from flask import Blueprint, abort, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-
-from tubee.forms import SubscriptionForm, SubscriptionTagForm
 
 api_subscription_blueprint = Blueprint("api_subscription", __name__)
 
 
-@api_subscription_blueprint.route("/add", methods=["POST"])
+@api_subscription_blueprint.post("/")
 @login_required
-def add():
-    """Add a new subscription"""
-    form = SubscriptionForm()
-    if not form.validate_on_submit():
-        abort(403)
-
-    results = current_user.subscribe_to(form.channel_id.data)
-    response = {"success": results}
-    return jsonify(response)
+def create():
+    """Add Subscription"""
+    channel_id = request.get_json().get("channel_id")
+    return jsonify(current_user.subscribe(channel_id))
 
 
-@api_subscription_blueprint.route("/remove", methods=["POST"])
+@api_subscription_blueprint.delete("/")
 @login_required
-def remove():
-    """Remove a new subscription"""
-    form = SubscriptionForm(channel_id_hidden=True)
-    if not form.validate_on_submit():
-        abort(403)
-
-    results = current_user.unbsubscribe(form.channel_id.data)
-    response = {"success": results}
-    return jsonify(response)
+def delete():
+    """Remove subscription"""
+    channel_id = request.get_json().get("channel_id")
+    return jsonify(current_user.unbsubscribe(channel_id))
 
 
-@api_subscription_blueprint.route("/tag", methods=["POST"])
+@api_subscription_blueprint.post("/tag")
 @login_required
-def tag():
+def tag_create():
     """Add a tag to subscription"""
-    form = SubscriptionTagForm()
-    if not form.validate_on_submit():
-        abort(403)
-    subscription = current_user.subscriptions.filter_by(
-        channel_id=form.channel_id.data
-    ).first_or_404()
-    response = subscription.tag(form.tag_name.data)
-    return jsonify(str(response))
-
-
-@api_subscription_blueprint.route("/untag", methods=["POST"])
-@login_required
-def untag():
-    """Remove a tag from subscription"""
-    form = SubscriptionTagForm(tag_name_hidden=True)
-    if not form.validate_on_submit():
-        abort(403)
+    data = request.get_json()
+    channel_id = data.get("channel_id")
+    tag_name = data.get("tag_name")
 
     subscription = current_user.subscriptions.filter_by(
-        channel_id=form.channel_id.data
+        channel_id=channel_id
     ).first_or_404()
-    tag = current_user.tags.filter_by(name=form.tag_name.data).first_or_404()
-
-    results = subscription.untag(tag.id)
-    response = {"success": results}
+    response = subscription.tag(tag_name)
     return jsonify(response)
+
+
+@api_subscription_blueprint.delete("/tag")
+@login_required
+def tag_delete():
+    """Remove a tag from subscription"""
+    data = request.get_json()
+    channel_id = data.get("channel_id")
+    tag_id = data.get("tag_id")
+
+    subscription = current_user.subscriptions.filter_by(
+        channel_id=channel_id
+    ).first_or_404("Channel not found")
+    results = subscription.untag(tag_id)
+    return jsonify(results)

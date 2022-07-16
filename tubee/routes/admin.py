@@ -23,7 +23,7 @@ admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)
 
 
-@admin_blueprint.route("/dashboard")
+@admin_blueprint.route("/")
 @login_required
 def dashboard():
     links = build_sitemap()
@@ -37,7 +37,7 @@ def dashboard():
         "app_config": current_app.config,
         "os_env": os.environ,
     }
-    return render_template("admin.html", infos=infos, links=links)
+    return render_template("admin/main.html", infos=infos, links=links)
 
 
 @admin_blueprint.route("/raise-exception")

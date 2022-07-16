@@ -3,10 +3,6 @@
 {% set title = "Admin Dashboard" %}
 
 <!-- prettier-ignore -->
-{% block style %}
-{% endblock %}
-
-<!-- prettier-ignore -->
 {% block script %}
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %}
@@ -55,7 +51,7 @@
     role="tabpanel"
     aria-labelledby="{{ key }}-tab"
   >
-    {% include 'component/admin_' + key + '.html' %}
+    {% include 'admin/' + key + '.html' %}
   </div>
   {% endfor %}
 </div>
