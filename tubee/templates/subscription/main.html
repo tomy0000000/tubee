@@ -25,11 +25,8 @@
 {% block script %}
 {% if tag %}
 <script src="{{ url_for('static', filename='js/tag_title.js') }}"></script>
-{% if actions %}
-<script src="{{ url_for('static', filename='js/action_table.js') }}"></script>
-<script src="{{ url_for('static', filename='js/modal_new.js') }}"></script>
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 <!-- prettier-ignore -->
-{% endif %}
 {% endif %}
 {% endblock %}
 
@@ -39,9 +36,18 @@
 {% if tag %}
 {% include "tag/title.html" %}
 {% if actions %}
-{{ action_table.content(actions) }}
+{{ action_table.content(actions, tag_id=tag.id) }}
 {% else %}
-<div class="alert alert-secondary" role="alert">No action found.</div>
+<div class="alert alert-secondary" role="alert">
+  No action found.
+  <a
+    class="fw-bold text-dark text-decoration-underline"
+    onclick="$(this).actionModal()"
+    data-tag-id="{{ tag.id }}"
+  >
+    Create one now.
+  </a>
+</div>
 {% endif %}
 <!-- prettier-ignore -->
 {% endif %}

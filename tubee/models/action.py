@@ -7,7 +7,7 @@ from flask import current_app
 from .. import db
 
 
-class ActionType(Enum):
+class ActionType(str, Enum):
     Notification = "Notification"
     Playlist = "Playlist"
     Download = "Download"
@@ -56,9 +56,9 @@ class Action(db.Model):
                 .first_or_404()
                 .channel_id
             )
-        elif params["tag"]:
+        elif params["tag_id"]:
             self.tag_id = (
-                Tag.query.filter_by(name=params["tag"], username=username)
+                Tag.query.filter_by(id=params["tag_id"], username=username)
                 .first_or_404()
                 .id
             )

@@ -20,18 +20,18 @@
         />
         {% endif %}
       </th>
-      <td class="channel-name">
+      <td>
         <a
           href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
         >
-          <p>{{ subscription.channel.name }}</p>
+          <p class="mb-0">{{ subscription.channel.name }}</p>
         </a>
         <a
           href="#"
           class="text-muted clipboard"
           data-clipboard-text="{{ subscription.channel_id }}"
         >
-          <p>{{ subscription.channel_id }}</p>
+          <p class="mb-0">{{ subscription.channel_id }}</p>
         </a>
         {% if subscription.channel.infos.snippet.customUrl is defined %}
         <a
@@ -39,7 +39,9 @@
           class="text-muted clipboard"
           data-clipboard-text="{{ subscription.channel.infos.snippet.customUrl }}"
         >
-          <p>#{{ subscription.channel.infos.snippet.customUrl }}</p>
+          <p class="mb-0">
+            #{{ subscription.channel.infos.snippet.customUrl }}
+          </p>
         </a>
         {% endif %}
         <!-- prettier-ignore -->

@@ -13,24 +13,6 @@ const VALID_SPINNER_TYPE = [
 // Util Functions
 // ---------------
 
-function set_loading(button) {
-  let spinner_id = Date.now();
-  $(button)
-    .append(
-      $("<span>").attr({
-        id: spinner_id,
-        class: "spinner-border spinner-border-sm",
-      })
-    )
-    .data({ "spinner-id": spinner_id })
-    .prop("disabled", true);
-}
-
-function unset_loading(button) {
-  drop_spinner(button);
-  button.prop("disabled", false);
-}
-
 function insert_spinner(location, type, small = false) {
   type = VALID_SPINNER_TYPE.includes(type) ? type : "primary";
   let size = small ? "spinner-border-sm" : "";
@@ -67,7 +49,9 @@ function buildURL(endpoint, path_params = {}, query_params = {}) {
   });
 
   const params = $.param(query_params);
-  url = `${url}?${params}`;
+  if (params) {
+    url = `${url}?${params}`;
+  }
 
   return url;
 }
@@ -87,18 +71,6 @@ function generate_callback_status_badge(status) {
   return badge;
 }
 
-function generate_callback_type_badge(type) {
-  const BADGE_TYPE_MAPPING = {
-    "Hub Notification": "success",
-    "Hub Challenge": "warning",
-  };
-  let badge_type =
-    type in BADGE_TYPE_MAPPING ? BADGE_TYPE_MAPPING[type] : "info";
-  let badge = $("<span></span>").addClass(`badge bg-${badge_type}`).text(type);
-  console.log(badge);
-  return badge;
-}
-
 // ---------------
 // Init Functions
 // ---------------
@@ -111,6 +83,9 @@ function init_clipboard() {
       placement: "right",
       title: "Copied!",
       trigger: "click",
+    })
+    .click((event) => {
+      event.preventDefault();
     })
     .mouseleave(function () {
       $(this).tooltip("hide");

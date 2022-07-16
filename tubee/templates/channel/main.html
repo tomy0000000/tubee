@@ -24,7 +24,7 @@
 
 <!-- prettier-ignore -->
 {% block script %}
-<script src="{{ url_for('static', filename='js/action_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 <script src="{{ url_for('static', filename='js/modal_new.js') }}"></script>
 {% endblock %}
 
@@ -34,7 +34,7 @@
   {{ video_carousal.content(video_pagination.items) }}
 {% endif %}
 {{ channel_info.content(channel) }}
-{{ action_table.content(subscription.actions) }}
+{{ action_table.content(subscription.actions, channel_id=channel.id) }}
 {% if video_pagination.items %}
   {{ video_table.content(video_pagination.items) }}
   {{ pagination.content(video_pagination) }}

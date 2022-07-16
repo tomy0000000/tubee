@@ -92,7 +92,6 @@ class PlaylistActionForm(FlaskForm):
 
     playlist_id = StringField(
         "Playlist ID",
-        default="WL",
         validators=[DataRequired()],
     )
 
@@ -123,20 +122,16 @@ class ActionForm(FlaskForm):
         choices=[(item.name, item.value) for item in ActionType],
     )
     channel_id = HiddenField("Channel ID")
-    tag = HiddenField("Tag")
+    tag_id = HiddenField("Tag ID")
     notification = FormField(NotificationActionForm)
     playlist = FormField(PlaylistActionForm)
     download = FormField(DownloadActionForm)
 
     def validate(self):
-        if not self.channel_id.data and not self.tag.data:
+        if not self.channel_id.data and not self.tag_id.data:
             return False
-        if self.action_type.data == "Notification" and not self.notification.validate(
-            self
-        ):
-            return False
-        if self.action_type.data == "Playlist" and not self.playlist.validate(self):
-            return False
-        if self.action_type.data == "Download" and not self.download.validate(self):
+        action_type = self.action_type.data.lower()
+        sub_form = getattr(self, action_type)
+        if not sub_form.validate(sub_form):
             return False
         return True

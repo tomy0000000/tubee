@@ -24,7 +24,7 @@ main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/", defaults={"tag_id": False})
-@main_blueprint.route("/subscription/", defaults={"tag_id": None})
+@main_blueprint.route("/subscription", defaults={"tag_id": None})
 @main_blueprint.route("/subscription/<tag_id>")
 @login_required
 def dashboard(tag_id: Union[int, bool]):
@@ -69,7 +69,7 @@ def youtube_subscription():
     return render_template("subscription/youtube.html")
 
 
-@main_blueprint.route("/action/")
+@main_blueprint.route("/action")
 def action():
     actions = current_user.actions.all()
     return render_template(
@@ -77,7 +77,7 @@ def action():
     )
 
 
-@main_blueprint.route("/tag/")
+@main_blueprint.route("/tag")
 def tags():
     tags = current_user.tags.all()
     return render_template("tag/main.html", tags=tags)
