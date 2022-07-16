@@ -8,7 +8,7 @@ src_paths = ["tubee", "migrations"]
 
 [tool.poetry]
 name = "tubee"
-version = "0.9.1"
+version = "0.10.0"
 description = "A Web Application for Monitoring New YouTube Videos"
 license = "MIT License"
 authors = ["Tomy Hsieh <tomy0000000@gmail.com>"]
