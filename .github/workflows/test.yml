@@ -10,6 +10,7 @@ on:
       - "celery_worker.py"
       - "pyproject.toml"
       - "poetry.lock"
+      - ".github/workflows/test.yml"
   pull_request:
   workflow_dispatch:
 
@@ -74,7 +75,7 @@ jobs:
     needs: [test, license]
     if: |
       always()
-      && (github.github.ref_name == 'main')
+      && (github.ref_name == 'main')
       && (github.event_name != 'pull_request')
       && (needs.test.result == 'success')
       && (needs.license.result == 'success' || needs.license.result == 'skipped')
@@ -99,12 +100,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  deployment:
+  deploy:
     name: Deploy to Beta
     runs-on: ubuntu-latest
     environment: Beta
     needs: build
-    if: needs.build.result == 'success'
+    if: ${{ always() && (needs.build.result == 'success') }}
     steps:
       - name: SSH and execute deployment
         uses: appleboy/ssh-action@master

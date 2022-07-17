@@ -13,8 +13,7 @@ updates:
       - "tomy0000000"
     commit-message:
       prefix: "🗄 chore: "
-    reviewers:
-      - "tomy0000000"
+    target-branch: "develop"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -23,5 +22,4 @@ updates:
       - "tomy0000000"
     commit-message:
       prefix: "🗄 chore: "
-    reviewers:
-      - "tomy0000000"
+    target-branch: "develop"
