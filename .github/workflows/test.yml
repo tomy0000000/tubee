@@ -38,7 +38,7 @@ jobs:
           flask test --coverage
 
       - name: Report coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
 
   license:
     name: License Scan
