@@ -30,7 +30,7 @@ def status(task_id):
     response = {
         "id": task.id,
         "status": task.status.title(),
-        "result": str(task.result),
+        "result": task.result,
         "traceback": task.traceback,
     }
     print(f"{response=}")

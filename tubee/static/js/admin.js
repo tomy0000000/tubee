@@ -164,8 +164,8 @@ function api_with_progress(event) {
 function api_get(event) {
   event.preventDefault();
   insert_spinner("#management", "primary");
-  const api = $(event.target).data("api");
-  const pathParams = this.data("path-params");
+  const api = $(this).data("api");
+  const pathParams = $(this).data("path-params");
   const url = buildURL(api, pathParams);
   $.getJSON(url).done((data) => {
     $("#management > .results").append(
