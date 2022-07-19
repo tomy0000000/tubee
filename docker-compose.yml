@@ -10,9 +10,6 @@ services:
     environment:
       FLASK_ENV: "production"
     image: "tomy0000000/tubee"
-    networks:
-      - "postgres_tunnel"
-      - "rabbitmq_tunnel"
     ports:
       - "5000:5000"
     restart: "always"
@@ -24,8 +21,6 @@ services:
     env_file:
       - "instance/production.env"
     image: "postgres:12-alpine"
-    networks:
-      - "postgres_tunnel"
     restart: "always"
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
@@ -40,8 +35,6 @@ services:
     environment:
       FLASK_ENV: "production"
     image: "tomy0000000/tubee"
-    networks:
-      - "rabbitmq_tunnel"
     restart: "always"
     volumes:
       - "./instance:/usr/src/tubee/instance"
@@ -50,15 +43,9 @@ services:
     container_name: "tubee_rabbitmq"
     hostname: "tubee-rabbitmq"
     image: "rabbitmq:3.8"
-    networks:
-      - "rabbitmq_tunnel"
     restart: "always"
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
-
-networks:
-  postgres_tunnel:
-  rabbitmq_tunnel:
 
 volumes:
   postgres_data:

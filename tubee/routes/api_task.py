@@ -35,6 +35,7 @@ def status(task_id):
     }
     print(f"{response=}")
     if isinstance(task.result, Exception):
+        response["result"] = str(task.result)
         response["traceback"] = task.__dict__["_cache"]["traceback"]
     else:
         response["current"] = task.result.get("current", 1)
