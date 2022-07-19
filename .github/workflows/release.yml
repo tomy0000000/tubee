@@ -13,7 +13,7 @@ jobs:
     if: ${{ github.event_name != 'workflow_dispatch' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Meta
         id: meta

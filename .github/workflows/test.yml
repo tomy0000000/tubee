@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -46,7 +46,7 @@ jobs:
     if: ${{ github.event_path == 'pyproject.toml' || github.event_path == 'poetry.lock' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -81,7 +81,7 @@ jobs:
       && (needs.license.result == 'success' || needs.license.result == 'skipped')
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Meta
         id: meta
