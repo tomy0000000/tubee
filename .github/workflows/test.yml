@@ -22,14 +22,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install poetry
-        run: pipx install poetry
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version-file: ".python-version"
           cache: "poetry"
+
+      - name: Install poetry
+        run: pipx install poetry
 
       - name: Install Dependencies
         run: poetry install --no-interaction --no-ansi
@@ -48,14 +48,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install poetry
-        run: pipx install poetry
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version-file: ".python-version"
           cache: "poetry"
+
+      - name: Install poetry
+        run: pipx install poetry
 
       - name: Export requirements.txt
         run: |
