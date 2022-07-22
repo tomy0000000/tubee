@@ -118,5 +118,5 @@ jobs:
           script: |
             cd tubee-beta
             docker pull tomy0000000/tubee:edge
-            docker-compose up --detach
-            docker network connect nginx_default tubee_app_beta
+            docker compose up --detach
+            docker network connect nginx_default tubee_beta_app

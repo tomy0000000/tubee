@@ -51,5 +51,5 @@ jobs:
           script: |
             cd tubee
             docker pull tomy0000000/tubee:latest
-            docker-compose up --detach
+            docker compose up --detach
             docker network connect nginx_default tubee_app
