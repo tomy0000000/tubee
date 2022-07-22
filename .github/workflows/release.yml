@@ -13,11 +13,11 @@ jobs:
     if: ${{ github.event_name != 'workflow_dispatch' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: |
             ${{ github.repository }}
@@ -51,5 +51,5 @@ jobs:
           script: |
             cd tubee
             docker pull tomy0000000/tubee:latest
-            docker-compose up --detach
+            docker compose up --detach
             docker network connect nginx_default tubee_app
