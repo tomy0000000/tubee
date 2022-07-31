@@ -17,7 +17,6 @@ from ..models import (
     Video,
     VideoCheck,
 )
-from ..utils import youtube_required
 from ..utils.youtube import fetch_video_metadata
 
 main_blueprint = Blueprint("main", __name__)
@@ -64,7 +63,6 @@ def dashboard(tag_id: Union[int, bool]):
 
 @main_blueprint.route("/subscription/youtube")
 @login_required
-@youtube_required
 def youtube_subscription():
     return render_template("subscription/youtube.html")
 

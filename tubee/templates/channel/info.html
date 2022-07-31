@@ -15,7 +15,7 @@
       </div>
       <div class="col">
         <h3 class="mt-0">{{ channel.name }}</h3>
-        {% if channel.infos.snippet.customUrl %}
+        {% if channel.infos.snippet.customUrl is defined %}
         <button class="btn btn-sm youtube-btn">
           <a
             href="https://www.youtube.com/{{ channel.infos.snippet.customUrl }}"

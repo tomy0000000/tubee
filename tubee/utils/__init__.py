@@ -8,9 +8,12 @@ from functools import wraps
 from urllib.parse import unquote, urljoin, urlparse
 
 from dateutil import parser
-from flask import abort, current_app, request, url_for
+from flask import abort, current_app, jsonify, request, url_for
 from flask_login import current_user
 from flask_migrate import upgrade
+from werkzeug.exceptions import HTTPException
+
+from ..exceptions import TubeeError
 
 
 def setup_app():
@@ -102,44 +105,6 @@ def admin_required_decorator(func):
     return decorated_view_function
 
 
-def pushover_required(func):
-    """Restrict view function to users who have configured Pushover account
-
-    Arguments:
-        func {view function} -- The view function to be restricting
-
-    Returns:
-        view function -- The restricted function
-    """
-
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if not current_user.pushover:
-            abort(403)
-        return func(*args, **kwargs)
-
-    return decorated_function
-
-
-def youtube_required(func):
-    """Restrict view function to users who have configured YouTube account
-
-    Arguments:
-        func {view function} -- The view function to be restricting
-
-    Returns:
-        view function -- The restricted function
-    """
-
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if not current_user.youtube:
-            abort(403)
-        return func(*args, **kwargs)
-
-    return decorated_function
-
-
 def is_safe_url(target):
     """Helper used to check endpoint before redirecting user
 
@@ -152,3 +117,27 @@ def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
+
+
+def api_error_handler(error):
+    """Handle API Errors
+
+    Arguments:
+        error {Exception} -- The error to be handled
+
+    Returns:
+        Response -- Wrapped JSON response
+    """
+    if isinstance(error, HTTPException):  # raised with flask.abort(code, description)
+        description = error.description
+        status_code = error.code
+    elif isinstance(error, TubeeError):
+        description = error.description
+        status_code = 400
+    else:
+        description = "Internal Server Error"
+        status_code = 500
+    return (
+        jsonify(ok=False, error=error.__class__.__name__, description=str(description)),
+        status_code,
+    )
