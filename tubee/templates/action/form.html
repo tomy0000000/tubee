@@ -72,7 +72,7 @@
               >
                 <!-- prettier-ignore -->
                 {% for choice in form.action_type.choices %}
-                {% if action is defined and action.type|string == 'ActionType.'+choice[1] %}
+                {% if action is defined and action.type|string == choice[1] %}
                 <option value="{{ choice[1] }}" selected>
                   {{ choice[0] }}
                 </option>

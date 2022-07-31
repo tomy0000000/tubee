@@ -55,7 +55,7 @@ class NotificationActionForm(FlaskForm):
     service = SelectField(
         "Notification Service",
         validators=[DataRequired()],
-        choices=[(item.name, item.value) for item in Service],
+        choices=[(item.value, item.value) for item in Service],
     )
     message = StringField(
         "Message Body",
@@ -119,7 +119,7 @@ class ActionForm(FlaskForm):
     action_type = SelectField(
         "Type",
         validators=[DataRequired()],
-        choices=[(item.name, item.value) for item in ActionType],
+        choices=[(item.value, item.value) for item in ActionType],
     )
     channel_id = HiddenField("Channel ID")
     tag_id = HiddenField("Tag ID")
