@@ -22,6 +22,7 @@ class Action(db.Model):
     type: ActionType
     details: dict
     username: str
+    automate: bool
     channel_id: str
     tag_id: int
 
@@ -31,6 +32,7 @@ class Action(db.Model):
     type = db.Column(db.Enum(ActionType), nullable=False)
     details = db.Column(db.JSON, nullable=False, default={})
     username = db.Column(db.String(32), db.ForeignKey("user.username"), nullable=False)
+    automate = db.Column(db.Boolean, nullable=False, default=True)
     channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
     tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"))
     __table_args__ = (
@@ -96,6 +98,10 @@ class Action(db.Model):
         if not self.type or new_data["action_type"] != self.type.value:
             modified["type"] = new_data["action_type"]
             self.type = new_data["action_type"]
+
+        if self.automate != "automate" in new_data:
+            modified["automate"] = bool(new_data["automate"])
+            self.automate = bool(new_data["automate"])
 
         new_details = new_data[new_data["action_type"].lower()]
         if not self.details or new_details != self.details:

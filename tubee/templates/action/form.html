@@ -87,6 +87,31 @@
               </select>
             </div>
           </div>
+          <div class="row mb-3">
+            <div class="col-8 offset-4">
+              <div class="form-check">
+                {% if action is defined and action.automate %}
+                <input
+                  type="checkbox"
+                  id="automate"
+                  name="automate"
+                  class="form-check-input"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  id="automate"
+                  name="automate"
+                  class="form-check-input"
+                />
+                {% endif %}
+                <label class="form-check-label" for="automate">
+                  Automate
+                </label>
+              </div>
+            </div>
+          </div>
 
           <!-- prettier-ignore -->
           {% for sub_form in ["notification", "playlist", "download"] %}

@@ -1,6 +1,7 @@
 """Forms"""
 from flask_wtf import FlaskForm
 from wtforms.fields import (
+    BooleanField,
     FormField,
     HiddenField,
     PasswordField,
@@ -121,6 +122,7 @@ class ActionForm(FlaskForm):
         validators=[DataRequired()],
         choices=[(item.value, item.value) for item in ActionType],
     )
+    automate = BooleanField("Automate")
     channel_id = HiddenField("Channel ID")
     tag_id = HiddenField("Tag ID")
     notification = FormField(NotificationActionForm)

@@ -164,7 +164,7 @@ def channel_callback(channel_id):
 
         # List users and execute actions
         for sub in channel_item.subscriptions:
-            for action in sub.actions:
+            for action in sub.automated_actions:
                 try:
                     results = action.execute(
                         video_id=video_id,
