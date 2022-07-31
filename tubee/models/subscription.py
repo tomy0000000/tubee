@@ -65,6 +65,14 @@ class Subscription(db.Model):
         raise ValueError("Actions should be modify using instance methods")
 
     @property
+    def automated_actions(self):
+        from . import Action
+
+        return Action.query.filter_by(
+            username=self.username, channel_id=self.channel_id, automate=True
+        ).all()
+
+    @property
     def tags(self):
         return [subscription_tag.tag for subscription_tag in self._subscription_tags]
 

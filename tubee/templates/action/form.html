@@ -72,7 +72,7 @@
               >
                 <!-- prettier-ignore -->
                 {% for choice in form.action_type.choices %}
-                {% if action is defined and action.type|string == 'ActionType.'+choice[1] %}
+                {% if action is defined and action.type|string == choice[1] %}
                 <option value="{{ choice[1] }}" selected>
                   {{ choice[0] }}
                 </option>
@@ -85,6 +85,31 @@
                 {% endif %}
                 {% endfor %}
               </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-8 offset-4">
+              <div class="form-check">
+                {% if action is defined and action.automate %}
+                <input
+                  type="checkbox"
+                  id="automate"
+                  name="automate"
+                  class="form-check-input"
+                  checked
+                />
+                {% else %}
+                <input
+                  type="checkbox"
+                  id="automate"
+                  name="automate"
+                  class="form-check-input"
+                />
+                {% endif %}
+                <label class="form-check-label" for="automate">
+                  Automate
+                </label>
+              </div>
             </div>
           </div>
 
