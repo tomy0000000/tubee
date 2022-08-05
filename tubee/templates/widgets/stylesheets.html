@@ -1,16 +1,26 @@
 <!-- STYLESHEETS -->
 <!--
     This Widget loads different version of css file from CDN Based on flask config
-    * Bootstrap CSS 5.2.0-beta1
-    * Font Awesome CSS 5.15.3
-    * Github Fork Ribbon CSS 0.2.3 (Dev and Test only)
+    * Bootstrap                 5.2.0
+    * datatables                1.12.1
+    * Font Awesome              5.15.3
+    * Github Fork Ribbon        0.2.3 (Dev and Test only)
 -->
 {% if config.DEBUG or config.TESTING %}
+
 <link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
   rel="stylesheet"
-  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.css"
+  integrity="sha512-h1rwF0uB6r2IuEZcyjPrR53bBKN9Wb4yL+w3Rdlzmc3CkBF1gMSFvQIIstnu4bEtYDaKca5ke5S8UBAACRImyg=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.css"
+  integrity="sha512-3g2jlxiWYLcHo9Y/jU2dDJNqDIxN/yU5z9fa8lXIJRPe6aWYxTIVpGu95Jn+kgf/4D4fThWsWF5x4u5oK3lMVQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 <link
   rel="stylesheet"
@@ -26,11 +36,20 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
+
 {% else %}
+
 <link
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"
-  integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA=="
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css"
+  integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"
+  integrity="sha512-DYpTY0Ub8eZR1nPIgYG0eNVCWim5dFXr834XUOfrVw/5NNRUrPMl8mpNyHvt+CUjG3TyfV898AYXg9eOS+ekmw=="
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
@@ -48,5 +67,6 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
+
 {% endif %}
 <!-- END STYLESHEETS -->
