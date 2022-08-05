@@ -96,7 +96,24 @@ function init_popover() {
   $('[data-toggle="popover"]').popover();
 }
 
+function init_moment() {
+  $(".moment").each(function () {
+    const timestamp = $(this).data("moment-timestamp");
+    const format = $(this).data("moment-format");
+    $(this).text(moment.unix(timestamp).format(format));
+  });
+}
+
+function init_datatable() {
+  $(".datatable").each(function () {
+    const order = $(this).data("datatable-order");
+    $(this).DataTable({ order });
+  });
+}
+
 $(document).ready(() => {
   init_clipboard();
   init_popover();
+  init_moment();
+  init_datatable();
 });

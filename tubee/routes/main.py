@@ -196,7 +196,6 @@ def video():
         .outerjoin(VideoCheck, VideoCheck.video_id == Video.id)
         .where(Video.uploaded_timestamp > last_30_days)
         .where(VideoCheck.checked.is_(None) | VideoCheck.checked.is_(False))
-        .order_by(Video.uploaded_timestamp.desc())
         .all()
     )
     video_ids = [row["Video"].id for row in queried_row]
