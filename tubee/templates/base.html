@@ -8,11 +8,9 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
     />
     <title>Tubee - {{ title }}</title>
+    <!-- prettier-ignore -->
+    {% include "widgets/preloads.html" %}
     {% include "widgets/stylesheets.html" %}
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/base.css') }}"
-    />
     <!-- PAGE CSS -->
     {% block style %}{% endblock %}
     <!-- END PAGE CSS -->
