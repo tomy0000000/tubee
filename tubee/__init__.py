@@ -10,7 +10,6 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
-from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import StrictUndefined
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -25,7 +24,6 @@ bcrypt = Bcrypt()
 celery = Celery(__name__)
 login_manager = LoginManager()
 migrate = Migrate()
-moment = Moment()
 oauth = OAuth()
 
 
@@ -68,7 +66,6 @@ def create_app(config_name, coverage=None):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
-    moment.init_app(app)
     oauth.init_app(app)
     celery.conf.update(app.config)
 

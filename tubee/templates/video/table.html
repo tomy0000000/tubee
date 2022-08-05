@@ -26,7 +26,12 @@
           <p>#{{ video.id }}</p>
         </a>
       </td>
-      <td>{{ moment(video.uploaded_timestamp).format('lll') }}</td>
+      <td
+        class="moment"
+        data-order="{{ video.uploaded_timestamp }}"
+        data-moment-timestamp="{{ video.uploaded_timestamp.timestamp() }}"
+        data-moment-format="lll"
+      ></td>
     </tr>
     {% endfor %}
   </tbody>

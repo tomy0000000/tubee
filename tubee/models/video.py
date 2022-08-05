@@ -3,9 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from urllib.parse import urljoin
 
-from dateutil import parser
-
 from .. import db
+from ..utils import try_parse_datetime
 from ..utils.youtube import build_youtube_api, fetch_video_metadata
 
 
@@ -83,7 +82,7 @@ class Video(db.Model):
 
     def _process_details(self):
         self.name = self.details["title"]
-        self.uploaded_timestamp = parser.parse(self.details["publishedAt"])
+        self.uploaded_timestamp = try_parse_datetime(self.details["publishedAt"])
         db.session.commit()
 
     def update_infos(self):

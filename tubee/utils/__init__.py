@@ -47,9 +47,9 @@ def setup_app():
     # TODO: Update channels metadata
 
 
-def try_parse_datetime(string):
+def try_parse_datetime(string, fuzzy=False):
     try:
-        return parser.parse(string).replace(tzinfo=None)
+        return parser.parse(string, fuzzy=fuzzy).replace(tzinfo=None)
     except (ValueError, TypeError):
         return None
 

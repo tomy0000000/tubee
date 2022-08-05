@@ -1,11 +1,10 @@
 """Test Cases of Channel Model"""
 import json
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 from os.path import dirname, join
 from unittest import mock
 
-from dateutil.tz import UTC
 from googleapiclient.discovery import build
 from googleapiclient.errors import Error as YouTubeAPIError
 from googleapiclient.http import HttpMockSequence
@@ -133,19 +132,19 @@ class ChannelModelTestCase(unittest.TestCase):
             "response_object": None,
             "state": "unverified",
             "stat": "0 delivery request(s) per second to localhost,\n      0% errors",
-            "last_challenge": datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
-            "expiration": datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
-            "last_subscribe": datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
+            "last_challenge": datetime(2020, 1, 1, 10, 30, 0, tzinfo=timezone.utc),
+            "expiration": datetime(2020, 1, 1, 10, 30, 0, tzinfo=timezone.utc),
+            "last_subscribe": datetime(2020, 1, 1, 10, 30, 0, tzinfo=timezone.utc),
             "last_unsubscribe": None,
             "last_challenge_error": (
-                datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
+                datetime(2020, 1, 1, 10, 30, 0, tzinfo=timezone.utc),
                 "Bad response code 504",
             ),
             "last_notification_error": (
-                datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
+                datetime(2020, 1, 1, 10, 30, 0, tzinfo=timezone.utc),
                 "HTTP 504",
             ),
-            "last_notification": datetime(2020, 1, 1, 10, 30, 0, tzinfo=UTC),
+            "last_notification": datetime(2020, 1, 1, 10, 30, 0, tzinfo=timezone.utc),
         }
         results = self.test_channel.refresh()
         TEST_FIELDS = [

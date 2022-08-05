@@ -17,7 +17,8 @@ from urllib.parse import urljoin, urlparse
 
 import bs4
 import requests
-from dateutil.parser import parse
+
+from . import try_parse_datetime
 
 DEFAULT_HEADERS = {
     "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
@@ -92,10 +93,7 @@ def _formal_get_request(hub, endpoint, **params):
 
 
 def _parse_detail(query, fuzzy=False):
-    try:
-        parsed_datetime = parse(query, fuzzy=fuzzy)
-    except ValueError:
-        parsed_datetime = None
+    parsed_datetime = try_parse_datetime(query)
     if not fuzzy or not parsed_datetime:
         return parsed_datetime
     summary = re.search(r"\((.*)\)", query).groups()[0]
