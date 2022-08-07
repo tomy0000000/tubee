@@ -70,12 +70,32 @@ def callbacks_all():
     return jsonify(response)
 
 
-@api_channel_blueprint.route("/<channel_id>/status")
+@api_channel_blueprint.route("/<channel_id>/refresh")
 @login_required
-def status(channel_id):
-    """From Hub fetch Status"""
+def refresh(channel_id):
+    """Update hub subscription details"""
     channel = Channel.query.get_or_404(channel_id)
     response = channel.refresh()
+    return jsonify(response)
+
+
+@api_channel_blueprint.route("/<channel_id>/update")
+@login_required
+@admin_required
+def update(channel_id):
+    """Update YouTube metadata"""
+    channel = Channel.query.get_or_404(channel_id)
+    response = channel.update()
+    return jsonify(response)
+
+
+@api_channel_blueprint.route("/<channel_id>/subscribe")
+@login_required
+@admin_required
+def subscribe(channel_id):
+    """Submitting hub Subscription"""
+    channel = Channel.query.get_or_404(channel_id)
+    response = channel.subscribe()
     return jsonify(response)
 
 
@@ -83,7 +103,6 @@ def status(channel_id):
 @login_required
 @admin_required
 def fetch_videos(channel_id):
-    # TODO: deprecate this
     channel = Channel.query.get_or_404(channel_id)
     response = channel.fetch_videos()
     return jsonify(response)

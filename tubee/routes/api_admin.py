@@ -1,14 +1,8 @@
 from flask import Blueprint, jsonify
 
-from ..models import Callback, Channel, Notification
+from ..models import Callback, Notification
 
 api_admin_blueprint = Blueprint("api_admin", __name__)
-
-
-@api_admin_blueprint.route("/channels")
-def channel():
-    channels = Channel.query.all()
-    return jsonify(channels)
 
 
 @api_admin_blueprint.route("/callbacks")
