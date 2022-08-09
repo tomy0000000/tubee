@@ -31,10 +31,22 @@
     {% for row in rows %}
     <tr class="video-row" data-video-id="{{ row.Video.id }}">
       <th scope="row" class="video-thumbnails">
-        <img
-          src="{{ row.Video.details.thumbnails.medium.url }}"
-          class="rounded vidoe-thumbnails"
-        />
+        <a href="https://youtu.be/{{ row.Video.id }}" target="_blank">
+          <picture>
+            <source
+              media="(max-width: 1199px)"
+              srcset="{{ row.Video.details.thumbnails.default.url }}"
+            />
+            <source
+              media="(min-width: 1200px)"
+              srcset="{{ row.Video.details.thumbnails.medium.url }}"
+            />
+            <img
+              src="{{ row.Video.details.thumbnails.medium.url }}"
+              class="rounded"
+            />
+          </picture>
+        </a>
       </th>
       <td>
         <a
@@ -46,7 +58,7 @@
       </td>
       <td>
         <a href="https://youtu.be/{{ row.Video.id }}" target="_blank">
-          {{ row.Video.name }}
+          {{ row.Video.name | safe }}
         </a>
         <a
           href="#"
