@@ -11,6 +11,8 @@ from flask.cli import with_appcontext
 from .. import db, models
 from . import setup_app
 
+__all__ = ["deploy", "test", "admin"]
+
 
 @click.command()
 @with_appcontext

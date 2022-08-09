@@ -87,34 +87,20 @@ def create_app(config_name, coverage=None):
         ),
     )
 
+    from .routes import blueprint_map
     from .utils import commands, processor
 
     app.context_processor(processor.template)  # Variables for jinja templates
     app.shell_context_processor(processor.shell)  # Variables for shell
     app.register_error_handler(Exception, processor.error_handler)  # Error handler
-    app.cli.add_command(commands.deploy)
-    app.cli.add_command(commands.test)
-    app.cli.add_command(commands.admin)
 
-    from . import routes
+    for command in commands.__all__:
+        app.cli.add_command(getattr(commands, command))
 
-    # Blueprint Registration
-    app.register_blueprint(routes.main_blueprint)
-    app.register_blueprint(routes.action_blueprint, url_prefix="/action")
-    app.register_blueprint(routes.admin_blueprint, url_prefix="/admin")
-    app.register_blueprint(routes.api_blueprint, url_prefix="/api")
-    app.register_blueprint(routes.api_admin_blueprint, url_prefix="/api/admin")
-    app.register_blueprint(routes.api_action_blueprint, url_prefix="/api/action")
-    app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
-    app.register_blueprint(
-        routes.api_subscription_blueprint, url_prefix="/api/subscription"
-    )
-    app.register_blueprint(routes.api_tag_blueprint, url_prefix="/api/tag")
-    app.register_blueprint(routes.api_task_blueprint, url_prefix="/api/task")
-    app.register_blueprint(routes.api_video_blueprint, url_prefix="/api/video")
-    app.register_blueprint(routes.user_blueprint, url_prefix="/user")
+    for prefix, blueprint in blueprint_map:
+        app.register_blueprint(blueprint, url_prefix=prefix)
+
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-        app.register_blueprint(routes.dev_blueprint, url_prefix="/dev")
 
     return app
