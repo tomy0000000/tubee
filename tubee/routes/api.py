@@ -4,10 +4,7 @@ from flask_login import current_user, login_required
 
 from tubee.exceptions import ServiceNotAuth
 
-from ..utils import api_error_handler
-
 api_blueprint = Blueprint("api", __name__)
-api_blueprint.register_error_handler(Exception, api_error_handler)
 
 
 @api_blueprint.route("/user/services")

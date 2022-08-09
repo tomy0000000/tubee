@@ -9,12 +9,10 @@ from .api_tag import api_tag_blueprint
 from .api_task import api_task_blueprint
 from .api_video import api_video_blueprint
 from .dev import dev_blueprint
-from .handler import handler_blueprint
 from .main import main_blueprint
 from .user import user_blueprint
 
 blueprint_map = [
-    ("", handler_blueprint),
     ("", main_blueprint),
     ("/action", action_blueprint),
     ("/admin", admin_blueprint),
@@ -43,7 +41,6 @@ __all__ = [
     api_video_blueprint,
     blueprint_map,
     dev_blueprint,
-    handler_blueprint,
     main_blueprint,
     user_blueprint,
 ]

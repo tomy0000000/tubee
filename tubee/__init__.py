@@ -15,7 +15,6 @@ from jinja2 import StrictUndefined
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
-from tubee.utils import build_sitemap
 
 VERSION = "0.11.0"
 
@@ -88,18 +87,16 @@ def create_app(config_name, coverage=None):
         ),
     )
 
-    from . import commands, routes
+    from .utils import commands, processor
 
-    # Expose db instance and models in shell for testing
-    app.shell_context_processor(commands.make_shell_context)
-
-    # CLI Commands
+    app.context_processor(processor.template)  # Variables for jinja templates
+    app.shell_context_processor(processor.shell)  # Variables for shell
+    app.register_error_handler(Exception, processor.error_handler)  # Error handler
     app.cli.add_command(commands.deploy)
     app.cli.add_command(commands.test)
     app.cli.add_command(commands.admin)
 
-    # Inject global variable for all views
-    app.context_processor(lambda: dict(sitemap=build_sitemap()))
+    from . import routes
 
     # Blueprint Registration
     app.register_blueprint(routes.main_blueprint)
@@ -119,7 +116,5 @@ def create_app(config_name, coverage=None):
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
         app.register_blueprint(routes.dev_blueprint, url_prefix="/dev")
-    else:
-        app.register_blueprint(routes.handler_blueprint)
 
     return app
