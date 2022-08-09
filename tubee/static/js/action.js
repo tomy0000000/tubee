@@ -11,9 +11,9 @@
     const tag_id = $(this).data("tag-id");
     let modalPath;
     if (action_id) {
-      modalPath = buildURL("action.read", { action_id });
+      modalPath = buildURL("action.form_read", { action_id });
     } else {
-      modalPath = buildURL("action.empty");
+      modalPath = buildURL("action.form_empty");
     }
     $("#hidden-container").load(
       modalPath,

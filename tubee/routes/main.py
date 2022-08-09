@@ -67,14 +67,6 @@ def youtube_subscription():
     return render_template("subscription/youtube.html")
 
 
-@main_blueprint.route("/action")
-def action():
-    actions = current_user.actions.all()
-    return render_template(
-        "action/main.html", actions=actions, action_form=ActionForm()
-    )
-
-
 @main_blueprint.route("/tag")
 def tags():
     tags = current_user.tags.all()
