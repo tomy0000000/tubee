@@ -99,6 +99,7 @@ class User(UserMixin, db.Model):
         if len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
+        db.session.commit()
 
     def check_password(self, password):
         """Return True if provided password is valid to login"""
