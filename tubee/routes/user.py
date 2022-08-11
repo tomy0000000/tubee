@@ -19,7 +19,6 @@ from flask import (
 from flask_login import current_user, login_required, login_user, logout_user
 
 from .. import oauth
-from ..exceptions import APIError
 from ..forms import UserForm
 from ..models import User
 from ..utils import dropbox, is_safe_url, youtube
@@ -135,12 +134,8 @@ def setting_youtube_oauth_callback():
 @user_blueprint.get("/setting/youtube/revoke")
 @login_required
 def setting_youtube_revoke():
-    try:
-        del current_user.youtube
-    except APIError as error:
-        flash(*error.args)
-    else:
-        flash("YouTube Access Revoked", "success")
+    del current_user.youtube
+    flash("YouTube Access Revoked", "success")
     return redirect(url_for("user.setting"))
 
 

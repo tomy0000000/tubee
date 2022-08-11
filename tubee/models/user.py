@@ -224,15 +224,14 @@ class User(UserMixin, db.Model):
             params={"token": self._youtube_credentials["token"]},
             headers={"content-type": "application/x-www-form-urlencoded"},
         )
-        if response.status_code == 200:
+        error_description = response.json().get("error_description")
+        if (
+            response.status_code == 200
+            or error_description == "Token expired or revoked"
+        ):
             self._youtube_credentials = None
             db.session.commit()
             return
-        error_description = response.json()["error_description"]
-        if error_description == "Token expired or revoked":
-            self._youtube_credentials = None
-            db.session.commit()
-            raise APIError(service="YouTube", message=error_description)
         raise APIError(service="YouTube", message=error_description)
 
     #     ######
