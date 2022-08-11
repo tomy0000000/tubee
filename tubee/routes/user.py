@@ -19,8 +19,7 @@ from flask import (
 from flask_login import current_user, login_required, login_user, logout_user
 
 from .. import oauth
-from ..exceptions import APIError
-from ..forms import LoginForm, RegisterForm
+from ..forms import UserForm
 from ..models import User
 from ..utils import dropbox, is_safe_url, youtube
 
@@ -33,7 +32,7 @@ def register():
     if current_user.is_authenticated:
         flash("You've already logined!", "success")
         return redirect(url_for("main.dashboard", tag_id=False))
-    form = RegisterForm()
+    form = UserForm(submit_label="Register", password_confirm=True)
     if form.validate_on_submit():
         exist_user = User.query.get(form.username.data)
         if not exist_user:
@@ -50,20 +49,35 @@ def login():
     if current_user.is_authenticated:
         flash("You've already logined!", "success")
         return redirect(url_for("main.dashboard", tag_id=False))
-    form = LoginForm()
-    if form.validate_on_submit():
-        query_user = User.query.get(form.username.data)
-        if query_user and query_user.check_password(form.password.data):
-            login_user(query_user, remember=True)
-            redirect_url = request.args.get("next")
-            if redirect_url and is_safe_url(redirect_url):
-                return redirect(redirect_url)
-            return redirect(url_for("main.dashboard", tag_id=False))
+    form = UserForm(submit_label="Login", password_confirm=False)
+    if form.is_submitted():
+        if form.validate():
+            query_user = User.query.get(form.username.data)
+            if query_user and query_user.check_password(form.password.data):
+                login_user(query_user, remember=True)
+                redirect_url = request.args.get("next")
+                if redirect_url and is_safe_url(redirect_url):
+                    return redirect(redirect_url)
+                return redirect(url_for("main.dashboard", tag_id=False))
         flash("Invalid username or password.", "warning")
     return render_template("user/login.html", form=form)
 
 
-@user_blueprint.route("/logout", methods=["GET"])
+@user_blueprint.route("/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    """Change Password"""
+    form = UserForm(
+        username=current_user.username, submit_label="Save", password_confirm=True
+    )
+    if form.validate_on_submit():
+        current_user.password = form.password.data
+        flash("Password Changed", "success")
+        return redirect(url_for("user.setting"))
+    return render_template("user/change_password.html", form=form)
+
+
+@user_blueprint.get("/logout")
 @login_required
 def logout():
     """User Logout"""
@@ -79,7 +93,7 @@ def setting():
     return render_template("user/setting.html")
 
 
-@user_blueprint.route("/setting/youtube/authorize")
+@user_blueprint.get("/setting/youtube/authorize")
 @login_required
 def setting_youtube_authorize():
     flow = youtube.build_flow()
@@ -90,7 +104,20 @@ def setting_youtube_authorize():
     return redirect(authorization_url)
 
 
-@user_blueprint.route("/setting/youtube/oauth_callback")
+@user_blueprint.post("/setting/pushover")
+@login_required
+def pushover():
+    user_key = request.form.get("pushover")
+    if user_key:
+        current_user.pushover = user_key
+        flash("Pushover user key validate and saved", "success")
+    else:
+        del current_user.pushover
+        flash("Pushover user key deleted", "success")
+    return redirect(url_for("user.setting"))
+
+
+@user_blueprint.get("/setting/youtube/oauth_callback")
 @login_required
 def setting_youtube_oauth_callback():
     flow = youtube.build_flow(state=session["state"])
@@ -104,26 +131,22 @@ def setting_youtube_oauth_callback():
     return redirect(url_for("user.setting"))
 
 
-@user_blueprint.route("/setting/youtube/revoke")
+@user_blueprint.get("/setting/youtube/revoke")
 @login_required
 def setting_youtube_revoke():
-    try:
-        del current_user.youtube
-    except APIError as error:
-        flash(*error.args)
-    else:
-        flash("YouTube Access Revoked", "success")
+    del current_user.youtube
+    flash("YouTube Access Revoked", "success")
     return redirect(url_for("user.setting"))
 
 
-@user_blueprint.route("/setting/line-notify/authorize")
+@user_blueprint.get("/setting/line-notify/authorize")
 @login_required
 def setting_line_notify_authorize():
     redirect_uri = url_for("user.setting_line_notify_oauth_callback", _external=True)
     return oauth.LineNotify.authorize_redirect(redirect_uri)
 
 
-@user_blueprint.route("/setting/line-notify/oauth_callback")
+@user_blueprint.get("/setting/line-notify/oauth_callback")
 @login_required
 def setting_line_notify_oauth_callback():
     token = oauth.LineNotify.authorize_access_token()
@@ -132,7 +155,7 @@ def setting_line_notify_oauth_callback():
     return redirect(url_for("user.setting"))
 
 
-@user_blueprint.route("/setting/line-notify/revoke")
+@user_blueprint.get("/setting/line-notify/revoke")
 @login_required
 def setting_line_notify_revoke():
     """Revoke User's Line Notify Crendential"""
@@ -145,14 +168,14 @@ def setting_line_notify_revoke():
     return redirect(url_for("user.setting"))
 
 
-@user_blueprint.route("/setting/dropbox/authorize")
+@user_blueprint.get("/setting/dropbox/authorize")
 @login_required
 def setting_dropbox_authorize():
     authorize_url = dropbox.build_flow(session).start()
     return redirect(authorize_url)
 
 
-@user_blueprint.route("/setting/dropbox/oauth_callback")
+@user_blueprint.get("/setting/dropbox/oauth_callback")
 @login_required
 def setting_dropbox_oauth_callback():
     try:
@@ -176,7 +199,7 @@ def setting_dropbox_oauth_callback():
     return redirect(url_for("user.setting"))
 
 
-@user_blueprint.route("/setting/dropbox/revoke")
+@user_blueprint.get("/setting/dropbox/revoke")
 @login_required
 def setting_dropbox_revoke():
     """Revoke User's Dropbx Crendential"""

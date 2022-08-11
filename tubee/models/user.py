@@ -99,6 +99,7 @@ class User(UserMixin, db.Model):
         if len(password) > 30:
             raise ValueError("Password must be shorter than 30 characters")
         self._password_hash = bcrypt.generate_password_hash(password)
+        db.session.commit()
 
     def check_password(self, password):
         """Return True if provided password is valid to login"""
@@ -223,15 +224,14 @@ class User(UserMixin, db.Model):
             params={"token": self._youtube_credentials["token"]},
             headers={"content-type": "application/x-www-form-urlencoded"},
         )
-        if response.status_code == 200:
+        error_description = response.json().get("error_description")
+        if (
+            response.status_code == 200
+            or error_description == "Token expired or revoked"
+        ):
             self._youtube_credentials = None
             db.session.commit()
             return
-        error_description = response.json()["error_description"]
-        if error_description == "Token expired or revoked":
-            self._youtube_credentials = None
-            db.session.commit()
-            raise APIError(service="YouTube", message=error_description)
         raise APIError(service="YouTube", message=error_description)
 
     #     ######

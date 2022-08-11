@@ -8,12 +8,10 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 
-from tubee import db, models
-from tubee.utils import setup_app
+from .. import db, models
+from . import setup_app
 
-
-def make_shell_context():
-    return dict(db=db, models=models)
+__all__ = ["deploy", "test", "admin"]
 
 
 @click.command()

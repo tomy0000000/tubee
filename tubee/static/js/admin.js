@@ -6,98 +6,15 @@ function build_formatted_JSON_tag(data) {
   return $("<pre></pre>").text(JSON.stringify(data, null, 4));
 }
 
-// Channel Tab
-function load_channels(event) {
-  insert_spinner("#channels", "primary");
-  let table = $("#channels > table > tbody");
-  table.empty();
-  let channel_template;
-  const url = buildURL("static", {
-    filename: "component/admin/channel_table_row.html",
-  });
-  $.ajax(url)
-    .done((data) => {
-      channel_template = document.createElement("tr");
-      channel_template.innerHTML = data;
-    })
-    .fail((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      $.getJSON(buildURL("api_admin.channel"))
-        .done((data) => {
-          data.forEach((element) => {
-            let row = channel_template.cloneNode(true);
-
-            row.dataset.channelId = element.id;
-            row.getElementsByClassName("channel-name")[0].innerText =
-              element.name;
-            row
-              .getElementsByClassName("channel-name")[0]
-              .parentElement.setAttribute(
-                "href",
-                buildURL("main.channel", { channel_id: element.id })
-              );
-            row.getElementsByClassName("channel-id")[0].innerText = element.id;
-            row.getElementsByClassName(
-              "channel-id"
-            )[0].parentElement.dataset.clipboardText = element.id;
-
-            let status = row.getElementsByClassName("channel-status")[0];
-            status.innerHTML = "";
-            status.appendChild(
-              generate_callback_status_badge(element.hub_infos.state)
-            );
-
-            row.getElementsByClassName("channel-expiration")[0].innerText =
-              element.hub_infos.expiration;
-            row.getElementsByClassName(
-              "channel-expiration-badge"
-            )[0].innerText = moment(element.hub_infos.expiration).fromNow();
-            table.append(row);
-          });
-          init_clipboard();
-          $(".btn-refresh").click(channel_refresh);
-        })
-        .fail((data) => {
-          console.log(data);
-        });
-    })
-    .fail((data) => {
-      console.log(data);
-    })
-    .always(() => {
-      drop_spinner("#channels");
-    });
-}
-
-function channel_refresh(event) {
-  let button = $(event.target);
-  let channel_row = button.parent().parent();
-  let status = channel_row.find(".channel-status");
-  let expiration = channel_row.find(".expiration");
-  const channel_id = channel_row.data("channel-id");
-
-  button.empty().attr({ disabled: true });
-  status.empty();
-  expiration.empty();
-  insert_spinner(button, "secondary", true);
-  insert_spinner(status, "secondary", true);
-  insert_spinner(expiration, "secondary", true);
-
-  $.ajax({
-    type: "get",
-    url: buildURL("api_channel.status", { channel_id: channel_id }),
-  })
-    .done((responseData) => {
-      button.empty().text("Refresh").attr({
-        disabled: false,
-      });
-      status.empty().append(generate_callback_status_badge(responseData.state));
-      expiration.empty().text(responseData.expiration);
-    })
-    .fail((responseData) => {
-      button.parent().empty().text(responseData);
+function loadChannelPage(event) {
+  $("#channels")
+    .empty()
+    .addLoadingSpinner({})
+    .load(buildURL("admin.channels"), function () {
+      init_moment();
+      init_clipboard();
+      $(this).find("table").DataTable();
+      $(this).dropLoadingSpinner({});
     });
 }
 
@@ -307,14 +224,10 @@ function load_notifications(event) {
 
 $(document).ready(() => {
   // Tab activate
-  $("#channels-tab").on("shown.bs.tab", load_channels);
+  $("#channels-tab").on("shown.bs.tab", loadChannelPage);
   $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
   $("#management-tab").on("shown.bs.tab", empty_results);
   $("#notifications-tab").on("shown.bs.tab", load_notifications);
-  // Channel page
-  $("#btn-refresh-all").click(() => {
-    $(".btn-refresh").click();
-  });
   // Management page
   $("#channel-renew-all").click(api_with_progress);
   $("#channel-renew-all-schedule").click(api_get);

@@ -8,7 +8,13 @@ class TubeeError(Exception):
         Exception
     """
 
-    pass
+    def __init__(self, description):
+        """Constructor
+
+        Arguments:
+            description {str} -- The error description
+        """
+        self.description = description
 
 
 class UserError(TubeeError):
@@ -18,29 +24,31 @@ class UserError(TubeeError):
         TubeeError
     """
 
-    pass
+    def __init__(self, description):
+        super().__init__(description)
 
 
 class APIError(TubeeError):
-    """Base Class for errors related to APIs
+    """Upstream API Error that
 
     Extends:
         TubeeError
     """
 
-    def __init__(self, service: str, message: str, error_type: str = "", *args):
+    def __init__(self, service: str, message: str, error_type: str = ""):
         type_string = f"<{error_type}> " if error_type else ""
-        super().__init__(f"Error from {service}: {type_string}{message}", *args)
+        super().__init__(f"Error from {service}: {type_string}{message}")
 
 
-class InvalidAction(UserError, ValueError):
+class InvalidAction(UserError):
     """Raised when user filled in invalid parameter
 
     Extends:
         UserError
     """
 
-    pass
+    def __init__(self, description):
+        super().__init__(description)
 
 
 class ServiceNotAuth(UserError):
@@ -50,5 +58,5 @@ class ServiceNotAuth(UserError):
         UserError
     """
 
-    def __init__(self, service, *args):
+    def __init__(self, service):
         super().__init__(f"{service} has not authenticated yet.")

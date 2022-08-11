@@ -1,11 +1,3 @@
-"""Routes for Admin Access"""
-import os
-import platform
-import sys
-
-import flask
-import gunicorn
-import werkzeug
 from flask import (
     Blueprint,
     current_app,
@@ -17,6 +9,8 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
+from ..models import Channel
+from ..tasks import list_all_tasks
 from ..utils import admin_required, build_sitemap
 
 admin_blueprint = Blueprint("admin", __name__)
@@ -27,17 +21,14 @@ admin_blueprint.before_request(admin_required)
 @login_required
 def dashboard():
     links = build_sitemap()
-    infos = {
-        "os_version": platform.platform(),
-        "python_version": sys.version,
-        "werkzeug_version": werkzeug.__version__,
-        "flask_version": flask.__version__,
-        "gunicorn_version": gunicorn.SERVER_SOFTWARE,
-        "tubee_version": current_app.version,
-        "app_config": current_app.config,
-        "os_env": os.environ,
-    }
-    return render_template("admin/main.html", infos=infos, links=links)
+    return render_template("admin/main.html", links=links, version=current_app.version)
+
+
+@admin_blueprint.route("/channels")
+def channels():
+    channels = Channel.query.all()
+    tasks = list_all_tasks()
+    return render_template("admin/channels_page.html", channels=channels, tasks=tasks)
 
 
 @admin_blueprint.route("/raise-exception")

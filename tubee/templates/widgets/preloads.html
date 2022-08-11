@@ -1,0 +1,206 @@
+<!-- PRELOADS -->
+{% if config.DEBUG or config.TESTING %}
+
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.css"
+  integrity="sha512-h1rwF0uB6r2IuEZcyjPrR53bBKN9Wb4yL+w3Rdlzmc3CkBF1gMSFvQIIstnu4bEtYDaKca5ke5S8UBAACRImyg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.css"
+  integrity="sha512-3g2jlxiWYLcHo9Y/jU2dDJNqDIxN/yU5z9fa8lXIJRPe6aWYxTIVpGu95Jn+kgf/4D4fThWsWF5x4u5oK3lMVQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css"
+  integrity="sha512-3icgkoIO5qm2D4bGSUkPqeQ96LS8+ukJC7Eqhl1H5B2OJMEnFqLmNDxXVmtV/eq5M65tTDkUYS/Q0P4gvZv+yA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
+  integrity="sha512-TktJbycEG5Van9KvrSHFUcYOKBroD7QCYkEe73HAutODCw9QTFcvF6fuxioYM1h6THNudK1GjVidazj6EslK4A=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+  integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.bundle.js"
+  integrity="sha512-mC4dqqYOpYgZRW1MR8YVU4N569ZoiWDOXtW5oP4XhTfPRgioTQfBNrH2GkoG3IwlXorj/Ut9ZIw7JT2md4dfdw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"
+  integrity="sha512-PF/RW75857uyfKUz9DB/FSXNJk+XFx8Cz+KyL7KSOME+PuIjyht+HaENRBuNca5bUlRqDXKMvK7VHvJenFn7Cg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.js"
+  integrity="sha512-pakcxH8CFhU9otif2LpadZVOlsVaQHOzlt93wKvAwPpr1soVq+6DDjTS5KuCanidWD5kmwuiItvX68mblDVU9Q=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.js"
+  integrity="sha512-STI3jX2gEOm2Z4JLWBX1XqsXzHLXmK9H+c94IBv3AfM/w2w3zQfP05EZ/Zi4P/uBajPi2SAmdFxQ1UWQtt7gsA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.js"
+  integrity="sha512-DtTYd1g6TRpxfYHg+o7hVopdDBafEPnLs81XFiu5rVLr3eamPxvnuJUhwF5w4Z2GJbA/vpE7emalj7pKjnMphQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.js"
+  integrity="sha512-mnNRHMX9QlC9eIuZyQTOFVdqAa7fS6d1Y99zWpxAjhVMJvdY4WdznRN/Ln7hxBSpCwxs7xJy5uVhOOoNHY3SAQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+
+{% else %}
+
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css"
+  integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"
+  integrity="sha512-DYpTY0Ub8eZR1nPIgYG0eNVCWim5dFXr834XUOfrVw/5NNRUrPMl8mpNyHvt+CUjG3TyfV898AYXg9eOS+ekmw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+  integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.bundle.min.js"
+  integrity="sha512-9GacT4119eY3AcosfWtHMsT5JyZudrexyEVzTBWV3viP/YfB9e2pEy3N7WXL3SV6ASXpTU0vzzSxsbfsuUH4sQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"
+  integrity="sha512-MOsicOaJyNWPgwMOE1q4sTPZK6KuUQTMBhkmzb0tFVSRxgx3VnGTwIyRme/IhBJQdWJkfTcIKozchO11ILrmSg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"
+  integrity="sha512-nfoMMJ2SPcUdaoGdaRVA1XZpBVyDGhKQ/DCedW2k93MTRphPVXgaDoYV1M/AJQLCiw/cl2Nbf9pbISGqIEQRmQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
+  integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"
+  integrity="sha512-sIqUEnRn31BgngPmHt2JenzleDDsXwYO+iyvQ46Mw6RL+udAUZj2n/u/PGY80NxRxynO7R9xIGx5LEzw4INWJQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-autocomplete@2.3.7/dist/latest/bootstrap-autocomplete.min.js"
+  integrity="sha512-B2TzfdZAYEaSbPKRtIfdmTmHKz+nt3pYHn0BuPl+uc5OP8ntPtbYVjAC00o6qrgwDwn4w357ZYQnnYaPdQV1xQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  as="script"
+/>
+
+{% endif %}
+
+<link
+  rel="preload"
+  href="{{ url_for('static', filename='css/base.css') }}"
+  as="style"
+/>
+<link
+  rel="preload"
+  href="{{ url_for('static', filename='js/util.js') }}"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="{{ url_for('static', filename='js/base.js') }}"
+  as="script"
+/>
+<link
+  rel="preload"
+  href="{{ url_for('static', filename='js/navbar.js') }}"
+  as="script"
+/>
+<!-- END PRELOADS -->

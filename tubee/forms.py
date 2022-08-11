@@ -14,16 +14,8 @@ from wtforms.validators import DataRequired, EqualTo, Length
 from .models import ActionType, Service
 
 
-class LoginForm(FlaskForm):
-    """Login form"""
-
-    username = StringField("Username", validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Sign In")
-
-
-class RegisterForm(FlaskForm):
-    """Register form"""
+class UserForm(FlaskForm):
+    """Form for register and password change"""
 
     username = StringField(
         "Username", validators=[DataRequired(), Length(min=6, max=30)]
@@ -33,7 +25,6 @@ class RegisterForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=6, max=30),
-            EqualTo("password_confirm", message="Password Mismatched!"),
         ],
     )
     password_confirm = PasswordField(
@@ -44,7 +35,13 @@ class RegisterForm(FlaskForm):
             EqualTo("password", message="Password Mismatched!"),
         ],
     )
-    submit = SubmitField("Register")
+    submit = SubmitField()
+
+    def __init__(self, submit_label: str, password_confirm: bool, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.submit.label.text = submit_label
+        if not password_confirm:
+            del self.password_confirm
 
 
 class NotificationActionForm(FlaskForm):

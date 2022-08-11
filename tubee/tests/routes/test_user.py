@@ -77,7 +77,7 @@ class ChannelRoutesTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.get_data(as_text=True).count("Password Mismatched!"),
-            2,
+            1,
         )
 
         # Test Full Register Topology

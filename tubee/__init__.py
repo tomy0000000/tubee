@@ -10,13 +10,11 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
-from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import StrictUndefined
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
-from tubee.utils import build_sitemap
 
 VERSION = "0.11.0"
 
@@ -25,7 +23,6 @@ bcrypt = Bcrypt()
 celery = Celery(__name__)
 login_manager = LoginManager()
 migrate = Migrate()
-moment = Moment()
 oauth = OAuth()
 
 
@@ -68,7 +65,6 @@ def create_app(config_name, coverage=None):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
-    moment.init_app(app)
     oauth.init_app(app)
     celery.conf.update(app.config)
 
@@ -91,38 +87,20 @@ def create_app(config_name, coverage=None):
         ),
     )
 
-    from . import commands, routes
+    from .routes import blueprint_map
+    from .utils import commands, processor
 
-    # Expose db instance and models in shell for testing
-    app.shell_context_processor(commands.make_shell_context)
+    app.context_processor(processor.template)  # Variables for jinja templates
+    app.shell_context_processor(processor.shell)  # Variables for shell
+    app.register_error_handler(Exception, processor.error_handler)  # Error handler
 
-    # CLI Commands
-    app.cli.add_command(commands.deploy)
-    app.cli.add_command(commands.test)
-    app.cli.add_command(commands.admin)
+    for command in commands.__all__:
+        app.cli.add_command(getattr(commands, command))
 
-    # Inject global variable for all views
-    app.context_processor(lambda: dict(sitemap=build_sitemap()))
+    for prefix, blueprint in blueprint_map:
+        app.register_blueprint(blueprint, url_prefix=prefix)
 
-    # Blueprint Registration
-    app.register_blueprint(routes.main_blueprint)
-    app.register_blueprint(routes.action_blueprint, url_prefix="/action")
-    app.register_blueprint(routes.admin_blueprint, url_prefix="/admin")
-    app.register_blueprint(routes.api_blueprint, url_prefix="/api")
-    app.register_blueprint(routes.api_admin_blueprint, url_prefix="/api/admin")
-    app.register_blueprint(routes.api_action_blueprint, url_prefix="/api/action")
-    app.register_blueprint(routes.api_channel_blueprint, url_prefix="/api/channel")
-    app.register_blueprint(
-        routes.api_subscription_blueprint, url_prefix="/api/subscription"
-    )
-    app.register_blueprint(routes.api_tag_blueprint, url_prefix="/api/tag")
-    app.register_blueprint(routes.api_task_blueprint, url_prefix="/api/task")
-    app.register_blueprint(routes.api_video_blueprint, url_prefix="/api/video")
-    app.register_blueprint(routes.user_blueprint, url_prefix="/user")
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-        app.register_blueprint(routes.dev_blueprint, url_prefix="/dev")
-    else:
-        app.register_blueprint(routes.handler_blueprint)
 
     return app

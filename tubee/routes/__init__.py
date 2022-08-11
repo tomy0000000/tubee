@@ -8,42 +8,36 @@ from .api_subscription import api_subscription_blueprint
 from .api_tag import api_tag_blueprint
 from .api_task import api_task_blueprint
 from .api_video import api_video_blueprint
-from .dev import dev_blueprint
-from .handler import handler_blueprint
 from .main import main_blueprint
 from .user import user_blueprint
-
-blueprint_map = [
-    ("", handler_blueprint),
-    ("", main_blueprint),
-    ("/action", action_blueprint),
-    ("/admin", admin_blueprint),
-    ("/api", api_blueprint),
-    ("/api/admin", api_admin_blueprint),
-    ("/api/action", api_action_blueprint),
-    ("/api/channel", api_channel_blueprint),
-    ("/api/subscription", api_subscription_blueprint),
-    ("/api/tag", api_tag_blueprint),
-    ("/api/task", api_task_blueprint),
-    ("/api/video", api_video_blueprint),
-    ("/dev", dev_blueprint),
-    ("/user", user_blueprint),
-]
 
 __all__ = [
     action_blueprint,
     admin_blueprint,
     api_blueprint,
-    api_admin_blueprint,
     api_action_blueprint,
+    api_admin_blueprint,
     api_channel_blueprint,
     api_subscription_blueprint,
     api_tag_blueprint,
     api_task_blueprint,
     api_video_blueprint,
-    blueprint_map,
-    dev_blueprint,
-    handler_blueprint,
+    "blueprint_map",
     main_blueprint,
     user_blueprint,
+]
+
+blueprint_map = [
+    ("/action", action_blueprint),
+    ("/admin", admin_blueprint),
+    ("/api", api_blueprint),
+    ("/api/action", api_action_blueprint),
+    ("/api/admin", api_admin_blueprint),
+    ("/api/channel", api_channel_blueprint),
+    ("/api/subscription", api_subscription_blueprint),
+    ("/api/tag", api_tag_blueprint),
+    ("/api/task", api_task_blueprint),
+    ("/api/video", api_video_blueprint),
+    ("", main_blueprint),
+    ("/user", user_blueprint),
 ]

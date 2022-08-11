@@ -7,7 +7,7 @@
 
 <div class="p-5 mb-4 bg-light rounded-3">
   <div class="container-fluid py-5">
-    <h1 id="headline" class="display-5 fw-bold">Welcome!</h1>
+    <h1 id="headline" class="display-5 fw-bold">Setting Panel</h1>
 
     <div class="mb-3">
       <label for="username" class="form-label">Username</label>
@@ -22,60 +22,55 @@
 
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        aria-describedby="password-help"
-        value=".........."
-        readonly
-      />
-      <div id="password-help" class="form-text">
-        To Change Password, Click <a href="#">Here</a>
+      <div class="input-group">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          aria-describedby="password-help"
+          value=".........."
+          readonly
+        />
+        <a
+          href="{{ url_for('user.change_password') }}"
+          class="btn btn-outline-secondary"
+          >Change Password</a
+        >
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="pushover-key" class="form-label">Pushover</label>
-      <div class="input-group">
-        {% if current_user.pushover_configured() %}
-        <input
-          type="password"
-          class="form-control"
-          id="pushover-key"
-          value=".........."
-          aria-label="Pushover Key"
-          aria-describedby="pushover-revoke"
-          readonly
-        />
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="pushover-revoke"
-        >
-          Revoke
-        </button>
-        {% else %}
-        <input
-          type="text"
-          class="form-control"
-          id="pushover-key"
-          aria-label="Pushover Key"
-          aria-describedby="pushover-validate"
-        />
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="pushover-validate"
-        >
-          Validate
-        </button>
-        {% endif %}
-      </div>
-      <div id="pushover-key-help" class="form-text">
-        Get your user key by login in
-        <a href="https://pushover.net/" target="_blank">Pushover</a>
-      </div>
+      <form action="{{ url_for('user.pushover') }}" method="POST">
+        <label for="pushover-key" class="form-label">Pushover</label>
+        <div class="input-group">
+          {% if current_user.pushover_configured() %}
+          <input
+            type="password"
+            class="form-control"
+            value=".........."
+            aria-label="Pushover User Key"
+            readonly
+          />
+          <button class="btn btn-outline-secondary" type="submit">
+            Delete User Key
+          </button>
+          {% else %}
+          <input
+            type="text"
+            name="pushover"
+            class="form-control"
+            aria-label="Pushover Key"
+          />
+          <button class="btn btn-outline-secondary" type="submit">
+            Validate and Save
+          </button>
+          {% endif %}
+        </div>
+        <div id="pushover-key-help" class="form-text">
+          Get your user key by login in
+          <a href="https://pushover.net/" target="_blank">Pushover</a>
+        </div>
+      </form>
     </div>
 
     <div class="mb-3">
