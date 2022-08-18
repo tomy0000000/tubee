@@ -13,12 +13,13 @@ def update(tag_id):
     tag = Tag.query.get_or_404(tag_id)
     if tag.username != current_user.username:
         abort(403)
-    result = tag.rename(request.get_json().get("name"))
-    return jsonify(result)
+    response = tag.rename(request.get_json().get("name"))
+    return jsonify(response)
 
 
 @api_tag_blueprint.delete("/<tag_id>")
 @login_required
 def delete(tag_id):
     tag = current_user.tags.filter_by(id=tag_id).first_or_404()
-    return jsonify(tag.delete())
+    response = tag.delete()
+    return jsonify(response)

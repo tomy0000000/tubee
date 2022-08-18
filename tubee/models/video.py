@@ -94,10 +94,10 @@ class Video(db.Model):
                 .execute()["items"][0]["snippet"]
             )
             self._process_details()
-            return True
+            return self
         # TODO: Parse API Error
         except Exception as error:
-            return error
+            raise error
 
     def execute_action(self, action_id):
         """Execute Action on Video"""

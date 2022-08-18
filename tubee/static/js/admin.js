@@ -21,6 +21,12 @@ function loadChannelPage(event) {
 function update_progress(status_url, progress_bar, message_box) {
   // send GET request to status URL
   $.getJSON(status_url)
+    .then((response) => {
+      if (!response.ok) {
+        return $.Deferred().reject(response.error);
+      }
+      return response.content;
+    })
     .done((data) => {
       // Update UI
       let percent = (data.current / data.total) * 100;
@@ -60,22 +66,29 @@ function api_with_progress(event) {
   event.preventDefault();
   // send ajax POST request to start background job
   const url = buildURL("api_channel.renew_all");
-  $.getJSON(url).done((data) => {
-    let progress_bar = $("<div>")
-      .attr({
-        class: "progress-bar",
-        role: "progressbar",
-        "aria-valuemin": "0",
-        "aria-valuemax": "100",
-      })
-      .width("0%");
-    let message_box = $("<div>");
-    $("#management > .results").append(
-      $("<div>").addClass("progress my-3").append(progress_bar),
-      message_box
-    );
-    setTimeout(update_progress, 2000, data.status, progress_bar, message_box);
-  });
+  $.getJSON(url)
+    .then((response) => {
+      if (!response.ok) {
+        return $.Deferred().reject(response.error);
+      }
+      return response.content;
+    })
+    .done((data) => {
+      let progress_bar = $("<div>")
+        .attr({
+          class: "progress-bar",
+          role: "progressbar",
+          "aria-valuemin": "0",
+          "aria-valuemax": "100",
+        })
+        .width("0%");
+      let message_box = $("<div>");
+      $("#management > .results").append(
+        $("<div>").addClass("progress my-3").append(progress_bar),
+        message_box
+      );
+      setTimeout(update_progress, 2000, data.status, progress_bar, message_box);
+    });
 }
 
 function api_get(event) {
@@ -104,32 +117,39 @@ function load_tasks(event) {
     celery_task_template = document.createElement("tr");
     celery_task_template.innerHTML = data;
   });
-  $.getJSON(buildURL("api_task.list_all")).done((data) => {
-    data.forEach((element) => {
-      let row = celery_task_template.cloneNode(true);
-      let task_name_tag = `<p class="mb-0">${element.request.id}</p><p class="mb-0 text-muted">#${element.request.name}</p>`;
-      row.getElementsByClassName("task-name")[0].innerHTML = task_name_tag;
-      row.getElementsByClassName("task-args")[0].innerText = JSON.stringify(
-        element.request.args
-      );
-      row.getElementsByClassName("task-eta")[0].innerText = moment(
-        element.eta
-      ).fromNow();
-      let task_active_tag = row.getElementsByClassName("task-active")[0];
-      for (child of task_active_tag.childNodes) {
-        task_active_tag.removeChild(child);
+  $.getJSON(buildURL("api_task.list_all"))
+    .then((response) => {
+      if (!response.ok) {
+        return $.Deferred().reject(response.error);
       }
-      if (element.active) {
-        task_active_tag.innerHTML =
-          '<span class="badge bg-success">Active</span>';
-      } else {
-        task_active_tag.innerHTML =
-          '<span class="badge bg-danger">Revoked</span>';
-      }
-      table.append(row);
+      return response.content;
+    })
+    .done((data) => {
+      data.forEach((element) => {
+        let row = celery_task_template.cloneNode(true);
+        let task_name_tag = `<p class="mb-0">${element.request.id}</p><p class="mb-0 text-muted">#${element.request.name}</p>`;
+        row.getElementsByClassName("task-name")[0].innerHTML = task_name_tag;
+        row.getElementsByClassName("task-args")[0].innerText = JSON.stringify(
+          element.request.args
+        );
+        row.getElementsByClassName("task-eta")[0].innerText = moment(
+          element.eta
+        ).fromNow();
+        let task_active_tag = row.getElementsByClassName("task-active")[0];
+        for (child of task_active_tag.childNodes) {
+          task_active_tag.removeChild(child);
+        }
+        if (element.active) {
+          task_active_tag.innerHTML =
+            '<span class="badge bg-success">Active</span>';
+        } else {
+          task_active_tag.innerHTML =
+            '<span class="badge bg-danger">Revoked</span>';
+        }
+        table.append(row);
+      });
+      drop_spinner("#celery_tasks");
     });
-    drop_spinner("#celery_tasks");
-  });
 }
 
 function empty_results(event) {
@@ -155,6 +175,12 @@ function load_notifications(event) {
     })
     .then(() => {
       $.getJSON(buildURL("api_admin.notifications"))
+        .then((response) => {
+          if (!response.ok) {
+            return $.Deferred().reject(response.error);
+          }
+          return response.content;
+        })
         .done((data) => {
           data.forEach((element) => {
             let row = notification_template.cloneNode(true);

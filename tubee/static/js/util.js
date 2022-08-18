@@ -107,11 +107,20 @@
 
     this.buttonToggleState({ state: "loading" });
     $.ajax({ url, method, data, contentType: "application/json" })
+      .then((response) => {
+        if (!response.ok) {
+          return $.Deferred().reject(response.description);
+        }
+        return response.content;
+      })
       .done((responseData) => {
         this.buttonToggleState({ state: "success" });
       })
       .fail((responseData) => {
-        this.buttonToggleState({ state: "fail", error: responseData });
+        this.buttonToggleState({
+          state: "fail",
+          error: responseData.responseJSON.description,
+        });
       });
   };
 
@@ -123,7 +132,7 @@
     } else if (state === "success") {
       this.empty().text("Done").dropLoadingSpinner();
     } else if (state === "fail") {
-      this.empty().text(error).dropLoadingSpinner();
+      this.empty().addClass("btn-danger").text(error).dropLoadingSpinner();
     }
     return this;
   };

@@ -354,7 +354,7 @@ class User(UserMixin, db.Model):
             raise InvalidAction("You've already subscribed this channel")
         Subscription(self.username, channel.id)
         current_app.logger.info(f"Subscription <{self.username}, {channel_id}>: Create")
-        return True
+        return self
 
     def unbsubscribe(self, channel_id):
         """Delete Subscription Relationship"""
@@ -366,7 +366,7 @@ class User(UserMixin, db.Model):
         db.session.delete(subscription)
         db.session.commit()
         current_app.logger.info(f"Subscription <{self.username}, {channel_id}>: Remove")
-        return True
+        return self
 
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
         resource = {

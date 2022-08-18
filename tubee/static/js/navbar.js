@@ -6,7 +6,8 @@ $(document).ready(() => {
       queryKey: "query",
       requestThrottling: 1000,
     },
-    formatResult: (item) => {
+    formatResult: (response) => {
+      let item = response.content;
       return {
         value: item.id,
         text: item.id,

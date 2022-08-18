@@ -12,15 +12,15 @@ api_task_blueprint.before_request(admin_required)
 @api_task_blueprint.route("/list-all")
 @login_required
 def list_all():
-    tasks = list_all_tasks()
-    return jsonify(tasks)
+    response = list_all_tasks()
+    return jsonify(response)
 
 
 @api_task_blueprint.route("/remove-all")
 @login_required
 def remove_all():
-    results = remove_all_tasks()
-    return jsonify(results)
+    response = remove_all_tasks()
+    return response
 
 
 @api_task_blueprint.route("/<task_id>/status")
@@ -41,4 +41,4 @@ def status(task_id):
         response["current"] = task.result.get("current", 1)
         response["total"] = task.result.get("total", 1)
         response["channel_id"] = task.result.get("channel_id", None)
-    return jsonify(response)
+    return response
