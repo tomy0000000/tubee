@@ -14,7 +14,8 @@
       {{ tag.name }}
       <i
         class="fas fa-times-circle form-btn"
-        onclick="$(this).buttonAPI()"
+        onclick="$(this).confirm(event, 'untag <{{ tag.name }}> from {{ channel.name }}')"
+        data-callback="buttonAPI"
         data-api="api_subscription.tag_delete"
         data-api-method="DELETE"
         data-form-id="untag-form-{{ tag.id }}"
