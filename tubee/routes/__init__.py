@@ -9,6 +9,7 @@ from .api_tag import api_tag_blueprint
 from .api_task import api_task_blueprint
 from .api_video import api_video_blueprint
 from .main import main_blueprint
+from .tag import tag_blueprint
 from .user import user_blueprint
 
 __all__ = [
@@ -24,6 +25,7 @@ __all__ = [
     api_video_blueprint,
     "blueprint_map",
     main_blueprint,
+    tag_blueprint,
     user_blueprint,
 ]
 
@@ -39,5 +41,6 @@ blueprint_map = [
     ("/api/task", api_task_blueprint),
     ("/api/video", api_video_blueprint),
     ("", main_blueprint),
+    ("/tag", tag_blueprint),
     ("/user", user_blueprint),
 ]

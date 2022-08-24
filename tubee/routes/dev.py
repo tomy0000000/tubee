@@ -22,4 +22,4 @@ def test_download_to_dropbox(video_id):
         f"/{metadata['title']}.mp4", metadata["url"]
     )
     flash(str(response), "success")
-    return redirect(url_for("main.dashboard", tag_id=False))
+    return redirect(url_for("main.dashboard"))
