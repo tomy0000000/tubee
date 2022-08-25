@@ -1,4 +1,5 @@
-{% macro content(actions, channel_id=None, tag_id=None) -%}
+<!-- prettier-ignore -->
+{% macro table(actions, channel_id=None, tag_id=None) -%}
 <table class="table table-striped table-hover align-middle">
   <thead class="table-dark">
     <tr>
@@ -17,9 +18,7 @@
         >
           New
         </button>
-        {% endif %}
-        <!-- prettier-ignore -->
-        {% if tag_id %}
+        {% endif %} {% if tag_id %}
         <button
           type="button"
           class="btn btn-success"

@@ -1,7 +1,61 @@
-{% import "subscription/tag.html" as tag %}
+<!-- prettier-ignore -->
+{% macro carousal(videos) -%}
+{% set thumb_num = [videos | length, 3] | min %}
+<div
+  id="video-carousel"
+  class="carousel slide carousel-fade"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-indicators">
+    <button
+      data-bs-target="#video-carousel"
+      data-bs-slide-to="0"
+      class="active"
+    ></button>
+    {% for i in range(1, thumb_num) %}
+    <button
+      data-bs-target="#video-carousel"
+      data-bs-slide-to="{{ i }}"
+    ></button>
+    {% endfor %}
+  </div>
+  <div class="carousel-inner">
+    {% for video in videos[:thumb_num] %}
+    <div class="carousel-item {{ 'active' if loop.first else '' }}">
+      <img
+        src="{{ video.thumbnails.maxres.url }}"
+        class="d-block w-100"
+        alt="{{ video.name }}"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>{{ video.name }}</h5>
+        <p>{{ video.details.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#video-carousel"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    data-bs-target="#video-carousel"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{%- endmacro %}
 
 <!-- prettier-ignore -->
-{% macro content(channel) -%}
+{% macro info(channel, subscription, current_user) -%}
 <div class="p-5 mb-4 bg-light rounded-3">
   <div class="container-fluid py-5">
     <div class="row">
@@ -52,7 +106,7 @@
           <p class="mb-0">{{ channel.id }}</p>
         </a>
         <p id="channel-description">{{ channel.infos.snippet.description }}</p>
-        {{ tag.content(subscription.tags, channel) }}
+        {{ tags(subscription.tags, channel) }}
         <form id="tag-form" class="row gx-3">
           <div class="col-auto">
             <div class="input-group">
@@ -103,5 +157,33 @@
       </div>
     </div>
   </div>
+</div>
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro tags(tags, channel) -%}
+<div class="subscription-tags mb-2">
+  {% for tag in tags %}
+  <span class="badge rounded-pill bg-secondary">
+    <form id="untag-form-{{ tag.id }}">
+      <input type="hidden" name="tag_id" value="{{ tag.id }}" required />
+      <input
+        type="hidden"
+        name="channel_id"
+        value="{{ channel.id }}"
+        required
+      />
+      {{ tag.name }}
+      <i
+        class="fas fa-times-circle form-btn"
+        onclick="$(this).confirm(event, 'untag <{{ tag.name }}> from {{ channel.name }}')"
+        data-callback="buttonAPI"
+        data-api="api_subscription.tag_delete"
+        data-api-method="DELETE"
+        data-form-id="untag-form-{{ tag.id }}"
+      ></i>
+    </form>
+  </span>
+  {% endfor %}
 </div>
 {%- endmacro %}

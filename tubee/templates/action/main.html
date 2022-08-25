@@ -1,5 +1,5 @@
 <!-- prettier-ignore -->
-{% import 'action/table.html' as action_table with context %}
+{% from 'macros/action.html' import table %}
 
 <!-- prettier-ignore -->
 {% extends "base.html" %}
@@ -12,5 +12,5 @@
 
 <!-- prettier-ignore -->
 {% block content %}
-{{ action_table.content(actions) }}
+{{ table(actions) }}
 {% endblock %}

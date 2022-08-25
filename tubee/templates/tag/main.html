@@ -1,5 +1,5 @@
 <!-- prettier-ignore -->
-{% import 'action/table.html' as action_table with context %}
+{% from 'macros/action.html' import table %}
 {% import 'widgets/pagination.html' as pagination %}
 
 {% extends "base.html" %}
@@ -31,7 +31,7 @@
 
 {% include "tag/title.html" %}
 {% if actions %}
-{{ action_table.content(actions, tag_id=tag.id) }}
+{{ table(actions, tag_id=tag.id) }}
 {% else %}
 <div class="alert alert-secondary" role="alert">
   No action found.

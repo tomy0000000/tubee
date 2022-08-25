@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, jsonify, render_template, request
+from flask import Blueprint, abort, get_template_attribute, jsonify, request
 from flask_login import current_user, login_required
 
 from .. import db
@@ -77,11 +77,11 @@ def unchecked():
         "recordsFiltered": count,
         "data": [
             [
-                render_template("partials/video/table-thumbnails.html", row=row),
-                render_template("partials/video/table-channel.html", row=row),
-                render_template("partials/video/table-title.html", row=row),
-                render_template("partials/video/table-published.html", row=row),
-                render_template("partials/video/table-actions.html", row=row),
+                get_template_attribute("macros/video.html", "table_thumbnails")(row),
+                get_template_attribute("macros/video.html", "table_channel")(row),
+                get_template_attribute("macros/video.html", "table_title")(row),
+                get_template_attribute("macros/video.html", "table_published")(row),
+                get_template_attribute("macros/video.html", "table_actions")(row),
                 row["Video"].id,
             ]
             for row in rows

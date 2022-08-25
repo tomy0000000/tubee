@@ -1,14 +1,13 @@
 <!-- prettier-ignore -->
-{% from "partials/video/table.html" import table %}
-{% from "partials/video/check-button.html" import button %}
+{% from "macros/video.html" import table, check_button %}
 
 {% extends "base.html" %}
 {% set title = "Videos" %}
 
 {% block content %}
-{{ button(video_ids=[]) }}
+{{ check_button(video_ids=[]) }}
 {{ table() }}
-{{ button(video_ids=[]) }}
+{{ check_button(video_ids=[]) }}
 {% endblock %}
 
 {% block script %}

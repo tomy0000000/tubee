@@ -1,4 +1,4 @@
-{% import "subscription/tag.html" as tag %}
+{% from 'macros/channel.html' import tags %}
 
 <table class="table table-striped table-hover table-responsive-lg align-middle">
   <thead class="table-dark">
@@ -44,7 +44,7 @@
         </a>
         {% endif %}
         <!-- prettier-ignore -->
-        {{ tag.content(subscription.tags, subscription.channel) }}
+        {{ tags(subscription.tags, subscription.channel) }}
       </td>
       <td>
         <form id="{{ subscription.channel_id }}-unsubscribe-form">
