@@ -9,14 +9,14 @@ from ..models import Channel, Subscription, SubscriptionTag, Tag, Video, VideoCh
 tag_blueprint = Blueprint("tag", __name__)
 
 
-@tag_blueprint.route("/")
+@tag_blueprint.get("/")
 @login_required
 def listing():
     tags = current_user.tags.all()
     return render_template("tag/listing.html", tags=tags)
 
 
-@tag_blueprint.route("/<tag_id>")
+@tag_blueprint.get("/<tag_id>")
 @login_required
 def main(tag_id: int):
     """Showing Subscribed Channels with specified tag"""

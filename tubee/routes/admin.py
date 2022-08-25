@@ -17,27 +17,27 @@ admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)
 
 
-@admin_blueprint.route("/")
+@admin_blueprint.get("/")
 @login_required
 def dashboard():
     links = build_sitemap()
     return render_template("admin/main.html", links=links, version=current_app.version)
 
 
-@admin_blueprint.route("/channels")
+@admin_blueprint.get("/channels")
 def channels():
     channels = Channel.query.all()
     tasks = list_all_tasks()
     return render_template("admin/channels_page.html", channels=channels, tasks=tasks)
 
 
-@admin_blueprint.route("/raise-exception")
+@admin_blueprint.get("/raise-exception")
 @login_required
 def raise_exception():
     raise Exception
 
 
-@admin_blueprint.route("/test-logging")
+@admin_blueprint.get("/test-logging")
 @login_required
 def test_logging():
     current_app.logger.debug("debug Log")
@@ -49,7 +49,7 @@ def test_logging():
     return redirect(url_for("admin.dashboard"))
 
 
-@admin_blueprint.route("/notification/push", methods=["POST"])
+@admin_blueprint.post("/notification/push")
 @login_required
 def notification_push():
     """Send Test Notification to User"""

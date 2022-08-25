@@ -9,21 +9,21 @@ api_task_blueprint = Blueprint("api_task", __name__)
 api_task_blueprint.before_request(admin_required)
 
 
-@api_task_blueprint.route("/list-all")
+@api_task_blueprint.get("/list-all")
 @login_required
 def list_all():
     response = list_all_tasks()
     return jsonify(response)
 
 
-@api_task_blueprint.route("/remove-all")
+@api_task_blueprint.get("/remove-all")
 @login_required
 def remove_all():
     response = remove_all_tasks()
     return response
 
 
-@api_task_blueprint.route("/<task_id>/status")
+@api_task_blueprint.get("/<task_id>/status")
 @login_required
 def status(task_id):
     task = channels_renew.AsyncResult(task_id)

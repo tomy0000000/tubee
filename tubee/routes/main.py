@@ -11,7 +11,7 @@ from ..utils.youtube import fetch_video_metadata
 main_blueprint = Blueprint("main", __name__)
 
 
-@main_blueprint.route("/")
+@main_blueprint.get("/")
 @login_required
 def dashboard():
     """Showing Subscribed Channels with specified tag"""
@@ -34,13 +34,13 @@ def dashboard():
     )
 
 
-@main_blueprint.route("/subscription/youtube")
+@main_blueprint.get("/subscription/youtube")
 @login_required
 def youtube_subscription():
     return render_template("subscription/youtube.html")
 
 
-@main_blueprint.route("/channel/<channel_id>")
+@main_blueprint.get("/channel/<channel_id>")
 def channel(channel_id):
     subscription = current_user.subscriptions.filter_by(
         channel_id=channel_id
@@ -145,7 +145,7 @@ def channel_callback(channel_id):
         return jsonify(response)
 
 
-@main_blueprint.route("/video")
+@main_blueprint.get("/video")
 @login_required
 def video():
     return render_template("video/main.html")

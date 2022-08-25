@@ -7,7 +7,7 @@ from tubee.exceptions import ServiceNotAuth
 api_blueprint = Blueprint("api", __name__)
 
 
-@api_blueprint.route("/user/services")
+@api_blueprint.get("/user/services")
 @login_required
 def user_services():
     response = {}
@@ -19,7 +19,7 @@ def user_services():
     return response
 
 
-@api_blueprint.route("/youtube/subscription")
+@api_blueprint.get("/youtube/subscription")
 @login_required
 def youtube_subscription():
     """For Dynamically Loading User's YouTube Subscription"""
