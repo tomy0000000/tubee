@@ -1,111 +1,16 @@
 <!-- prettier-ignore -->
+{% from "partials/video/table.html" import table %}
+{% from "partials/video/check-button.html" import button %}
+
 {% extends "base.html" %}
 {% set title = "Videos" %}
 
-<!-- prettier-ignore -->
 {% block content %}
-{% if rows %}
-<button
-  class="btn btn-success mb-2"
-  onclick="$(this).buttonAPI()"
-  data-api="api_video.mark_as_checked"
-  data-api-method="GET"
-  data-query-params="{{ dict(video_ids=video_ids | join(',')) | tojson | forceescape }}"
->
-  Mark all as Checked
-</button>
-<table
-  class="table table-striped table-hover align-middle datatable"
-  data-datatable-order='[[3, "asc"]]'
->
-  <thead class="table-dark">
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">Channel</th>
-      <th scope="col">Title</th>
-      <th scope="col">Published</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in rows %}
-    <tr class="video-row" data-video-id="{{ row.Video.id }}">
-      <th scope="row" class="video-thumbnails">
-        <a href="https://youtu.be/{{ row.Video.id }}" target="_blank">
-          <picture>
-            <source
-              media="(max-width: 1199px)"
-              srcset="{{ row.Video.details.thumbnails.default.url }}"
-            />
-            <source
-              media="(min-width: 1200px)"
-              srcset="{{ row.Video.details.thumbnails.medium.url }}"
-            />
-            <img
-              src="{{ row.Video.details.thumbnails.medium.url }}"
-              class="rounded"
-            />
-          </picture>
-        </a>
-      </th>
-      <td>
-        <a
-          href="https://www.youtube.com/channel/{{ row.Video.channel_id }}"
-          target="_blank"
-        >
-          {{ row.Video.channel.name }}
-        </a>
-      </td>
-      <td>
-        <a href="https://youtu.be/{{ row.Video.id }}" target="_blank">
-          {{ row.Video.name | safe }}
-        </a>
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ row.Video.id }}"
-        >
-          <p>#{{ row.Video.id }}</p>
-        </a>
-      </td>
-      <td
-        class="moment"
-        data-order="{{ row.Video.uploaded_timestamp }}"
-        data-moment-timestamp="{{ row.Video.uploaded_timestamp.timestamp() }}"
-        data-moment-format="lll"
-      ></td>
-      <td>
-        <div class="btn-group" role="group" aria-label="Video Actions">
-          {% for action in row.Subscription.actions %}
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="$(this).buttonAPI()"
-            data-api="api_video.execute_action"
-            data-api-method="GET"
-            data-path-params="{{ dict(video_id=row.Video.id, action_id=action.id) | tojson | forceescape }}"
-          >
-            {{ action.name }}
-          </button>
-          {% endfor %}
-        </div>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<button
-  class="btn btn-success mb-2"
-  onclick="$(this).buttonAPI()"
-  data-api="api_video.mark_as_checked"
-  data-api-method="GET"
-  data-query-params="{{ dict(video_ids=video_ids | join(',')) | tojson | forceescape }}"
->
-  Mark all as Checked
-</button>
-{% else %}
-<div class="alert alert-secondary" role="alert">No new videos found.</div>
-{% endif %}
+{{ button(video_ids=[]) }}
+{{ table() }}
+{{ button(video_ids=[]) }}
+{% endblock %}
 
-<!-- prettier-ignore -->
+{% block script %}
+<script src="{{ url_for('static', filename='js/video_table.js') }}"></script>
 {% endblock %}

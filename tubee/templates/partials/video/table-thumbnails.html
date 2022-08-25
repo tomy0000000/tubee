@@ -1,0 +1,13 @@
+<a href="https://youtu.be/{{ row.Video.id }}" target="_blank">
+  <picture>
+    <source
+      media="(max-width: 1199px)"
+      srcset="{{ row.Video.details.thumbnails.default.url }}"
+    />
+    <source
+      media="(min-width: 1200px)"
+      srcset="{{ row.Video.details.thumbnails.medium.url }}"
+    />
+    <img src="{{ row.Video.details.thumbnails.medium.url }}" class="rounded" />
+  </picture>
+</a>

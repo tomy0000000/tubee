@@ -1,0 +1,14 @@
+<div class="btn-group" role="group" aria-label="Video Actions">
+  {% for action in row.Subscription.actions %}
+  <button
+    type="button"
+    class="btn btn-primary"
+    onclick="$(this).buttonAPI()"
+    data-api="api_video.execute_action"
+    data-api-method="GET"
+    data-path-params="{{ dict(video_id=row.Video.id, action_id=action.id) | tojson | forceescape }}"
+  >
+    {{ action.name }}
+  </button>
+  {% endfor %}
+</div>

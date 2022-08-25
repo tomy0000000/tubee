@@ -106,14 +106,35 @@ function init_moment() {
 
 function init_datatable() {
   $(".datatable").each(function () {
-    const order = $(this).data("datatable-order");
-    $(this).DataTable({ order });
+    const ajax = buildURL($(this).data("datatable-ajax"));
+    const disableOrder = $(this).data("datatable-disable-order");
+    const callback = window[$(this).data("datatable-callback")];
+
+    $(this).DataTable({
+      processing: Boolean(ajax),
+      serverSide: Boolean(ajax),
+      ajax,
+      searching: $(this).data("datatable-searching"),
+      order: $(this).data("datatable-order"),
+      columnDefs: disableOrder
+        ? disableOrder.map((column) => {
+            return { orderable: false, targets: column };
+          })
+        : [],
+      drawCallback: function (settings) {
+        init_moment();
+        init_clipboard();
+        if (callback) {
+          callback(this);
+        }
+      },
+    });
   });
 }
 
 $(document).ready(() => {
+  init_datatable();
   init_clipboard();
   init_popover();
   init_moment();
-  init_datatable();
 });

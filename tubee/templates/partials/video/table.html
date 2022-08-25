@@ -1,0 +1,21 @@
+{% macro table() -%}
+<table
+  class="table table-striped table-hover align-middle datatable"
+  data-datatable-searching="false"
+  data-datatable-order='[[3, "asc"]]'
+  data-datatable-disable-order="[0, 4]"
+  data-datatable-callback="updateBtnAllChecked"
+  data-datatable-ajax="api_video.unchecked"
+>
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Channel</th>
+      <th scope="col">Title</th>
+      <th scope="col">Published</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+{%- endmacro %}

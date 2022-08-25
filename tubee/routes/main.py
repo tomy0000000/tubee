@@ -1,13 +1,11 @@
 """The Main Routes"""
-from datetime import datetime, timedelta
-
 import bs4
 from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from .. import db
 from ..forms import ActionForm
-from ..models import Callback, Channel, Subscription, Video, VideoCheck
+from ..models import Callback, Channel, Video
 from ..utils.youtube import fetch_video_metadata
 
 main_blueprint = Blueprint("main", __name__)
@@ -150,14 +148,4 @@ def channel_callback(channel_id):
 @main_blueprint.route("/video")
 @login_required
 def video():
-    last_30_days = datetime.utcnow() - timedelta(days=30)
-    queried_row = (
-        db.session.query(Subscription, Video, VideoCheck)
-        .outerjoin(Video, Subscription.channel_id == Video.channel_id)
-        .outerjoin(VideoCheck, VideoCheck.video_id == Video.id)
-        .where(Video.uploaded_timestamp > last_30_days)
-        .where(VideoCheck.checked.is_(None) | VideoCheck.checked.is_(False))
-        .all()
-    )
-    video_ids = [row["Video"].id for row in queried_row]
-    return render_template("video/main.html", rows=queried_row, video_ids=video_ids)
+    return render_template("video/main.html")
