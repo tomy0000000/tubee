@@ -17,7 +17,6 @@
   "management": "Management",
 } %}
 
-<!-- BEGIN TABS -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   {% for key, name in tabs.items() %}
   <li class="nav-item">
@@ -36,9 +35,7 @@
   </li>
   {% endfor %}
 </ul>
-<!-- END TABS -->
 
-<!-- BEGIN TAB PAGES -->
 <div id="admin-dashbaord-tab-content" class="tab-content">
   {% for key in tabs %}
   <div
@@ -51,6 +48,5 @@
   </div>
   {% endfor %}
 </div>
-<!-- END TAB PAGES -->
 
 {% endblock %}

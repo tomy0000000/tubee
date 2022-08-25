@@ -13,7 +13,6 @@
     {% include "widgets/stylesheets.html" %}
     <!-- PAGE CSS -->
     {% block style %}{% endblock %}
-    <!-- END PAGE CSS -->
   </head>
   <body
     class="d-flex flex-column h-100"
@@ -26,9 +25,7 @@
         {% include "widgets/message.html" %}
         <!-- CONTENT -->
         {% block content %}{% endblock %}
-        <!-- END CONTENT -->
       </div>
-      <!-- END CONTAINER -->
       <div id="hidden-container"></div>
     </main>
     <!-- FOOTER -->
@@ -38,7 +35,6 @@
         <span class="line">All rights reserved.</span>
       </div>
     </footer>
-    <!-- END FOOTER -->
 
     {% if config.DEBUG %}
     <!-- RIBBON -->
@@ -47,7 +43,6 @@
       href="#"
       data-ribbon="Development Build"
     ></a>
-    <!-- END RIBBON -->
     {% elif config.TESTING %}
     <!-- RIBBON -->
     <a
@@ -55,12 +50,10 @@
       href="#"
       data-ribbon="Testing Build"
     ></a>
-    <!-- END RIBBON -->
     {% endif %}
     <!-- prettier-ignore -->
     {% include "widgets/scripts.html" %}
     <!-- PAGE JS -->
     {% block script %}{% endblock %}
-    <!-- END PAGE JS -->
   </body>
 </html>

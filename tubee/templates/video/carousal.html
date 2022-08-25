@@ -1,6 +1,4 @@
-{% macro content(videos) -%}
-<!-- BEGIN Video Thumbnails Carousel -->
-{% set thumb_num = [videos | length, 3]|min %}
+{% macro content(videos) -%} {% set thumb_num = [videos | length, 3]|min %}
 <div
   id="video-carousel"
   class="carousel slide carousel-fade"
@@ -52,5 +50,4 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-<!-- END Video Thumbnails Carousel -->
 {%- endmacro %}
