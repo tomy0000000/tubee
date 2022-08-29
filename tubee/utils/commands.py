@@ -34,7 +34,7 @@ def test(coverage):
         os.environ["FLASK_COVERAGE"] = "1"
         sys.exit(subprocess.call([sys.executable, "-m", "flask"] + sys.argv[1:]))
 
-    tests = unittest.TestLoader().discover("tubee/tests")
+    tests = unittest.TestLoader().discover("tests")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
 
     if os.environ.get("FLASK_COVERAGE"):
