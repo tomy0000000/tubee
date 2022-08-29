@@ -141,9 +141,11 @@
         <form id="unsubscribe-form">
           <input type="hidden" name="channel_id" value="{{ channel.id }}" />
           <button
+            type="button"
             class="btn btn-danger btn-lg"
-            onclick="$(this).confirm(event, 'unsubscribe from {{ channel.name }}')"
-            data-callback="buttonAPI"
+            onclick="$(this).confirm()"
+            data-confirm-message="unsubscribe from {{ channel.name }}"
+            data-confirm-callback="buttonAPI"
             data-api="api_subscription.delete"
             data-api-method="DELETE"
             data-form-id="unsubscribe-form"
@@ -176,8 +178,9 @@
       {{ tag.name }}
       <i
         class="fas fa-times-circle form-btn"
-        onclick="$(this).confirm(event, 'untag <{{ tag.name }}> from {{ channel.name }}')"
-        data-callback="buttonAPI"
+        onclick="$(this).confirm()"
+        data-confirm-message="untag <{{ tag.name }}> from {{ channel.name }}"
+        data-confirm-callback="buttonAPI"
         data-api="api_subscription.tag_delete"
         data-api-method="DELETE"
         data-form-id="untag-form-{{ tag.id }}"

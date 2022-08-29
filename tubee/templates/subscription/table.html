@@ -54,9 +54,11 @@
             value="{{ subscription.channel_id }}"
           />
           <button
+            type="button"
             class="btn btn-danger"
-            onclick="$(this).confirm(event, 'unsubscribe from {{ subscription.channel.name }}')"
-            data-callback="buttonAPI"
+            onclick="$(this).confirm()"
+            data-confirm-message="unsubscribe from {{ subscription.channel.name }}"
+            data-confirm-callback="buttonAPI"
             data-api="api_subscription.delete"
             data-api-method="DELETE"
             data-form-id="{{ subscription.channel_id }}-unsubscribe-form"

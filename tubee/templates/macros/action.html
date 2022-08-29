@@ -75,8 +75,9 @@
         <button
           type="button"
           class="btn btn-danger"
-          onclick="$(this).confirm(event, 'remove action {{ action.name }}')"
-          data-callback="buttonAPI"
+          onclick="$(this).confirm()"
+          data-confirm-message="remove action {{ action.name }}"
+          data-confirm-callback="buttonAPI"
           data-api="api_action.delete"
           data-api-method="DELETE"
           data-path-params="{{ dict(action_id=action.id) | tojson | forceescape }}"
