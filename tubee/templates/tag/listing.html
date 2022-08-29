@@ -4,56 +4,40 @@
 
 <!-- prettier-ignore -->
 {% block style %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/tags.css') }}"
-/>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-  <!-- prettier-ignore -->
-  {% for tag in tags %}
+<!-- prettier-ignore -->
+{% for tag in tags %}
+<div class="row mb-5">
   <div class="col">
-    <div class="card">
-      <div
-        class="card-header d-flex align-items-center justify-content-between"
+    <h1 class="display-4">
+      <a href="{{ url_for('tag.main', tag_id=tag.id) }}" class="text-reset">
+        {{ tag.name }}
+      </a>
+    </h1>
+    <div class="overflow-auto text-nowrap">
+      <!-- prettier-ignore -->
+      {% for subscription_tag in tag.subscription_tags %}
+      {% if subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url %}
+      <a
+        href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
+        class="text-decoration-none"
       >
-        <a
-          href="{{ url_for('tag.main', tag_id=tag.id) }}"
-          class="stretched-link"
-        >
-          <h5 class="card-title m-0">{{ tag.name }}</h5>
-        </a>
-        <span class="badge bg-secondary rounded-pill"
-          >{{ tag.subscription_tags.count() }}</span
-        >
-      </div>
-      <ul class="list-group list-group-flush">
-        {% for subscription_tag in tag.subscription_tags %}
-        <li class="list-group-item">
-          <!-- prettier-ignore -->
-          {% if subscription_tag.subscription.channel.infos.snippet.thumbnails.high.url %}
-          <!-- prettier-ignore -->
-          <img
-            src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.high.url }}"
-            class="tags-channel-thumbnails rounded-circle"
-          />
-          {% endif %}
-          <a
-            href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
-            class="stretched-link p-2"
-          >
-            {{ subscription_tag.subscription.channel.name }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
+        <img
+          src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url }}"
+          class="tags-channel-thumbnails rounded-circle"
+        />
+      </a>
+      <!-- prettier-ignore -->
+      {% endif %}
+      {% endfor %}
     </div>
   </div>
-  {% endfor %}
 </div>
+<!-- prettier-ignore -->
+{% endfor %}
 
 {% endblock %}

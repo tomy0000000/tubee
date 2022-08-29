@@ -1,6 +1,6 @@
 <!-- prettier-ignore -->
 {% from 'macros/action.html' import table %}
-{% import 'widgets/pagination.html' as pagination %}
+{% from 'macros/video.html' import table as video_table %}
 
 {% extends "base.html" %}
 {% set title = "Tags" %}
@@ -11,13 +11,6 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='css/subscription.css') }}"
 />
-{% if subscription_pagination.items %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/subscription_tag.css') }}"
-/>
-<!-- prettier-ignore -->
-{% endif %}
 {% endblock %}
 
 <!-- prettier-ignore -->
@@ -30,6 +23,7 @@
 {% block content %}
 
 {% include "tag/title.html" %}
+
 {% if actions %}
 {{ table(actions, tag_id=tag.id) }}
 {% else %}
@@ -46,13 +40,7 @@
 {% endif %}
 
 <!-- prettier-ignore -->
-{% if subscription_pagination.items %}
-  {% set subscriptions = subscription_pagination.items %}
-  {% include "subscription/table.html" %}
-  {{ pagination.content(subscription_pagination) }}
-{% else %}
-<div class="alert alert-secondary" role="alert">No subscription found.</div>
-{% endif %}
+{{ video_table(tag) }}
 
 <!-- prettier-ignore -->
 {% endblock %}

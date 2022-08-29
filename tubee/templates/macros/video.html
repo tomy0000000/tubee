@@ -1,11 +1,15 @@
-{% macro table() -%}
+{% macro table(tag=None) -%}
+<!-- prettier-ignore -->
 <table
   class="table table-striped table-hover align-middle datatable"
   data-datatable-searching="false"
   data-datatable-order='[[3, "asc"]]'
   data-datatable-disable-order="[0, 4]"
   data-datatable-callback="updateBtnAllChecked"
-  data-datatable-ajax="api_video.unchecked"
+  data-datatable-ajax-url="api_video.unchecked"
+  {% if tag %}
+  data-datatable-ajax-data="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
+  {% endif %}
 >
   <thead class="table-dark">
     <tr>

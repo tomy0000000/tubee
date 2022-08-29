@@ -4,7 +4,7 @@ from flask import Blueprint, abort, get_template_attribute, jsonify, request
 from flask_login import current_user, login_required
 
 from .. import db
-from ..models import Channel, Subscription, Video, VideoCheck
+from ..models import Channel, Subscription, SubscriptionTag, Video, VideoCheck
 from ..utils import admin_required_decorator as admin_required
 
 api_video_blueprint = Blueprint("api_video", __name__)
@@ -46,6 +46,7 @@ def unchecked():
     length = int(request.args.get("length"))
     order_column = int(request.args.get("order[0][column]"))
     order_dir = request.args.get("order[0][dir]")
+    tag_id = request.args.get("tag_id")
 
     ORDER_MAP = {
         (1, "asc"): Channel.name.asc(),
@@ -65,8 +66,15 @@ def unchecked():
         .where(Subscription.username == current_user.username)
         .where(Video.uploaded_timestamp > last_30_days)
         .where(VideoCheck.checked.is_(None) | VideoCheck.checked.is_(False))
-        .order_by(ORDER_MAP[(order_column, order_dir)])
     )
+
+    # Filter by tag
+    if tag_id:
+        query = query.join(SubscriptionTag).where(SubscriptionTag.tag_id == tag_id)
+
+    # Order by column
+    query = query.order_by(ORDER_MAP[(order_column, order_dir)])
+
     count = query.count()
     rows = query.slice(start, start + length).all()
 

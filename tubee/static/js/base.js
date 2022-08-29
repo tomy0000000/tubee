@@ -106,14 +106,15 @@ function init_moment() {
 
 function init_datatable() {
   $(".datatable").each(function () {
-    const ajax = buildURL($(this).data("datatable-ajax"));
+    const ajaxURL = buildURL($(this).data("datatable-ajax-url"));
+    const ajaxData = $(this).data("datatable-ajax-data");
     const disableOrder = $(this).data("datatable-disable-order");
     const callback = window[$(this).data("datatable-callback")];
 
     $(this).DataTable({
-      processing: Boolean(ajax),
-      serverSide: Boolean(ajax),
-      ajax,
+      processing: Boolean(ajaxURL),
+      serverSide: Boolean(ajaxURL),
+      ajax: { url: ajaxURL, data: ajaxData },
       searching: $(this).data("datatable-searching"),
       order: $(this).data("datatable-order"),
       columnDefs: disableOrder
