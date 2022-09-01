@@ -42,6 +42,8 @@ services:
   rabbitmq:
     container_name: "tubee_rabbitmq"
     hostname: "tubee-rabbitmq"
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit consumer_timeout 31622400000"
     image: "rabbitmq:3.8"
     restart: "always"
     volumes:
