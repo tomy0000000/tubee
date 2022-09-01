@@ -43,7 +43,7 @@ class Tag(db.Model):
         self.name = new_name
         db.session.commit()
         current_app.logger.info(f'Tag <{self.id}>: Rename to "{new_name}"')
-        return True
+        return self
 
     def delete(self):
         """Delete the tag"""
@@ -52,7 +52,8 @@ class Tag(db.Model):
             db.session.delete(self)
             db.session.commit()
             current_app.logger.info(f"Tag <{tag_id}>: Remove")
-            return True
-        except Exception:
+            return self
+        except Exception as error:
+            # TODO: not sure if this is the right way to handle this
             current_app.logger.exception(f"Tag <{tag_id}>: Remove failed")
-            return False
+            raise error

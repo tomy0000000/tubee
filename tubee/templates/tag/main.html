@@ -1,4 +1,7 @@
 <!-- prettier-ignore -->
+{% from 'macros/action.html' import table %}
+{% from 'macros/video.html' import table as video_table %}
+
 {% extends "base.html" %}
 {% set title = "Tags" %}
 
@@ -6,71 +9,38 @@
 {% block style %}
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='css/tags.css') }}"
+  href="{{ url_for('static', filename='css/subscription.css') }}"
 />
+{% endblock %}
+
+<!-- prettier-ignore -->
+{% block script %}
+<script src="{{ url_for('static', filename='js/tag_title.js') }}"></script>
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
 
-<!-- BEGIN Tag Grid -->
-<div class="row row-cols-1 row-cols-md-3 g-4">
-  <!-- prettier-ignore -->
-  {% for tag in tags %}
-  <div class="col">
-    <div class="card">
-      <div
-        class="card-header d-flex align-items-center justify-content-between"
-      >
-        <a
-          href="{{ url_for('main.dashboard', tag_id=tag.id) }}"
-          class="stretched-link"
-        >
-          <h5 class="card-title m-0">{{ tag.name }}</h5>
-        </a>
-        <span class="badge bg-secondary rounded-pill"
-          >{{ tag.subscription_tags.count() }}</span
-        >
-      </div>
-      <ul class="list-group list-group-flush">
-        {% for subscription_tag in tag.subscription_tags %}
-        <li class="list-group-item">
-          <!-- prettier-ignore -->
-          {% if subscription_tag.subscription.channel.infos.snippet.thumbnails.high.url %}
-          <!-- prettier-ignore -->
-          <img
-            src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.high.url }}"
-            class="tags-channel-thumbnails rounded-circle"
-          />
-          {% endif %}
-          <a
-            href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
-            class="stretched-link p-2"
-          >
-            {{ subscription_tag.subscription.channel.name }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-  {% endfor %}
-  <div class="col">
-    <div class="card">
-      <div
-        class="card-header d-flex align-items-center justify-content-between"
-      >
-        <a
-          href="{{ url_for('main.dashboard', tag_id=None) }}"
-          class="stretched-link"
-        >
-          <h5 class="card-title m-0">Untagged</h5>
-        </a>
-      </div>
-      <ul class="list-group list-group-flush"></ul>
-    </div>
-  </div>
-</div>
-<!-- END Tag Grid -->
+{% include "tag/title.html" %}
 
+{% if actions %}
+{{ table(actions, tag_id=tag.id) }}
+{% else %}
+<div class="alert alert-secondary" role="alert">
+  No action found.
+  <a
+    class="fw-bold text-dark text-decoration-underline"
+    onclick="$(this).actionModal()"
+    data-tag-id="{{ tag.id }}"
+  >
+    Create one now.
+  </a>
+</div>
+{% endif %}
+
+<!-- prettier-ignore -->
+{{ video_table(tag) }}
+
+<!-- prettier-ignore -->
 {% endblock %}

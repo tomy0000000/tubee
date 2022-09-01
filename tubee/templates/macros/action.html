@@ -1,5 +1,5 @@
-{% macro content(actions, channel_id=None, tag_id=None) -%}
-<!-- BEGIN Action Infos -->
+<!-- prettier-ignore -->
+{% macro table(actions, channel_id=None, tag_id=None) -%}
 <table class="table table-striped table-hover align-middle">
   <thead class="table-dark">
     <tr>
@@ -18,9 +18,7 @@
         >
           New
         </button>
-        {% endif %}
-        <!-- prettier-ignore -->
-        {% if tag_id %}
+        {% endif %} {% if tag_id %}
         <button
           type="button"
           class="btn btn-success"
@@ -35,7 +33,6 @@
   </thead>
   <tbody>
     {% for action in actions %}
-    <!-- BEGIN Action Row -->
     <tr>
       {% if not channel_id and not tag_id %}
       <th>
@@ -49,7 +46,7 @@
         <!-- prettier-ignore -->
         {% if action.tag_id %}
         <p class="my-auto">Tag</p>
-        <a href="{{ url_for('main.dashboard', tag_id=action.tag.id) }}"
+        <a href="{{ url_for('tag.main', tag_id=action.tag.id) }}"
           >{{ action.tag.name }}</a
         >
         {% endif %}
@@ -78,8 +75,9 @@
         <button
           type="button"
           class="btn btn-danger"
-          onclick="$(this).confirm(event, 'remove action {{ action.name }}')"
-          data-callback="buttonAPI"
+          onclick="$(this).confirm()"
+          data-confirm-message="remove action {{ action.name }}"
+          data-confirm-callback="buttonAPI"
           data-api="api_action.delete"
           data-api-method="DELETE"
           data-path-params="{{ dict(action_id=action.id) | tojson | forceescape }}"
@@ -88,9 +86,7 @@
         </button>
       </td>
     </tr>
-    <!-- END Action Row -->
     {% endfor %}
   </tbody>
 </table>
-<!-- END Action Infos -->
 {%- endmacro %}

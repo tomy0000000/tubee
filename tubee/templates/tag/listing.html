@@ -1,0 +1,43 @@
+<!-- prettier-ignore -->
+{% extends "base.html" %}
+{% set title = "Tags" %}
+
+<!-- prettier-ignore -->
+{% block style %}
+{% endblock %}
+
+<!-- prettier-ignore -->
+{% block content %}
+
+<!-- prettier-ignore -->
+{% for tag in tags %}
+<div class="row mb-5">
+  <div class="col">
+    <h1 class="display-4">
+      <a href="{{ url_for('tag.main', tag_id=tag.id) }}" class="text-reset">
+        {{ tag.name }}
+      </a>
+    </h1>
+    <div class="overflow-auto text-nowrap">
+      <!-- prettier-ignore -->
+      {% for subscription_tag in tag.subscription_tags %}
+      {% if subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url %}
+      <a
+        href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
+        class="text-decoration-none"
+      >
+        <img
+          src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url }}"
+          class="tags-channel-thumbnails rounded-circle"
+        />
+      </a>
+      <!-- prettier-ignore -->
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- prettier-ignore -->
+{% endfor %}
+
+{% endblock %}

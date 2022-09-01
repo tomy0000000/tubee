@@ -7,7 +7,7 @@ from ..models import Action
 action_blueprint = Blueprint("action", __name__)
 
 
-@action_blueprint.route("/")
+@action_blueprint.get("/")
 def listing():
     actions = current_user.actions.all()
     return render_template("action/main.html", actions=actions)

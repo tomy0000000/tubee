@@ -11,29 +11,28 @@ from ..utils.youtube import build_youtube_api
 api_channel_blueprint = Blueprint("api_channel", __name__)
 
 
-@api_channel_blueprint.route("/search")
+@api_channel_blueprint.get("/search")
 @login_required
 def search():
     query = request.args.get("query")
-    response = (
+    results = (
         build_youtube_api()
         .search()
         .list(part="snippet", maxResults=30, q=query, type="channel")
         .execute()
     )
-    results = response
-    results = [
+    response = [
         {
             "title": item["snippet"]["title"],
             "id": item["snippet"]["channelId"],
             "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
         }
-        for item in response["items"]
+        for item in results["items"]
     ]
-    return jsonify(results)
+    return jsonify(response)
 
 
-@api_channel_blueprint.route("/renew-all")
+@api_channel_blueprint.get("/renew-all")
 @login_required
 def renew_all():
     """
@@ -54,10 +53,10 @@ def renew_all():
         }
     else:
         response = schedule_channel_renewal(channels, policy=policy)
-    return jsonify(response)
+    return response
 
 
-@api_channel_blueprint.route("/callbacks")
+@api_channel_blueprint.get("/callbacks")
 @login_required
 @admin_required
 def callbacks_all():
@@ -70,45 +69,45 @@ def callbacks_all():
     return jsonify(response)
 
 
-@api_channel_blueprint.route("/<channel_id>/refresh")
+@api_channel_blueprint.get("/<channel_id>/refresh")
 @login_required
 def refresh(channel_id):
     """Update hub subscription details"""
     channel = Channel.query.get_or_404(channel_id)
     response = channel.refresh()
-    return jsonify(response)
+    return response
 
 
-@api_channel_blueprint.route("/<channel_id>/update")
+@api_channel_blueprint.get("/<channel_id>/update")
 @login_required
 @admin_required
 def update(channel_id):
     """Update YouTube metadata"""
     channel = Channel.query.get_or_404(channel_id)
     response = channel.update()
-    return jsonify(response)
+    return response
 
 
-@api_channel_blueprint.route("/<channel_id>/subscribe")
+@api_channel_blueprint.get("/<channel_id>/subscribe")
 @login_required
 @admin_required
 def subscribe(channel_id):
     """Submitting hub Subscription"""
     channel = Channel.query.get_or_404(channel_id)
     response = channel.subscribe()
-    return jsonify(response)
+    return response
 
 
-@api_channel_blueprint.route("/<channel_id>/fetch-videos")
+@api_channel_blueprint.get("/<channel_id>/fetch-videos")
 @login_required
 @admin_required
 def fetch_videos(channel_id):
     channel = Channel.query.get_or_404(channel_id)
     response = channel.fetch_videos()
-    return jsonify(response)
+    return response
 
 
-@api_channel_blueprint.route("/<channel_id>/callbacks")
+@api_channel_blueprint.get("/<channel_id>/callbacks")
 @login_required
 @admin_required
 def callbacks(channel_id):

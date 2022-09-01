@@ -2,7 +2,6 @@
 <!-- prettier-ignore -->
 {% set page_from = [pagination.page-5, 1]|max %}
 {% set page_to = [pagination.page+5, pagination.pages]|min %}
-<!-- BEGIN Pagination -->
 <nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
     <li class="page-item {{ 'disabled' if not pagination.has_prev }}">
@@ -50,5 +49,4 @@
     </li>
   </ul>
 </nav>
-<!-- END Pagination -->
 {%- endmacro %}

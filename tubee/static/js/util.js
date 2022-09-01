@@ -68,9 +68,9 @@
   // Confirm Modal
   // --------------------
 
-  $.fn.confirm = function (event, message) {
-    event.preventDefault();
-    const button = $(event.target);
+  $.fn.confirm = function () {
+    const button = $(this);
+    const message = button.data("confirm-message");
     const modalPath = buildURL("static", {
       filename: "component/confirm_modal.html",
     });
@@ -82,7 +82,7 @@
       modal.find(".modal-body").text(modalMessage);
       modal.find(".btn-confirm").click(function () {
         modal.modal("hide");
-        const callback = button.data("callback");
+        const callback = button.data("confirm-callback");
         button[callback]();
       });
       modal.modal("show");
@@ -107,11 +107,20 @@
 
     this.buttonToggleState({ state: "loading" });
     $.ajax({ url, method, data, contentType: "application/json" })
+      .then((response) => {
+        if (!response.ok) {
+          return $.Deferred().reject(response.description);
+        }
+        return response.content;
+      })
       .done((responseData) => {
         this.buttonToggleState({ state: "success" });
       })
       .fail((responseData) => {
-        this.buttonToggleState({ state: "fail", error: responseData });
+        this.buttonToggleState({
+          state: "fail",
+          error: responseData.responseJSON.description,
+        });
       });
   };
 
@@ -123,7 +132,7 @@
     } else if (state === "success") {
       this.empty().text("Done").dropLoadingSpinner();
     } else if (state === "fail") {
-      this.empty().text(error).dropLoadingSpinner();
+      this.empty().addClass("btn-danger").text(error).dropLoadingSpinner();
     }
     return this;
   };

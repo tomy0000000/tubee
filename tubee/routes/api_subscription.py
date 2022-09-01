@@ -9,7 +9,8 @@ api_subscription_blueprint = Blueprint("api_subscription", __name__)
 def create():
     """Add Subscription"""
     channel_id = request.get_json().get("channel_id")
-    return jsonify(current_user.subscribe(channel_id))
+    response = current_user.subscribe(channel_id)
+    return jsonify(response)
 
 
 @api_subscription_blueprint.delete("/")
@@ -17,7 +18,8 @@ def create():
 def delete():
     """Remove subscription"""
     channel_id = request.get_json().get("channel_id")
-    return jsonify(current_user.unbsubscribe(channel_id))
+    response = current_user.unbsubscribe(channel_id)
+    return jsonify(response)
 
 
 @api_subscription_blueprint.post("/tag")
@@ -46,5 +48,5 @@ def tag_delete():
     subscription = current_user.subscriptions.filter_by(
         channel_id=channel_id
     ).first_or_404("Channel not found")
-    results = subscription.untag(tag_id)
-    return jsonify(results)
+    response = subscription.untag(tag_id)
+    return jsonify(response)

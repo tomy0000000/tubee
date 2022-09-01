@@ -13,7 +13,8 @@ def create():
     form = ActionForm()
     if not form.validate_on_submit():
         abort(400)
-    return jsonify(Action(current_user.username, form.data))
+    response = Action(current_user.username, form.data)
+    return jsonify(response)
 
 
 @api_action_blueprint.get("/<action_id>")
@@ -35,7 +36,8 @@ def update(action_id):
     form = ActionForm()
     if not form.validate_on_submit():
         abort(400)
-    return jsonify(action.edit(form.data))
+    response = action.edit(form.data)
+    return response
 
 
 @api_action_blueprint.delete("/<action_id>")
@@ -44,4 +46,5 @@ def delete(action_id):
     action = Action.query.filter_by(
         id=action_id, username=current_user.username
     ).first_or_404()
-    return jsonify(action.delete())
+    response = action.delete()
+    return jsonify(response)

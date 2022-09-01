@@ -7,7 +7,9 @@
       </button>
       <button
         class="btn btn-danger"
-        onclick="$(this).buttonAPI()"
+        onclick="$(this).confirm()"
+        data-confirm-message="remove tag {{ tag.name }}"
+        data-confirm-callback="buttonAPI"
         data-api="api_tag.delete"
         data-api-method="DELETE"
         data-path-params="{{ dict(tag_id=tag.id) | tojson | forceescape }}"

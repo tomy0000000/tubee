@@ -15,13 +15,13 @@ def template():
 
 
 def error_handler(error):
-    """Handle API Errors
+    """Handle Errors
 
     Arguments:
         error {Exception} -- The error to be handled
 
     Returns:
-        Response -- Wrapped JSON response
+        Response -- Wrapped response
     """
     name = error.__class__.__name__
     if isinstance(error, HTTPException):  # raised with flask.abort(code, description)
@@ -31,11 +31,29 @@ def error_handler(error):
         description = str(error.description)
         status_code = 400
     else:
+        name = None  # hide internal errors from user
         description = "Internal Server Error"
         status_code = 500
 
     if request.path.startswith("/api"):
-        return jsonify(ok=False, error=name, description=description), status_code
+        response = dict(ok=False, error=name, description=description)
+        return jsonify(response), status_code
 
     flash(f"{name}: {description}", "danger")
     return render_template("error.html"), status_code
+
+
+def api_formatter(response):
+    """Format API Response
+
+    Arguments:
+        response {Response} -- The response to be formatted
+
+    Returns:
+        Response -- Wrapped JSON response
+    """
+    content = response.get_json()
+    if "error" in content or "datatable" in content:
+        return response
+    formatted_response = jsonify(ok=True, error=None, description=None, content=content)
+    return formatted_response

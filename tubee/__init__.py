@@ -98,6 +98,8 @@ def create_app(config_name, coverage=None):
         app.cli.add_command(getattr(commands, command))
 
     for prefix, blueprint in blueprint_map:
+        if prefix.startswith("/api"):
+            blueprint.after_request(processor.api_formatter)
         app.register_blueprint(blueprint, url_prefix=prefix)
 
     if app.debug:

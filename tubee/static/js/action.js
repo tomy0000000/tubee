@@ -27,7 +27,7 @@
           }
           modal.modal("show");
         }
-      }
+      },
     );
     return this;
   };

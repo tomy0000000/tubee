@@ -24,7 +24,7 @@ function insert_spinner(location, type, small = false) {
           id: spinner_id,
           class: `spinner-border text-${type} ${size}`,
         })
-        .append($("<span>").addClass("sr-only").text("Loading..."))
+        .append($("<span>").addClass("sr-only").text("Loading...")),
     )
     .data({ "spinner-id": spinner_id });
 }
@@ -106,14 +106,36 @@ function init_moment() {
 
 function init_datatable() {
   $(".datatable").each(function () {
-    const order = $(this).data("datatable-order");
-    $(this).DataTable({ order });
+    const ajaxURL = buildURL($(this).data("datatable-ajax-url"));
+    const ajaxData = $(this).data("datatable-ajax-data");
+    const disableOrder = $(this).data("datatable-disable-order");
+    const callback = window[$(this).data("datatable-callback")];
+
+    $(this).DataTable({
+      processing: Boolean(ajaxURL),
+      serverSide: Boolean(ajaxURL),
+      ajax: { url: ajaxURL, data: ajaxData },
+      searching: $(this).data("datatable-searching"),
+      order: $(this).data("datatable-order"),
+      columnDefs: disableOrder
+        ? disableOrder.map((column) => {
+            return { orderable: false, targets: column };
+          })
+        : [],
+      drawCallback: function (settings) {
+        init_moment();
+        init_clipboard();
+        if (callback) {
+          callback(this);
+        }
+      },
+    });
   });
 }
 
 $(document).ready(() => {
+  init_datatable();
   init_clipboard();
   init_popover();
   init_moment();
-  init_datatable();
 });

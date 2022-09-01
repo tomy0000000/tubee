@@ -120,10 +120,11 @@ class Action(db.Model):
             db.session.delete(self)
             db.session.commit()
             current_app.logger.info(f"Action <{action_id}>: Remove")
-            return True
-        except Exception:
+            return self
+        except Exception as error:
+            # TODO: not sure if this is the best way to handle this
             current_app.logger.exception(f"Action <{action_id}>: Remove failed")
-            return False
+            raise error
 
     def execute(self, **parameters):
         if self.type is ActionType.Notification:

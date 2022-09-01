@@ -6,7 +6,8 @@ $(document).ready(() => {
       queryKey: "query",
       requestThrottling: 1000,
     },
-    formatResult: (item) => {
+    formatResult: (response) => {
+      let item = response.content;
       return {
         value: item.id,
         text: item.id,
@@ -18,11 +19,11 @@ $(document).ready(() => {
                 $("<img>")
                   .addClass("rounded-circle")
                   .attr("src", item.thumbnail)
-                  .css("height", "2rem")
+                  .css("height", "2rem"),
               ),
               $("<div>").append(
-                $("<p>").addClass(["mb-0", "ml-2"]).text(item.title)
-              )
+                $("<p>").addClass(["mb-0", "ml-2"]).text(item.title),
+              ),
             ),
         ],
       };

@@ -27,6 +27,12 @@ function load_more(event) {
 
   // Get subscriptions
   $.getJSON(url, params)
+    .then((response) => {
+      if (!response.ok) {
+        return $.Deferred().reject(response.error);
+      }
+      return response.content;
+    })
     .done((response) => {
       // Build row for each channel
       response.items.forEach((channel) => {

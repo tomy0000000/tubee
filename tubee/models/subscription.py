@@ -91,7 +91,7 @@ class Subscription(db.Model):
         elif tag in self.tags:
             raise InvalidAction(f"Subscription is already tagged with {tag_name}")
         SubscriptionTag(self.username, self.channel_id, tag.id)
-        return True
+        return self
 
     def untag(self, tag_id):
         subscription_tag = SubscriptionTag.query.filter_by(
@@ -101,4 +101,4 @@ class Subscription(db.Model):
             raise InvalidAction("subscription_tag not found")
         db.session.delete(subscription_tag)
         db.session.commit()
-        return True
+        return self
