@@ -24,7 +24,7 @@ function insert_spinner(location, type, small = false) {
           id: spinner_id,
           class: `spinner-border text-${type} ${size}`,
         })
-        .append($("<span>").addClass("sr-only").text("Loading..."))
+        .append($("<span>").addClass("sr-only").text("Loading...")),
     )
     .data({ "spinner-id": spinner_id });
 }
