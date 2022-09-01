@@ -7,6 +7,6 @@ function updateBtnAllChecked(datatable) {
         .data()
         .map((row) => row[5])
         .join(),
-    })
+    }),
   );
 }
