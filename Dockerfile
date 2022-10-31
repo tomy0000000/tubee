@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.9.6
 
 LABEL tech.tomy.docker.tubee="0.12.0"
 LABEL maintainer="Tomy Hsieh @tomy0000000"

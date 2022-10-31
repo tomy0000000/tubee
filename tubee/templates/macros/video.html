@@ -5,7 +5,6 @@
   data-datatable-searching="false"
   data-datatable-order='[[3, "asc"]]'
   data-datatable-disable-order="[0, 4]"
-  data-datatable-callback="updateBtnAllChecked"
   data-datatable-ajax-url="api_video.unchecked"
   {% if tag %}
   data-datatable-ajax-data="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
@@ -93,13 +92,13 @@
 {%- endmacro %}
 
 <!-- prettier-ignore -->
-{% macro check_button(video_ids) -%}
+{% macro check_button() -%}
 <button
   class="btn btn-success btn-all-checked mb-2"
-  onclick="$(this).buttonAPI()"
+  onclick="$(this).updateVideoIds().buttonAPI().reloadTable()"
   data-api="api_video.mark_as_checked"
   data-api-method="GET"
-  data-query-params="{{ dict(video_ids=video_ids | join(',')) | tojson | forceescape }}"
+  data-restore="true"
 >
   Mark all as Checked
 </button>
