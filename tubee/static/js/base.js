@@ -1,3 +1,4 @@
+var table;
 const VALID_SPINNER_TYPE = [
   "primary",
   "secondary",
@@ -111,7 +112,7 @@ function init_datatable() {
     const disableOrder = $(this).data("datatable-disable-order");
     const callback = window[$(this).data("datatable-callback")];
 
-    $(this).DataTable({
+    table = $(this).DataTable({
       processing: Boolean(ajaxURL),
       serverSide: Boolean(ajaxURL),
       ajax: { url: ajaxURL, data: ajaxData },

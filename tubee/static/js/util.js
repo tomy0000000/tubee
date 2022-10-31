@@ -100,6 +100,7 @@
     const formId = this.data("form-id");
     const pathParams = this.data("path-params");
     const queryParams = this.data("query-params");
+    const restore = this.data("restore");
 
     const url = buildURL(api, pathParams, queryParams);
     const form_data = formId ? $(`#${formId}`).serializeObject() : {};
@@ -114,7 +115,7 @@
         return response.content;
       })
       .done((responseData) => {
-        this.buttonToggleState({ state: "success" });
+        this.buttonToggleState({ state: restore ? "restore" : "success" });
       })
       .fail((responseData) => {
         this.buttonToggleState({
@@ -122,9 +123,15 @@
           error: responseData.responseJSON.description,
         });
       });
+    return this;
   };
 
   $.fn.buttonToggleState = function ({ state, error }) {
+    if (state === "restore") {
+      this.replaceWith(this.data("backup-state"));
+      return this;
+    }
+    this.data("backup-state", this.clone(true));
     if (state === "loading") {
       this.empty()
         .prop("disabled", true)

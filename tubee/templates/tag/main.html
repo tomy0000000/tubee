@@ -1,6 +1,6 @@
 <!-- prettier-ignore -->
 {% from 'macros/action.html' import table %}
-{% from 'macros/video.html' import table as video_table %}
+{% from 'macros/video.html' import table as video_table, check_button %}
 
 {% extends "base.html" %}
 {% set title = "Tags" %}
@@ -17,6 +17,7 @@
 {% block script %}
 <script src="{{ url_for('static', filename='js/tag_title.js') }}"></script>
 <script src="{{ url_for('static', filename='js/action.js') }}"></script>
+<script src="{{ url_for('static', filename='js/video_table.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->
@@ -40,7 +41,9 @@
 {% endif %}
 
 <!-- prettier-ignore -->
+{{ check_button() }}
 {{ video_table(tag) }}
+{{ check_button() }}
 
 <!-- prettier-ignore -->
 {% endblock %}
