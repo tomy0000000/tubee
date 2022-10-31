@@ -18,7 +18,7 @@ repository = "https://github.com/tomy0000000/Tubee"
 documentation = "https://github.com/tomy0000000/Tubee/wiki"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.9.6"
 Authlib = "*"
 Flask = "*"
 Flask-Bcrypt = "*"
@@ -53,7 +53,7 @@ pyyaml = "*"
 rope = "*"
 watchdog = "*"
 flake8 = "^4.0.1"
-black = "^^22.6.0"
+black = "^22.6.0"
 
 [tool.pyright]
 include = ["tubee"]
