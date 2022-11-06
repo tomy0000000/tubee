@@ -4,10 +4,6 @@
 
 <!-- prettier-ignore -->
 {% block style %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/youtube_subscription.css') }}"
-/>
 {% endblock %}
 
 <!-- prettier-ignore -->
@@ -17,10 +13,15 @@
 
 <!-- prettier-ignore -->
 {% block content %}
+<form id="youtube-subscribe-form">
+  <input type="hidden" name="channel_id" />
+</form>
 <table
-  class="table table-striped table-hover align-middle"
-  id="subscription-table"
-  data-api="api.youtube_subscription"
+  class="table table-striped table-hover table-responsive-lg align-middle datatable"
+  data-datatable-searching="false"
+  data-datatable-disable-order="[0, 1, 2]"
+  data-datatable-paging-type="simple"
+  data-datatable-ajax-url="api_subscription.youtube"
 >
   <thead class="table-dark">
     <tr>
@@ -31,9 +32,4 @@
   </thead>
   <tbody></tbody>
 </table>
-<div class="d-flex justify-content-center" id="loading-spinner-div">
-  <div class="spinner-border text-primary" id="loading-spinner" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
 {% endblock %}

@@ -110,6 +110,7 @@ function init_datatable() {
     const ajaxURL = buildURL($(this).data("datatable-ajax-url"));
     const ajaxData = $(this).data("datatable-ajax-data");
     const disableOrder = $(this).data("datatable-disable-order");
+    const pagingType = $(this).data("datatable-paging-type");
     const callback = window[$(this).data("datatable-callback")];
 
     table = $(this).DataTable({
@@ -118,6 +119,7 @@ function init_datatable() {
       ajax: { url: ajaxURL, data: ajaxData },
       searching: $(this).data("datatable-searching"),
       order: $(this).data("datatable-order"),
+      pagingType: pagingType ? pagingType : "simple_numbers",
       columnDefs: disableOrder
         ? disableOrder.map((column) => {
             return { orderable: false, targets: column };

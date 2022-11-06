@@ -5,7 +5,3 @@
 .alert a:hover {
   cursor: pointer;
 }
-
-.channel-thumbnails img {
-  width: 8rem;
-}

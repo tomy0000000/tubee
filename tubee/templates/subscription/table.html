@@ -11,11 +11,11 @@
   <tbody>
     {% for subscription in subscriptions %}
     <tr>
-      <th scope="row" class="channel-thumbnails">
+      <th scope="row">
         {% if subscription.channel.infos.snippet.thumbnails.high.url %}
         <img
           src="{{ subscription.channel.infos.snippet.thumbnails.high.url }}"
-          class="rounded-circle"
+          class="channel-thumbnails rounded-circle"
         />
         {% endif %}
       </th>

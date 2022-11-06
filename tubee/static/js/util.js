@@ -3,16 +3,16 @@
   // Global helper functions
   // --------------------
 
-  $.fn.isInViewport = function () {
-    // Check if the element is in the viewport
-    let elementTop = $(this).offset().top;
-    let elementBottom = elementTop + $(this).outerHeight();
+  // $.fn.isInViewport = function () {
+  //   // Check if the element is in the viewport
+  //   let elementTop = $(this).offset().top;
+  //   let elementBottom = elementTop + $(this).outerHeight();
 
-    let viewportTop = $(window).scrollTop();
-    let viewportBottom = viewportTop + $(window).height();
+  //   let viewportTop = $(window).scrollTop();
+  //   let viewportBottom = viewportTop + $(window).height();
 
-    return elementBottom > viewportTop && elementTop < viewportBottom;
-  };
+  //   return elementBottom > viewportTop && elementTop < viewportBottom;
+  // };
 
   $.fn.serializeObject = function () {
     let object = {};

@@ -6,6 +6,10 @@ pre {
   white-space: pre-wrap;
 }
 
+img.channel-thumbnails {
+  width: 8rem;
+}
+
 .line {
   display: inline-block;
 }
