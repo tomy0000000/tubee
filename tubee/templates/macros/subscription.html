@@ -1,6 +1,7 @@
+<!-- prettier-ignore -->
+{% from 'macros/base.html' import api_button %}
 {% from 'macros/channel.html' import tags %}
 
-<!-- prettier-ignore -->
 {% macro youtube_table_thumbnail(channel) -%}
 <!-- prettier-ignore -->
 <img
@@ -29,17 +30,14 @@
 <!-- prettier-ignore -->
 {% macro youtube_table_button(channel) -%}
 {% if not channel.snippet.subscribed %}
-<button
-  type="button"
-  class="btn btn-success"
-  onclick="$(this).updateChannelId().buttonAPI()"
-  data-api="api_subscription.create"
-  data-api-method="POST"
-  data-form-id="youtube-subscribe-form"
-  data-channel-id="{{ channel.snippet.resourceId.channelId }}"
->
-  Subscribe
-</button>
-<!-- prettier-ignore -->
+{{ api_button(
+  'Subscribe',
+  'api_subscription.create',
+  button_variant='success',
+  method='POST',
+  form_id='youtube-subscribe-form',
+  onclick="$(this).updateChannelId().buttonAPI()",
+  data={'channel-id': channel.snippet.resourceId.channelId}
+) }}
 {% endif %}
 {%- endmacro %}

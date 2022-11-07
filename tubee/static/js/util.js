@@ -80,10 +80,14 @@
         ? `Are your sure you want to ${message}?`
         : "Are you sure?";
       modal.find(".modal-body").text(modalMessage);
-      modal.find(".btn-confirm").click(function () {
-        modal.modal("hide");
-        const callback = button.data("confirm-callback");
-        button[callback]();
+      // Copy API data to modal confirm button
+      const confirmButton = modal
+        .find(".btn-confirm")
+        .attr("onclick", "$(this).buttonAPI()");
+      $.each(button.data(), (key, value) => {
+        if (key.startsWith("api") && key !== "apiConfirm") {
+          confirmButton.data(key, value);
+        }
       });
       modal.modal("show");
     });
@@ -95,14 +99,19 @@
   // --------------------
 
   $.fn.buttonAPI = function () {
-    const api = this.data("api");
+    const endpoint = this.data("api-endpoint");
     const method = this.data("api-method");
-    const formId = this.data("form-id");
-    const pathParams = this.data("path-params");
-    const queryParams = this.data("query-params");
-    const restore = this.data("restore");
+    const formId = this.data("api-form-id");
+    const pathParams = this.data("api-path-params");
+    const queryParams = this.data("api-query-params");
+    const confirm = this.data("api-confirm");
+    const restore = this.data("api-restore");
 
-    const url = buildURL(api, pathParams, queryParams);
+    if (confirm) {
+      return this.confirm();
+    }
+
+    const url = buildURL(endpoint, pathParams, queryParams);
     const form_data = formId ? $(`#${formId}`).serializeObject() : {};
     const data = JSON.stringify(form_data);
 

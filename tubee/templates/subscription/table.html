@@ -1,4 +1,6 @@
-{% from 'macros/channel.html' import tags %}
+<!-- prettier-ignore -->
+{% from 'macros/base.html' import api_button %}
+{% from 'macros/channel.html' import unsubscribe_button, tags %}
 
 <table class="table table-striped table-hover table-responsive-lg align-middle">
   <thead class="table-dark">
@@ -47,25 +49,8 @@
         {{ tags(subscription.tags, subscription.channel) }}
       </td>
       <td>
-        <form id="{{ subscription.channel_id }}-unsubscribe-form">
-          <input
-            type="hidden"
-            name="channel_id"
-            value="{{ subscription.channel_id }}"
-          />
-          <button
-            type="button"
-            class="btn btn-danger"
-            onclick="$(this).confirm()"
-            data-confirm-message="unsubscribe from {{ subscription.channel.name }}"
-            data-confirm-callback="buttonAPI"
-            data-api="api_subscription.delete"
-            data-api-method="DELETE"
-            data-form-id="{{ subscription.channel_id }}-unsubscribe-form"
-          >
-            Unsubscribe
-          </button>
-        </form>
+        <!-- prettier-ignore -->
+        {{ unsubscribe_button(subscription.channel) }}
       </td>
     </tr>
     {% endfor %}

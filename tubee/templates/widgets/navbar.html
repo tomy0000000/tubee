@@ -1,4 +1,5 @@
-<!-- STICKY NAVBAR -->
+{% from 'macros/base.html' import api_button %}
+
 <header>
   <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
@@ -119,15 +120,14 @@
             aria-label="Channel Name or ID"
             required
           />
-          <button
-            class="btn btn-success my-2 my-sm-0"
-            onclick="$(this).buttonAPI()"
-            data-api="api_subscription.create"
-            data-api-method="POST"
-            data-form-id="subscribe-form"
-          >
-            Subscribe
-          </button>
+          <!-- prettier-ignore -->
+          {{ api_button(
+            'Subscribe',
+            'api_subscription.create',
+            method='POST',
+            form_id='subscribe-form',
+            classes=['my-2', 'my-sm-0']
+          ) }}
         </form>
       </div>
     </div>

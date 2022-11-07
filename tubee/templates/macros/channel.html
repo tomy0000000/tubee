@@ -1,3 +1,5 @@
+{% from 'macros/base.html' import api_button %}
+
 <!-- prettier-ignore -->
 {% macro carousal(videos) -%}
 {% set thumb_num = [videos | length, 3] | min %}
@@ -126,33 +128,21 @@
             </div>
           </div>
           <div class="col-auto">
-            <button
-              class="btn btn-primary mb-2"
-              onclick="$(this).buttonAPI()"
-              data-api="api_subscription.tag_create"
-              data-api-method="POST"
-              data-form-id="tag-form"
-            >
-              Add Tag
-            </button>
+            <!-- prettier-ignore -->
+            {{ api_button(
+              'Add Tag',
+              'api_subscription.tag_create',
+              button_type='submit',
+              button_variant='primary',
+              method='POST',
+              form_id='tag-form',
+              classes=['mb-2']
+            ) }}
           </div>
         </form>
         {% if current_user.is_subscribing(channel) %}
-        <form id="unsubscribe-form">
-          <input type="hidden" name="channel_id" value="{{ channel.id }}" />
-          <button
-            type="button"
-            class="btn btn-danger btn-lg"
-            onclick="$(this).confirm()"
-            data-confirm-message="unsubscribe from {{ channel.name }}"
-            data-confirm-callback="buttonAPI"
-            data-api="api_subscription.delete"
-            data-api-method="DELETE"
-            data-form-id="unsubscribe-form"
-          >
-            Unsubscribe
-          </button>
-        </form>
+        <!-- prettier-ignore -->
+        {{ unsubscribe_button(channel) }}
         {% else %}
         <button type="button" class="btn btn-success btn-lg">Subscribe</button>
         {% endif %}
@@ -160,6 +150,23 @@
     </div>
   </div>
 </div>
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro unsubscribe_button(channel) -%}
+<form id="{{ channel.id }}-unsubscribe-form">
+  <input type="hidden" name="channel_id" value="{{ channel.id }}" />
+  <!-- prettier-ignore -->
+  {{ api_button(
+    'Unsubscribe',
+    'api_subscription.delete',
+    button_variant='danger',
+    method='DELETE',
+    form_id=channel.id+'-unsubscribe-form',
+    data={'confirm-message': 'unsubscribe from ' + channel.name},
+    confirm=True
+  ) }}
+</form>
 {%- endmacro %}
 
 <!-- prettier-ignore -->
@@ -178,12 +185,12 @@
       {{ tag.name }}
       <i
         class="fas fa-times-circle form-btn"
-        onclick="$(this).confirm()"
-        data-confirm-message="untag <{{ tag.name }}> from {{ channel.name }}"
-        data-confirm-callback="buttonAPI"
-        data-api="api_subscription.tag_delete"
+        onclick="$(this).buttonAPI()"
+        data-api-endpoint="api_subscription.tag_delete"
         data-api-method="DELETE"
-        data-form-id="untag-form-{{ tag.id }}"
+        data-api-form-id="untag-form-{{ tag.id }}"
+        data-api-confirm="true"
+        data-confirm-message="untag <{{ tag.name }}> from {{ channel.name }}"
       ></i>
     </form>
   </span>
