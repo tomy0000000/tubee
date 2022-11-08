@@ -1,0 +1,50 @@
+<!-- prettier-ignore -->
+{% macro api_button(
+  text,
+  endpoint,
+  button_type="button",
+  button_variant="success",
+  classes=None,
+  onclick="$(this).buttonAPI()",
+  method='GET',
+  form_id=None,
+  path_params=None,
+  data=None,
+  confirm=False,
+  restore=False
+) -%}
+{#
+text: text to display on button
+endpoint: endpoint to call
+button_variant: bootstrap button variant or color (primary, secondary, success, danger, warning, info, light, dark, link)
+method: HTTP method to use
+form_id: id of form data to send with request (only used for POST, DELETE, and PATCH)
+path_params: dictionary of path parameters to compose endpoint
+restore: whether to restore button text after request is complete
+onclick: call chain to execute on click
+classes: additional classes to add to button
+#}
+<!-- prettier-ignore -->
+<button
+  type={{ button_type }}
+  class="btn btn-{{ button_variant }} {{ classes | default([], True) | join(' ') }}"
+  onclick="{{ onclick }}"
+  data-api-endpoint="{{ endpoint }}"
+  data-api-method="{{ method }}"
+  {% if form_id %}
+  data-api-form-id="{{ form_id }}"
+  {% endif %}
+  {% if path_params %}
+  data-api-path-params="{{ path_params | tojson | forceescape }}"
+  {% endif %}
+  data-api-confirm="{{ confirm | lower }}"
+  data-api-restore="{{ restore | lower }}"
+  {% if data %}
+  {% for key, value in data.items() %}
+  data-{{ key }}="{{ value }}"
+  {% endfor %}
+  {% endif %}
+>
+  {{ text | safe }}
+</button>
+{%- endmacro %}

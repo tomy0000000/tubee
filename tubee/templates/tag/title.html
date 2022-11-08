@@ -1,3 +1,5 @@
+{% from 'macros/base.html' import api_button %}
+
 <div id="title-container" class="row align-items-center">
   <div class="rename-blocks col">
     <h1 class="display-4">
@@ -5,17 +7,17 @@
       <button class="btn-title-edit btn btn-primary">
         <i class="fas fa-edit"></i>
       </button>
-      <button
-        class="btn btn-danger"
-        onclick="$(this).confirm()"
-        data-confirm-message="remove tag {{ tag.name }}"
-        data-confirm-callback="buttonAPI"
-        data-api="api_tag.delete"
-        data-api-method="DELETE"
-        data-path-params="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
-      >
-        <i class="fas fa-trash"></i>
-      </button>
+      <!-- prettier-ignore -->
+      {{ api_button(
+        '<i class="fas fa-trash"></i
+      ><!-- prettier-ignore -->',
+        'api_tag.delete',
+        button_variant='danger',
+        method='DELETE',
+        path_params=dict(tag_id=tag.id),
+        data={'confirm-message': 'remove tag ' + tag.name},
+        confirm=True
+      ) }}
     </h1>
   </div>
   <div class="rename-blocks col" style="display: none">
@@ -30,16 +32,15 @@
             required
           />
           <button class="btn-title-edit btn btn-outline-danger">Cancel</button>
-          <button
-            class="btn btn-outline-primary"
-            onclick="$(this).buttonAPI()"
-            data-api="api_tag.update"
-            data-api-method="PATCH"
-            data-form-id="rename-form"
-            data-path-params="{{ dict(tag_id=tag.id) | tojson | forceescape }}"
-          >
-            Save
-          </button>
+          <!-- prettier-ignore -->
+          {{ api_button(
+            'Save',
+            'api_tag.update',
+            button_variant='outline-primary',
+            method='PATCH',
+            form_id='rename-form',
+            path_params=dict(tag_id=tag.id)
+          ) }}
         </div>
       </div>
     </form>

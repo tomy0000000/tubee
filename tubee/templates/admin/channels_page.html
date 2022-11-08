@@ -1,3 +1,5 @@
+{% from 'macros/base.html' import api_button %}
+
 <table class="table table-striped table-hover table-responsive-lg align-middle">
   <thead class="table-dark">
     <tr>
@@ -46,46 +48,38 @@
       {% endif %}
       <td>
         <div class="btn-group" role="group" aria-label="Management buttons">
-          <button
-            type="button"
-            class="btn btn-warning btn-subscribe"
-            onclick="$(this).buttonAPI()"
-            data-api="api_channel.subscribe"
-            data-api-method="GET"
-            data-path-params="{{ dict(channel_id=channel.id) | tojson | forceescape }}"
-          >
-            Subscribe
-          </button>
-          <button
-            type="button"
-            class="btn btn-warning btn-refresh"
-            onclick="$(this).buttonAPI()"
-            data-api="api_channel.refresh"
-            data-api-method="GET"
-            data-path-params="{{ dict(channel_id=channel.id) | tojson | forceescape }}"
-          >
-            Refresh
-          </button>
-          <button
-            type="button"
-            class="btn btn-warning btn-update"
-            onclick="$(this).buttonAPI()"
-            data-api="api_channel.update"
-            data-api-method="GET"
-            data-path-params="{{ dict(channel_id=channel.id) | tojson | forceescape }}"
-          >
-            Update
-          </button>
-          <button
-            type="button"
-            class="btn btn-warning"
-            onclick="$(this).buttonAPI()"
-            data-api="api_channel.fetch_videos"
-            data-api-method="GET"
-            data-path-params="{{ dict(channel_id=channel.id) | tojson | forceescape }}"
-          >
-            Fetch Videos
-          </button>
+          <!-- prettier-ignore -->
+          {{ api_button(
+            'Subscribe',
+            'api_channel.subscribe',
+            button_variant='warning',
+            form_id='action-form',
+            path_params=dict(channel_id=channel.id),
+            classes=['btn-subscribe'],
+          ) }}
+          {{ api_button(
+            'Refresh',
+            'api_channel.refresh',
+            button_variant='warning',
+            form_id='action-form',
+            path_params=dict(channel_id=channel.id),
+            classes=['btn-refresh'],
+          ) }}
+          {{ api_button(
+            'Update',
+            'api_channel.update',
+            button_variant='warning',
+            form_id='action-form',
+            path_params=dict(channel_id=channel.id),
+            classes=['btn-update'],
+          ) }}
+          {{ api_button(
+            'Fetch Videos',
+            'api_channel.fetch_videos',
+            button_variant='warning',
+            form_id='action-form',
+            path_params=dict(channel_id=channel.id)
+          ) }}
         </div>
       </td>
     </tr>

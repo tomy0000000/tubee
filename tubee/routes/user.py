@@ -86,7 +86,7 @@ def logout():
     return redirect(url_for("user.login"))
 
 
-@user_blueprint.route("/setting", methods=["GET", "POST"])
+@user_blueprint.get("/setting")
 @login_required
 def setting():
     """User Setting Page"""

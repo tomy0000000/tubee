@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, get_template_attribute, jsonify, request, session
 from flask_login import current_user, login_required
 
 api_subscription_blueprint = Blueprint("api_subscription", __name__)
@@ -50,3 +50,64 @@ def tag_delete():
     ).first_or_404("Channel not found")
     response = subscription.untag(tag_id)
     return jsonify(response)
+
+
+@api_subscription_blueprint.get("/youtube")
+@login_required
+def youtube():
+    """Load YouTube Subscription"""
+    draw = int(request.args.get("draw"))
+    start = int(request.args.get("start"))
+    length = int(request.args.get("length"))
+    page = int(start / length) + 1
+
+    previous_page = session.get("youtube_page")
+    previous_length = session.get("youtube_page_length")
+
+    page_token = None
+    if length == previous_length:
+        if page > previous_page:
+            page_token = session.get("youtube_next_token")
+        else:
+            page_token = session.get("youtube_prev_token")
+
+    query = (
+        current_user.youtube.subscriptions()
+        .list(
+            part="snippet",
+            maxResults=length,
+            mine=True,
+            order="alphabetical",
+            pageToken=page_token,
+        )
+        .execute()
+    )
+    for channel in query["items"]:
+        channel_id = channel["snippet"]["resourceId"]["channelId"]
+        channel["snippet"]["subscribed"] = current_user.is_subscribing(channel_id)
+    count = query["pageInfo"]["totalResults"]
+    response = {
+        "datatable": True,
+        "draw": draw,
+        "recordsTotal": count,
+        "recordsFiltered": count,
+        "data": [
+            [
+                get_template_attribute(
+                    "macros/subscription.html", "youtube_table_thumbnail"
+                )(channel),
+                get_template_attribute(
+                    "macros/subscription.html", "youtube_table_info"
+                )(channel),
+                get_template_attribute(
+                    "macros/subscription.html", "youtube_table_button"
+                )(channel),
+            ]
+            for channel in query["items"]
+        ],
+    }
+    session["youtube_page"] = page
+    session["youtube_page_length"] = length
+    session["youtube_prev_token"] = query.get("prevPageToken")
+    session["youtube_next_token"] = query.get("nextPageToken")
+    return response

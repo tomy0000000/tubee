@@ -1,3 +1,6 @@
+<!-- prettier-ignore -->
+{% from 'macros/base.html' import api_button %}
+
 {% macro table(tag=None) -%}
 <!-- prettier-ignore -->
 <table
@@ -77,29 +80,24 @@
 {% macro table_actions(row) -%}
 <div class="btn-group" role="group" aria-label="Video Actions">
   {% for action in row.Subscription.actions %}
-  <button
-    type="button"
-    class="btn btn-primary"
-    onclick="$(this).buttonAPI()"
-    data-api="api_video.execute_action"
-    data-api-method="GET"
-    data-path-params="{{ dict(video_id=row.Video.id, action_id=action.id) | tojson | forceescape }}"
-  >
-    {{ action.name }}
-  </button>
+  <!-- prettier-ignore -->
+  {{ api_button(
+    action.name,
+    'api_video.execute_action',
+    button_variant='primary',
+    path_params=dict(video_id=row.Video.id, action_id=action.id)
+  ) }}
   {% endfor %}
 </div>
 {%- endmacro %}
 
 <!-- prettier-ignore -->
 {% macro check_button() -%}
-<button
-  class="btn btn-success btn-all-checked mb-2"
-  onclick="$(this).updateVideoIds().buttonAPI().reloadTable()"
-  data-api="api_video.mark_as_checked"
-  data-api-method="GET"
-  data-restore="true"
->
-  Mark all as Checked
-</button>
+{{ api_button(
+  'Mark all as Checked',
+  'api_video.mark_as_checked',
+  classes=['btn-all-checked', 'mb-2'],
+  onclick='$(this).updateVideoIds().buttonAPI().reloadTable()',
+  restore=True
+) }}
 {%- endmacro %}

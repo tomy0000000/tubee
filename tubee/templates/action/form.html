@@ -1,3 +1,5 @@
+{% from 'macros/base.html' import api_button %}
+
 <div
   class="action-form-modal modal fade"
   tabindex="-1"
@@ -176,29 +178,22 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cancel
         </button>
+        <!-- prettier-ignore -->
         {% if action is defined %}
-        <button
-          type="button"
-          class="btn btn-success"
-          onclick="$(this).buttonAPI()"
-          data-api="api_action.update"
-          data-api-method="PATCH"
-          data-form-id="action-form"
-          data-path-params="{{ dict(action_id=action.id) | tojson | forceescape }}"
-        >
-          Save
-        </button>
+        {{ api_button(
+          'Save',
+          'api_action.update',
+          method='PATCH',
+          form_id='action-form',
+          path_params=dict(action_id=action.id)
+        ) }}
         {% else %}
-        <button
-          type="button"
-          class="btn btn-success"
-          onclick="$(this).buttonAPI()"
-          data-api="api_action.create"
-          data-api-method="POST"
-          data-form-id="action-form"
-        >
-          Create
-        </button>
+        {{ api_button(
+          'Create',
+          'api_action.create',
+          method='POST',
+          form_id='action-form',
+        ) }}
         {% endif %}
       </div>
     </div>

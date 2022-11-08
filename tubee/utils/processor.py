@@ -53,7 +53,7 @@ def api_formatter(response):
         Response -- Wrapped JSON response
     """
     content = response.get_json()
-    if "error" in content or "datatable" in content:
+    if isinstance(content, dict) and ("error" in content or "datatable" in content):
         return response
     formatted_response = jsonify(ok=True, error=None, description=None, content=content)
     return formatted_response

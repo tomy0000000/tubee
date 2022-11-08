@@ -103,7 +103,7 @@ def remove_all_tasks():
     worker_tasks = celery.control.inspect().scheduled()
     if not worker_tasks:
         return None
-    results = {"removed": [], "error": {}}
+    results = {"removed": [], "error_tasks": {}}
     for worker in worker_tasks.values():
         for task in worker:
             try:
