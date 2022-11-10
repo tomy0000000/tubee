@@ -94,7 +94,7 @@ def update(channel_id):
 def subscribe(channel_id):
     """Submitting hub Subscription"""
     channel = Channel.query.get_or_404(channel_id)
-    response = channel.subscribe()
+    response = {"success": channel.subscribe()}
     return response
 
 
