@@ -24,7 +24,7 @@ def dashboard():
     # Paginate subscriptions
     page = request.args.get("page", 1, type=int)
     pagination = subscriptions.paginate(
-        page, current_app.config["PAGINATE_COUNT"], False
+        page=page, per_page=current_app.config["PAGINATE_COUNT"], error_out=False
     )
     return render_template(
         "subscription/main.html",

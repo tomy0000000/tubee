@@ -3,6 +3,28 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Launch Dev",
+      "type": "docker-compose",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "dockerCompose": {
+        "up": {},
+        "files": ["${workspaceFolder}/docker-compose.dev.yml"]
+      }
+    },
+    {
+      "label": "Shut Down Dev",
+      "type": "docker-compose",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "dockerCompose": {
+        "down": {},
+        "files": ["${workspaceFolder}/docker-compose.dev.yml"]
+      }
+    },
+    {
       "label": "Test Coverage",
       "type": "shell",
       "command": "${command:python.interpreterPath}",
@@ -13,49 +35,6 @@
       },
       "presentation": {
         "reveal": "silent"
-      },
-      "options": {
-        "env": {
-          "FLASK_ENV": "testing"
-        }
-      }
-    },
-    {
-      "label": "Build Docker Image",
-      "type": "docker-build",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {
-        "reveal": "silent"
-      },
-      "dockerBuild": {
-        "tag": "tomy0000000/tubee"
-      }
-    },
-    {
-      "label": "Launch Dev Components",
-      "type": "docker-compose",
-      "presentation": {
-        "reveal": "silent"
-      },
-      "dockerCompose": {
-        "up": {
-          "detached": true
-        },
-        "files": ["${workspaceFolder}/docker-compose.dev.yml"]
-      }
-    },
-    {
-      "label": "Shut Down Dev Components",
-      "type": "docker-compose",
-      "presentation": {
-        "reveal": "silent"
-      },
-      "dockerCompose": {
-        "down": {},
-        "files": ["${workspaceFolder}/docker-compose.dev.yml"]
       }
     }
   ]

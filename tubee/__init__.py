@@ -26,7 +26,7 @@ migrate = Migrate()
 oauth = OAuth()
 
 
-def create_app(config_name, coverage=None):
+def create_app(config_name="development", coverage=None) -> Flask:
 
     # Load config
     config_instance = config[config_name]
@@ -53,12 +53,11 @@ def create_app(config_name, coverage=None):
     # Database Initialization
     db.init_app(app)
     app.db = db
+    app.coverage = coverage
     config_instance.init_app(app)
 
-    if coverage:
-        app.coverage = coverage
-
     if load_external:
+        # Log after config loaded so logging config can be propagated
         app.logger.debug("External Logging Config Loaded")
 
     # Extensions Initialization
@@ -90,10 +89,6 @@ def create_app(config_name, coverage=None):
     from .routes import blueprint_map
     from .utils import commands, processor
 
-    app.context_processor(processor.template)  # Variables for jinja templates
-    app.shell_context_processor(processor.shell)  # Variables for shell
-    app.register_error_handler(Exception, processor.error_handler)  # Error handler
-
     for command in commands.__all__:
         app.cli.add_command(getattr(commands, command))
 
@@ -104,5 +99,9 @@ def create_app(config_name, coverage=None):
 
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
+    else:
+        app.register_error_handler(Exception, processor.error_handler)  # Error handler
+    app.context_processor(processor.template)  # Variables for jinja templates
+    app.shell_context_processor(processor.shell)  # Variables for shell
 
     return app
