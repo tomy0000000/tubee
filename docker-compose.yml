@@ -8,7 +8,7 @@ services:
     env_file:
       - "instance/production.env"
     environment:
-      FLASK_ENV: "production"
+      CONFIG: "production"
     image: "tomy0000000/tubee"
     ports:
       - "5000:5000"
@@ -33,7 +33,7 @@ services:
     env_file:
       - "instance/production.env"
     environment:
-      FLASK_ENV: "production"
+      CONFIG: "production"
     image: "tomy0000000/tubee"
     restart: "always"
     volumes:

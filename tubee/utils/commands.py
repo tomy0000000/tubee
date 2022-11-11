@@ -28,16 +28,18 @@ def deploy():
     default=False,
 )
 @with_appcontext
-def test(coverage):
+def test(coverage: bool):
     """Run the unit tests (with or withour coverage)."""
-    if coverage and not os.environ.get("FLASK_COVERAGE"):
-        os.environ["FLASK_COVERAGE"] = "1"
+    if os.environ.get("CONFIG") != "testing":
+        os.environ["CONFIG"] = "testing"
+        if coverage:
+            os.environ["COVERAGE"] = "True"
         sys.exit(subprocess.call([sys.executable, "-m", "flask"] + sys.argv[1:]))
 
     tests = unittest.TestLoader().discover("tests")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
 
-    if os.environ.get("FLASK_COVERAGE"):
+    if current_app.coverage:
         current_app.coverage.stop()
         current_app.coverage.save()
 

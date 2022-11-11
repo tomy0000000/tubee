@@ -1,11 +1,8 @@
 {
   "coverage-gutters.coverageReportFileName": "htmlcov/index.html",
   "python.testing.unittestEnabled": true,
-  "python.testing.unittestArgs": [
-    "-v",
-    "-s",
-    "./tubee/tests/",
-    "-p",
-    "test_*.py"
-  ]
+  "python.testing.unittestArgs": ["-v", "-s", "./tests", "-p", "test_*.py"],
+  "python.analysis.autoImportCompletions": true,
+  "python.testing.pytestEnabled": false,
+  "python.analysis.typeCheckingMode": "basic"
 }
