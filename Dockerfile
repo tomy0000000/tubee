@@ -1,6 +1,6 @@
 FROM python:3.9.6
 
-LABEL tech.tomy.docker.tubee="0.13.0"
+LABEL tech.tomy.docker.tubee="0.13.1"
 LABEL maintainer="Tomy Hsieh @tomy0000000"
 
 WORKDIR /usr/src/tubee
