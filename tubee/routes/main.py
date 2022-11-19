@@ -49,7 +49,9 @@ def channel(channel_id):
     # Paginate videos
     page = request.args.get("page", 1, type=int)
     videos = subscription.channel.videos.order_by(Video.uploaded_timestamp.desc())
-    pagination = videos.paginate(page, current_app.config["PAGINATE_COUNT"], False)
+    pagination = videos.paginate(
+        page=page, per_page=current_app.config["PAGINATE_COUNT"], error_out=False
+    )
     return render_template(
         "channel.html",
         subscription=subscription,
