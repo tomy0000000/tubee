@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 import dropbox
 import requests
+from dropbox.exceptions import AuthError
 from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
@@ -272,7 +273,10 @@ class User(UserMixin, db.Model):  # type: ignore
 
     @dropbox.deleter
     def dropbox(self):
-        self.dropbox.auth_token_revoke()
+        try:
+            self.dropbox.auth_token_revoke()
+        except AuthError:
+            pass
         self._dropbox_credentials = None
         db.session.commit()
 
