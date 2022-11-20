@@ -26,7 +26,6 @@ class Config:
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
     REMEMBER_COOKIE_SECURE = True
     PAGINATE_COUNT = int(os.environ.get("PAGINATE_COUNT", 25))
-    CELERY_RESULT_BACKEND = "rpc://"
 
     # Sentry
     SENTRY_DSN = os.environ.get("SENTRY_DSN")
@@ -66,8 +65,6 @@ class DevelopmentConfig(Config):
         "DEV_DATABASE_URL", f"sqlite:///{os.path.join(basedir, 'data.sqlite')}"
     )
 
-    BROKER_URL = os.environ.get("DEV_BROKER_URL")
-
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
@@ -80,7 +77,6 @@ class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL", "sqlite://")
-    BROKER_URL = os.environ.get("TEST_BROKER_URL")
 
     @classmethod
     def init_app(cls, app):
@@ -89,7 +85,6 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-    BROKER_URL = os.environ.get("BROKER_URL")
 
     @classmethod
     def init_app(cls, app):

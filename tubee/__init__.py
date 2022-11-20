@@ -61,7 +61,9 @@ def create_app(config_name="development", coverage=None) -> Tubee:
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     oauth.init_app(app)
-    celery.conf.update(app.config)
+    celery.conf.update(
+        broker_url="amqp://guest:guest@tubee_rabbitmq:5672//", result_backend="rpc://"
+    )
 
     # Register Sentry
     if not app.debug and config_instance.SENTRY_DSN:
