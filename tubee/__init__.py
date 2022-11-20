@@ -1,5 +1,4 @@
 """Main Application of Tubee"""
-import logging
 from typing import Union
 
 import sentry_sdk
@@ -8,7 +7,7 @@ from celery import Celery
 from coverage import Coverage
 from flask import Flask
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import StrictUndefined
@@ -27,11 +26,6 @@ migrate = Migrate()
 oauth = OAuth()
 
 
-class PropagateToGunicorn(logging.Handler):
-    def emit(self, record):
-        logging.getLogger("gunicorn.error").handle(record)
-
-
 class Tubee(Flask):
     def __init__(
         self, *args, db: SQLAlchemy, coverage: Union[Coverage, None] = None, **kwargs
@@ -43,9 +37,7 @@ class Tubee(Flask):
 
 
 def create_app(config_name="development", coverage=None) -> Tubee:
-    from tubee.models import User
-
-    current_user: User
+    from .utils import PropagateToGunicorn, get_line_notify_fetch_token
 
     # App Fundation
     app = Tubee(__name__, db=db, coverage=coverage, instance_relative_config=True)
@@ -92,9 +84,7 @@ def create_app(config_name="development", coverage=None) -> Tubee:
         authorize_params=dict(response_type="code", scope="notify"),
         api_base_url="https://notify-api.line.me/",
         client_kwargs=None,
-        fetch_token=lambda: dict(
-            access_token=current_user._line_notify_credentials, token_type="bearer"
-        ),
+        fetch_token=get_line_notify_fetch_token,
     )
 
     from .routes import blueprint_map

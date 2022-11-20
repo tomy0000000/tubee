@@ -5,7 +5,6 @@ from typing import Union
 from urllib.parse import urljoin
 
 from .. import db
-from ..utils import try_parse_datetime
 from ..utils.youtube import build_youtube_api, fetch_video_metadata
 
 
@@ -83,6 +82,8 @@ class Video(db.Model):  # type: ignore
             return metadata.get("url")
 
     def _process_details(self):
+        from ..utils import try_parse_datetime
+
         self.name = self.details["title"]
         if timestamp := try_parse_datetime(self.details["publishedAt"]):
             self.uploaded_timestamp = timestamp
