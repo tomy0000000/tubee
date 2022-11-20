@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from flask import current_app
+from loguru import logger
 
 from .. import db
 
@@ -37,7 +37,7 @@ class Callback(db.Model):
         self.channel = channel
         db.session.add(self)
         db.session.commit()
-        current_app.logger.info(f"Callback <{self.id}>: Created")
+        logger.info(f"Callback <{self.id}>: Created")
 
     def __repr__(self):
         return f"<{self.channel_id}'s Callback {self.id}>"

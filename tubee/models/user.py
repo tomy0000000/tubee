@@ -8,6 +8,7 @@ from flask import current_app
 from flask_login import UserMixin
 from google.oauth2.credentials import Credentials
 from googleapiclient.errors import HttpError
+from loguru import logger
 from pushover_complete import PushoverAPI
 
 from .. import bcrypt, db, login_manager, oauth
@@ -74,7 +75,7 @@ class User(UserMixin, db.Model):
         self.admin = admin
         db.session.add(self)
         db.session.commit()
-        current_app.logger.info(f"User <{self.username}>: Create")
+        logger.info(f"User <{self.username}>: Create")
 
     def __repr__(self):
         return f"<User: {self.username}>"
@@ -353,7 +354,7 @@ class User(UserMixin, db.Model):
         if self.is_subscribing(channel):
             raise InvalidAction("You've already subscribed this channel")
         Subscription(self.username, channel.id)
-        current_app.logger.info(f"Subscription <{self.username}, {channel_id}>: Create")
+        logger.info(f"Subscription <{self.username}, {channel_id}>: Create")
         return self
 
     def unbsubscribe(self, channel_id):
@@ -365,7 +366,7 @@ class User(UserMixin, db.Model):
             )
         db.session.delete(subscription)
         db.session.commit()
-        current_app.logger.info(f"Subscription <{self.username}, {channel_id}>: Remove")
+        logger.info(f"Subscription <{self.username}, {channel_id}>: Remove")
         return self
 
     def insert_video_to_playlist(self, video_id, playlist_id="WL", position=None):
@@ -382,17 +383,15 @@ class User(UserMixin, db.Model):
                 .insert(part="snippet", body=resource)
                 .execute()
             )
-            current_app.logger.info(
+            logger.info(
                 f"User <{self.username}>: "
                 f"Insert video <{video_id}> to playlist <{playlist_id}>"
             )
             return result
         except HttpError as error:
             error_message = json.loads(error.content)["error"]["message"]
-            current_app.logger.error(
-                f"Faield to insert {video_id} to {self.username}'s playlist"
-            )
-            current_app.logger.error(error_message)
+            logger.error(f"Faield to insert {video_id} to {self.username}'s playlist")
+            logger.error(error_message)
             raise APIError(service="YouTube", message=error_message)
 
     # Pushover, Line Notify Methods
@@ -425,7 +424,5 @@ class User(UserMixin, db.Model):
             db.session.commit()
         else:
             video_check = VideoCheck(self.username, video_id)
-        current_app.logger.info(
-            f"User <{self.username}> marked Video <{video_id}> as checked"
-        )
+        logger.info(f"User <{self.username}> marked Video <{video_id}> as checked")
         return video_check

@@ -11,12 +11,13 @@ from dateutil import parser
 from flask import abort, current_app, request, url_for
 from flask_login import current_user
 from flask_migrate import upgrade
+from loguru import logger
 
 
 def setup_app():
     # Migrate database to latest revision
     upgrade()
-    current_app.logger.info("Database migrated")
+    logger.info("Database migrated")
 
     from ..models.user import User
 
@@ -28,18 +29,18 @@ def setup_app():
 
         User(username="admin", password=password, admin=True)
         current_app.db.session.commit()
-        current_app.logger.info("Admin created automatically:")
-        current_app.logger.info("Username: admin")
-        current_app.logger.info(f"Password: {password}")
+        logger.info("Admin created automatically:")
+        logger.info("Username: admin")
+        logger.info(f"Password: {password}")
 
     # Reschedule all tasks
     from ..models import Channel
     from ..tasks import remove_all_tasks, schedule_channel_renewal
 
     remove_all_tasks()
-    current_app.logger.info("All tasks removed")
+    logger.info("All tasks removed")
     schedule_channel_renewal(Channel.query.all())
-    current_app.logger.info("Channel renewal scheduled")
+    logger.info("Channel renewal scheduled")
 
     # TODO: Update channels metadata
 

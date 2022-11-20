@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from flask import current_app
+from loguru import logger
 
 from .. import db
 
@@ -65,7 +65,7 @@ class Action(db.Model):
                 .id
             )
         else:
-            current_app.logger.error(
+            logger.error(
                 f"Action <{self.id}>: Create failed without supply channel or tag"
             )
             raise ValueError("At least one of <Channel, Tag> must be given")
@@ -73,7 +73,7 @@ class Action(db.Model):
         self.edit(params)
         db.session.add(self)
         db.session.commit()
-        current_app.logger.info(f"Action <{self.id}>: Create")
+        logger.info(f"Action <{self.id}>: Create")
 
     def __repr__(self):
         return f"<Action <{self.id}>: {self.type} by {self.username}>"
@@ -111,7 +111,7 @@ class Action(db.Model):
         if modified:
             db.session.commit()
 
-        current_app.logger.info(f"Action <{self.id}>: modified ({modified})")
+        logger.info(f"Action <{self.id}>: modified ({modified})")
         return modified
 
     def delete(self):
@@ -119,11 +119,11 @@ class Action(db.Model):
         try:
             db.session.delete(self)
             db.session.commit()
-            current_app.logger.info(f"Action <{action_id}>: Remove")
+            logger.info(f"Action <{action_id}>: Remove")
             return self
         except Exception as error:
             # TODO: not sure if this is the best way to handle this
-            current_app.logger.exception(f"Action <{action_id}>: Remove failed")
+            logger.exception(f"Action <{action_id}>: Remove failed")
             raise error
 
     def execute(self, **parameters):
@@ -162,7 +162,7 @@ class Action(db.Model):
             )
             results = str(results)
         else:
-            current_app.logger.info(f"Action <{self.id}>: Execute without valid type")
+            logger.info(f"Action <{self.id}>: Execute without valid type")
             raise RuntimeError("Invalid Action")
-        current_app.logger.info(f"Action <{self.id}>: Executed ({results})")
+        logger.info(f"Action <{self.id}>: Executed ({results})")
         return results

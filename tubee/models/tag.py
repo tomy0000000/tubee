@@ -1,7 +1,7 @@
 """Tag Model"""
 from dataclasses import dataclass
 
-from flask import current_app
+from loguru import logger
 
 from .. import db
 
@@ -42,7 +42,7 @@ class Tag(db.Model):
         """Rename the tag"""
         self.name = new_name
         db.session.commit()
-        current_app.logger.info(f'Tag <{self.id}>: Rename to "{new_name}"')
+        logger.info(f'Tag <{self.id}>: Rename to "{new_name}"')
         return self
 
     def delete(self):
@@ -51,9 +51,9 @@ class Tag(db.Model):
         try:
             db.session.delete(self)
             db.session.commit()
-            current_app.logger.info(f"Tag <{tag_id}>: Remove")
+            logger.info(f"Tag <{tag_id}>: Remove")
             return self
         except Exception as error:
             # TODO: not sure if this is the right way to handle this
-            current_app.logger.exception(f"Tag <{tag_id}>: Remove failed")
+            logger.exception(f"Tag <{tag_id}>: Remove failed")
             raise error

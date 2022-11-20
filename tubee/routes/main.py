@@ -2,6 +2,7 @@
 import bs4
 from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
+from loguru import logger
 
 from .. import db
 from ..forms import ActionForm
@@ -101,7 +102,7 @@ def channel_callback(channel_id):
 
     tag = soup.find("yt:videoId")
     if tag is None:
-        current_app.logger.info(f"Video ID not Found for {callback_item}")
+        logger.info(f"Video ID not Found for {callback_item}")
         callback_item.infos = infos
         db.session.commit()
         return response
@@ -145,9 +146,9 @@ def channel_callback(channel_id):
                     "error": error.__class__.__name__,
                     "description": str(error),
                 }
-                current_app.logger.exception(f"{channel_id}-{action.id}: {error}")
+                logger.exception(f"{channel_id}-{action.id}: {error}")
             else:
-                current_app.logger.info(f"{channel_id}-{action.id}")
+                logger.info(f"{channel_id}-{action.id}")
             response[action.id] = results
     return jsonify(response)
 

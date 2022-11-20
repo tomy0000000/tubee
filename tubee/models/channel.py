@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 
 from flask import current_app, url_for
 from googleapiclient.errors import Error as YouTubeAPIError
+from loguru import logger
 
 from .. import db
 from ..exceptions import APIError, InvalidAction
@@ -63,13 +64,11 @@ class Channel(db.Model):
         db.session.commit()
         try:
             self.update()
-            current_app.logger.info(f"Channel <{self.id}>: Create")
+            logger.info(f"Channel <{self.id}>: Create")
         except (APIError, InvalidAction) as error:
             db.session.delete(self)
             db.session.commit()
-            current_app.logger.exception(
-                f"Channel <{channel_id}>: Create failed with API Error"
-            )
+            logger.exception(f"Channel <{channel_id}>: Create failed with API Error")
             raise error
 
         channels_refresh.apply_async(
@@ -131,7 +130,7 @@ class Channel(db.Model):
         self.active = True
         self.subscribe_timestamp = datetime.utcnow()
         db.session.commit()
-        current_app.logger.info(f"Channel <{self.id}>: Activate")
+        logger.info(f"Channel <{self.id}>: Activate")
         return results
 
     def deactivate(self):
@@ -151,9 +150,9 @@ class Channel(db.Model):
             self.active = False
             self.unsubscribe_timestamp = datetime.utcnow()
             db.session.commit()
-            current_app.logger.info(f"Channel <{self.id}>: Deactivate")
+            logger.info(f"Channel <{self.id}>: Deactivate")
         else:
-            current_app.logger.error(f"Channel <{self.id}>: Deactivate failed")
+            logger.error(f"Channel <{self.id}>: Deactivate failed")
         return response
 
     def refresh(self):
@@ -177,7 +176,7 @@ class Channel(db.Model):
                 results[key] = (str(val[0]), val[1])
         self.hub_infos = results
         db.session.commit()
-        current_app.logger.info(f"Channel <{self.id}>: Hub info updated")
+        logger.info(f"Channel <{self.id}>: Hub info updated")
         return response
 
     def update(self):
@@ -202,13 +201,11 @@ class Channel(db.Model):
             self.infos = api_result["items"][0]
             self.name = self.infos["snippet"]["title"]
             db.session.commit()
-            current_app.logger.info(f"Channel <{self.id}>: YouTube info updated")
+            logger.info(f"Channel <{self.id}>: YouTube info updated")
             return self.infos
         except (YouTubeAPIError, KeyError) as error:
             # TODO: Parse API Error
-            current_app.logger.exception(
-                f"Channel <{self.id}>: YouTube info update failed"
-            )
+            logger.exception(f"Channel <{self.id}>: YouTube info update failed")
             raise APIError(
                 service="YouTube",
                 message=str(error.args),
@@ -226,11 +223,11 @@ class Channel(db.Model):
         response = subscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
-        current_app.logger.debug(f"Callback URL: {callback_url}")
-        current_app.logger.debug(f"Topic URL   : {topic_url}")
-        current_app.logger.debug(f"Channel ID  : {self.id}")
-        current_app.logger.debug(f"Response    : {response.status_code}")
-        current_app.logger.info(f"Channel <{self.id}>: Hub Subscribe")
+        logger.debug(f"Callback URL: {callback_url}")
+        logger.debug(f"Topic URL   : {topic_url}")
+        logger.debug(f"Channel ID  : {self.id}")
+        logger.debug(f"Response    : {response.status_code}")
+        logger.info(f"Channel <{self.id}>: Hub Subscribe")
         return response.success
 
     def fetch_videos(self, fetch_all=False):
@@ -261,5 +258,5 @@ class Channel(db.Model):
             else:
                 break
 
-        current_app.logger.info(f"Channel <{self.id}>: Video Fetched")
+        logger.info(f"Channel <{self.id}>: Video Fetched")
         return results
