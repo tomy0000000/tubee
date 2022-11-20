@@ -1,4 +1,3 @@
-import logging
 import os
 import uuid
 from datetime import timedelta
@@ -73,8 +72,6 @@ class DevelopmentConfig(Config):
     def init_app(cls, app):
         Config.init_app(app)
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-        app.logger.setLevel(logging.DEBUG)
-        app.logger.debug("Development Config Loaded")
 
 
 class TestingConfig(Config):
@@ -88,9 +85,6 @@ class TestingConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        for logger_name in app.logger.manager.loggerDict:
-            if logger_name.startswith("tubee"):
-                logging.getLogger(logger_name).setLevel(logging.WARNING)
 
 
 class ProductionConfig(Config):
@@ -100,8 +94,6 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        app.logger.setLevel(logging.INFO)
-        app.logger.debug("Production Config Loaded")
 
 
 config = {

@@ -1,4 +1,5 @@
 from flask import flash, jsonify, render_template, request
+from loguru import logger
 from werkzeug.exceptions import HTTPException
 
 from .. import db, models
@@ -24,22 +25,23 @@ def error_handler(error):
         Response -- Wrapped response
     """
     name = error.__class__.__name__
+    logger.exception(name)
+
     if isinstance(error, HTTPException):  # raised with flask.abort(code, description)
-        description = str(error.description)
+        description = f"{name}: {error.description}"
         status_code = error.code
     elif isinstance(error, TubeeError):
-        description = str(error.description)
+        description = f"{name}: {error.description}"
         status_code = 400
     else:
-        name = None  # hide internal errors from user
-        description = "Internal Server Error"
+        description = "Internal Server Error"  # hide internal errors from user
         status_code = 500
 
     if request.path.startswith("/api"):
         response = dict(ok=False, error=name, description=description)
         return jsonify(response), status_code
 
-    flash(f"{name}: {description}", "danger")
+    flash(description, "danger")
     return render_template("error.html"), status_code
 
 

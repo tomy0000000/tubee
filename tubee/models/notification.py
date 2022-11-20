@@ -5,6 +5,7 @@ from enum import Enum
 
 import requests
 from flask import current_app
+from loguru import logger
 from pushover_complete import PushoverAPI
 
 from .. import db
@@ -99,7 +100,7 @@ class Notification(db.Model):
         self.kwargs = kwargs
         db.session.add(self)
         db.session.commit()
-        current_app.logger.info(f"Notification <{self.id}>: Create")
+        logger.info(f"Notification <{self.id}>: Create")
         if send:
             self.send()
 
@@ -112,7 +113,7 @@ class Notification(db.Model):
             key: val for key, val in kwargs.items() if key not in VALID_ARGS[service]
         }
         for key, val in invalid_args.items():
-            current_app.logger.warning(f"Invalid argument ({key}, {val}) is ommited")
+            logger.warning(f"Invalid argument ({key}, {val}) is ommited")
             kwargs.pop(key)
         return kwargs
 
@@ -139,7 +140,7 @@ class Notification(db.Model):
 
         self.sent_timestamp = datetime.utcnow()
         db.session.commit()
-        current_app.logger.info(f"Notification <{self.id}>: Sent")
+        logger.info(f"Notification <{self.id}>: Sent")
         return self.response
 
     def _send_with_pushover(self):
