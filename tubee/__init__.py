@@ -30,7 +30,7 @@ class PropagateToGunicorn(logging.Handler):
         logging.getLogger("gunicorn.error").handle(record)
 
 
-def create_app(config_name="production", coverage=None) -> Flask:
+def create_app(config_name="development", coverage=None) -> Flask:
 
     # App Fundation
     app = Flask(__name__, instance_relative_config=True)
