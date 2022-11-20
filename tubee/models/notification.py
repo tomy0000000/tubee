@@ -41,7 +41,7 @@ VALID_ARGS = {
 
 
 @dataclass
-class Notification(db.Model):
+class Notification(db.Model):  # type: ignore
     """An Object which describe a Notification for a specific user
 
     Variables:

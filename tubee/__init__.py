@@ -1,9 +1,11 @@
 """Main Application of Tubee"""
 import logging
+from typing import Union
 
 import sentry_sdk
 from authlib.integrations.flask_client import OAuth
 from celery import Celery
+from coverage import Coverage
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
@@ -30,13 +32,23 @@ class PropagateToGunicorn(logging.Handler):
         logging.getLogger("gunicorn.error").handle(record)
 
 
-def create_app(config_name="development", coverage=None) -> Flask:
+class Tubee(Flask):
+    def __init__(
+        self, *args, db: SQLAlchemy, coverage: Union[Coverage, None] = None, **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+        self.version = VERSION
+        self.db = db
+        self.coverage = coverage
+
+
+def create_app(config_name="development", coverage=None) -> Tubee:
+    from tubee.models import User
+
+    current_user: User
 
     # App Fundation
-    app = Flask(__name__, instance_relative_config=True)
-    app.version = VERSION
-    app.db = db
-    app.coverage = coverage
+    app = Tubee(__name__, db=db, coverage=coverage, instance_relative_config=True)
 
     # Config settings
     config_instance = config[config_name]
@@ -65,7 +77,7 @@ def create_app(config_name="development", coverage=None) -> Flask:
     logger.add(PropagateToGunicorn(), colorize=True)
 
     # Extensions Settings
-    login_manager.login_view = "user.login"
+    login_manager.login_view = "user.login"  # type: ignore
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
     login_manager.needs_refresh_message = "Please reauthenticate to access this page."

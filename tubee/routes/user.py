@@ -16,12 +16,15 @@ from flask import (
     session,
     url_for,
 )
-from flask_login import current_user, login_required, login_user, logout_user
+from flask_login import current_user  # type: ignore
+from flask_login import login_required, login_user, logout_user
 
 from .. import oauth
 from ..forms import UserForm
 from ..models import User
 from ..utils import dropbox, is_safe_url, youtube
+
+current_user: User
 
 user_blueprint = Blueprint("user", __name__)
 
@@ -143,13 +146,13 @@ def setting_youtube_revoke():
 @login_required
 def setting_line_notify_authorize():
     redirect_uri = url_for("user.setting_line_notify_oauth_callback", _external=True)
-    return oauth.LineNotify.authorize_redirect(redirect_uri)
+    return oauth.LineNotify.authorize_redirect(redirect_uri)  # type: ignore
 
 
 @user_blueprint.get("/setting/line-notify/oauth_callback")
 @login_required
 def setting_line_notify_oauth_callback():
-    token = oauth.LineNotify.authorize_access_token()
+    token = oauth.LineNotify.authorize_access_token()  # type: ignore
     current_user.line_notify = token["access_token"]
     flash("Line Notify Access Granted", "success")
     return redirect(url_for("user.setting"))

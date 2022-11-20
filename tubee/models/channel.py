@@ -15,7 +15,7 @@ from ..utils.youtube import build_youtube_api
 
 
 @dataclass
-class Channel(db.Model):
+class Channel(db.Model):  # type: ignore
     """
     update:        Update metadata from YouTube API
     refresh:       Refresh subscription status from Hub

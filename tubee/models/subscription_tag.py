@@ -5,7 +5,7 @@ from .. import db
 
 
 @dataclass
-class SubscriptionTag(db.Model):
+class SubscriptionTag(db.Model):  # type: ignore
     """Relationship between Subscription and Tag"""
 
     username: str

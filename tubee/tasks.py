@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 from enum import Enum
 from random import randrange
+from typing import Union
 from uuid import uuid4
 
 from flask import current_app
@@ -121,7 +122,9 @@ def issue_channel_renewal(channels):
     return task
 
 
-def schedule_channel_renewal(channels, policy: RenewPolicy = RenewPolicy.RANDOM):
+def schedule_channel_renewal(
+    channels, policy: Union[RenewPolicy, int] = RenewPolicy.RANDOM
+):
     response = {}
     for channel in channels:
         countdown = int((channel.renewal - datetime.now()).total_seconds())

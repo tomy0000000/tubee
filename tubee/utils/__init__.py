@@ -4,14 +4,20 @@ Some Misc Functions used in this app
 """
 import secrets
 import string
+from datetime import datetime
 from functools import wraps
+from typing import Union
 from urllib.parse import unquote, urljoin, urlparse
 
 from dateutil import parser
-from flask import abort, current_app, request, url_for
+from flask import abort, current_app, request, url_for  # type: ignore
 from flask_login import current_user
 from flask_migrate import upgrade
 from loguru import logger
+
+from .. import Tubee
+
+current_app: Tubee
 
 
 def setup_app():
@@ -45,7 +51,7 @@ def setup_app():
     # TODO: Update channels metadata
 
 
-def try_parse_datetime(string, fuzzy=False):
+def try_parse_datetime(string: str, fuzzy: bool = False) -> Union[datetime, None]:
     try:
         return parser.parse(string, fuzzy=fuzzy).replace(tzinfo=None)
     except (ValueError, TypeError):
@@ -81,6 +87,9 @@ def build_sitemap():
 
 
 def admin_required(*args, **kwargs):
+    from ..models import User
+
+    current_user: User
     if not current_user.admin:
         abort(403)
 

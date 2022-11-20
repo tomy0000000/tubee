@@ -1,4 +1,6 @@
-from flask import flash, jsonify, render_template, request
+from typing import Union
+
+from flask import Response, flash, jsonify, render_template, request
 from loguru import logger
 from werkzeug.exceptions import HTTPException
 
@@ -15,7 +17,7 @@ def template():
     return dict(sitemap=build_sitemap())
 
 
-def error_handler(error):
+def error_handler(error) -> tuple[Union[Response, str], int]:
     """Handle Errors
 
     Arguments:
@@ -29,7 +31,7 @@ def error_handler(error):
 
     if isinstance(error, HTTPException):  # raised with flask.abort(code, description)
         description = f"{name}: {error.description}"
-        status_code = error.code
+        status_code = error.code or 400
     elif isinstance(error, TubeeError):
         description = f"{name}: {error.description}"
         status_code = 400

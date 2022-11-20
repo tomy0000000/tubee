@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required  # type: ignore
 
 from ..forms import ActionForm
-from ..models import Action
+from ..models import Action, User
+
+current_user: User
 
 action_blueprint = Blueprint("action", __name__)
 

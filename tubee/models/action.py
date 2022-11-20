@@ -1,6 +1,7 @@
 """Action Model"""
 from dataclasses import dataclass
 from enum import Enum
+from typing import Union
 
 from loguru import logger
 
@@ -14,7 +15,7 @@ class ActionType(str, Enum):
 
 
 @dataclass
-class Action(db.Model):
+class Action(db.Model):  # type: ignore
     """Action to Perform when new video uploaded"""
 
     id: str
@@ -46,23 +47,20 @@ class Action(db.Model):
     tag = db.relationship("Tag", back_populates="actions")
     user = db.relationship("User", back_populates="actions")
 
-    def __init__(self, username, params=None):
+    def __init__(self, username: str, params: Union[dict[str, str], None] = None):
         from .subscription import Subscription
         from .tag import Tag
 
-        if params["channel_id"]:
+        params = params or {}
+        if channel_id := params.get("channel_id"):
             self.channel_id = (
-                Subscription.query.filter_by(
-                    channel_id=params["channel_id"], username=username
-                )
+                Subscription.query.filter_by(channel_id=channel_id, username=username)
                 .first_or_404()
                 .channel_id
             )
-        elif params["tag_id"]:
+        elif tag_id := params.get("tag_id"):
             self.tag_id = (
-                Tag.query.filter_by(id=params["tag_id"], username=username)
-                .first_or_404()
-                .id
+                Tag.query.filter_by(id=tag_id, username=username).first_or_404().id
             )
         else:
             logger.error(

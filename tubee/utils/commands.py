@@ -5,11 +5,13 @@ import unittest
 from pathlib import Path
 
 import click
-from flask import current_app
+from flask import current_app  # type: ignore
 from flask.cli import with_appcontext
 
-from .. import db, models
+from .. import Tubee, db, models
 from . import setup_app
+
+current_app: Tubee
 
 __all__ = ["deploy", "test", "admin"]
 

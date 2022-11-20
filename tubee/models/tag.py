@@ -7,7 +7,7 @@ from .. import db
 
 
 @dataclass
-class Tag(db.Model):
+class Tag(db.Model):  # type: ignore
     """Tag for grouping subscriptions"""
 
     id: int

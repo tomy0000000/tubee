@@ -1,7 +1,9 @@
 from flask import Blueprint, abort, jsonify, request
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required  # type: ignore
 
-from ..models import Tag
+from ..models import Tag, User
+
+current_user: User
 
 api_tag_blueprint = Blueprint("api_tag", __name__)
 

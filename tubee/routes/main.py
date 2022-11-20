@@ -1,13 +1,14 @@
 """The Main Routes"""
 import bs4
 from flask import Blueprint, current_app, jsonify, render_template, request
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required  # type: ignore
 from loguru import logger
 
 from .. import db
 from ..forms import ActionForm
-from ..models import Callback, Channel, Video
-from ..utils.youtube import fetch_video_metadata
+from ..models import Callback, Channel, User, Video
+
+current_user: User
 
 main_blueprint = Blueprint("main", __name__)
 
@@ -123,12 +124,6 @@ def channel_callback(channel_id):
     if not new_video:
         return jsonify(response)
 
-    # Fetch Video Infos
-    try:  # TODO
-        video_file_url = fetch_video_metadata(video_id)["url"]
-    except Exception:
-        video_file_url = None
-
     # List users and execute actions
     for sub in channel_item.subscriptions:
         for action in sub.automated_actions:
@@ -138,7 +133,7 @@ def channel_callback(channel_id):
                     video_title=video_item.name,
                     video_description=video_item.details["description"],
                     video_thumbnails=video_item.details["thumbnails"]["medium"]["url"],
-                    video_file_url=video_file_url,
+                    video_file_url=video_item.video_file_url,
                     channel_name=channel_item.name,
                 )
             except Exception as error:
