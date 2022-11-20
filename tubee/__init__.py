@@ -1,7 +1,5 @@
 """Main Application of Tubee"""
-import json
-import logging.config
-from os import path
+import logging
 
 import sentry_sdk
 from authlib.integrations.flask_client import OAuth
@@ -12,6 +10,7 @@ from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import StrictUndefined
+from loguru import logger
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
@@ -26,13 +25,34 @@ migrate = Migrate()
 oauth = OAuth()
 
 
-def create_app(config_name="development", coverage=None) -> Flask:
+class PropagateToGunicorn(logging.Handler):
+    def emit(self, record):
+        logging.getLogger("gunicorn.error").handle(record)
 
-    # Load config
+
+def create_app(config_name="production", coverage=None) -> Flask:
+
+    # App Fundation
+    app = Flask(__name__, instance_relative_config=True)
+    app.version = VERSION
+    app.db = db
+    app.coverage = coverage
+
+    # Config settings
     config_instance = config[config_name]
+    app.config.from_object(config_instance)
+
+    # Extensions Initialization
+    db.init_app(app)
+    config_instance.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    migrate.init_app(app, db, render_as_batch=True)
+    oauth.init_app(app)
+    celery.conf.update(app.config)
 
     # Register Sentry
-    if config_name == "production" and config_instance.SENTRY_DSN:
+    if not app.debug and config_instance.SENTRY_DSN:
         sentry_sdk.init(
             dsn=config_instance.SENTRY_DSN,
             integrations=[FlaskIntegration()],
@@ -40,32 +60,9 @@ def create_app(config_name="development", coverage=None) -> Flask:
             release=VERSION,
         )
 
-    # App Fundation
-    app = Flask(__name__, instance_relative_config=True)
-    app.version = VERSION
-    app.config.from_object(config_instance)
-    external_config = path.join(app.instance_path, "logging.cfg")
-    load_external = path.exists(external_config) and path.isfile(external_config)
-    if load_external:
-        with open(external_config) as json_file:
-            logging.config.dictConfig(json.load(json_file))
-
-    # Database Initialization
-    db.init_app(app)
-    app.db = db
-    app.coverage = coverage
-    config_instance.init_app(app)
-
-    if load_external:
-        # Log after config loaded so logging config can be propagated
-        app.logger.debug("External Logging Config Loaded")
-
-    # Extensions Initialization
-    bcrypt.init_app(app)
-    login_manager.init_app(app)
-    migrate.init_app(app, db, render_as_batch=True)
-    oauth.init_app(app)
-    celery.conf.update(app.config)
+    # Setup loguru
+    logger.add("tubee.log", level="INFO", rotation="25 MB")
+    logger.add(PropagateToGunicorn(), colorize=True)
 
     # Extensions Settings
     login_manager.login_view = "user.login"
@@ -99,8 +96,7 @@ def create_app(config_name="development", coverage=None) -> Flask:
 
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-    else:
-        app.register_error_handler(Exception, processor.error_handler)  # Error handler
+    app.register_error_handler(Exception, processor.error_handler)  # Error handler
     app.context_processor(processor.template)  # Variables for jinja templates
     app.shell_context_processor(processor.shell)  # Variables for shell
 

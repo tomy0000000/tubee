@@ -11,7 +11,7 @@ if os.environ.get("COVERAGE"):
     cov.start()
 
 
-config = os.environ.get("CONFIG", "development")
+config = os.environ.get("CONFIG", "production")
 app = create_app(config_name=config, coverage=cov)
 
 

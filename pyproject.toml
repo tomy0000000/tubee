@@ -43,6 +43,7 @@ python-dateutil = "^2.8.2"
 requests = "*"
 youtube-dl = "*"
 sentry-sdk = {extras = ["flask"], version = "^1.5.0"}
+loguru = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 argh = "*"
