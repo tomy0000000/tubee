@@ -133,7 +133,10 @@ def channel_callback(channel_id):
                     video_id=video_id,
                     video_title=video_item.name,
                     video_description=video_item.details["description"],
-                    video_thumbnails=video_item.details["thumbnails"]["medium"]["url"],
+                    video_thumbnail=video_item.details["thumbnails"]["medium"]["url"],
+                    video_thumbnail_small=video_item.details["thumbnails"]["default"][
+                        "url"
+                    ],
                     video_file_url=video_item.video_file_url,
                     channel_name=channel_item.name,
                 )

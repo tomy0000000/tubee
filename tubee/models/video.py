@@ -111,7 +111,8 @@ class Video(db.Model):  # type: ignore
             video_id=self.id,
             video_title=self.name,
             video_description=self.details["description"],
-            video_thumbnails=self.details["thumbnails"]["medium"]["url"],
+            video_thumbnail=self.details["thumbnails"]["medium"]["url"],
+            video_thumbnail_small=self.details["thumbnails"]["default"]["url"],
             video_file_url=self.video_file_url,
             channel_name=self.channel.name,
         )

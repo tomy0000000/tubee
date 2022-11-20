@@ -129,6 +129,7 @@ class Action(db.Model):  # type: ignore
             results = self.user.send_notification(
                 "Action",
                 self.details.get("service", None),
+                **parameters,
                 message=self.details.get("message", "{video_title}").format(
                     **parameters
                 ),
@@ -141,7 +142,7 @@ class Action(db.Model):  # type: ignore
                 url_title=self.details.get("url_title", "{video_title}").format(
                     **parameters
                 ),
-                image_url=self.details.get("image_url", "{video_thumbnails}").format(
+                image_url=self.details.get("image_url", "{video_thumbnail}").format(
                     **parameters
                 ),
             )
