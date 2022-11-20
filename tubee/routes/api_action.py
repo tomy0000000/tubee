@@ -1,5 +1,6 @@
 from flask import Blueprint, abort, jsonify
-from flask_login import current_user, login_required  # type: ignore
+from flask_login import current_user  # type: ignore
+from flask_login import login_required
 
 from ..forms import ActionForm
 from ..models import Action, User

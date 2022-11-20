@@ -9,9 +9,6 @@ from loguru import logger
 
 from .. import db
 from ..exceptions import APIError, InvalidAction
-from ..utils import try_parse_datetime
-from ..utils.hub import details, subscribe, unsubscribe
-from ..utils.youtube import build_youtube_api
 
 
 @dataclass
@@ -84,6 +81,8 @@ class Channel(db.Model):  # type: ignore
 
     @property
     def expiration(self):
+        from ..utils import try_parse_datetime
+
         try:
             return try_parse_datetime(self.hub_infos["expiration"])
         except (TypeError, KeyError):
@@ -135,6 +134,8 @@ class Channel(db.Model):  # type: ignore
 
     def deactivate(self):
         """Submitting hub unsubscription, called when last user unsubscribe"""
+        from ..utils import hub
+
         if not self.active:
             raise AttributeError("Channel is already deactivate")
         callback_url = url_for(
@@ -143,7 +144,7 @@ class Channel(db.Model):  # type: ignore
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
             {"channel_id": self.id}
         )
-        response = unsubscribe(
+        response = hub.unsubscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
         if response.success:
@@ -157,13 +158,17 @@ class Channel(db.Model):  # type: ignore
 
     def refresh(self):
         """Update hub subscription details, called by task or app"""
+        from ..utils import hub
+
         callback_url = url_for(
             "main.channel_callback", channel_id=self.id, _external=True
         )
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
             {"channel_id": self.id}
         )
-        results = details(current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url)
+        results = hub.details(
+            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
+        )
         results.pop("requests_url")
         results.pop("response_object")
         response = results.copy()
@@ -181,6 +186,8 @@ class Channel(db.Model):  # type: ignore
 
     def update(self):
         """Update YouTube metadata, called by task"""
+        from ..utils.youtube import build_youtube_api
+
         try:
             api_result = (
                 build_youtube_api()
@@ -214,13 +221,15 @@ class Channel(db.Model):  # type: ignore
 
     def subscribe(self):
         """Submitting hub Subscription, called by task or app"""
+        from ..utils import hub
+
         callback_url = url_for(
             "main.channel_callback", channel_id=self.id, _external=True
         )
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
             {"channel_id": self.id}
         )
-        response = subscribe(
+        response = hub.subscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
         logger.debug(f"Callback URL: {callback_url}")
@@ -232,6 +241,7 @@ class Channel(db.Model):  # type: ignore
 
     def fetch_videos(self, fetch_all=False):
         """Update videos, Called by task"""
+        from ..utils.youtube import build_youtube_api
         from .video import Video
 
         search = build_youtube_api().search()

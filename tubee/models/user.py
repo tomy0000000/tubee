@@ -13,7 +13,6 @@ from pushover_complete import PushoverAPI
 
 from .. import bcrypt, db, login_manager, oauth
 from ..exceptions import APIError, InvalidAction, ServiceNotAuth
-from ..utils import youtube
 
 
 @login_manager.user_loader
@@ -23,7 +22,7 @@ def load_user(username):
 
 
 @dataclass
-class User(UserMixin, db.Model):
+class User(UserMixin, db.Model):  # type: ignore
     """
     username                username for identification (Max:30)
     password_hash           user's hashed login password
@@ -180,6 +179,8 @@ class User(UserMixin, db.Model):
         Raises:
             ServiceNotAuth -- Raised when user has not authorized yet.
         """
+        from ..utils import youtube
+
         if not self._youtube_credentials:
             raise ServiceNotAuth("YouTube")
         return youtube.build_youtube_api(self._youtube_credentials)

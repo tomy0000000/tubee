@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, abort, get_template_attribute, jsonify, request
-from flask_login import current_user, login_required  # type: ignore
+from flask_login import current_user  # type: ignore
+from flask_login import login_required
 
 from .. import db
 from ..models import Channel, Subscription, SubscriptionTag, User, Video, VideoCheck

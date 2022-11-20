@@ -1,5 +1,6 @@
 from flask import Blueprint, get_template_attribute, jsonify, request, session
-from flask_login import current_user, login_required  # type: ignore
+from flask_login import current_user  # type: ignore
+from flask_login import login_required
 
 from ..models import User
 

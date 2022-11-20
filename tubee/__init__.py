@@ -110,7 +110,8 @@ def create_app(config_name="development", coverage=None) -> Tubee:
 
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-    app.register_error_handler(Exception, processor.error_handler)  # Error handler
+    else:
+        app.register_error_handler(Exception, processor.error_handler)  # Error handler
     app.context_processor(processor.template)  # Variables for jinja templates
     app.shell_context_processor(processor.shell)  # Variables for shell
 

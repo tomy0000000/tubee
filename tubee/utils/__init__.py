@@ -10,14 +10,17 @@ from typing import Union
 from urllib.parse import unquote, urljoin, urlparse
 
 from dateutil import parser
-from flask import abort, current_app, request, url_for  # type: ignore
-from flask_login import current_user
+from flask import current_app  # type: ignore
+from flask import abort, request, url_for
+from flask_login import current_user  # type: ignore
 from flask_migrate import upgrade
 from loguru import logger
 
 from .. import Tubee
+from ..models import User
 
 current_app: Tubee
+current_user: User
 
 
 def setup_app():
@@ -87,9 +90,6 @@ def build_sitemap():
 
 
 def admin_required(*args, **kwargs):
-    from ..models import User
-
-    current_user: User
     if not current_user.admin:
         abort(403)
 
