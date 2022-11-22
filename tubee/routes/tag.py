@@ -12,7 +12,7 @@ tag_blueprint = Blueprint("tag", __name__)
 @tag_blueprint.get("/")
 @login_required
 def listing():
-    tags = current_user.tags.all()
+    tags = current_user.tags.order_by(Tag.sort_index.asc()).all()
     return render_template("tag/listing.html", tags=tags)
 
 

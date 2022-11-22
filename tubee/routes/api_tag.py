@@ -9,6 +9,21 @@ current_user: User
 api_tag_blueprint = Blueprint("api_tag", __name__)
 
 
+@api_tag_blueprint.patch("/")
+@login_required
+def update_sort_indexes():
+    """Update sort index"""
+    if not (data := request.get_json()):
+        abort(400, "No order provided")
+    order = data.get("order")
+    tags = current_user.tags.all()
+    results = []
+    for tag in tags:
+        new_index = order.index(tag.id) if tag.id in order else None
+        results.append(tag.set_sort_index(new_index))
+    return jsonify(results)
+
+
 @api_tag_blueprint.patch("/<tag_id>")
 @login_required
 def update(tag_id):
