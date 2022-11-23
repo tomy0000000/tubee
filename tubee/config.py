@@ -27,6 +27,11 @@ class Config:
     REMEMBER_COOKIE_SECURE = True
     PAGINATE_COUNT = int(os.environ.get("PAGINATE_COUNT", 25))
 
+    # Celery
+    BROKER_URL = os.environ.get(
+        "BROKER_URL", "amqp://guest:guest@tubee_rabbitmq:5672//"
+    )
+
     # Sentry
     SENTRY_DSN = os.environ.get("SENTRY_DSN")
 
