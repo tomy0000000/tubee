@@ -53,7 +53,7 @@ flask-shell-ipython = "*"
 pyyaml = "*"
 rope = "*"
 watchdog = "*"
-flake8 = "^4.0.1"
+flake8 = "^5.0.4"
 black = "^22.6.0"
 
 [tool.pyright]
