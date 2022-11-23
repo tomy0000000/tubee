@@ -1,15 +1,15 @@
 """Video Model"""
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Union
 from urllib.parse import urljoin
 
 from .. import db
-from ..utils import try_parse_datetime
 from ..utils.youtube import build_youtube_api, fetch_video_metadata
 
 
 @dataclass
-class Video(db.Model):
+class Video(db.Model):  # type: ignore
     """Videos of Subscribed Channel"""
 
     id: str
@@ -77,12 +77,16 @@ class Video(db.Model):
         raise ValueError("thumbnails can not be delete")
 
     @property
-    def video_file_url(self):
-        return fetch_video_metadata(self.id).get("url")
+    def video_file_url(self) -> Union[str, None]:
+        if metadata := fetch_video_metadata(self.id):
+            return metadata.get("url")
 
     def _process_details(self):
+        from ..utils import try_parse_datetime
+
         self.name = self.details["title"]
-        self.uploaded_timestamp = try_parse_datetime(self.details["publishedAt"])
+        if timestamp := try_parse_datetime(self.details["publishedAt"]):
+            self.uploaded_timestamp = timestamp
         db.session.commit()
 
     def update_infos(self):
@@ -107,7 +111,8 @@ class Video(db.Model):
             video_id=self.id,
             video_title=self.name,
             video_description=self.details["description"],
-            video_thumbnails=self.details["thumbnails"]["medium"]["url"],
+            video_thumbnail=self.details["thumbnails"]["medium"]["url"],
+            video_thumbnail_small=self.details["thumbnails"]["default"]["url"],
             video_file_url=self.video_file_url,
             channel_name=self.channel.name,
         )

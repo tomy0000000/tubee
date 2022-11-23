@@ -1,7 +1,10 @@
 from flask import Blueprint, render_template
-from flask_login import current_user, login_required
+from flask_login import current_user  # type: ignore
+from flask_login import login_required
 
-from ..models import Tag
+from ..models import Tag, User
+
+current_user: User
 
 tag_blueprint = Blueprint("tag", __name__)
 
@@ -9,7 +12,7 @@ tag_blueprint = Blueprint("tag", __name__)
 @tag_blueprint.get("/")
 @login_required
 def listing():
-    tags = current_user.tags.all()
+    tags = current_user.tags.order_by(Tag.sort_index.asc()).all()
     return render_template("tag/listing.html", tags=tags)
 
 

@@ -2,16 +2,31 @@
 
 Some Misc Functions used in this app
 """
+import logging
 import secrets
 import string
+from datetime import datetime
 from functools import wraps
+from typing import Union
 from urllib.parse import unquote, urljoin, urlparse
 
 from dateutil import parser
-from flask import abort, current_app, request, url_for
-from flask_login import current_user
+from flask import current_app  # type: ignore
+from flask import abort, request, url_for
+from flask_login import current_user  # type: ignore
 from flask_migrate import upgrade
 from loguru import logger
+
+from .. import Tubee
+from ..models import User
+
+current_app: Tubee
+current_user: User
+
+
+class PropagateToGunicorn(logging.Handler):
+    def emit(self, record):
+        logging.getLogger("gunicorn.error").handle(record)
 
 
 def setup_app():
@@ -45,7 +60,7 @@ def setup_app():
     # TODO: Update channels metadata
 
 
-def try_parse_datetime(string, fuzzy=False):
+def try_parse_datetime(string: str, fuzzy: bool = False) -> Union[datetime, None]:
     try:
         return parser.parse(string, fuzzy=fuzzy).replace(tzinfo=None)
     except (ValueError, TypeError):
@@ -115,3 +130,12 @@ def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
+
+
+def get_line_notify_fetch_token() -> dict:
+    """Get Line Notify Fetch Token
+
+    Returns:
+        dict -- Line Notify Fetch Token
+    """
+    return dict(access_token=current_user._line_notify_credentials, token_type="bearer")

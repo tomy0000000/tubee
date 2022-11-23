@@ -35,7 +35,9 @@ class APIError(TubeeError):
         TubeeError
     """
 
-    def __init__(self, service: str, message: str, error_type: str = ""):
+    def __init__(
+        self, service: str, message: str = "upstream error", error_type: str = ""
+    ):
         type_string = f"<{error_type}> " if error_type else ""
         super().__init__(f"Error from {service}: {type_string}{message}")
 

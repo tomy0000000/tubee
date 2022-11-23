@@ -1,12 +1,13 @@
 """Main Application of Tubee"""
-import logging
+from typing import Union
 
 import sentry_sdk
 from authlib.integrations.flask_client import OAuth
 from celery import Celery
+from coverage import Coverage
 from flask import Flask
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import StrictUndefined
@@ -25,18 +26,21 @@ migrate = Migrate()
 oauth = OAuth()
 
 
-class PropagateToGunicorn(logging.Handler):
-    def emit(self, record):
-        logging.getLogger("gunicorn.error").handle(record)
+class Tubee(Flask):
+    def __init__(
+        self, *args, db: SQLAlchemy, coverage: Union[Coverage, None] = None, **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+        self.version = VERSION
+        self.db = db
+        self.coverage = coverage
 
 
-def create_app(config_name="development", coverage=None) -> Flask:
+def create_app(config_name="development", coverage=None) -> Tubee:
+    from .utils import PropagateToGunicorn, get_line_notify_fetch_token
 
     # App Fundation
-    app = Flask(__name__, instance_relative_config=True)
-    app.version = VERSION
-    app.db = db
-    app.coverage = coverage
+    app = Tubee(__name__, db=db, coverage=coverage, instance_relative_config=True)
 
     # Config settings
     config_instance = config[config_name]
@@ -49,7 +53,9 @@ def create_app(config_name="development", coverage=None) -> Flask:
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     oauth.init_app(app)
-    celery.conf.update(app.config)
+    celery.conf.update(
+        broker_url="amqp://guest:guest@tubee_rabbitmq:5672//", result_backend="rpc://"
+    )
 
     # Register Sentry
     if not app.debug and config_instance.SENTRY_DSN:
@@ -65,7 +71,7 @@ def create_app(config_name="development", coverage=None) -> Flask:
     logger.add(PropagateToGunicorn(), colorize=True)
 
     # Extensions Settings
-    login_manager.login_view = "user.login"
+    login_manager.login_view = "user.login"  # type: ignore
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
     login_manager.needs_refresh_message = "Please reauthenticate to access this page."
@@ -78,9 +84,7 @@ def create_app(config_name="development", coverage=None) -> Flask:
         authorize_params=dict(response_type="code", scope="notify"),
         api_base_url="https://notify-api.line.me/",
         client_kwargs=None,
-        fetch_token=lambda: dict(
-            access_token=current_user._line_notify_credentials, token_type="bearer"
-        ),
+        fetch_token=get_line_notify_fetch_token,
     )
 
     from .routes import blueprint_map
@@ -96,7 +100,8 @@ def create_app(config_name="development", coverage=None) -> Flask:
 
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-    app.register_error_handler(Exception, processor.error_handler)  # Error handler
+    else:
+        app.register_error_handler(Exception, processor.error_handler)  # Error handler
     app.context_processor(processor.template)  # Variables for jinja templates
     app.shell_context_processor(processor.shell)  # Variables for shell
 

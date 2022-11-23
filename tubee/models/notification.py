@@ -9,11 +9,12 @@ from loguru import logger
 from pushover_complete import PushoverAPI
 
 from .. import db
+from ..exceptions import APIError
 
 
 class Service(str, Enum):
     Pushover = "Pushover"
-    LineNotify = "Line Notify"
+    LineNotify = "Line_Notify"
 
 
 VALID_ARGS = {
@@ -32,7 +33,8 @@ VALID_ARGS = {
         "html",
     ],
     Service.LineNotify: [
-        "image_url",
+        "imageThumbnail",
+        "imageFullsize",
         "stickerPackageId",
         "stickerId",
         "notificationDisabled",
@@ -41,7 +43,7 @@ VALID_ARGS = {
 
 
 @dataclass
-class Notification(db.Model):
+class Notification(db.Model):  # type: ignore
     """An Object which describe a Notification for a specific user
 
     Variables:
@@ -133,14 +135,21 @@ class Notification(db.Model):
         if self.sent_timestamp:
             raise AttributeError("This Notification has already sent")
 
+        success = False
         if self.service is Service.Pushover:
-            self.response = self._send_with_pushover()
+            results = self._send_with_pushover()
+            self.response = results
+            success = results["status"] == 1
         if self.service is Service.LineNotify:
-            self.response = self._send_with_line_notify().json()
+            results = self._send_with_line_notify()
+            self.response = results.json()
+            success = results.status_code == 200
 
         self.sent_timestamp = datetime.utcnow()
         db.session.commit()
         logger.info(f"Notification <{self.id}>: Sent")
+        if not success:
+            raise APIError(service=self.service)
         return self.response
 
     def _send_with_pushover(self):
@@ -162,8 +171,10 @@ class Notification(db.Model):
         Returns:
             dict -- Response from service
         """
-        kwargs = Notification._clean_up_kwargs(self.kwargs.copy(), self.service)
-        kwargs["imageFullsize"] = kwargs.pop("image_url", None)
+        kwargs = self.kwargs.copy()
+        kwargs["imageThumbnail"] = kwargs.pop("video_thumbnail_small", None)
+        kwargs["imageFullsize"] = kwargs.pop("video_thumbnail", None)
+        self.kwargs = Notification._clean_up_kwargs(kwargs, self.service)
         return self.user.line_notify.post(
-            "api/notify", data=dict(message=self.message, **kwargs)
+            "api/notify", data=dict(message=self.message, **self.kwargs)
         )

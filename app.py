@@ -1,18 +1,18 @@
 """Boot Script of Tubee"""
 import os
 
-import coverage
+from coverage import Coverage
 
 from tubee import create_app
 
-cov = None
+coverage = None
 if os.environ.get("COVERAGE"):
-    cov = coverage.coverage(branch=True, include="tubee/*", omit="tubee/tests/*")
-    cov.start()
+    coverage = Coverage(branch=True, include="tubee/*", omit="tubee/tests/*")
+    coverage.start()
 
 
 config = os.environ.get("CONFIG", "development")
-app = create_app(config_name=config, coverage=cov)
+app = create_app(config_name=config, coverage=coverage)
 
 
 if __name__ == "__main__":

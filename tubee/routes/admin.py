@@ -1,9 +1,13 @@
-from flask import Blueprint, current_app, render_template
+from flask import current_app  # type: ignore
+from flask import Blueprint, render_template
 from flask_login import login_required
 
+from .. import Tubee
 from ..models import Channel
 from ..tasks import list_all_tasks
 from ..utils import admin_required, build_sitemap
+
+current_app: Tubee
 
 admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.before_request(admin_required)

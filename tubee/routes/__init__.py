@@ -13,20 +13,20 @@ from .tag import tag_blueprint
 from .user import user_blueprint
 
 __all__ = [
-    action_blueprint,
-    admin_blueprint,
-    api_blueprint,
-    api_action_blueprint,
-    api_admin_blueprint,
-    api_channel_blueprint,
-    api_subscription_blueprint,
-    api_tag_blueprint,
-    api_task_blueprint,
-    api_video_blueprint,
+    "action_blueprint",
+    "admin_blueprint",
+    "api_blueprint",
+    "api_action_blueprint",
+    "api_admin_blueprint",
+    "api_channel_blueprint",
+    "api_subscription_blueprint",
+    "api_tag_blueprint",
+    "api_task_blueprint",
+    "api_video_blueprint",
     "blueprint_map",
-    main_blueprint,
-    tag_blueprint,
-    user_blueprint,
+    "main_blueprint",
+    "tag_blueprint",
+    "user_blueprint",
 ]
 
 blueprint_map = [

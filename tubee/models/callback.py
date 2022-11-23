@@ -8,7 +8,7 @@ from .. import db
 
 
 @dataclass
-class Callback(db.Model):
+class Callback(db.Model):  # type: ignore
     """
     id            Unique ID
     type          Challenge or Notification

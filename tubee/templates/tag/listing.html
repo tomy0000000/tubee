@@ -4,40 +4,94 @@
 
 <!-- prettier-ignore -->
 {% block style %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/tag_listing.css') }}"
+/>
+{% endblock %}
+
+<!-- prettier-ignore -->
+{% block script %}
+<script src="{{ url_for('static', filename='js/tag_listing.js') }}"></script>
 {% endblock %}
 
 <!-- prettier-ignore -->
 {% block content %}
+<form id="sort-index-form">
+  <input type="hidden" name="order" />
+</form>
 
-<!-- prettier-ignore -->
-{% for tag in tags %}
-<div class="row mb-5">
-  <div class="col">
-    <h1 class="display-4">
-      <a href="{{ url_for('tag.main', tag_id=tag.id) }}" class="text-reset">
-        {{ tag.name }}
-      </a>
-    </h1>
-    <div class="overflow-auto text-nowrap">
-      <!-- prettier-ignore -->
-      {% for subscription_tag in tag.subscription_tags %}
-      {% if subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url %}
-      <a
-        href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
-        class="text-decoration-none"
-      >
-        <img
-          src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url }}"
-          class="rounded-circle"
-        />
-      </a>
-      <!-- prettier-ignore -->
-      {% endif %}
+<nav class="navbar">
+  <div class="container">
+    <ul
+      id="tag-sortable"
+      class="nav nav-pills col-11 overflow-auto flex-nowrap"
+    >
+      {% for tag in tags %}
+      <li class="nav-item sortable" data-tag-id="{{ tag.id }}">
+        <a
+          type="button"
+          class="nav-link{{ ' active' if loop.first else '' }}"
+          role="tab"
+          aria-selected="{{ 'true' if loop.first else 'false' }}"
+          aria-controls="tab-pane-{{ tag.id }}"
+          data-bs-toggle="tab"
+          data-bs-target="#tab-pane-{{ tag.id }}"
+        >
+          {{ tag.name }}
+        </a>
+      </li>
       {% endfor %}
+    </ul>
+    <div class="vr shadow-lg ms-auto"></div>
+    <button id="btn-sort" class="btn btn-primary ms-2">
+      <i class="fas fa-edit"></i>
+    </button>
+  </div>
+</nav>
+
+<div class="tab-content">
+  {% for tag in tags %}
+  <div
+    id="tab-pane-{{ tag.id }}"
+    class="tab-pane fade p-3{{ ' show active' if loop.first else '' }}"
+    role="tabpanel"
+    aria-labelledby="{{ tag.id }}-tab"
+    tabindex="0"
+  >
+    <div class="card">
+      <div class="card-header">
+        <a href="{{ url_for('tag.main', tag_id=tag.id) }}">{{ tag.name }}</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for subscription_tag in tag.subscription_tags %}
+        <li class="list-group-item">
+          <div class="d-flex align-items-center">
+            {% if
+            subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url
+            %}
+            <div class="flex-shrink-0">
+              <img
+                src="{{ subscription_tag.subscription.channel.infos.snippet.thumbnails.default.url }}"
+                class="rounded-circle"
+              />
+            </div>
+            {% endif %}
+            <div class="flex-grow-1 ms-3">
+              <a
+                href="{{ url_for('main.channel', channel_id=subscription_tag.channel_id) }}"
+                class="stretched-link"
+              >
+                {{ subscription_tag.subscription.channel.name }}
+              </a>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
+  {% endfor %}
 </div>
-<!-- prettier-ignore -->
-{% endfor %}
 
 {% endblock %}

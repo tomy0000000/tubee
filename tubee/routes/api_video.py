@@ -1,11 +1,14 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, abort, get_template_attribute, jsonify, request
-from flask_login import current_user, login_required
+from flask_login import current_user  # type: ignore
+from flask_login import login_required
 
 from .. import db
-from ..models import Channel, Subscription, SubscriptionTag, Video, VideoCheck
+from ..models import Channel, Subscription, SubscriptionTag, User, Video, VideoCheck
 from ..utils import admin_required_decorator as admin_required
+
+current_user: User
 
 api_video_blueprint = Blueprint("api_video", __name__)
 
@@ -41,10 +44,10 @@ def mark_as_checked():
 @api_video_blueprint.get("unchecked")
 @login_required
 def unchecked():
-    draw = int(request.args.get("draw"))
-    start = int(request.args.get("start"))
-    length = int(request.args.get("length"))
-    order_column = int(request.args.get("order[0][column]"))
+    draw = int(request.args["draw"])
+    start = int(request.args["start"])
+    length = int(request.args["length"])
+    order_column = int(request.args["order[0][column]"])
     order_dir = request.args.get("order[0][dir]")
     tag_id = request.args.get("tag_id")
 

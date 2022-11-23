@@ -1,5 +1,6 @@
 """YouTube Data API Functions"""
 import json
+from typing import Union
 
 import youtube_dl
 from flask import current_app, url_for
@@ -49,7 +50,7 @@ def build_youtube_dl(additional_options):
     return youtube_dl.YoutubeDL(options)
 
 
-def fetch_video_metadata(video_id):
+def fetch_video_metadata(video_id: str) -> Union[dict, None]:
     service = build_youtube_dl({"format": "best"})
-    metadata = service.extract_info(video_id)
+    metadata = service.extract_info(video_id) or None
     return metadata

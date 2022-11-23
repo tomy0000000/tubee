@@ -7,7 +7,7 @@ from .. import db
 
 
 @dataclass
-class Tag(db.Model):
+class Tag(db.Model):  # type: ignore
     """Tag for grouping subscriptions"""
 
     id: int
@@ -18,6 +18,7 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), db.ForeignKey("user.username"), nullable=False)
     name = db.Column(db.String(64), index=True, nullable=False)
+    sort_index = db.Column(db.Integer)
     user = db.relationship("User", back_populates="tags")
     subscription_tags = db.relationship(
         "SubscriptionTag",
@@ -43,6 +44,13 @@ class Tag(db.Model):
         self.name = new_name
         db.session.commit()
         logger.info(f'Tag <{self.id}>: Rename to "{new_name}"')
+        return self
+
+    def set_sort_index(self, sort_index):
+        """Set the sort index"""
+        self.sort_index = sort_index
+        db.session.commit()
+        logger.info(f'Tag <{self.id}>: Set sort index to "{sort_index}"')
         return self
 
     def delete(self):

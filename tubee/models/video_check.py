@@ -4,7 +4,7 @@ from .. import db
 
 
 @dataclass
-class VideoCheck(db.Model):
+class VideoCheck(db.Model):  # type: ignore
     """Label indicate if user had checked video"""
 
     username: str

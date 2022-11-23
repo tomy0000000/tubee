@@ -18,7 +18,7 @@
     let object = {};
     const array = this.serializeArray();
     $.map(array, (pair) => {
-      object[pair.name] = pair.value;
+      object[pair.name] = JSON.parse(pair.value);
     });
     return object;
   };
@@ -124,7 +124,13 @@
         return response.content;
       })
       .done((responseData) => {
-        this.buttonToggleState({ state: restore ? "restore" : "success" });
+        this.buttonToggleState({ state: "success" });
+        if (restore) {
+          const button = this;
+          setTimeout(() => {
+            button.buttonToggleState({ state: "restore" });
+          }, 3000);
+        }
       })
       .fail((responseData) => {
         this.buttonToggleState({
@@ -136,11 +142,14 @@
   };
 
   $.fn.buttonToggleState = function ({ state, error }) {
+    const lastState = this.data("backup-state");
     if (state === "restore") {
-      this.replaceWith(this.data("backup-state"));
+      this.replaceWith(lastState);
       return this;
     }
-    this.data("backup-state", this.clone(true));
+    if (!lastState) {
+      this.data("backup-state", this.clone(true));
+    }
     if (state === "loading") {
       this.empty()
         .prop("disabled", true)

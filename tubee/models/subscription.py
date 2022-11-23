@@ -9,7 +9,7 @@ from .tag import Tag
 
 
 @dataclass
-class Subscription(db.Model):
+class Subscription(db.Model):  # type: ignore
     """Relationship between User and Channel"""
 
     username: str

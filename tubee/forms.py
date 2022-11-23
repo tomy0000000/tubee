@@ -129,8 +129,9 @@ class ActionForm(FlaskForm):
     def validate(self):
         if not self.channel_id.data and not self.tag_id.data:
             return False
-        action_type = self.action_type.data.lower()
-        sub_form = getattr(self, action_type)
+        if not (action_type := self.action_type.data):
+            return False
+        sub_form = getattr(self, action_type.lower())
         if not sub_form.validate(sub_form):
             return False
         return True

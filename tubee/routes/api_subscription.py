@@ -1,5 +1,10 @@
 from flask import Blueprint, get_template_attribute, jsonify, request, session
-from flask_login import current_user, login_required
+from flask_login import current_user  # type: ignore
+from flask_login import login_required
+
+from ..models import User
+
+current_user: User
 
 api_subscription_blueprint = Blueprint("api_subscription", __name__)
 
