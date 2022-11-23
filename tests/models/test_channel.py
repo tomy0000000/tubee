@@ -104,7 +104,7 @@ class ChannelModelTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             del self.test_channel.expiration
 
-    @mock.patch("tubee.models.channel.details")
+    @mock.patch("tubee.utils.hub.details")
     def test_channel_refresh(
         self,
         mocked_hub_details,
@@ -172,7 +172,7 @@ class ChannelModelTestCase(unittest.TestCase):
             self.test_channel.hub_infos["last_notification_error"][0], str
         )
 
-    @mock.patch("tubee.models.channel.build_youtube_api")
+    @mock.patch("tubee.utils.youtube.build_youtube_api")
     def test_channel_update(self, mocked_youtube):
         self.init_channel()
         with open(
@@ -210,7 +210,7 @@ class ChannelModelTestCase(unittest.TestCase):
         )
 
     @mock.patch("tubee.models.video.Video")
-    @mock.patch("tubee.models.channel.build_youtube_api")
+    @mock.patch("tubee.utils.youtube.build_youtube_api")
     def test_channel_fetch_videos(self, mocked_youtube, mocked_video):
         self.init_channel()
 
@@ -256,7 +256,7 @@ class ChannelModelTestCase(unittest.TestCase):
         with self.assertRaises(AttributeError):
             results = self.test_channel.activate()
 
-    @mock.patch("tubee.models.channel.subscribe")
+    @mock.patch("tubee.utils.hub.subscribe")
     def test_channel_subscribe(self, mocked_subscribe):
         self.init_channel()
         mocked_subscribe.return_value.success = False

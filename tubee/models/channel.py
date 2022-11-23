@@ -158,7 +158,7 @@ class Channel(db.Model):  # type: ignore
 
     def refresh(self):
         """Update hub subscription details, called by task or app"""
-        from ..utils import hub
+        from ..utils.hub import details
 
         callback_url = url_for(
             "main.channel_callback", channel_id=self.id, _external=True
@@ -166,9 +166,7 @@ class Channel(db.Model):  # type: ignore
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
             {"channel_id": self.id}
         )
-        results = hub.details(
-            current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
-        )
+        results = details(current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url)
         results.pop("requests_url")
         results.pop("response_object")
         response = results.copy()
@@ -221,7 +219,7 @@ class Channel(db.Model):  # type: ignore
 
     def subscribe(self):
         """Submitting hub Subscription, called by task or app"""
-        from ..utils import hub
+        from ..utils.hub import subscribe
 
         callback_url = url_for(
             "main.channel_callback", channel_id=self.id, _external=True
@@ -229,7 +227,7 @@ class Channel(db.Model):  # type: ignore
         topic_url = current_app.config["HUB_YOUTUBE_TOPIC"] + urlencode(
             {"channel_id": self.id}
         )
-        response = hub.subscribe(
+        response = subscribe(
             current_app.config["HUB_GOOGLE_HUB"], callback_url, topic_url
         )
         logger.debug(f"Callback URL: {callback_url}")
