@@ -25,7 +25,6 @@ class Config:
     }
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
     REMEMBER_COOKIE_SECURE = True
-    PAGINATE_COUNT = int(os.environ.get("PAGINATE_COUNT", 25))
 
     # Celery
     BROKER_URL = os.environ.get(
