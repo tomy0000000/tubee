@@ -21,7 +21,7 @@ $(document).ready(() => {
       const tagIds = $.map(sortable.find(".sortable"), function (element) {
         return $(element).data("tag-id");
       });
-      $("#sort-index-form > input[name=order]").val(JSON.stringify(tagIds));
+      $("#sort-index-form > input[name=order]").val(tagIds.join(","));
 
       button
         .data("mode", "saved")

@@ -50,7 +50,7 @@ class Tag(db.Model):  # type: ignore
         """Set the sort index"""
         self.sort_index = sort_index
         db.session.commit()
-        logger.info(f'Tag <{self.id}>: Set sort index to "{sort_index}"')
+        logger.info(f"Tag <{self.id}>: Set sort index to {sort_index}")
         return self
 
     def delete(self):
