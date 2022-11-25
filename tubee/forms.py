@@ -37,7 +37,9 @@ class UserForm(FlaskForm):
     )
     submit = SubmitField()
 
-    def __init__(self, submit_label: str, password_confirm: bool, *args, **kwargs):
+    def __init__(
+        self, submit_label: str, password_confirm: bool = False, *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         self.submit.label.text = submit_label
         if not password_confirm:
