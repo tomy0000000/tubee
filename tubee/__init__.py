@@ -16,7 +16,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 from tubee.config import config
 
-VERSION = "0.13.1"
+VERSION = "0.14.0"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
