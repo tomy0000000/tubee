@@ -50,6 +50,9 @@ jobs:
           script_stop: true
           script: |
             cd tubee
-            docker pull tomy0000000/tubee:latest
+            docker compose down
+            rm docker-compose.yml
+            wget "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docker-compose.yml"
+            docker compose pull
             docker compose up --detach
             docker network connect nginx_default tubee_app

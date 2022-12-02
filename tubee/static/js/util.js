@@ -18,7 +18,7 @@
     let object = {};
     const array = this.serializeArray();
     $.map(array, (pair) => {
-      object[pair.name] = JSON.parse(pair.value);
+      object[pair.name] = pair.value;
     });
     return object;
   };

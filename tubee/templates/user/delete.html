@@ -1,0 +1,37 @@
+<!-- prettier-ignore -->
+{% extends "base.html" %}
+{% set title = "Change Password" %}
+
+<!-- prettier-ignore -->
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">Delete Account</h1>
+    <p>
+      <strong>Warning</strong>: You are about to delete your account. Type your
+      password to delete.
+    </p>
+    <form class="needs-validation" method="POST">
+      {{ form.csrf_token }}
+      <!-- prettier-ignore -->
+      <div class="mb-3">
+        {{ form.password.label }}
+        {% if form.password.errors|length > 0 %}
+          {{ form.password(class="form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+              {{ error }}
+                {% if not loop.last %}
+                  <br />
+                {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.password(class="form-control") }}
+        {% endif %}
+      </div>
+      {{ form.submit(class="btn btn-danger btn-lg m-2") }}
+    </form>
+  </div>
+</div>
+{% endblock %}

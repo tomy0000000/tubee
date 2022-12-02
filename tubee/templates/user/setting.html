@@ -4,7 +4,6 @@
 
 <!-- prettier-ignore -->
 {% block content %}
-
 <div class="p-5 mb-4 bg-light rounded-3">
   <div class="container-fluid py-5">
     <h1 id="headline" class="display-5 fw-bold">Setting Panel</h1>
@@ -203,6 +202,12 @@
         >
         {% endif %}
       </div>
+    </div>
+
+    <div class="md-3">
+      <a href="{{ url_for('user.delete') }}" class="link-danger"
+        >Delete Account</a
+      >
     </div>
   </div>
 </div>

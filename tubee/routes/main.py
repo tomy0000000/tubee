@@ -1,6 +1,6 @@
 """The Main Routes"""
 import bs4
-from flask import Blueprint, current_app, jsonify, render_template, request
+from flask import Blueprint, jsonify, render_template, request
 from flask_login import current_user  # type: ignore
 from flask_login import login_required
 from loguru import logger
@@ -26,9 +26,7 @@ def dashboard():
 
     # Paginate subscriptions
     page = request.args.get("page", 1, type=int)
-    pagination = subscriptions.paginate(
-        page=page, per_page=current_app.config["PAGINATE_COUNT"], error_out=False
-    )
+    pagination = subscriptions.paginate(page=page, per_page=25, error_out=False)
     return render_template(
         "subscription/main.html",
         subscription_pagination=pagination,
@@ -52,9 +50,7 @@ def channel(channel_id):
     # Paginate videos
     page = request.args.get("page", 1, type=int)
     videos = subscription.channel.videos.order_by(Video.uploaded_timestamp.desc())
-    pagination = videos.paginate(
-        page=page, per_page=current_app.config["PAGINATE_COUNT"], error_out=False
-    )
+    pagination = videos.paginate(page=page, per_page=25, error_out=False)
     return render_template(
         "channel.html",
         subscription=subscription,

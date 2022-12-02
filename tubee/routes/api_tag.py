@@ -15,7 +15,7 @@ def update_sort_indexes():
     """Update sort index"""
     if not (data := request.get_json()):
         abort(400, "No order provided")
-    order = data.get("order")
+    order = list(map(int, data.get("order").split(",")))
     tags = current_user.tags.all()
     results = []
     for tag in tags:

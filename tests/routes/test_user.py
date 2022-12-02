@@ -162,10 +162,10 @@ class ChannelRoutesTestCase(unittest.TestCase):
         self.assertIn("You&#39;ve Logged Out", response.get_data(as_text=True))
 
         # Test Full Login Topology and redirect to pre-defined redirected URL
-        response = self.client.get("/user/setting", follow_redirects=True)
+        response = self.client.get("/user/", follow_redirects=True)
         self.assertIn(login_manager.login_message, response.get_data(as_text=True))
         response = self.client.post(
-            "/user/login?next=%2Fuser%2Fsetting",
+            "/user/login?next=%2Fuser%2F",
             data={"username": self.client_username, "password": self.client_password},
             follow_redirects=True,
         )

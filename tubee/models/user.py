@@ -61,14 +61,6 @@ class User(UserMixin, db.Model):  # type: ignore
     )
     actions = db.relationship("Action", back_populates="user", lazy="dynamic")
 
-    #      #####
-    #     #     # #        ##    ####   ####  #    # ###### ##### #    #  ####  #####
-    #     #       #       #  #  #      #      ##  ## #        #   #    # #    # #    #
-    #     #       #      #    #  ####   ####  # ## # #####    #   ###### #    # #    #
-    #     #       #      ######      #      # #    # #        #   #    # #    # #    #
-    #     #     # #      #    # #    # #    # #    # #        #   #    # #    # #    #
-    #      #####  ###### #    #  ####   ####  #    # ######   #   #    #  ####  #####
-
     def __init__(self, username, password, admin=False, **kwargs):
         self.username = username
         self.password = password
@@ -80,13 +72,11 @@ class User(UserMixin, db.Model):  # type: ignore
     def __repr__(self):
         return f"<User: {self.username}>"
 
-    #     ######
-    #     #     #   ##    ####   ####  #    #  ####  #####  #####
-    #     #     #  #  #  #      #      #    # #    # #    # #    #
-    #     ######  #    #  ####   ####  #    # #    # #    # #    #
-    #     #       ######      #      # # ## # #    # #####  #    #
-    #     #       #    # #    # #    # ##  ## #    # #   #  #    #
-    #     #       #    #  ####   ####  #    #  ####  #    # #####
+    def delete(self):
+        """Delete User"""
+        db.session.delete(self)
+        db.session.commit()
+        logger.info(f"User <{self.username}>: Delete")
 
     @property
     def password(self):
@@ -105,14 +95,6 @@ class User(UserMixin, db.Model):  # type: ignore
     def check_password(self, password):
         """Return True if provided password is valid to login"""
         return bcrypt.check_password_hash(self._password_hash, password)
-
-    #     ######
-    #     #     # #    #  ####  #    #  ####  #    # ###### #####
-    #     #     # #    # #      #    # #    # #    # #      #    #
-    #     ######  #    #  ####  ###### #    # #    # #####  #    #
-    #     #       #    #      # #    # #    # #    # #      #####
-    #     #       #    # #    # #    # #    #  #  #  #      #   #
-    #     #        ####   ####  #    #  ####    ##   ###### #    #
 
     @property
     def pushover(self):
@@ -158,14 +140,6 @@ class User(UserMixin, db.Model):  # type: ignore
         """
         self._pushover_key = None
         db.session.commit()
-
-    #     #     #               #######
-    #      #   #   ####  #    #    #    #    # #####  ######
-    #       # #   #    # #    #    #    #    # #    # #
-    #        #    #    # #    #    #    #    # #####  #####
-    #        #    #    # #    #    #    #    # #    # #
-    #        #    #    # #    #    #    #    # #    # #
-    #        #     ####   ####     #     ####  #####  ######
 
     @property
     def youtube(self):
@@ -237,14 +211,6 @@ class User(UserMixin, db.Model):  # type: ignore
             return
         raise APIError(service="YouTube", message=error_description)
 
-    #     ######
-    #     #     # #####   ####  #####  #####   ####  #    #
-    #     #     # #    # #    # #    # #    # #    #  #  #
-    #     #     # #    # #    # #    # #####  #    #   ##
-    #     #     # #####  #    # #####  #    # #    #   ##
-    #     #     # #   #  #    # #      #    # #    #  #  #
-    #     ######  #    #  ####  #      #####   ####  #    #
-
     @property
     def dropbox(self):
         """Dropbox Service
@@ -280,14 +246,6 @@ class User(UserMixin, db.Model):  # type: ignore
         self._dropbox_credentials = None
         db.session.commit()
 
-    #     #                          #     #
-    #     #       # #    # ######    ##    #  ####  ##### # ###### #   #
-    #     #       # ##   # #         # #   # #    #   #   # #       # #
-    #     #       # # #  # #####     #  #  # #    #   #   # #####    #
-    #     #       # #  # # #         #   # # #    #   #   # #        #
-    #     #       # #   ## #         #    ## #    #   #   # #        #
-    #     ####### # #    # ######    #     #  ####    #   # #        #
-
     @property
     def line_notify(self):
         if not self._line_notify_credentials:
@@ -306,14 +264,6 @@ class User(UserMixin, db.Model):  # type: ignore
             raise APIError(service="Line Notify", message=response.text)
         self._line_notify_credentials = None
         db.session.commit()
-
-    #     #     #
-    #     ##   ## #  ####   ####
-    #     # # # # # #      #    #
-    #     #  #  # #  ####  #
-    #     #     # #      # #
-    #     #     # # #    # #    #
-    #     #     # #  ####   ####
 
     def get_id(self):
         """Get user's ID

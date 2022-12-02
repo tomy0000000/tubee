@@ -13,7 +13,8 @@ tag_blueprint = Blueprint("tag", __name__)
 @login_required
 def listing():
     tags = current_user.tags.order_by(Tag.sort_index.asc()).all()
-    return render_template("tag/listing.html", tags=tags)
+    subscriptions = current_user.subscriptions.all()
+    return render_template("tag/listing.html", tags=tags, subscriptions=subscriptions)
 
 
 @tag_blueprint.get("/<tag_id>")

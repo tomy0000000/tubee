@@ -29,6 +29,13 @@ current_user: User
 user_blueprint = Blueprint("user", __name__)
 
 
+@user_blueprint.get("/")
+@login_required
+def setting():
+    """User Setting Page"""
+    return render_template("user/setting.html")
+
+
 @user_blueprint.route("/register", methods=["GET", "POST"])
 def register():
     """User Register"""
@@ -52,7 +59,7 @@ def login():
     if current_user.is_authenticated:
         flash("You've already logined!", "success")
         return redirect(url_for("main.dashboard"))
-    form = UserForm(submit_label="Login", password_confirm=False)
+    form = UserForm(submit_label="Login")
     if form.is_submitted():
         if form.validate():
             query_user = User.query.get(form.username.data)
@@ -64,6 +71,15 @@ def login():
                 return redirect(url_for("main.dashboard"))
         flash("Invalid username or password.", "warning")
     return render_template("user/login.html", form=form)
+
+
+@user_blueprint.get("/logout")
+@login_required
+def logout():
+    """User Logout"""
+    logout_user()
+    flash("You've Logged Out", "success")
+    return redirect(url_for("user.login"))
 
 
 @user_blueprint.route("/change-password", methods=["GET", "POST"])
@@ -80,20 +96,19 @@ def change_password():
     return render_template("user/change_password.html", form=form)
 
 
-@user_blueprint.get("/logout")
+@user_blueprint.route("/delete", methods=["GET", "POST"])
 @login_required
-def logout():
-    """User Logout"""
-    logout_user()
-    flash("You've Logged Out", "success")
-    return redirect(url_for("user.login"))
-
-
-@user_blueprint.get("/setting")
-@login_required
-def setting():
-    """User Setting Page"""
-    return render_template("user/setting.html")
+def delete():
+    """Confirm Delete Account"""
+    form = UserForm(username=current_user.username, submit_label="Delete")
+    if form.validate_on_submit():
+        if current_user.check_password(form.password.data):
+            current_user.delete()
+            logout_user()
+            flash("Your Account has been deleted", "success")
+            return redirect(url_for("user.login"))
+        flash("Invalid username or password.", "warning")
+    return render_template("user/delete.html", form=form)
 
 
 @user_blueprint.get("/setting/youtube/authorize")
