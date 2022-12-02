@@ -81,13 +81,8 @@
             Open In YouTube
           </a>
         </button>
-        <a
-          href="#"
-          class="text-muted clipboard"
-          data-clipboard-text="{{ channel.infos.snippet.customUrl }}"
-        >
-          <p class="mb-0">#{{ channel.infos.snippet.customUrl }}</p>
-        </a>
+        {{ custom_url(channel) }}
+        <!-- prettier-ignore -->
         {% else %}
         <button class="btn btn-sm youtube-btn">
           <a
@@ -136,7 +131,8 @@
               button_variant='primary',
               method='POST',
               form_id='tag-form',
-              classes=['mb-2']
+              classes=['mb-2'],
+              restore=True
             ) }}
           </div>
         </form>
@@ -150,6 +146,17 @@
     </div>
   </div>
 </div>
+{%- endmacro %}
+
+<!-- prettier-ignore -->
+{% macro custom_url(channel) -%}
+<a
+  href="#"
+  class="text-muted clipboard"
+  data-clipboard-text="{{ channel.infos.snippet.customUrl }}"
+>
+  <p class="mb-0">{{ channel.infos.snippet.customUrl }}</p>
+</a>
 {%- endmacro %}
 
 <!-- prettier-ignore -->

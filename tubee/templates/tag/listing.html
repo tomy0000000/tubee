@@ -27,13 +27,39 @@
       id="tag-sortable"
       class="nav nav-pills col-11 overflow-auto flex-nowrap"
     >
+      <li class="nav-item">
+        <a
+          type="button"
+          class="nav-link active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="tab-pane-all"
+          data-bs-toggle="tab"
+          data-bs-target="#tab-pane-all"
+        >
+          All
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          type="button"
+          class="nav-link"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tab-pane-untagged"
+          data-bs-toggle="tab"
+          data-bs-target="#tab-pane-untagged"
+        >
+          Untagged
+        </a>
+      </li>
       {% for tag in tags %}
       <li class="nav-item sortable" data-tag-id="{{ tag.id }}">
         <a
           type="button"
-          class="nav-link{{ ' active' if loop.first else '' }}"
+          class="nav-link"
           role="tab"
-          aria-selected="{{ 'true' if loop.first else 'false' }}"
+          aria-selected="false"
           aria-controls="tab-pane-{{ tag.id }}"
           data-bs-toggle="tab"
           data-bs-target="#tab-pane-{{ tag.id }}"
@@ -51,10 +77,88 @@
 </nav>
 
 <div class="tab-content">
+  <div
+    id="tab-pane-all"
+    class="tab-pane fade p-3 show active"
+    role="tabpanel"
+    aria-labelledby="all-tab"
+    tabindex="0"
+  >
+    <div class="card">
+      <div class="card-header">
+        <a>All</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for subscription in subscriptions %}
+        <li class="list-group-item">
+          <div class="d-flex align-items-center">
+            {% if subscription.channel.infos.snippet.thumbnails.default.url %}
+            <div class="flex-shrink-0">
+              <img
+                src="{{ subscription.channel.infos.snippet.thumbnails.default.url }}"
+                class="rounded-circle"
+              />
+            </div>
+            {% endif %}
+            <div class="flex-grow-1 ms-3">
+              <a
+                href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
+                class="stretched-link"
+              >
+                {{ subscription.channel.name }}
+              </a>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div
+    id="tab-pane-untagged"
+    class="tab-pane fade p-3"
+    role="tabpanel"
+    aria-labelledby="untagged-tab"
+    tabindex="0"
+  >
+    <div class="card">
+      <div class="card-header">
+        <a>Untagged</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        <!-- prettier-ignore -->
+        {% for subscription in subscriptions %}
+        {% if not subscription.tags %}
+        <li class="list-group-item">
+          <div class="d-flex align-items-center">
+            {% if subscription.channel.infos.snippet.thumbnails.default.url %}
+            <div class="flex-shrink-0">
+              <img
+                src="{{ subscription.channel.infos.snippet.thumbnails.default.url }}"
+                class="rounded-circle"
+              />
+            </div>
+            {% endif %}
+            <div class="flex-grow-1 ms-3">
+              <a
+                href="{{ url_for('main.channel', channel_id=subscription.channel_id) }}"
+                class="stretched-link"
+              >
+                {{ subscription.channel.name }}
+              </a>
+            </div>
+          </div>
+        </li>
+        <!-- prettier-ignore -->
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
   {% for tag in tags %}
   <div
     id="tab-pane-{{ tag.id }}"
-    class="tab-pane fade p-3{{ ' show active' if loop.first else '' }}"
+    class="tab-pane fade p-3"
     role="tabpanel"
     aria-labelledby="{{ tag.id }}-tab"
     tabindex="0"
