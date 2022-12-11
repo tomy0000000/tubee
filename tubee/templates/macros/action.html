@@ -20,12 +20,20 @@
         >
           New
         </button>
-        {% endif %} {% if tag_id %}
+        {% elif tag_id %}
         <button
           type="button"
           class="btn btn-success"
           onclick="$(this).actionModal()"
           data-tag-id="{{ tag_id }}"
+        >
+          New
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-success"
+          onclick="$(this).actionModal()"
         >
           New
         </button>

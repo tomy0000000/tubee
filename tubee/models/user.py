@@ -72,6 +72,23 @@ class User(UserMixin, db.Model):  # type: ignore
     def __repr__(self):
         return f"<User: {self.username}>"
 
+    @property
+    def actions_global(self):
+        """Get Global Actions
+
+        Returns:
+            list -- List of Global Actions
+        """
+        return self.actions.filter_by(channel_id=None, tag_id=None).all()
+
+    @actions_global.setter
+    def actions_global(self, actions_global):
+        raise ValueError("Global action should be modify directly on action")
+
+    @actions_global.deleter
+    def actions_global(self):
+        raise ValueError("Global action should be modify directly on action")
+
     def delete(self):
         """Delete User"""
         db.session.delete(self)

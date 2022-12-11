@@ -26,8 +26,12 @@
           const modal = $(this).find(".action-form-modal");
           modal.find("form").refresh_field();
           if (!action_id) {
-            modal.find("#channel_id").val(channel_id);
-            modal.find("#tag_id").val(tag_id);
+            if (!channel_id && !tag_id) {
+              modal.find(".automate-fields").hide();
+            } else {
+              modal.find("#channel_id").val(channel_id);
+              modal.find("#tag_id").val(tag_id);
+            }
           }
           modal.modal("show");
         }

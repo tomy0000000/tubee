@@ -62,11 +62,6 @@ class Action(db.Model):  # type: ignore
             self.tag_id = (
                 Tag.query.filter_by(id=tag_id, username=username).first_or_404().id
             )
-        else:
-            logger.error(
-                f"Action <{self.id}>: Create failed without supply channel or tag"
-            )
-            raise ValueError("At least one of <Channel, Tag> must be given")
         self.username = username
         self.edit(params)
         db.session.add(self)

@@ -92,7 +92,9 @@ def unchecked():
                 get_template_attribute("macros/video.html", "table_channel")(row),
                 get_template_attribute("macros/video.html", "table_title")(row),
                 get_template_attribute("macros/video.html", "table_published")(row),
-                get_template_attribute("macros/video.html", "table_actions")(row),
+                get_template_attribute("macros/video.html", "table_actions")(
+                    row, current_user.actions_global
+                ),
                 row["Video"].id,
             ]
             for row in rows
