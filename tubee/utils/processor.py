@@ -27,7 +27,6 @@ def error_handler(error) -> tuple[Union[Response, str], int]:
         Response -- Wrapped response
     """
     name = error.__class__.__name__
-    logger.exception(name)
 
     if isinstance(error, HTTPException):  # raised with flask.abort(code, description)
         description = f"{name}: {error.description}"
@@ -38,6 +37,7 @@ def error_handler(error) -> tuple[Union[Response, str], int]:
     else:
         description = "Internal Server Error"  # hide internal errors from user
         status_code = 500
+        logger.exception(name)  # log internal errors
 
     if request.path.startswith("/api"):
         response = dict(ok=False, error=name, description=description)
