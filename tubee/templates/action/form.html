@@ -183,6 +183,7 @@
         {{ api_button(
           'Save',
           'api_action.update',
+          button_type="submit",
           method='PATCH',
           form_id='action-form',
           path_params=dict(action_id=action.id)
@@ -191,6 +192,7 @@
         {{ api_button(
           'Create',
           'api_action.create',
+          button_type="submit",
           method='POST',
           form_id='action-form',
         ) }}

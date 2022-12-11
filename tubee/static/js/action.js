@@ -2,7 +2,11 @@
   $.fn.refresh_field = function () {
     const type = $(this).find("#action_type").val().toLowerCase();
     $(".action-type-fields").hide();
+    $(".action-type-fields input:required")
+      .prop("required", false)
+      .attr("data-required", true);
     $(`.${type}-fields`).show();
+    $(`.${type}-fields input[data-required]`).prop("required", true);
   };
 
   $.fn.actionModal = function () {

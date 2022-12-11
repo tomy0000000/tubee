@@ -112,7 +112,15 @@
     }
 
     const url = buildURL(endpoint, pathParams, queryParams);
-    const form_data = formId ? $(`#${formId}`).serializeObject() : {};
+    let form_data;
+    if (formId) {
+      const form = $(`#${formId}`);
+      if (form[0].reportValidity()) {
+        form_data = form.serializeObject();
+      } else {
+        return this;
+      }
+    }
     const data = JSON.stringify(form_data);
 
     this.buttonToggleState({ state: "loading" });
