@@ -62,6 +62,7 @@ def create_app(config_name="development", coverage=None) -> Tubee:
     celery.conf.update(broker_url=config_instance.BROKER_URL, result_backend="rpc://")
 
     # Setup loguru
+    logger.remove()  # remove default handler
     logger.add("tubee.log", level="INFO", rotation="25 MB")
     logger.add(PropagateToGunicorn(), colorize=True)
 
@@ -110,8 +111,7 @@ def create_app(config_name="development", coverage=None) -> Tubee:
 
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-    else:
-        app.register_error_handler(Exception, processor.error_handler)  # Error handler
+    app.register_error_handler(Exception, processor.error_handler)  # Error handler
     app.context_processor(processor.template)  # Variables for jinja templates
     app.shell_context_processor(processor.shell)  # Variables for shell
 

@@ -1,6 +1,6 @@
 from typing import Union
 
-from flask import Response, flash, jsonify, render_template, request
+from flask import Response, current_app, flash, jsonify, render_template, request
 from loguru import logger
 from werkzeug.exceptions import HTTPException
 
@@ -43,11 +43,14 @@ def error_handler(error) -> tuple[Union[Response, str], int]:
         response = dict(ok=False, error=name, description=description)
         return jsonify(response), status_code
 
+    if current_app.debug:
+        raise error  # So the debugger shows up
+
     flash(description, "danger")
     return render_template("error.html"), status_code
 
 
-def api_formatter(response):
+def api_formatter(response: Response):
     """Format API Response
 
     Arguments:
