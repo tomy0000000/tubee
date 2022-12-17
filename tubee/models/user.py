@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 import dropbox
 import requests
+from authlib.integrations.flask_client.apps import FlaskOAuth2App
 from dropbox.exceptions import AuthError
 from flask import current_app
 from flask_login import UserMixin
@@ -213,6 +214,8 @@ class User(UserMixin, db.Model):  # type: ignore
             APIError -- Raised when revoke encounter issue
                                 (not necessarily failed)
         """
+        if not self._youtube_credentials:
+            raise ServiceNotAuth("YouTube")
         response = requests.post(
             "https://oauth2.googleapis.com/revoke",
             params={"token": self._youtube_credentials["token"]},
@@ -264,10 +267,10 @@ class User(UserMixin, db.Model):  # type: ignore
         db.session.commit()
 
     @property
-    def line_notify(self):
+    def line_notify(self) -> FlaskOAuth2App:
         if not self._line_notify_credentials:
             raise ServiceNotAuth("Line Notify")
-        return oauth.LineNotify
+        return oauth.LineNotify  # type: ignore
 
     @line_notify.setter
     def line_notify(self, credentials):

@@ -1,6 +1,7 @@
 from typing import Union
 
-from flask import Response, current_app, flash, jsonify, render_template, request
+from flask import current_app, flash, jsonify, render_template, request
+from flask.wrappers import Response
 from loguru import logger
 from werkzeug.exceptions import HTTPException
 
