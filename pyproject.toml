@@ -45,7 +45,7 @@ youtube-dl = "*"
 sentry-sdk = {extras = ["flask"], version = "^1.5.0"}
 loguru = "^0.6.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 argh = "*"
 codecov = "*"
 coverage = "*"
