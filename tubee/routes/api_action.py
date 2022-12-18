@@ -2,6 +2,8 @@ from flask import Blueprint, abort, jsonify
 from flask_login import current_user  # type: ignore
 from flask_login import login_required
 
+from tubee.exceptions import InvalidAction
+
 from ..forms import ActionForm
 from ..models import Action, User
 
@@ -15,7 +17,7 @@ api_action_blueprint = Blueprint("api_action", __name__)
 def create():
     form = ActionForm()
     if not form.validate_on_submit():
-        abort(400)
+        raise InvalidAction(form.errors)
     response = Action(current_user.username, form.data)
     return jsonify(response)
 

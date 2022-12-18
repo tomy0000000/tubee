@@ -13,3 +13,7 @@
 #tag-sortable::-webkit-scrollbar {
   display: none;
 }
+
+#tag-sortable a {
+  width: max-content;
+}

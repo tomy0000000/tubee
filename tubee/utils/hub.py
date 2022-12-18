@@ -96,7 +96,8 @@ def _parse_detail(query, fuzzy=False):
     parsed_datetime = try_parse_datetime(query)
     if not fuzzy or not parsed_datetime:
         return parsed_datetime
-    summary = re.search(r"\((.*)\)", query).groups()[0]
+    if summary := re.search(r"\((.*)\)", query):
+        summary = summary.groups()[0]
     return (parsed_datetime, summary)
 
 

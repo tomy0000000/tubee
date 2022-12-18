@@ -31,7 +31,9 @@ def update(tag_id):
     tag = Tag.query.get_or_404(tag_id)
     if tag.username != current_user.username:
         abort(403)
-    response = tag.rename(request.get_json().get("name"))
+    if new_name := request.get_json():
+        new_name = new_name.get("name")
+    response = tag.rename(new_name)
     return jsonify(response)
 
 

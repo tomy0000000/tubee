@@ -77,9 +77,9 @@
 {%- endmacro %}
 
 <!-- prettier-ignore -->
-{% macro table_actions(row) -%}
+{% macro table_actions(row, global_actions) -%}
 <div class="btn-group" role="group" aria-label="Video Actions">
-  {% for action in row.Subscription.actions %}
+  {% for action in row.Subscription.actions + global_actions %}
   <!-- prettier-ignore -->
   {{ api_button(
     action.name,

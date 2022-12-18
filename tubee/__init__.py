@@ -1,4 +1,5 @@
 """Main Application of Tubee"""
+import logging
 from typing import Union
 
 import sentry_sdk
@@ -13,6 +14,11 @@ from flask_sqlalchemy import SQLAlchemy
 from jinja2 import StrictUndefined
 from loguru import logger
 from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.logging import (
+    BreadcrumbHandler,
+    EventHandler,
+    LoggingIntegration,
+)
 
 from tubee.config import config
 
@@ -55,18 +61,25 @@ def create_app(config_name="development", coverage=None) -> Tubee:
     oauth.init_app(app)
     celery.conf.update(broker_url=config_instance.BROKER_URL, result_backend="rpc://")
 
-    # Register Sentry
-    if not app.debug and config_instance.SENTRY_DSN:
-        sentry_sdk.init(
-            dsn=config_instance.SENTRY_DSN,
-            integrations=[FlaskIntegration()],
-            traces_sample_rate=0.2,
-            release=VERSION,
-        )
-
     # Setup loguru
+    logger.remove()  # remove default handler
     logger.add("tubee.log", level="INFO", rotation="25 MB")
     logger.add(PropagateToGunicorn(), colorize=True)
+
+    # Register Sentry
+    if config_instance.SENTRY_DSN:
+        sentry_sdk.init(
+            dsn=config_instance.SENTRY_DSN,
+            integrations=[
+                FlaskIntegration(),
+                LoggingIntegration(level=None, event_level=logging.WARNING),
+            ],
+            traces_sample_rate=0.2 if not app.debug else 1.0,
+            release=VERSION,
+            environment=config_name,
+        )
+        logger.add(BreadcrumbHandler(level=logging.DEBUG), level=logging.DEBUG)
+        logger.add(EventHandler(level=logging.ERROR), level=logging.ERROR)
 
     # Extensions Settings
     login_manager.login_view = "user.login"  # type: ignore
@@ -98,8 +111,7 @@ def create_app(config_name="development", coverage=None) -> Tubee:
 
     if app.debug:
         app.jinja_env.undefined = StrictUndefined
-    else:
-        app.register_error_handler(Exception, processor.error_handler)  # Error handler
+    app.register_error_handler(Exception, processor.error_handler)  # Error handler
     app.context_processor(processor.template)  # Variables for jinja templates
     app.shell_context_processor(processor.shell)  # Variables for shell
 

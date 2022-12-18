@@ -9,7 +9,7 @@ from wtforms.fields import (
     StringField,
     SubmitField,
 )
-from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.validators import AnyOf, DataRequired, EqualTo, Length
 
 from .models import ActionType, Service
 
@@ -79,7 +79,7 @@ class NotificationActionForm(FlaskForm):
     )
     image_url = StringField(
         "Image URL",
-        default="{video_thumbnails}",
+        default="{video_thumbnail}",
         validators=[DataRequired()],
     )
 
@@ -118,7 +118,7 @@ class ActionForm(FlaskForm):
     )
     action_type = SelectField(
         "Type",
-        validators=[DataRequired()],
+        validators=[DataRequired(), AnyOf([item.value for item in ActionType])],
         choices=[(item.value, item.value) for item in ActionType],
     )
     automate = BooleanField("Automate")
@@ -128,8 +128,14 @@ class ActionForm(FlaskForm):
     playlist = FormField(PlaylistActionForm)
     download = FormField(DownloadActionForm)
 
+    def validate_automate(self, field):
+        if not self.channel_id.data and not self.tag_id.data and field.data:
+            field.errors = ["Automate can only be enabled for channels or tags"]
+
     def validate(self):
-        if not self.channel_id.data and not self.tag_id.data:
+        if not self.action_name.validate(self) or not self.action_type.validate(self):
+            return False
+        if not self.validate_automate(self.automate):
             return False
         if not (action_type := self.action_type.data):
             return False

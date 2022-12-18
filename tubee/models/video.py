@@ -12,18 +12,12 @@ from ..utils.youtube import build_youtube_api, fetch_video_metadata
 class Video(db.Model):  # type: ignore
     """Videos of Subscribed Channel"""
 
-    id: str
-    name: str
-    channel_id: str
-    uploaded_timestamp: datetime
-    details: dict
-
     __tablename__ = "video"
-    id = db.Column(db.String(16), primary_key=True)
-    name = db.Column(db.String(128))
-    channel_id = db.Column(db.String(32), db.ForeignKey("channel.id"))
-    uploaded_timestamp = db.Column(db.DateTime)
-    details = db.Column(db.JSON, nullable=False, default={})
+    id: str = db.Column(db.String(16), primary_key=True)
+    name: str = db.Column(db.String(128))
+    channel_id: str = db.Column(db.String(32), db.ForeignKey("channel.id"))
+    uploaded_timestamp: datetime = db.Column(db.DateTime)
+    details: dict = db.Column(db.JSON, nullable=False, default={})
     channel = db.relationship("Channel", back_populates="videos")
     callbacks = db.relationship(
         "Callback", back_populates="video", lazy="dynamic", cascade="all, delete-orphan"
@@ -58,7 +52,9 @@ class Video(db.Model):  # type: ignore
 
     @property
     def thumbnails(self):
-        base_url = self.details["thumbnails"]["default"]["url"]
+        base_url = self.details.get("thumbnails", {}).get("default", {}).get("url")
+        if not base_url:
+            return None
         for size, filename, width, height in self.THUMBNAIL_SIZES_TUPLE:
             if size not in self.details["thumbnails"]:
                 self.details["thumbnails"][size] = {
