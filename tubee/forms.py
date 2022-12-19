@@ -131,6 +131,8 @@ class ActionForm(FlaskForm):
     def validate_automate(self, field):
         if not self.channel_id.data and not self.tag_id.data and field.data:
             field.errors = ["Automate can only be enabled for channels or tags"]
+            return False
+        return True
 
     def validate(self):
         if not self.action_name.validate(self) or not self.action_type.validate(self):
