@@ -22,7 +22,7 @@ from sentry_sdk.integrations.logging import (
 
 from tubee.config import config
 
-VERSION = "0.15.0"
+VERSION = "0.15.1"
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
