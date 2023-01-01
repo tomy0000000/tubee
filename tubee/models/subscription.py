@@ -31,6 +31,7 @@ class Subscription(db.Model):  # type: ignore
         back_populates="subscription",
         lazy="dynamic",
         cascade="all, delete-orphan",
+        overlaps="actions,channel,user",
     )
     _subscription_tags = db.relationship(
         "SubscriptionTag",
