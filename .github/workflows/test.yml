@@ -120,6 +120,6 @@ jobs:
             docker compose down
             rm docker-compose.yml
             wget "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/docker-compose.yml"
-            docker compose pull
+            docker compose pull --quiet
             docker compose up --detach
             docker network connect nginx_default tubee_beta_app
