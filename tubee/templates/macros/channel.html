@@ -24,11 +24,15 @@
   <div class="carousel-inner">
     {% for video in videos[:thumb_num] %}
     <div class="carousel-item {{ 'active' if loop.first else '' }}">
-      <img
-        src="{{ video.thumbnails.maxres.url }}"
-        class="d-block w-100"
-        alt="{{ video.name }}"
-      />
+      <picture>
+        {% for size, info in video.thumbnails.items() %}
+        <source
+          media="(min-width:{{ info.width }}px)"
+          srcset="{{ info.url }}"
+        />
+        {% endfor %}
+        <img class="d-block w-100" alt="{{ video.name }}" />
+      </picture>
       <div class="carousel-caption d-none d-md-block">
         <h5>{{ video.name }}</h5>
         <p>{{ video.details.description }}</p>

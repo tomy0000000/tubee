@@ -29,10 +29,10 @@ class Video(db.Model):  # type: ignore
         "channelTitle,liveBroadcastContent))"
     )
     THUMBNAIL_SIZES_TUPLE = [
-        ("medium", "mqdefault.jpg", 320, 180),
-        ("high", "hqdefault.jpg", 480, 360),
-        ("standard", "sddefault.jpg", 640, 480),
         ("maxres", "maxresdefault.jpg", 1280, 720),
+        ("standard", "sddefault.jpg", 640, 480),
+        ("high", "hqdefault.jpg", 480, 360),
+        ("medium", "mqdefault.jpg", 320, 180),
     ]
 
     def __init__(self, video_id, channel, details=None, fetch_infos=True):
@@ -55,14 +55,17 @@ class Video(db.Model):  # type: ignore
         base_url = self.details.get("thumbnails", {}).get("default", {}).get("url")
         if not base_url:
             return None
+        thumbnails_map = {}
         for size, filename, width, height in self.THUMBNAIL_SIZES_TUPLE:
-            if size not in self.details["thumbnails"]:
-                self.details["thumbnails"][size] = {
+            if size in self.details["thumbnails"]:
+                thumbnails_map[size] = self.details["thumbnails"][size]
+            else:
+                thumbnails_map[size] = {
                     "url": urljoin(base_url, filename),
                     "width": width,
                     "height": height,
                 }
-        return self.details["thumbnails"]
+        return thumbnails_map
 
     @thumbnails.setter
     def thumbnails(self, thumbnails):
