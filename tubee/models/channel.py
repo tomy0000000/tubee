@@ -36,7 +36,9 @@ class Channel(db.Model):  # type: ignore
     hub_infos = db.Column(db.JSON, nullable=False, default={})
     subscribe_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     unsubscribe_timestamp = db.Column(db.DateTime)
-    actions = db.relationship("Action", back_populates="channel")
+    actions = db.relationship(
+        "Action", back_populates="channel", overlaps="subscription"
+    )
     videos = db.relationship(
         "Video", back_populates="channel", lazy="dynamic", cascade="all, delete-orphan"
     )

@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "bungcip.better-toml",
+    "ryanluker.vscode-coverage-gutters",
+    "whatwedo.twig",
+    "donjayamanne.jquerysnippets",
+    "cschleiden.vscode-github-actions"
+  ]
+}

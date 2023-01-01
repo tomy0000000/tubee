@@ -60,7 +60,12 @@ class User(UserMixin, db.Model):  # type: ignore
     tags = db.relationship(
         "Tag", back_populates="user", lazy="dynamic", cascade="all, delete-orphan"
     )
-    actions = db.relationship("Action", back_populates="user", lazy="dynamic")
+    actions = db.relationship(
+        "Action",
+        back_populates="user",
+        lazy="dynamic",
+        overlaps="_actions,subscription",
+    )
 
     def __init__(self, username, password, admin=False, **kwargs):
         self.username = username

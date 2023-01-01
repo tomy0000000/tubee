@@ -42,10 +42,14 @@ class Action(db.Model):  # type: ignore
         ),
         {},
     )
-    channel = db.relationship("Channel", back_populates="actions")
-    subscription = db.relationship("Subscription", back_populates="_actions")
+    channel = db.relationship(
+        "Channel", back_populates="actions", overlaps="subscription"
+    )
+    subscription = db.relationship(
+        "Subscription", back_populates="_actions", overlaps="channel"
+    )
     tag = db.relationship("Tag", back_populates="actions")
-    user = db.relationship("User", back_populates="actions")
+    user = db.relationship("User", back_populates="actions", overlaps="subscription")
 
     def __init__(self, username: str, params: Union[dict[str, str], None] = None):
         from .subscription import Subscription
