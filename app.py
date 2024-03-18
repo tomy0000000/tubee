@@ -1,4 +1,5 @@
 """Boot Script of Tubee"""
+
 import os
 
 from coverage import Coverage

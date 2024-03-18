@@ -1,4 +1,5 @@
 """Main Application of Tubee"""
+
 import logging
 from typing import Union
 

@@ -1,4 +1,5 @@
 """Test Cases of Channel Model"""
+
 import json
 import unittest
 from datetime import datetime, timezone

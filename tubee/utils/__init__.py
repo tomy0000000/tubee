@@ -2,6 +2,7 @@
 
 Some Misc Functions used in this app
 """
+
 import logging
 import secrets
 import string
