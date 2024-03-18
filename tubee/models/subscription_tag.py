@@ -1,4 +1,5 @@
 """SubscriptionTag Model"""
+
 from dataclasses import dataclass
 
 from .. import db

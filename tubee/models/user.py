@@ -1,4 +1,5 @@
 """User Model"""
+
 import json
 from dataclasses import dataclass
 

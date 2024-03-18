@@ -1,4 +1,5 @@
 """Test Cases of Main Routes"""
+
 import unittest
 
 from tubee import create_app, db

@@ -1,4 +1,5 @@
 """Test Cases of User Routes"""
+
 import unittest
 
 from tubee import create_app, db, login_manager

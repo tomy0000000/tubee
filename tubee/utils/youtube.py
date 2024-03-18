@@ -1,4 +1,5 @@
 """YouTube Data API Functions"""
+
 import json
 from typing import Union
 

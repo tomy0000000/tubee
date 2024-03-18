@@ -1,4 +1,5 @@
 """Channel Model"""
+
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
