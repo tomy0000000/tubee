@@ -2,24 +2,7 @@
 
 <h1>Management</h1>
 <div id="admin-management-buttons">
-  <button type="button" id="channel-renew-all" class="btn btn-secondary my-2">
-    Renew all channel (immediately)
-  </button>
   <!-- prettier-ignore -->
-  {{ api_button(
-    'Reschedule renewal (one day before expire)',
-    'api_channel.renew_all',
-    button_variant='secondary',
-    classes=['my-2'],
-    data=dict(execution=-1)
-  ) }}
-  {{ api_button(
-    'Reschedule renewal (random time)',
-    'api_channel.renew_all',
-    button_variant='secondary',
-    classes=['my-2'],
-    data=dict(execution=-2)
-  ) }}
   {{ api_button(
     'Remove All Task',
     'api_task.remove_all',

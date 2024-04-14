@@ -1,10 +1,9 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, jsonify, request, url_for
+from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
 from ..models import Callback, Channel
-from ..tasks import issue_channel_renewal, schedule_channel_renewal
 from ..utils import admin_required_decorator as admin_required
 from ..utils.youtube import build_youtube_api
 
@@ -30,30 +29,6 @@ def search():
         for item in results["items"]
     ]
     return jsonify(response)
-
-
-@api_channel_blueprint.get("/renew-all")
-@login_required
-def renew_all():
-    """
-    Renew Subscription Info, Both Hub and Info
-
-    policy:
-        NOW = 0
-        ONE_DAY_BEFORE_EXPIRE = -1
-        RANDOM = -2
-    """
-    policy = int(request.args.to_dict().get("execution", 0))
-    channels = Channel.query.all()
-    if policy == 0:
-        task = issue_channel_renewal(channels)
-        response = {
-            "id": task.id,
-            "status": url_for("api_task.status", task_id=task.id),
-        }
-    else:
-        response = schedule_channel_renewal(channels, policy=policy)
-    return response
 
 
 @api_channel_blueprint.get("/callbacks")

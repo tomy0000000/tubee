@@ -62,35 +62,6 @@ function update_progress(status_url, progress_bar, message_box) {
     });
 }
 
-function api_with_progress(event) {
-  event.preventDefault();
-  // send ajax POST request to start background job
-  const url = buildURL("api_channel.renew_all");
-  $.getJSON(url)
-    .then((response) => {
-      if (!response.ok) {
-        return $.Deferred().reject(response.error);
-      }
-      return response.content;
-    })
-    .done((data) => {
-      let progress_bar = $("<div>")
-        .attr({
-          class: "progress-bar",
-          role: "progressbar",
-          "aria-valuemin": "0",
-          "aria-valuemax": "100",
-        })
-        .width("0%");
-      let message_box = $("<div>");
-      $("#management > .results").append(
-        $("<div>").addClass("progress my-3").append(progress_bar),
-        message_box,
-      );
-      setTimeout(update_progress, 2000, data.status, progress_bar, message_box);
-    });
-}
-
 function api_get(event) {
   event.preventDefault();
   insert_spinner("#management", "primary");
@@ -162,8 +133,5 @@ $(document).ready(() => {
   $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
   $("#management-tab").on("shown.bs.tab", empty_results);
   // Management page
-  $("#channel-renew-all").click(api_with_progress);
-  $("#channel-renew-all-schedule").click(api_get);
-  $("#channel-renew-all-random").click(api_get);
   $("#task-remove-all").click(api_get);
 });
