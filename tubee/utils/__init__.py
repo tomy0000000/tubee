@@ -48,16 +48,9 @@ def setup_app():
         logger.info("Username: admin")
         logger.info(f"Password: {password}")
 
-    # Reschedule all tasks
-    from ..models import Channel
-    from ..tasks import remove_all_tasks, schedule_channel_renewal
-
-    remove_all_tasks()
-    logger.info("All tasks removed")
-    schedule_channel_renewal(Channel.query.all())
-    logger.info("Channel renewal scheduled")
-
-    # TODO: Update channels metadata
+    # TODO: Subscribe to all channels
+    # TODO: Update channels metadata and hub status
+    # TODO: Fetch videos for all channels
 
 
 def try_parse_datetime(string: str, fuzzy: bool = False) -> Union[datetime, None]:
