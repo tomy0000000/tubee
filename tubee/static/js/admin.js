@@ -2,10 +2,6 @@
 // Util Functions
 //
 
-function build_formatted_JSON_tag(data) {
-  return $("<pre></pre>").text(JSON.stringify(data, null, 4));
-}
-
 function loadChannelPage(event) {
   $("#channels")
     .empty()
@@ -16,65 +12,6 @@ function loadChannelPage(event) {
       $(this).find("table").DataTable();
       $(this).dropLoadingSpinner({});
     });
-}
-
-function update_progress(status_url, progress_bar, message_box) {
-  // send GET request to status URL
-  $.getJSON(status_url)
-    .then((response) => {
-      if (!response.ok) {
-        return $.Deferred().reject(response.error);
-      }
-      return response.content;
-    })
-    .done((data) => {
-      // Update UI
-      let percent = (data.current / data.total) * 100;
-      progress_bar.width(`${percent}%`);
-      progress_bar.attr("aria-valuenow", percent);
-
-      // Update after 2 second or terminate
-      if (data.status === "Success" || data.status === "Failure") {
-        if (data.status === "Success") {
-          progress_bar.addClass("bg-success");
-        } else {
-          progress_bar.width("100%");
-          progress_bar.addClass("bg-danger");
-        }
-        message_box.empty().append(build_formatted_JSON_tag(data.result));
-      } else {
-        message_box.text(
-          `Currently Processing: ${data.result.channel_name} <${data.channel_id}>`,
-        );
-        setTimeout(
-          update_progress,
-          2000,
-          status_url,
-          progress_bar,
-          message_box,
-        );
-      }
-    })
-    .fail((data) => {
-      progress_bar.width("100%");
-      progress_bar.addClass("bg-danger");
-      message_box.append(build_formatted_JSON_tag(data));
-    });
-}
-
-function api_get(event) {
-  event.preventDefault();
-  insert_spinner("#management", "primary");
-  const api = $(this).data("api");
-  const pathParams = $(this).data("path-params");
-  const url = buildURL(api, pathParams);
-  $.getJSON(url).done((data) => {
-    $("#management > .results").append(
-      $("<pre>").text(JSON.stringify(data, null, 2)),
-    );
-    // console.log(data);
-    drop_spinner("#management");
-  });
 }
 
 function load_tasks(event) {
@@ -123,15 +60,8 @@ function load_tasks(event) {
     });
 }
 
-function empty_results(event) {
-  $("#management > .results").empty();
-}
-
 $(document).ready(() => {
   // Tab activate
   $("#channels-tab").on("shown.bs.tab", loadChannelPage);
   $("#celery_tasks-tab").on("shown.bs.tab", load_tasks);
-  $("#management-tab").on("shown.bs.tab", empty_results);
-  // Management page
-  $("#task-remove-all").click(api_get);
 });
