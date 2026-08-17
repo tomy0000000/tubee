@@ -2,6 +2,7 @@
 
 Collect models for import
 """
+
 # flake8: noqa
 from .action import Action, ActionType
 from .callback import Callback

@@ -1,4 +1,5 @@
 """Test Cases of User Model"""
+
 import unittest
 from unittest import mock
 

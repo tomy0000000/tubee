@@ -12,6 +12,7 @@ Variables:
     REQUIRED_PARAMETERS {list} -- A list of required parameters to compsoe
                                   request to hub
 """
+
 import re
 from urllib.parse import urljoin, urlparse
 

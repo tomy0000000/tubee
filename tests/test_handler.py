@@ -1,4 +1,5 @@
 """Test Cases of App Basics"""
+
 import unittest
 
 from tubee import create_app, db
