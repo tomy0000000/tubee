@@ -1,4 +1,5 @@
 """Test Cases of Video Model"""
+
 import unittest
 from unittest import mock
 

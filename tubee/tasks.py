@@ -1,4 +1,5 @@
 """Defines All Async Task for Celery"""
+
 from datetime import datetime
 from enum import Enum
 from random import randrange

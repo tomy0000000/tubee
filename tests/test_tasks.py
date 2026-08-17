@@ -1,4 +1,5 @@
 """Test Cases of Celery Tasks"""
+
 import unittest
 from unittest import mock
 
